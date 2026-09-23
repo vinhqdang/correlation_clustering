@@ -209,7 +209,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790206269.6767542
  },
@@ -219,7 +219,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790206277.9501646
  },
@@ -229,7 +229,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790206284.3253
  },
@@ -239,7 +239,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790206290.4851854
  },
@@ -299,8 +299,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790207053.557946
  },
  {
   "id": "e2_com-Amazon_0",
