@@ -354,3 +354,132 @@ def repair_metric(g: Graph, sup: Support, x: np.ndarray, pgraph=None):
     ptr, idx, pid = pgraph
     return _repair(g.n, ptr, idx, pid, np.clip(np.asarray(x, dtype=np.float64), 0, 1),
                    sup.npairs)
+
+
+# --------------------------------------------------------------------------
+# star (2-partition) inequalities
+# --------------------------------------------------------------------------
+#
+# For a vertex v and a set T of other vertices, every clustering satisfies
+#     sum_{t in T} y_vt - sum_{t < t' in T} y_tt' <= 1,     y = 1 - x
+# (if v's cluster contains k vertices of T the left side is k - k(k-1)/2 <= 1).
+# With |T| = 2 these are triangle inequalities.  Pairs outside P have y = 0 in
+# every optimal solution and drop out.  In x-variables:
+#   -sum_t x_vt + sum_{tt' in P} x_tt' <= 1 - |T| + |{tt' in P}|.
+
+@nb.njit(cache=True)
+def _separate_stars(n, ptr, idx, pid, x, eps, max_t, cap_rows, cap_nnz):
+    rows_ptr = np.zeros(cap_rows + 1, dtype=np.int64)
+    rows_idx = np.empty(cap_nnz, dtype=np.int64)
+    rows_val = np.empty(cap_nnz, dtype=np.float64)
+    rows_ub = np.empty(cap_rows, dtype=np.float64)
+    rows_viol = np.empty(cap_rows, dtype=np.float64)
+    nr = 0
+    nz = 0
+    cand = np.empty(n, dtype=np.int64)
+    candy = np.empty(n, dtype=np.float64)
+    candp = np.empty(n, dtype=np.int64)
+    T = np.empty(max_t, dtype=np.int64)
+    Tp = np.empty(max_t, dtype=np.int64)
+    for v in range(n):
+        k = 0
+        for p in range(ptr[v], ptr[v + 1]):
+            y = 1.0 - x[pid[p]]
+            if y > eps:
+                cand[k] = idx[p]
+                candy[k] = y
+                candp[k] = pid[p]
+                k += 1
+        if k < 3:
+            continue
+        order = np.argsort(-candy[:k])
+        nt = 0
+        lhs = 0.0
+        for oi in range(k):
+            i = order[oi]
+            t = cand[i]
+            gain = candy[i]
+            for j in range(nt):
+                r = _find(ptr, idx, t, T[j])
+                if r >= 0:
+                    gain -= 1.0 - x[pid[r]]
+            if gain > eps:
+                T[nt] = t
+                Tp[nt] = candp[i]
+                nt += 1
+                lhs += gain
+                if nt == max_t:
+                    break
+        if nt >= 3 and lhs > 1.0 + eps:
+            # build row
+            need = nt + nt * (nt - 1) // 2
+            if nr >= cap_rows or nz + need > cap_nnz:
+                break
+            ub = 1.0 - nt
+            for j in range(nt):
+                rows_idx[nz] = Tp[j]
+                rows_val[nz] = -1.0
+                nz += 1
+            for a in range(nt):
+                for b in range(a + 1, nt):
+                    r = _find(ptr, idx, T[a], T[b])
+                    if r >= 0:
+                        rows_idx[nz] = pid[r]
+                        rows_val[nz] = 1.0
+                        nz += 1
+                        ub += 1.0
+            rows_ub[nr] = ub
+            rows_viol[nr] = lhs - 1.0
+            nr += 1
+            rows_ptr[nr] = nz
+    return rows_ptr[:nr + 1], rows_idx[:nz], rows_val[:nz], rows_ub[:nr], rows_viol[:nr]
+
+
+def _add_general(self, rptr, ridx, rval, lower, upper):
+    k = len(lower)
+    if k == 0:
+        return
+    self.h.addRows(k, np.asarray(lower, dtype=np.float64), np.asarray(upper, dtype=np.float64),
+                   int(rptr[-1]), rptr[:-1].astype(np.int32), ridx.astype(np.int32),
+                   rval.astype(np.float64))
+    self.nrows += k
+
+
+def _solve_with_stars(self, eps: float = 1e-6, max_rounds: int = 200, time_limit: float = 3600.0,
+                      max_t: int = 50, star_cap: int = 50000, cap: int = 200000,
+                      verbose: bool = False):
+    """Cutting planes with triangle and star inequalities."""
+    t0 = time.time()
+    self.history = []
+    while True:
+        self.h.setOptionValue("time_limit", max(1.0, time_limit - (time.time() - t0)))
+        self.h.run()
+        x = np.asarray(self.h.getSolution().col_value)
+        val = self.const + float(self.h.getInfo().objective_function_value)
+        self.rounds += 1
+        self.history.append((self.rounds, time.time() - t0, val, self.nrows))
+        if verbose:
+            print(self.rounds, round(time.time() - t0, 1), val, self.nrows, flush=True)
+        typ, a, b, c, v, found = _separate(self.g.n, self.ptr, self.idx, self.pid, x, eps, cap)
+        if found > cap:
+            o = np.argsort(-v)
+            typ, a, b, c = typ[o], a[o], b[o], c[o]
+        self._add(typ, a, b, c)
+        nstar = 0
+        if found == 0:
+            rp, ri, rv, ub, viol = _separate_stars(self.g.n, self.ptr, self.idx, self.pid, x,
+                                                   1e-4, max_t, star_cap, star_cap * 60)
+            nstar = len(ub)
+            _add_general(self, rp, ri, rv, np.full(nstar, -highspy.kHighsInf), ub)
+        if (found == 0 and nstar == 0) or self.rounds >= max_rounds or \
+                time.time() - t0 > time_limit:
+            break
+    self.x = np.clip(x, 0.0, 1.0)
+    self.value = val
+    self.converged = found == 0 and nstar == 0
+    self.time = time.time() - t0
+    return self.value
+
+
+SparseLP.solve_with_stars = _solve_with_stars
+SparseLP.add_general = _add_general

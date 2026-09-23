@@ -343,3 +343,167 @@ class PackingBound:
         self.cover = np.where(used, np.minimum(1.0, ln / mn), 0.0) if mn > 0 else None
         self.upper = float(self.cover.sum()) if self.cover is not None else float("inf")
         return self.lower
+
+
+# --------------------------------------------------------------------------
+# fractional packing of induced stars
+# --------------------------------------------------------------------------
+#
+# An induced star (v; T) with T a set of k >= 2 pairwise non-adjacent positive
+# neighbours of v forces at least k - 1 disagreements among its k + k(k-1)/2
+# pairs (the star inequality in "mistake" form).  A fractional packing
+#     max sum_S (k_S - 1) y_S   s.t.   sum_{S ni e} y_S <= 1
+# is therefore a lower bound on OPT; bad triangles are the stars with k = 2.
+# We run the Garg-Koenemann scheme with a greedy column oracle per centre and
+# normalise by the maximum load at the end, so the bound is always valid.
+
+@nb.njit(cache=True)
+def _best_star(v, indptr, indices, eid, ptr, idx, pid, ln, cap_k, cand, candl, T, Tp):
+    """Greedy star of minimum length/value ratio centred at v.
+
+    Returns (k, total_length); T[:k] leaves, Tp[:k + k(k-1)/2] pair ids."""
+    d = indptr[v + 1] - indptr[v]
+    if d < 2:
+        return 0, 0.0
+    for i in range(d):
+        p = indptr[v] + i
+        cand[i] = indices[p]
+        candl[i] = ln[eid[p]]
+    order = np.argsort(candl[:d])
+    k = 0
+    npair = 0
+    L = 0.0
+    for oi in range(d):
+        i = order[oi]
+        t = cand[i]
+        # independence and added length
+        ok = True
+        add = candl[i]
+        for j in range(k):
+            lo = indptr[t]
+            hi = indptr[t + 1]
+            while lo < hi:
+                mid = (lo + hi) >> 1
+                if indices[mid] < T[j]:
+                    lo = mid + 1
+                else:
+                    hi = mid
+            if lo < indptr[t + 1] and indices[lo] == T[j]:
+                ok = False
+                break
+            lo = ptr[t]
+            hi = ptr[t + 1]
+            while lo < hi:
+                mid = (lo + hi) >> 1
+                if idx[mid] < T[j]:
+                    lo = mid + 1
+                else:
+                    hi = mid
+            add += ln[pid[lo]]
+        if not ok:
+            continue
+        if k >= 2 and (L + add) / k >= L / (k - 1):
+            continue
+        # accept t: record pair ids (vt and tt' for t' in T)
+        Tp[npair] = eid[indptr[v] + i]
+        npair += 1
+        for j in range(k):
+            lo = ptr[t]
+            hi = ptr[t + 1]
+            while lo < hi:
+                mid = (lo + hi) >> 1
+                if idx[mid] < T[j]:
+                    lo = mid + 1
+                else:
+                    hi = mid
+            Tp[npair] = pid[lo]
+            npair += 1
+        T[k] = t
+        k += 1
+        L += add
+        if k == cap_k:
+            break
+    if k < 2:
+        return 0, 0.0
+    return k, L
+
+
+@nb.njit(cache=True)
+def _star_mwu(n, indptr, indices, eid, ptr, idx, pid, npairs, eps, delta, max_phases, cap_k,
+              max_aug):
+    ln = np.full(npairs, delta)
+    load = np.zeros(npairs)
+    maxd = 0
+    for v in range(n):
+        if indptr[v + 1] - indptr[v] > maxd:
+            maxd = indptr[v + 1] - indptr[v]
+    cand = np.empty(maxd + 1, dtype=np.int64)
+    candl = np.empty(maxd + 1, dtype=np.float64)
+    T = np.empty(cap_k + 1, dtype=np.int64)
+    Tp = np.empty(cap_k + cap_k * (cap_k + 1) // 2 + 2, dtype=np.int64)
+    f = 1.0 + eps
+    alpha = 3.0 * delta
+    value = 0.0
+    phases = 0
+    active = np.ones(n, dtype=np.bool_)
+    while alpha < 1.0 and phases < max_phases:
+        thr = min(1.0, alpha * f)
+        any_active = False
+        for v in range(n):
+            if not active[v]:
+                continue
+            aug = 0
+            while aug < max_aug:
+                k, L = _best_star(v, indptr, indices, eid, ptr, idx, pid, ln, cap_k, cand,
+                                  candl, T, Tp)
+                if k < 2:
+                    active[v] = False
+                    break
+                r = L / (k - 1)
+                if r >= 1.0:
+                    active[v] = False
+                    break
+                if r >= thr:
+                    break
+                npair = k + k * (k - 1) // 2
+                for j in range(npair):
+                    e = Tp[j]
+                    load[e] += 1.0
+                    ln[e] *= f
+                value += k - 1
+                aug += 1
+            if active[v]:
+                any_active = True
+        if not any_active:
+            break
+        alpha = thr
+        phases += 1
+    mx = 0.0
+    for e in range(npairs):
+        if load[e] > mx:
+            mx = load[e]
+    return value, mx, phases
+
+
+class StarPackingBound:
+    """Fractional induced-star packing lower bound (generalises bad triangles)."""
+
+    def __init__(self, g: Graph, sup: Support | None = None, pgraph=None):
+        from .lp import _pgraph
+        self.g = g
+        self.sup = sup if sup is not None else build_support(g)
+        s = self.sup
+        self.pgraph = pgraph if pgraph is not None else _pgraph(
+            g.n, g.indptr, g.indices, s.eid, s.n2ptr, s.n2idx, s.n2id)
+
+    def run(self, eps: float = 0.1, delta: float = 1e-4, max_phases: int = 100000,
+            cap_k: int = 64, max_aug: int = 1 << 30):
+        g, s = self.g, self.sup
+        ptr, idx, pid = self.pgraph
+        t0 = time.time()
+        value, mx, ph = _star_mwu(g.n, g.indptr, g.indices, s.eid, ptr, idx, pid, s.npairs,
+                                  eps, delta, max_phases, cap_k, max_aug)
+        self.time = time.time() - t0
+        self.phases = ph
+        self.lower = value / mx if mx > 0 else 0.0
+        return self.lower

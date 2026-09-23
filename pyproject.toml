@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ccbench"
+version = "0.1.0"
+description = "Correlation clustering: certified algorithms, lower bounds and benchmark pipeline"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy", "numba", "highspy", "pandas", "matplotlib"]
+
+[tool.setuptools]
+packages = ["ccbench"]
