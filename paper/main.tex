@@ -67,9 +67,9 @@ Together with the first implementation of the iterated flipping local search
 of Cohen-Addad et al., these ingredients form \emph{CertiFlip}.  CertiFlip
 has an a-priori guarantee ($3$ in expectation, and $2.06$ whenever the
 relaxation is solved to optimality) and outputs a certified bound on its own
-approximation ratio.  On the PACE~2021 exact track it finds a new best
-solution for an open instance and proves optimality on more instances than
-the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs its
+approximation ratio.  On the PACE~2021 exact track it improves the best published
+bounds of three open instances, and its bound proves optimality on more
+instances than the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs its
 bounds certify the solutions of the PACE~2021 winner within about one percent
 of optimal, on graphs far beyond the reach of dense-matrix bounds.
 \end{abstract}
@@ -361,14 +361,25 @@ for $\mathrm{LP}_P$ with the box constraints.
 induced stars (a centre $v$ with $k\ge2$ pairwise non-adjacent positive
 neighbours) is a feasible dual solution: put $y=1$ on the corresponding
 local subgraph inequalities of Proposition~\ref{prop:subgraph}(ii), which in
-$x$-form read $\sum_t x_{vt}-\sum_{tt'}x_{tt'}\ge (k-1)-\binom k2$.  A
-direct computation shows that $\LB(y)$ then equals the packing value
-$\sum(k-1)$, because every pair covered by a star gets reduced cost $0$.
+$x$-form read $\sum_t x_{vt}-\sum_{tt'}x_{tt'}\ge (k-1)-\binom k2$.  Then
+$\LB(y)$ equals the packing value $\sum(k-1)$.  Indeed, a centre pair has
+$c_e=1$ and coefficient $1$, and a leaf pair has $c_e=-1$ and coefficient
+$-1$, so every packed pair has reduced cost $0$.  Unpacked pairs keep
+$r_e=c_e$.  Hence $\LB=K+\sum_S\big((k_S-1)-\binom{k_S}2\big)-|\Nt\setminus
+\text{packed}|$, and $K-|\Nt\setminus\text{packed}|=\sum_S\binom{k_S}{2}$.
+Fractional packings of bad triangles, as computed by the Garg--K\"onemann
+scheme~\citep{GargK07,Fleischer00}, are installed in the same way on the
+rows $x_{uw}+x_{wv}-x_{uv}\ge0$.
 Packings are the bounds used inside the KaPoCE branch-and-bound
 algorithm~\citep{BlasiusEtAl22sea}.  Its implementation stores the instance
 as a dense matrix, so it applies only to graphs with at most about $10^4$
 vertices.  We build a greedy packing on the sparse support, processing
 centres by decreasing degree, and improve it by \emph{ruin and recreate}.
+(On dense instances large stars waste pairs, since a star with $k$ leaves
+uses $k+\binom k2$ pairs for a value of $k-1$.  There we also try a packing
+that first packs bad triangles maximally and then extends stars on free
+pairs, as well as the fractional triangle packing, and install the best of
+the candidates.)
 Each step picks a random vertex, removes all stars centred in a random
 connected region of about 12 vertices around it, and repacks the freed
 pairs greedily in a random order.  A step is kept iff the value does not

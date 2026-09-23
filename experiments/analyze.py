@@ -170,11 +170,63 @@ def write_snap_tables(path):
         fh.write("\\bottomrule\n\\end{tabular}\n")
 
 
+def write_ablation(path):
+    d = pd.read_csv(path)
+    d = d[d.method != "support"]
+    graphs = list(dict.fromkeys(d.graph))
+    methods = list(dict.fromkeys(d.method))
+    best_ub = {}
+    snap = os.path.join(ROOT, "results", "snap.csv")
+    if os.path.exists(snap):
+        s2 = load(snap)
+        s2 = s2[~s2.algo.str.startswith("lb:")]
+        for gname in graphs:
+            v = s2[s2.instance == gname]["cost"].min()
+            if not math.isnan(v):
+                best_ub[gname] = v
+    with open(os.path.join(TAB, "ablation_lb.tex"), "w") as fh:
+        fh.write("\\begin{tabular}{l" + "rr" * len(graphs) + "}\n\\toprule\n")
+        fh.write(" & " + " & ".join(f"\\multicolumn{{2}}{{c}}{{\\texttt{{{gname}}}}}" for gname in graphs) + "\\\\\n")
+        fh.write("Bound & " + " & ".join("gap (\\%) & s" for _ in graphs) + "\\\\\n\\midrule\n")
+        for mth in methods:
+            cells = []
+            for gname in graphs:
+                r = d[(d.graph == gname) & (d.method == mth)]
+                if r.empty:
+                    cells += ["--", "--"]
+                    continue
+                ub = best_ub.get(gname, r.ub.iloc[0])
+                lb = math.ceil(r.lb.iloc[0] - 1e-6)
+                cells += [fmt(100 * (ub - lb) / max(lb, 1), 2), fmt(r.time.iloc[0], 0)]
+            fh.write(mth + " & " + " & ".join(cells) + "\\\\\n")
+        fh.write("\\bottomrule\n\\end{tabular}\n")
+    print(d.pivot_table(index="method", columns="graph", values="lb").to_string())
+
+
+def write_scaling(path):
+    d = pd.read_csv(path)
+    tab = d.pivot_table(index="step", columns="n", values="time")
+    with open(os.path.join(TAB, "scaling.tex"), "w") as fh:
+        cols = list(tab.columns)
+        fh.write("\\begin{tabular}{l" + "r" * len(cols) + "}\n\\toprule\n")
+        fh.write("Step & " + " & ".join(f"$n={c:,}$".replace(",", "\\,") for c in cols) + "\\\\\n\\midrule\n")
+        for step, row in tab.iterrows():
+            fh.write(step + " & " + " & ".join(fmt(v, 1) for v in row.values) + "\\\\\n")
+        fh.write("\\bottomrule\n\\end{tabular}\n")
+    print(tab.to_string())
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pace-exact")
     ap.add_argument("--snap")
+    ap.add_argument("--ablation")
+    ap.add_argument("--scaling")
     a = ap.parse_args()
+    if a.ablation:
+        write_ablation(a.ablation)
+    if a.scaling:
+        write_scaling(a.scaling)
     if a.pace_exact:
         write_pace_tables(a.pace_exact)
     if a.snap:

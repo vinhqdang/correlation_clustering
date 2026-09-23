@@ -78,7 +78,8 @@ def pivot3(a: np.ndarray, b: np.ndarray, c: np.ndarray) -> np.ndarray:
 
 
 def iterated_flip(g: Graph, init: np.ndarray, rounds: int = 5, beta2: int = 1, rng=None,
-                  ls: str = "insertion", return_all: bool = False):
+                  ls: str = "insertion", return_all: bool = False,
+                  time_limit: float | None = None):
     """Iterated flipping local search.
 
     ``beta2`` is 2*beta (1 gives the paper's beta = 1/2).  The local search
@@ -93,9 +94,13 @@ def iterated_flip(g: Graph, init: np.ndarray, rounds: int = 5, beta2: int = 1, r
             return insertion_search(g, start, rng, weights=w, kappa=kappa)
         return multilevel(g, start, rng, weights=w, kappa=kappa)
 
+    import time as _time
+    t0 = _time.time()
     prev = LS(base, init)
     cands = [prev]
     for _ in range(rounds):
+        if time_limit is not None and _time.time() - t0 > time_limit:
+            break
         w1 = base + beta2 * cut_indicator(g, prev)
         c1 = LS(w1, prev)
         w2 = w1 + beta2 * cut_indicator(g, c1)

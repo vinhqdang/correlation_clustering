@@ -90,8 +90,7 @@ def block_bound(g: Graph, sup=None, time_limit: float = 600.0, block_size: int =
         if time.time() - t0 > time_limit:
             break
         part = metis_blocks(g, block_size, seed + s)
-        bd.sweep(part, time_limit=min(block_time, max(1.0, time_limit - (time.time() - t0))),
-                 **kw)
+        bd.sweep(part, deadline=t0 + time_limit, time_limit=block_time, **kw)
         cur = bd.bound()
         if s >= 1 and cur - last < stall * max(1.0, abs(cur)):
             break
@@ -141,7 +140,7 @@ def certiflip(g: Graph, time_limit: float = 300.0, rng=None, lb_fraction: float 
     hist = []
     lab = pivot(g, rng)
     hist.append(("pivot", time.time() - t0, cost(g, lab)))
-    lab = iterated_flip(g, lab, flip_rounds, rng=rng)
+    lab = iterated_flip(g, lab, flip_rounds, rng=rng, time_limit=0.25 * time_limit)
     hist.append(("flip", time.time() - t0, cost(g, lab)))
     if verbose:
         print(hist[-1], flush=True)

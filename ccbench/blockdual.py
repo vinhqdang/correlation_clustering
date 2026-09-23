@@ -329,12 +329,22 @@ class BlockDualBound:
             chs = [c for c in self._chunks if c["alive"].any()]
             self._chunks = chs
 
-    def sweep(self, labels: np.ndarray, **kw):
-        """Solve every block of the partition ``labels`` once."""
+    def sweep(self, labels: np.ndarray, deadline: float | None = None, **kw):
+        """Solve the blocks of the partition ``labels`` once (in random order),
+        stopping at ``deadline`` (a time.time() value) if given."""
         order = np.argsort(labels, kind="stable")
         ls = labels[order]
         cuts = np.flatnonzero(np.diff(ls)) + 1
-        for blk in np.split(order, cuts):
+        blocks = np.split(order, cuts)
+        rng = np.random.default_rng(int(labels[0]) if len(labels) else 0)
+        for bi in rng.permutation(len(blocks)):
+            blk = blocks[bi]
+            if deadline is not None:
+                left = deadline - time.time()
+                if left <= 1.0:
+                    break
+                kw = dict(kw)
+                kw["time_limit"] = min(kw.get("time_limit", 600.0), left)
             if len(blk) >= 3:
                 self.solve_block(blk, **kw)
         self.history.append((time.time() - self.t0, self.bound()))
