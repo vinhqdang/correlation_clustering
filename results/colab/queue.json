@@ -59,7 +59,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790205298.2928293
  },
@@ -69,7 +69,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790205298.2928314
  },
@@ -79,7 +79,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790205298.2928326
  },
@@ -89,7 +89,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790205298.2928333
  },
@@ -99,7 +99,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790205298.2928338
  },
@@ -119,8 +119,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790205541.8600724
  },
  {
   "id": "e1_ca-CondMat_1",
@@ -128,8 +129,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790205550.0106192
  },
  {
   "id": "e1_BitcoinOTC+_1",
@@ -137,8 +139,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790205566.4610498
  },
  {
   "id": "e1_BitcoinAlpha+_1",
@@ -146,8 +149,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790205572.5101259
  },
  {
   "id": "e1_ca-HepPh_1",
@@ -155,8 +159,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790205592.0068996
  },
  {
   "id": "e1_ca-GrQc_2",
