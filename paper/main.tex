@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
+
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{booktabs}
@@ -348,6 +348,27 @@ the old multipliers are feasible for this maximisation.  (c) is LP duality
 for $\mathrm{LP}_P$ with the box constraints.
 \end{proof}
 
+\paragraph{Warm start by star packings.}  Every pair-disjoint family of
+induced stars (a centre $v$ with $k\ge2$ pairwise non-adjacent positive
+neighbours) is a feasible dual solution: put $y=1$ on the corresponding
+local subgraph inequalities of Proposition~\ref{prop:subgraph}(ii), which in
+$x$-form read $\sum_t x_{vt}-\sum_{tt'}x_{tt'}\ge (k-1)-\binom k2$.  A
+direct computation shows that $\LB(y)$ then equals the packing value
+$\sum(k-1)$, because every pair covered by a star gets reduced cost $0$.
+Packings are the bounds used inside the KaPoCE branch-and-bound
+algorithm~\citep{BlasiusEtAl22sea}.  Its implementation stores the instance
+as a dense matrix, so it applies only to graphs with at most about $10^4$
+vertices.  We build a greedy packing on the sparse support, processing
+centres by decreasing degree, and improve it by \emph{ruin and recreate}.
+Each step picks a random vertex, removes all stars centred in a random
+connected region of about 12 vertices around it, and repacks the freed
+pairs greedily in a random order.  A step is kept iff the value does not
+decrease.  The packing is installed as the initial multipliers.  Subsequent
+block steps release the packed rows that lie inside a block and re-optimise
+them fractionally together with newly separated rows.  By
+Theorem~\ref{thm:anytime}(b), the final bound is never below the packing
+value.
+
 The bound~\eqref{eq:lb} needs only the vector $r$ and the scalar $b^\top y$.
 We store the rows with positive multipliers so that a later block containing
 them can re-optimise them.  Blocks of the same partition are independent.
@@ -418,12 +439,13 @@ skipped because they are certified optimal.
 \State $\mathcal C\gets\textsc{Pivot}(G^+)$ with a uniformly random order
 \State $\mathcal C\gets\textsc{IteratedFlip}(\mathcal C)$ \Comment{insertion local search with flips}
 \State build the distance-two support $P$
-\State $y\gets\textsc{BlockAscent}(P,\mathcal C,T/2)$ \Comment{METIS sweeps, then gap-guided blocks}
+\State $y\gets$ star packing with ruin-and-recreate local search \Comment{feasible dual}
+\State $y\gets\textsc{BlockAscent}(P,y,\mathcal C)$ \Comment{METIS sweeps, then gap-guided blocks}
 \If{one block covered $V$ and separation converged}
   \State $\mathcal C\gets$ best of $\mathcal C$ and \textsc{IteratedFlip}(\textsc{CMSY-Round}$(x^\star)$) over several roundings
 \EndIf
 \State $\mathcal C\gets\textsc{GapLNS}(\mathcal C,y)$ until time $T$
-\State \Return $\mathcal C$ and $\lceil\LB(y)\rceil$
+\State \Return $\mathcal C$ and $\lceil\LB(y)\rceil$ \Comment{lines 4--5 share half of the budget $T$}
 \end{algorithmic}
 \end{algorithm}
 
@@ -449,7 +471,7 @@ Let $\mathcal C$ and $\LB$ be the output of Algorithm~\ref{alg:certiflip}.
 \item[(a)] $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.
 \item[(b)] $\LB\le\OPT$, so $\cost(\mathcal C)/\lceil\LB\rceil$ is an upper
 bound on the approximation ratio achieved on the instance.
-\item[(c)] If line~6 is executed, $\mathbb E[\cost(\mathcal C)]\le 2.06\,\OPT$.
+\item[(c)] If line~7 is executed, $\mathbb E[\cost(\mathcal C)]\le 2.06\,\OPT$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}

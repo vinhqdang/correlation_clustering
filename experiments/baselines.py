@@ -78,4 +78,7 @@ def leiden_cpm(g: Graph, rng=None, iterations: int = -1):
 def match_flip_pivot(g: Graph, rng=None):
     """MatchFlipPivot (Veldt, ICML 2022, Algorithm 3); see ccbench.dual."""
     from ccbench.dual import match_flip_pivot as mfp
+    deg = g.degrees.astype(np.float64)
+    if min(g.m + float((deg * (deg - 1) / 2).sum()), g.n * (g.n - 1) / 2) > 3e7:
+        raise MemoryError("distance-2 support too large for this machine")
     return mfp(g, rng=rng)[0]

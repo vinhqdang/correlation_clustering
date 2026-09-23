@@ -418,3 +418,21 @@ def add_star_packing(bd: "BlockDualBound", rp, rpairs, rk):
     first = rpairs[rp[:-1]]
     anchor = np.minimum(bd.sup.pu[first], bd.sup.pv[first]).astype(np.int64)
     bd._store(rp.astype(np.int64), rpairs.astype(np.int64), vals, b, y, anchor)
+
+
+def add_triangle_packing(bd: "BlockDualBound", ta, tb, tc, y):
+    """Install a fractional packing of bad triangles (loads <= 1) as multipliers
+    of the rows x_a + x_b - x_c >= 0 (a, b positive pairs, c the negative pair).
+    The bound then equals sum(y)."""
+    keep = y > 1e-12
+    ta, tb, tc, y = ta[keep], tb[keep], tc[keep], y[keep]
+    k = len(y)
+    if k == 0:
+        return
+    rp = np.arange(0, 3 * k + 1, 3, dtype=np.int64)
+    rpairs = np.stack([ta, tb, tc], axis=1).ravel().astype(np.int64)
+    vals = np.tile(np.array([1.0, 1.0, -1.0]), k)
+    np.subtract.at(bd.r, rpairs, vals * np.repeat(y, 3))
+    b = np.zeros(k)
+    anchor = np.minimum(bd.sup.pu[ta], bd.sup.pv[ta]).astype(np.int64)
+    bd._store(rp, rpairs, vals, b, y.astype(np.float64), anchor)

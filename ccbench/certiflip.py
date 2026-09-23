@@ -22,8 +22,9 @@ from .objective import cost
 from .pivot import pivot
 from .flip import iterated_flip
 from .support import build_support
-from .blockdual import BlockDualBound, metis_blocks, gap_blocks, add_star_packing
-from .dual import star_packing_ls
+from .blockdual import (BlockDualBound, metis_blocks, gap_blocks, add_star_packing,
+                        add_triangle_packing)
+from .dual import star_packing_ls, star_packing_p3x, PackingBound
 from .lns import gap_lns
 
 
@@ -60,11 +61,25 @@ def block_bound(g: Graph, sup=None, time_limit: float = 600.0, block_size: int =
     t0 = time.time()
     kw = dict(subgraphs=subgraphs)
     if packing_fraction > 0:
+        # candidate feasible duals; the best one is installed
+        pg = (bd.ptr, bd.idx, bd.pid)
+        cands = []
         _, rate = _packing_rate(g, bd)
         iters = int(max(1000, rate * packing_fraction * time_limit))
-        v, rp, rpairs, rk = star_packing_ls(g, bd.sup, pgraph=(bd.ptr, bd.idx, bd.pid),
-                                            iters=iters, seed=seed)
-        add_star_packing(bd, rp, rpairs, rk)
+        v, rp, rpairs, rk = star_packing_ls(g, bd.sup, pgraph=pg, iters=iters, seed=seed)
+        cands.append((v, "stars", (rp, rpairs, rk)))
+        density = 2.0 * g.m / max(1.0, g.n * (g.n - 1.0))
+        if density > 0.02:
+            v, rp, rpairs, rk = star_packing_p3x(g, bd.sup, pgraph=pg, iters=0, seed=seed)
+            cands.append((v, "stars", (rp, rpairs, rk)))
+            P = PackingBound(g, bd.sup)
+            v = P.run(0.1, 1e-4)
+            cands.append((v, "triangles", (P.ta, P.tb, P.tc, P.y)))
+        v, kind, data = max(cands, key=lambda c: c[0])
+        if kind == "stars":
+            add_star_packing(bd, *data)
+        else:
+            add_triangle_packing(bd, *data)
         bd.history.append((time.time() - bd.t0, bd.bound()))
     if g.n <= block_size:
         bd.solve_block(np.arange(g.n), time_limit=max(1.0, time_limit), max_rounds=1000, **kw)

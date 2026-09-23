@@ -47,8 +47,10 @@ def _insertion_round(n, indptr, indices, w, kappa, labels, order, sweeps, max_ro
         U[nu] = r
         nu += 1
         for p in range(indptr[r], indptr[r + 1]):
-            U[nu] = indices[p]
-            nu += 1
+            u = indices[p]
+            if indptr[u + 1] - indptr[u] <= max_root_deg:
+                U[nu] = u
+                nu += 1
         sizeS = 0
         for i in range(nu):
             v = U[i]
@@ -155,7 +157,7 @@ def _insertion_round(n, indptr, indices, w, kappa, labels, order, sweeps, max_ro
 
 
 def insertion_search(g: Graph, labels: np.ndarray, rng=None, weights=None, kappa: int = 1,
-                     sweeps: int = 3, max_rounds: int = 20, max_root_deg: int = 1 << 30,
+                     sweeps: int = 3, max_rounds: int = 20, max_root_deg: int = 1000,
                      multilevel_between: bool = True) -> np.ndarray:
     """Alternate cluster-insertion rounds with multilevel vertex/merge moves.
 

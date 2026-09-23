@@ -957,3 +957,343 @@ def star_packing_ls(g: Graph, sup: Support | None = None, pgraph=None, iters: in
     pool_cap = int(2 * sup.npairs + 10 * int(g.degrees.max()) ** 2 + 1000)
     return _star_ls(g.n, g.indptr, g.indices, sup.eid, ptr, idx, pid, sup.npairs, order,
                     iters, region, seed, pool_cap)
+
+
+# P3-first packing: maximal packing of bad triangles, then star extensions that
+# only use pairs no free bad triangle can use.
+
+@nb.njit(cache=True)
+def _try_p3(v, indptr, indices, eid, ptr, idx, pid, owner, keys, cap, T, Tc, inner):
+    """Find a bad triangle centred at v on free pairs (first cap free neighbours in key
+    order).  Returns (k, ni) = (2, 1) on success, (0, 0) otherwise."""
+    d = indptr[v + 1] - indptr[v]
+    o = np.argsort(keys[indptr[v]:indptr[v + 1]])
+    fr = np.empty(min(d, cap), dtype=np.int64)
+    nf = 0
+    for oj in range(d):
+        p = indptr[v] + o[oj]
+        if owner[eid[p]] == -1:
+            fr[nf] = p
+            nf += 1
+            if nf == fr.shape[0]:
+                break
+    for a in range(nf):
+        pa = fr[a]
+        ta = indices[pa]
+        for b in range(a + 1, nf):
+            pb = fr[b]
+            tb = indices[pb]
+            adj, e2 = _find_pair(indptr, indices, ptr, idx, pid, ta, tb)
+            if adj or e2 < 0 or owner[e2] != -1:
+                continue
+            T[0] = ta
+            T[1] = tb
+            Tc[0] = eid[pa]
+            Tc[1] = eid[pb]
+            inner[0] = e2
+            return 2, 1
+    return 0, 0
+
+
+@nb.njit(cache=True)
+def _try_extend(v, k, ni, indptr, indices, eid, ptr, idx, pid, owner, keys, T, Tc, inner):
+    """Greedily add leaves to the star (v; T[:k]) using free pairs only."""
+    d = indptr[v + 1] - indptr[v]
+    o = np.argsort(keys[indptr[v]:indptr[v + 1]])
+    for oj in range(d):
+        p = indptr[v] + o[oj]
+        if owner[eid[p]] != -1:
+            continue
+        t = indices[p]
+        ok = True
+        start = ni
+        for j in range(k):
+            if T[j] == t:
+                ok = False
+                break
+            adj, e2 = _find_pair(indptr, indices, ptr, idx, pid, t, T[j])
+            if adj or e2 < 0 or owner[e2] != -1 or ni >= inner.shape[0]:
+                ok = False
+                break
+            inner[ni] = e2
+            ni += 1
+        if not ok:
+            ni = start
+            continue
+        if k >= T.shape[0]:
+            break
+        T[k] = t
+        Tc[k] = eid[p]
+        k += 1
+    return k, ni
+
+
+@nb.njit(cache=True)
+def _p3x_ls(n, indptr, indices, eid, ptr, idx, pid, npairs, iters, radius_cap, seed, cap,
+            pool_cap):
+    """P3-first star packing with ruin-and-recreate local search.
+
+    Construction (globally and inside every recreated region): (1) a maximal
+    packing of bad triangles on free pairs, (2) star extensions that add a
+    leaf using only free pairs.  After (1) no bad triangle has three free
+    pairs, so an extension never blocks a triangle.  A local-search step
+    removes all stars centred in a random region and rebuilds it; it is kept
+    iff the value does not decrease."""
+    np.random.seed(seed)
+    owner = -np.ones(npairs, dtype=np.int64)
+    maxd = 2
+    for v in range(n):
+        if indptr[v + 1] - indptr[v] > maxd:
+            maxd = indptr[v + 1] - indptr[v]
+    keys = np.random.random(indptr[n])
+    T = np.empty(maxd + 1, dtype=np.int64)
+    Tc = np.empty(maxd + 1, dtype=np.int64)
+    inner = np.empty(min(maxd * (maxd + 1) // 2 + 8, 5000000), dtype=np.int64)
+    smax = npairs // 3 + 8 + 4 * (radius_cap * (maxd + 1) + 16)
+    s_center = np.empty(smax, dtype=np.int64)
+    s_k = np.zeros(smax, dtype=np.int64)
+    s_ps = np.zeros(smax, dtype=np.int64)   # pair segment start
+    s_pl = np.zeros(smax, dtype=np.int64)   # pair segment length
+    s_ls = np.zeros(smax, dtype=np.int64)   # leaf segment start
+    s_alive = np.zeros(smax, dtype=np.bool_)
+    ppool = np.empty(pool_cap, dtype=np.int64)
+    lpool = np.empty(pool_cap, dtype=np.int64)
+    npp = 0
+    nlp = 0
+    ns = 0
+    head = -np.ones(n, dtype=np.int64)
+    nxt = -np.ones(smax, dtype=np.int64)
+    value = 0
+    region = np.empty(max(radius_cap, n), dtype=np.int64)
+    inR = np.zeros(n, dtype=np.bool_)
+    removed = np.empty(smax, dtype=np.int64)
+    created = np.empty(smax, dtype=np.int64)
+    old_k = np.empty(smax, dtype=np.int64)
+
+    for phase_it in range(iters + 1):
+        # ---------------- choose region ----------------
+        if phase_it == 0:
+            nr = n
+            for i in range(n):
+                region[i] = i
+        else:
+            v0 = np.random.randint(n)
+            if indptr[v0 + 1] - indptr[v0] == 0:
+                continue
+            nr = 1
+            region[0] = v0
+            inR[v0] = True
+            h = 0
+            while h < nr and nr < radius_cap:
+                u = region[h]
+                h += 1
+                for p in range(indptr[u], indptr[u + 1]):
+                    w = indices[p]
+                    if not inR[w] and np.random.random() < 0.5:
+                        inR[w] = True
+                        region[nr] = w
+                        nr += 1
+                        if nr == radius_cap:
+                            break
+            for i in range(nr):
+                inR[region[i]] = False
+        # compaction of star ids, lists and pools if needed
+        if phase_it > 0 and (ns + nr * maxd + 8 > smax or
+                             npp + nr * (maxd + 8) * 4 + 64 > pool_cap or
+                             nlp + nr * (maxd + 4) * 2 + 64 > pool_cap):
+            newid = -np.ones(ns, dtype=np.int64)
+            c2 = 0
+            for s in range(ns):
+                if s_alive[s]:
+                    newid[s] = c2
+                    s_center[c2] = s_center[s]
+                    s_k[c2] = s_k[s]
+                    s_ps[c2] = s_ps[s]
+                    s_pl[c2] = s_pl[s]
+                    s_ls[c2] = s_ls[s]
+                    s_alive[c2] = True
+                    c2 += 1
+            for s in range(c2, ns):
+                s_alive[s] = False
+            for e in range(npairs):
+                if owner[e] >= 0:
+                    owner[e] = newid[owner[e]]
+            ns = c2
+            for v in range(n):
+                head[v] = -1
+            for s in range(ns):
+                u = s_center[s]
+                nxt[s] = head[u]
+                head[u] = s
+            if ns + nr * maxd + 8 > smax:
+                break
+            np2 = 0
+            nl2 = 0
+            tmpp = ppool.copy()
+            tmpl = lpool.copy()
+            for s in range(ns):
+                if s_alive[s]:
+                    for q in range(s_pl[s]):
+                        ppool[np2 + q] = tmpp[s_ps[s] + q]
+                    s_ps[s] = np2
+                    np2 += s_pl[s]
+                    for q in range(s_k[s]):
+                        lpool[nl2 + q] = tmpl[s_ls[s] + q]
+                    s_ls[s] = nl2
+                    nl2 += s_k[s]
+            npp = np2
+            nlp = nl2
+            if npp + nr * (maxd + 8) * 4 + 64 > pool_cap:
+                break
+        # ---------------- ruin ----------------
+        nrem = 0
+        old_val = 0
+        if phase_it > 0:
+            for i in range(nr):
+                u = region[i]
+                s = head[u]
+                while s != -1:
+                    if s_alive[s]:
+                        s_alive[s] = False
+                        removed[nrem] = s
+                        old_k[nrem] = s_k[s]
+                        nrem += 1
+                        old_val += s_k[s] - 1
+                        for q in range(s_pl[s]):
+                            owner[ppool[s_ps[s] + q]] = -1
+                    s = nxt[s]
+                head[u] = -1
+            for i in range(nr):
+                u = region[i]
+                for p in range(indptr[u], indptr[u + 1]):
+                    keys[p] = np.random.random()
+        # ---------------- recreate: triangles ----------------
+        ncr = 0
+        perm = np.random.permutation(nr)
+        for i in range(nr):
+            u = region[perm[i]]
+            while True:
+                k, ni = _try_p3(u, indptr, indices, eid, ptr, idx, pid, owner, keys, cap, T, Tc,
+                                inner)
+                if k == 0:
+                    break
+                if ns >= smax:
+                    break
+                s = ns
+                ns += 1
+                s_center[s] = u
+                s_k[s] = 2
+                s_ps[s] = npp
+                s_pl[s] = 3
+                ppool[npp] = Tc[0]
+                ppool[npp + 1] = Tc[1]
+                ppool[npp + 2] = inner[0]
+                npp += 3
+                s_ls[s] = nlp
+                lpool[nlp] = T[0]
+                lpool[nlp + 1] = T[1]
+                nlp += 2
+                s_alive[s] = True
+                owner[Tc[0]] = s
+                owner[Tc[1]] = s
+                owner[inner[0]] = s
+                nxt[s] = head[u]
+                head[u] = s
+                created[ncr] = s
+                ncr += 1
+        # ---------------- recreate: extensions ----------------
+        new_val = 0
+        for c in range(ncr):
+            s = created[c]
+            u = s_center[s]
+            k = s_k[s]
+            for j in range(k):
+                T[j] = lpool[s_ls[s] + j]
+            k2, ni2 = _try_extend(u, k, 0, indptr, indices, eid, ptr, idx, pid, owner, keys,
+                                  T, Tc, inner)
+            if k2 > k:
+                # re-store the star with its new leaves and pairs
+                newps = npp
+                for q in range(s_pl[s]):
+                    ppool[npp] = ppool[s_ps[s] + q]
+                    npp += 1
+                for j in range(k, k2):
+                    ppool[npp] = Tc[j]
+                    owner[Tc[j]] = s
+                    npp += 1
+                for q in range(ni2):
+                    ppool[npp] = inner[q]
+                    owner[inner[q]] = s
+                    npp += 1
+                s_pl[s] = npp - newps
+                s_ps[s] = newps
+                newls = nlp
+                for j in range(k2):
+                    lpool[nlp] = T[j]
+                    nlp += 1
+                s_ls[s] = newls
+                s_k[s] = k2
+            new_val += s_k[s] - 1
+        # ---------------- accept / revert ----------------
+        if phase_it == 0 or new_val >= old_val:
+            value += new_val - old_val
+        else:
+            for c in range(ncr):
+                s = created[c]
+                s_alive[s] = False
+                for q in range(s_pl[s]):
+                    owner[ppool[s_ps[s] + q]] = -1
+            for i in range(nr):
+                head[region[i]] = -1
+            for c in range(nrem):
+                s = removed[c]
+                s_alive[s] = True
+                for q in range(s_pl[s]):
+                    owner[ppool[s_ps[s] + q]] = s
+                u = s_center[s]
+                nxt[s] = head[u]
+                head[u] = s
+        # rebuild head lists lazily: dead stars are skipped when walking
+    # export
+    cnt = 0
+    tot = 0
+    for s in range(ns):
+        if s_alive[s]:
+            cnt += 1
+            tot += s_pl[s]
+    rp = np.zeros(cnt + 1, dtype=np.int64)
+    rpairs = np.empty(tot, dtype=np.int64)
+    rk = np.empty(cnt, dtype=np.int64)
+    c = 0
+    z = 0
+    for s in range(ns):
+        if s_alive[s]:
+            # centre pairs first: the first two pool entries are centre pairs, then the
+            # triangle's leaf pair, then per extension: centre pair + leaf pairs.
+            # Reorder: centre pairs (+1) then leaf pairs (-1).
+            k = s_k[s]
+            base = s_ps[s]
+            # centre pairs are those incident to the centre
+            for q in range(s_pl[s]):
+                e = ppool[base + q]
+                rpairs[z] = e
+                z += 1
+            rk[c] = k
+            c += 1
+            rp[c] = z
+    return value, rp, rpairs, rk
+
+
+def star_packing_p3x(g: Graph, sup: Support | None = None, pgraph=None, iters: int = 200000,
+                     region: int = 12, seed: int = 0, cap: int = 64):
+    """P3-first star packing with ruin-and-recreate local search (never decreases).
+
+    Returns (value, row_ptr, row_pairs, row_k) like star_packing_ls."""
+    from .lp import _pgraph
+    sup = sup if sup is not None else build_support(g)
+    if pgraph is None:
+        pgraph = _pgraph(g.n, g.indptr, g.indices, sup.eid, sup.n2ptr, sup.n2idx, sup.n2id)
+    ptr, idx, pid = pgraph
+    pool_cap = int(3 * sup.npairs + 40 * (int(g.degrees.max()) + 8) * region + 1000)
+    return _p3x_ls(g.n, g.indptr, g.indices, sup.eid, ptr, idx, pid, sup.npairs, iters,
+                   region, seed, cap, pool_cap)

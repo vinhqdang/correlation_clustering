@@ -64,3 +64,28 @@ def test_lns_and_certiflip_monotone():
     r = certiflip(g, 20, rng=0)
     assert r.lower_bound <= r.cost
     assert cc.cost(g, r.labels) == r.cost
+
+
+def test_star_packing_valid_and_installed_exactly():
+    from ccbench.dual import star_packing_ls
+    from ccbench.blockdual import add_star_packing
+    for g in small_instances(10, 9):
+        opt = brute_force_opt(g)
+        bd = BlockDualBound(g)
+        v, rp, rpairs, rk = star_packing_ls(g, bd.sup, pgraph=(bd.ptr, bd.idx, bd.pid),
+                                            iters=2000, seed=1)
+        assert v <= opt
+        # pair-disjointness
+        assert len(np.unique(rpairs)) == len(rpairs)
+        add_star_packing(bd, rp, rpairs, rk)
+        assert abs(bd.bound() - v) < 1e-9
+        bd.solve_block(np.arange(g.n))
+        assert v - 1e-6 <= bd.bound() <= opt + 1e-6
+
+
+def test_star_packing_ls_monotone_in_iterations():
+    from ccbench.dual import star_packing_ls
+    g, _ = sparse_planted(2000, 6, 3.0, 0.6, rng=7)
+    v0 = star_packing_ls(g, iters=0)[0]
+    v1 = star_packing_ls(g, iters=20000)[0]
+    assert v1 >= v0
