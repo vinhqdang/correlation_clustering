@@ -22,7 +22,8 @@ from .objective import cost
 from .pivot import pivot
 from .flip import iterated_flip
 from .support import build_support
-from .blockdual import BlockDualBound, metis_blocks, gap_blocks
+from .blockdual import BlockDualBound, metis_blocks, gap_blocks, add_star_packing
+from .dual import star_packing_ls
 from .lns import gap_lns
 
 
@@ -43,13 +44,28 @@ class CertiFlipResult:
 def block_bound(g: Graph, sup=None, time_limit: float = 600.0, block_size: int = 2500,
                 max_sweeps: int = 100, stall: float = 1e-3, seed: int = 0,
                 block_time: float = 120.0, labels: np.ndarray | None = None,
-                subgraphs: bool = True, bd: BlockDualBound | None = None) -> BlockDualBound:
-    """Anytime lower bound.  Sweeps over randomised METIS partitions until a
-    sweep improves the bound by less than ``stall`` (relative), then, if a
-    clustering is given, dual-gap guided blocks for the remaining time."""
+                subgraphs: bool = True, bd: BlockDualBound | None = None,
+                packing_fraction: float = 0.3) -> BlockDualBound:
+    """Anytime lower bound.
+
+    1. a star packing improved by ruin-and-recreate local search (a feasible
+       dual: y = 1 on each packed star inequality), using about
+       ``packing_fraction`` of the time;
+    2. block sweeps over randomised METIS partitions, which re-optimise the
+       stored rows inside each block, until a sweep improves the bound by less
+       than ``stall`` (relative);
+    3. if a clustering is given, dual-gap guided blocks for the remaining time.
+    """
     bd = bd if bd is not None else BlockDualBound(g, sup)
     t0 = time.time()
     kw = dict(subgraphs=subgraphs)
+    if packing_fraction > 0:
+        _, rate = _packing_rate(g, bd)
+        iters = int(max(1000, rate * packing_fraction * time_limit))
+        v, rp, rpairs, rk = star_packing_ls(g, bd.sup, pgraph=(bd.ptr, bd.idx, bd.pid),
+                                            iters=iters, seed=seed)
+        add_star_packing(bd, rp, rpairs, rk)
+        bd.history.append((time.time() - bd.t0, bd.bound()))
     if g.n <= block_size:
         bd.solve_block(np.arange(g.n), time_limit=max(1.0, time_limit), max_rounds=1000, **kw)
         bd.history.append((time.time() - bd.t0, bd.bound()))
@@ -93,9 +109,18 @@ def lp_seed(g: Graph, bd: BlockDualBound, lab: np.ndarray, rng, rounds: int = 10
     return best, True
 
 
+def _packing_rate(g, bd, pilot: int = 20000):
+    """Iterations per second of the packing local search on this graph."""
+    t = time.time()
+    star_packing_ls(g, bd.sup, pgraph=(bd.ptr, bd.idx, bd.pid), iters=pilot, seed=0)
+    dt = max(time.time() - t, 1e-3)
+    return pilot, pilot / dt
+
+
 def certiflip(g: Graph, time_limit: float = 300.0, rng=None, lb_fraction: float = 0.5,
               flip_rounds: int = 5, lns_size: int = 40, block_size: int = 2500,
-              use_lp_seed: bool = True, verbose: bool = False) -> CertiFlipResult:
+              use_lp_seed: bool = True, max_pairs: float = 3e7,
+              verbose: bool = False) -> CertiFlipResult:
     rng = np.random.default_rng(rng)
     t0 = time.time()
     hist = []
@@ -106,6 +131,17 @@ def certiflip(g: Graph, time_limit: float = 300.0, rng=None, lb_fraction: float 
     if verbose:
         print(hist[-1], flush=True)
     t1 = time.time()
+    deg = g.degrees.astype(np.float64)
+    est_pairs = min(g.m + float((deg * (deg - 1) / 2).sum()), g.n * (g.n - 1) / 2)
+    if est_pairs > max_pairs:
+        # support too large for this machine: primal only (disagreement-guided LNS)
+        remaining = time_limit - (time.time() - t0)
+        if remaining > 1:
+            lab = gap_lns(g, lab, None, size=lns_size, iters=1 << 30, time_limit=remaining,
+                          rng=rng)
+        c = cost(g, lab)
+        hist.append(("lns", time.time() - t0, c))
+        return CertiFlipResult(lab, c, float("nan"), 0.0, hist)
     sup = build_support(g)
     remaining = time_limit - (time.time() - t0)
     bd = block_bound(g, sup, time_limit=max(1.0, lb_fraction * remaining),

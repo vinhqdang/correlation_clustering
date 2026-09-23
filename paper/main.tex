@@ -1,0 +1,505 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{siunitx}
+\sisetup{group-separator={,},group-minimum-digits=4}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\cost}{\mathrm{cost}}
+\newcommand{\LB}{\mathrm{LB}}
+\newcommand{\Ep}{E^{+}}
+\newcommand{\Nt}{N_{2}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Certified Correlation Clustering at Scale:\\
+Distance-Two Relaxations, Anytime Dual Bounds,\\ and Gap-Guided Local Search}
+
+\author{Quang-Vinh Dang\\
+British University Vietnam, Hung Yen, Vietnam\\
+\texttt{vinh.dq4@buv.edu.vn} \quad ORCID: 0000-0002-3877-8024}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Correlation clustering on complete signed graphs (equivalently, cluster
+editing) has seen rapid progress on approximation ratios: LP and SDP
+hierarchies now give ratios below $1.5$, and a combinatorial algorithm
+achieves $2-2/13$ in near-linear time.  In practice, however, the solutions of
+engineered heuristics come with no quality guarantee on large graphs: exact
+solvers stop at a few hundred vertices, the metric LP has $\Theta(n^3)$
+constraints, and the scalable lower bounds known so far certify only a factor
+of about two.  We close this gap from both sides.  (i)~Using the fact that
+optimal clusters have diameter at most two, we show that the metric LP can be
+restricted to the $O(\sum_v \deg(v)^2)$ pairs at distance at most two without
+losing validity or the guarantees of LP-rounding algorithms, and we
+strengthen it with star and local subgraph inequalities that close most of the
+remaining integrality gap on real graphs.  (ii)~We give an anytime,
+always-valid lower bound computed by dual block-coordinate ascent in which
+every block is an exact LP; it needs only one number per pair and runs on graphs
+with millions of pairs.  (iii)~We prove an exact decomposition of the
+optimality gap into non-negative per-pair and per-constraint terms, which
+yields a local optimality certificate and guides a large-neighbourhood search
+with exact sub-MIPs.  Combined with the first implementation of the iterated
+flipping local search of Cohen-Addad et al., these ingredients form
+\emph{CertiFlip}, an algorithm with an a-priori guarantee ($3$ in expectation,
+and $2.06$ whenever the relaxation is solved to optimality) that outputs a
+certified bound on its own approximation ratio.  On the PACE~2021 benchmark
+and on fifteen SNAP graphs with up to $3\cdot 10^6$ edges, CertiFlip matches
+the solution quality of the PACE~2021 winner and certifies it within a few
+percent of optimal where previously no certificate below a factor of about two
+was available.
+\end{abstract}
+
+\section{Introduction}
+
+In \emph{correlation clustering}~\citep{BansalBC04} we are given a complete
+graph whose pairs are labelled \emph{similar} ($+$) or \emph{dissimilar}
+($-$) and look for a partition of the vertices minimising the number of
+disagreements: $+$ pairs between clusters plus $-$ pairs inside clusters.  The
+number of clusters is not prescribed.  Equivalently, the input is the positive
+graph $G^+=(V,\Ep)$ and the task is to add or delete the fewest edges so that
+$G^+$ becomes a disjoint union of cliques (\emph{cluster editing}).  The
+problem is APX-hard~\citep{CharikarGW05} and arises in entity resolution,
+community detection and the aggregation of inconsistent information.
+
+\paragraph{The state of the art is split.}  On the theory side, the
+approximation ratio for complete graphs dropped from $3$ for the Pivot
+algorithm~\citep{AilonCN08} to $2.06$ by metric-LP
+rounding~\citep{ChawlaMSY15}, below $2$ with Sherali--Adams
+hierarchies~\citep{CohenAddadLN22}, to $1.73$ with
+preclustering~\citep{CohenAddadLLN23} and to $1.485$ with the cluster
+LP~\citep{CaoCLLNV24}.  A preprint from July~2026 reports a deterministic
+$1.3865$-approximation and an upper bound of $1.3865$ on the integrality gap
+of the cluster LP~\citep{GarciaSorianoS26}.  The best hardness is
+$24/23-\varepsilon$ unless $\mathrm{P}=\mathrm{BPP}$~\citep{CaoCLLNV24}.
+Solving the cluster LP takes $2^{\mathrm{poly}(1/\varepsilon)}$ factors even in
+the sublinear algorithm of \citet{CaoCLLLNTVYZ25}.  The best
+\emph{combinatorial} ratio is $2-2/13$, achieved by a local search with
+``flips'' in near-linear time~\citep{CohenAddadLPTYZ24}.  As far as we could
+determine, none of the sub-$3$ near-linear algorithms has a public
+implementation or has been evaluated experimentally.
+
+On the practical side, engineered heuristics are very strong.  The winner of the
+heuristic track of the PACE~2021 challenge, KaPoCE~\citep{BlasiusEtAl21kapoceHeur},
+and multilevel memetic solvers~\citep{hausberger2025scc} find excellent
+solutions.  However, nobody can say \emph{how} good these solutions are on
+large graphs.  Exact branch-and-bound solves instances with a few hundred
+vertices~\citep{BlasiusEtAl22sea}.  Metric-LP solvers based on projection
+methods reach about $10^4$ vertices~\citep{veldt2019metric,ruggles2020parallel}.
+The scalable combinatorial lower bounds certify solutions only within a factor
+of about two~\citep{veldt2022stc}.  The PACE report~\citep{KellerhalsKNZ21pace}
+lists 27 exact-track instances with up to 620 vertices whose optimum is
+still unknown.
+
+\paragraph{This paper.}  We ask for a \emph{practical algorithm with a
+provable guarantee that also certifies its own quality on the instance at
+hand}, in the sense of certifying algorithms~\citep{McConnellMNS11}.  Our
+contributions are as follows.
+
+\begin{enumerate}
+\item \textbf{Distance-two relaxations} (Section~\ref{sec:relax}).  Optimal
+clusters have diameter at most two in $G^+$ (Lemma~\ref{lem:half}).  We show
+that the metric LP restricted to pairs at distance at most two, with all pairs
+at distance at least three fixed to ``separated'' and the triangle
+inequalities through them kept, is still a relaxation.  Moreover, every
+feasible point extends to a feasible point of the full metric LP with the same
+cost (Theorem~\ref{thm:sparse}).  Hence the $2.5$- and $2.06$-approximate
+LP-rounding algorithms~\citep{AilonCN08,ChawlaMSY15} keep their guarantees,
+and the relaxation has $O(\sum_v\deg(v)^2)$ variables instead of
+$\binom{n}{2}$.  We strengthen it with star inequalities and \emph{local
+subgraph inequalities} (Proposition~\ref{prop:subgraph}).  On real graphs
+these raise the bound substantially: on \texttt{ca-GrQc} the gap to the best
+known solution shrinks from $23\%$ to $0.5\%$.
+
+\item \textbf{Anytime dual bounds} (Section~\ref{sec:dual}).  We compute a
+lower bound by dual block-coordinate ascent.  Each block is a vertex set whose
+LP is solved exactly by cutting planes, with costs equal to the current
+reduced costs.  The bound is valid after every step, never decreases, and
+stores only the reduced cost of each pair and the rows with positive
+multipliers (Theorem~\ref{thm:anytime}).  Blocks come from randomised graph
+partitions and from regions where the current optimality gap is large.
+
+\item \textbf{Gap decomposition and local certificates}
+(Section~\ref{sec:gap}).  For any clustering, the difference between its cost
+and the dual bound splits exactly into non-negative terms attached to pairs
+and constraints (Theorem~\ref{thm:gap}).  As a consequence, re-optimising a
+vertex set $B$ can improve the cost by at most the gap mass touching $B$
+(Corollary~\ref{cor:local}).  This gives a principled way to choose
+neighbourhoods for a large-neighbourhood search with exact sub-MIPs, and to
+skip neighbourhoods that are certified optimal.
+
+\item \textbf{CertiFlip} (Section~\ref{sec:algo}).  We implement the iterated
+flipping local search of \citet{CohenAddadLPTYZ24}, with cluster-insertion
+moves generated by neighbourhood cleaning and multilevel refinement.  Together
+with the three components above this yields an algorithm whose expected cost
+is at most $3\,\OPT$, and at most $2.06\,\OPT$ when a single-block relaxation
+is solved to optimality.  It returns a certified lower bound with every
+solution (Theorem~\ref{thm:certiflip}).
+
+\item \textbf{Evaluation pipeline and experiments} (Section~\ref{sec:exp}).
+We release an open-source pipeline with thirteen solvers and bounds.  We run
+it on the 200 PACE~2021 exact-track instances, whose optima are mostly known,
+and on fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices.
+\end{enumerate}
+
+\section{Preliminaries and related work}\label{sec:prelim}
+
+Let $G^+=(V,\Ep)$ with $n=|V|$ and $m=|\Ep|$; every pair not in $\Ep$ is
+negative.  For a clustering $\mathcal{C}$ let $x^{\mathcal C}_{uv}=1$ if $u,v$
+are in different clusters and $0$ otherwise.  Then
+\[
+\cost(\mathcal C)=\sum_{uv\in\Ep}x^{\mathcal C}_{uv}+\sum_{uv\notin\Ep}(1-x^{\mathcal C}_{uv}).
+\]
+$N(v)$ denotes the positive neighbourhood and $d(u,v)$ the distance in $G^+$.
+The \emph{metric LP}~\citep{CharikarGW05,AilonCN08} relaxes $x$ to $[0,1]$
+subject to the triangle inequalities $x_{uv}\le x_{uw}+x_{wv}$ for all
+triples.  A \emph{bad triangle} is a triple $u,w,v$ with $uw,wv\in\Ep$ and
+$uv\notin\Ep$; every clustering makes at least one mistake on it.
+
+\paragraph{Approximation algorithms.}  Pivot repeatedly picks a uniformly
+random unclustered vertex and clusters it with its unclustered positive
+neighbours.  Its expected cost is at most three times the value of the
+fractional bad-triangle packing LP~\citep{AilonCN08}.  LP-based pivoting joins
+$v$ to the pivot $u$ with probability $1-f(x_{uv})$.  The choice $f(x)=x$
+gives $2.5$~\citep{AilonCN08}.  \citet{ChawlaMSY15} use $f^-(x)=x$ on negative
+pairs and, on positive pairs, $f^+(x)=0$ for $x<a$,
+$((x-a)/(b-a))^2$ for $a\le x<b$ and $1$ for $x\ge b$, with
+$a=0.19$, $b=0.5095$.  Both guarantees hold against the LP value of \emph{any}
+feasible metric $x$, a fact we use below.  For the history of ratios,
+parallel, streaming and dynamic algorithms and weighted variants
+see~\citep{CohenAddadLPTYZ24,CaoCLLLNTVYZ25,GarciaSorianoS26,
+cohenaddad2021constant,behnezhad2022almost3,DemaineEFI06}.  Relevant here is
+the local search of \citet{CohenAddadLPTYZ24}.  Its only move is a
+\emph{cluster insertion} $\mathcal C+S$: the vertices of $S$ leave their
+clusters and form a new cluster.  A clustering that no insertion improves is a
+$2$-approximation.  Increasing the weight of the positive pairs cut by the
+current solution (a \emph{flip}), re-optimising, and combining the last three
+solutions with a $3$-way pivot yields $2-2/13$.
+
+\paragraph{Exact and heuristic solvers.}  Cluster editing admits linear
+kernels~\citep{Guo09kernel,CaoC12kernel} and practical branch-and-bound
+algorithms~\citep{BockerBK11exact,BlasiusEtAl22sea}.  The latter use packings
+of stars and induced paths as lower bounds, and mark pairs at distance at
+least three as forbidden.  \citet{BastosOPSMP16} note that such pairs are
+separated in every optimal solution.  Cutting-plane methods for the clique
+partitioning polytope go back to \citet{GrotschelW89}, with recent work on
+facets and redundancy~\citep{irmai2024chorded,koshimura2022concise}.  For
+sparse weighted graphs (multicut), dual decomposition and message passing
+give fast lower bounds~\citep{SwobodaA17multicut,AbbasS22rama,lange2018partial}.
+On complete graphs, however, the number of variables is quadratic.  Our
+distance-two support removes exactly this obstacle.  Local search heuristics
+include vertex moves~\citep{elsner2009bounding}, Louvain and Leiden with the
+constant Potts model at resolution $1/2$, which optimises the same
+objective~\citep{veldt2018lambdacc,BlondelGLL08,TraagWvE19}, and memetic
+multilevel schemes~\citep{hausberger2025scc,BlasiusEtAl21kapoceHeur}.
+
+\section{Distance-two relaxations}\label{sec:relax}
+
+\begin{lemma}\label{lem:half}
+Let $\mathcal C$ be an optimal clustering, $S\in\mathcal C$ and $v\in S$.  Then
+$|N(v)\cap S|\ge (|S|-1)/2$.  Consequently any two vertices of $S$ are
+adjacent or have a common neighbour in $S$.  In particular every pair at
+distance at least three is separated.
+\end{lemma}
+\begin{proof}
+Moving $v$ to a singleton changes the cost by $|N(v)\cap S|-(|S|-1-|N(v)\cap
+S|)$, which must be non-negative.  For non-adjacent $u,v\in S$ the sets
+$N(u)\cap S$ and $N(v)\cap S$ lie in $S\setminus\{u,v\}$, which has $|S|-2$
+elements, and have total size at least $|S|-1$, so they intersect.
+\end{proof}
+
+Let $\Nt=\{uv\notin\Ep: N(u)\cap N(v)\ne\emptyset\}$, $P=\Ep\cup\Nt$ and
+$F=\binom V2\setminus P$ (the \emph{far} pairs).  Note
+$|P|\le m+\sum_{w}\binom{\deg(w)}{2}$.
+
+\begin{definition}[distance-two relaxation]
+$\mathrm{LP}_P$ has a variable $x_e\in[0,1]$ for every $e\in P$ and minimises
+$\sum_{e\in\Ep}x_e+\sum_{e\in\Nt}(1-x_e)$ subject to
+\begin{align}
+x_{uv}&\le x_{uw}+x_{wv} &&\text{for all } u,v,w \text{ with } uv,uw,wv\in P,\label{eq:t1}\\
+x_{uw}+x_{wv}&\ge 1 &&\text{for all } u,v,w \text{ with } uw,wv\in P,\ uv\in F.\label{eq:t2}
+\end{align}
+\end{definition}
+
+\begin{theorem}\label{thm:sparse}
+Let $\mathrm{LP}_{\mathrm{std}}$ denote the value of the metric LP.
+\begin{enumerate}
+\item[(a)] $\mathrm{LP}_{\mathrm{std}}\le \mathrm{LP}_P\le\OPT$.
+\item[(b)] If $x$ is feasible for $\mathrm{LP}_P$, then $\bar x$, defined as $x$ on
+$P$ and $1$ on $F$, is feasible for the metric LP and has the same cost.
+\item[(c)] Let $\mathcal A$ be a randomised rounding algorithm with
+$\mathbb E[\cost(\mathcal A(\bar x))]\le\alpha\,\mathrm{cost}(\bar x)$ for every
+feasible metric $\bar x$.  Applied to an optimal solution of $\mathrm{LP}_P$ it
+is an $\alpha$-approximation.  This holds in particular for $\alpha=2.5$
+(ACN) and $\alpha=2.06$ (CMSY).  With pivot-based rounding, only pairs in
+$P$ can be joined, so the rounding takes $O(n+|P|)$ time.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(b) Consider a triple $u,v,w$ and the number of far pairs among $uv,uw,wv$.
+With none, all three triangle inequalities are rows~\eqref{eq:t1}.  With
+exactly one, say $uv$, the inequality $\bar x_{uv}=1\le x_{uw}+x_{wv}$ is
+row~\eqref{eq:t2}.  The other two inequalities, such as
+$x_{uw}\le 1+x_{wv}$, hold because $x\le 1$.  With two or three far pairs, each
+inequality has a right-hand side of at least $1$.  Far pairs are negative and
+$\bar x=1$ on them, so they contribute $0$ to the cost.  (a) The first
+inequality follows from (b).  For the second, by Lemma~\ref{lem:half} an
+optimal clustering separates all far pairs.  Its cut vector restricted to $P$
+therefore satisfies~\eqref{eq:t1} and~\eqref{eq:t2}, because it is a metric
+with $x=1$ on $F$, and it has cost $\OPT$.  (c) follows from (a) and (b): the
+expected cost is at most $\alpha\,\mathrm{cost}(\bar x)=\alpha\,\mathrm{LP}_P
+\le\alpha\,\OPT$.  Pivot-based rounding joins $v$ to the pivot $u$ with
+probability $1-f(x_{uv})$, and $f(1)=1$ for both rounding functions.
+\end{proof}
+
+The rows~\eqref{eq:t1}--\eqref{eq:t2} are generated lazily.  A violated row
+needs $x_{uw}+x_{wv}<1$, so separation around a vertex $w$ only has to look at
+pairs of ``close'' neighbours in $P$, which keeps it fast in practice.
+
+\paragraph{Stronger inequalities.}  The metric LP has integrality gap $2$,
+already on a star.  We add two families that are valid for every clustering
+separating all far pairs, and hence for every optimal clustering.
+
+\begin{proposition}\label{prop:subgraph}
+Let $\mathcal C$ be a clustering in which no far pair shares a cluster.
+\begin{enumerate}
+\item[(i)] (star inequalities; the case $|S|=1$ of the $2$-partition
+inequalities of \citet{GrotschelW89}) For every $v$ and $T\subseteq V\setminus\{v\}$, with
+$y=1-x^{\mathcal C}$,
+\[\textstyle\sum_{t\in T}y_{vt}-\sum_{\{t,t'\}\subseteq T,\ tt'\in P}y_{tt'}\le 1.\]
+\item[(ii)] (local subgraph inequalities) For every $H\subseteq V$,
+\[\textstyle\sum_{e\in\Ep(H)}x^{\mathcal C}_e+\sum_{e\in\Nt(H)}(1-x^{\mathcal C}_e)\ \ge\ \OPT(H),\]
+where $\OPT(H)$ is the optimum of the instance induced by $H$ and $\Ep(H)$,
+$\Nt(H)$ are the pairs of $\Ep$ and $\Nt$ inside $H$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(i) If the cluster of $v$ contains $k$ vertices of $T$, the first sum is $k$
+and the second is at least $\binom k2$.  Pairs inside $T$ that are not in $P$
+are far, so they are separated and contribute $0$ to the second sum.
+Finally $k-\binom k2\le1$.  (ii) Restricted to $H$, $\mathcal C$ is a clustering
+of $H$.  Its mistakes inside $H$ number at least $\OPT(H)$.  The far pairs
+inside $H$ are separated and cost nothing, so all its mistakes are counted
+on the left-hand side.
+\end{proof}
+
+Bad triangles ($\OPT=1$) and induced stars with $k$ independent leaves
+($\OPT=k-1$) are local subgraph inequalities.  So are chordless cycles $C_k$,
+for which $\OPT(C_k)=\lceil k/2\rceil$ while the metric LP only certifies
+$k/2$ (put $x=1/2$ on the cycle edges).  We separate stars greedily around
+each vertex.  For (ii) we grow $H$ ($|H|\le 8$) by breadth-first search along
+fractional pairs and compute $\OPT(H)$ by enumerating the at most $4140$
+set partitions of $H$.
+
+\section{Anytime dual bounds}\label{sec:dual}
+
+Write the relaxation as $\min\{K+c^\top x: Ax\ge b,\ 0\le x\le 1\}$ over
+$x\in\R^P$, with $c_e=1$ on $\Ep$, $c_e=-1$ on $\Nt$ and $K=|\Nt|$.  The rows
+of $(A,b)$ are any valid inequalities from Section~\ref{sec:relax}.
+
+\begin{theorem}\label{thm:anytime}
+For every $y\ge 0$ let $r=c-A^\top y$ and
+\begin{equation}\label{eq:lb}
+\LB(y)=K+b^\top y+\sum_{e\in P}\min\{0,r_e\}.
+\end{equation}
+\begin{enumerate}
+\item[(a)] $\LB(y)\le\OPT$.
+\item[(b)] Let $B\subseteq V$, let $R_B$ be a set of rows supported on pairs
+with both endpoints in $B$, and let $\bar r$ be the reduced costs after
+removing the contribution of the current multipliers on $R_B$.  Replace these
+multipliers by an optimal dual solution of
+$\min\{\bar r^\top x_B: A_Bx_B\ge b_B,\ 0\le x_B\le 1\}$.  This does not
+decrease $\LB$.
+\item[(c)] If $B=V$ and $R_B$ contains all rows of $\mathrm{LP}_P$, one block
+step gives $\LB=\mathrm{LP}_P$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Let $\mathcal C$ be optimal.  By Lemma~\ref{lem:half} it separates far
+pairs, so $\OPT=K+c^\top x^{\mathcal C}$ with $x^{\mathcal C}\in\{0,1\}^P$
+satisfying $Ax^{\mathcal C}\ge b$.  Then
+$\OPT=K+r^\top x^{\mathcal C}+y^\top Ax^{\mathcal C}\ge K+\sum_e\min\{0,r_e\}+y^\top b$.
+(b) By LP duality the block LP equals
+$\max_{y_B\ge0}\ b_B^\top y_B+\sum_{e\in P_B}\min\{0,(\bar r-A_B^\top
+y_B)_e\}$.  The terms of~\eqref{eq:lb} outside the block do not change, and
+the old multipliers are feasible for this maximisation.  (c) is LP duality
+for $\mathrm{LP}_P$ with the box constraints.
+\end{proof}
+
+The bound~\eqref{eq:lb} needs only the vector $r$ and the scalar $b^\top y$.
+We store the rows with positive multipliers so that a later block containing
+them can re-optimise them.  Blocks of the same partition are independent.
+In a \emph{sweep} we compute a partition into parts of about $2500$ vertices
+with METIS~\citep{KarypisK98} on a randomly relabelled copy of $G^+$, so that
+successive sweeps cut different pairs.  Each part is solved with the dual
+simplex method of HiGHS~\citep{HuangfuH18}, with lazily separated triangle,
+star and local subgraph rows.  After the sweeps stall we switch to
+\emph{gap-guided blocks}, grown around the vertices with the largest share of
+the gap defined next.  Because~\eqref{eq:lb} is valid for any $y\ge0$, the
+bound remains correct even when a block LP hits its time limit.  We only
+clamp the dual values to be non-negative.
+
+\section{Gap decomposition and local certificates}\label{sec:gap}
+
+\begin{theorem}\label{thm:gap}
+Let $y\ge0$, $r=c-A^\top y$, and let $\mathcal C$ be a clustering that separates all
+far pairs.  Then
+\begin{equation}\label{eq:gap}
+\cost(\mathcal C)-\LB(y)=\sum_{e\in P}\underbrace{\big(r_ex^{\mathcal C}_e-\min\{0,r_e\}\big)}_{g_e\ge0}
++\sum_i\underbrace{y_i\,(a_i^\top x^{\mathcal C}-b_i)}_{s_i\ge0}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+$\cost(\mathcal C)=K+c^\top x^{\mathcal C}=K+r^\top x^{\mathcal C}+y^\top
+Ax^{\mathcal C}$.  Subtract~\eqref{eq:lb}.  Each $g_e\ge0$ because
+$x_e\in\{0,1\}$, and each $s_i\ge0$ by the validity of row $i$.
+\end{proof}
+
+A pair term vanishes iff the clustering agrees with the sign of the reduced
+cost.  A row term vanishes iff the row is tight or has multiplier $0$.
+Assigning each term to the endpoints of its pairs gives a \emph{gap map} over
+the vertices.
+
+\begin{corollary}[local certificate]\label{cor:local}
+For $B\subseteq V$ let $\Gamma_B(\mathcal C)$ be the sum of the terms
+of~\eqref{eq:gap} whose pair, or one of whose row pairs, has an endpoint in
+$B$.  Let $\mathcal C'$ be any clustering that separates far pairs and
+coincides with $\mathcal C$ on all pairs with both endpoints outside $B$.  Then
+$\cost(\mathcal C)-\cost(\mathcal C')\le\Gamma_B(\mathcal C)$.  In particular,
+if $\Gamma_B(\mathcal C)<1$ then no re-clustering of $B$ improves $\mathcal C$.
+\end{corollary}
+\begin{proof}
+Apply~\eqref{eq:gap} to both clusterings.  Terms not touching $B$ coincide,
+and the terms of $\mathcal C'$ are non-negative.  Costs are integers.
+\end{proof}
+
+\paragraph{Gap-guided LNS.}  Large-neighbourhood search~\citep{Shaw98} fixes
+the clustering outside a vertex set $B$ ($|B|\le 60$) and re-optimises $B$
+exactly.  Let $\mathcal K$ be the outside clusters with a positive edge into
+$B$.  Re-clusterings of $B$ correspond to clusterings of $B$ together with one
+super node per $K\in\mathcal K$, where super nodes must stay apart.  The cost is
+$\sum_{uv}[uv\in\Ep]x_{uv}+[uv\notin\Ep](1-x_{uv})$ for $u,v\in B$, plus
+$w_{vK}x_{vK}+(|K|-w_{vK})(1-x_{vK})$ for each $v\in B$, where $w_{vK}$ counts
+the positive edges between $v$ and $K$.  We solve this MIP with HiGHS and add
+triangle inequalities lazily until the solution is transitive.  To keep
+Corollary~\ref{cor:local} applicable, $v$ may join $K$ only if it is within
+distance two of every member of $K$, and far pairs inside $B$ are fixed apart.
+Neighbourhoods are grown around high-gap vertices, either by breadth-first
+search or as a union of whole clusters.  Neighbourhoods with $\Gamma_B<1$ are
+skipped because they are certified optimal.
+
+\section{The CertiFlip algorithm}\label{sec:algo}
+
+\begin{algorithm}[t]
+\caption{CertiFlip$(G^+,T)$}\label{alg:certiflip}
+\begin{algorithmic}[1]
+\State $\mathcal C\gets\textsc{Pivot}(G^+)$ with a uniformly random order
+\State $\mathcal C\gets\textsc{IteratedFlip}(\mathcal C)$ \Comment{insertion local search with flips}
+\State build the distance-two support $P$
+\State $y\gets\textsc{BlockAscent}(P,\mathcal C,T/2)$ \Comment{METIS sweeps, then gap-guided blocks}
+\If{one block covered $V$ and separation converged}
+  \State $\mathcal C\gets$ best of $\mathcal C$ and \textsc{IteratedFlip}(\textsc{CMSY-Round}$(x^\star)$) over several roundings
+\EndIf
+\State $\mathcal C\gets\textsc{GapLNS}(\mathcal C,y)$ until time $T$
+\State \Return $\mathcal C$ and $\lceil\LB(y)\rceil$
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Insertion local search.}  For every root $r$ we build one candidate
+insertion $S(r)$ by \emph{cleaning} $N[r]$.  Starting from $S=N[r]$, we
+repeat a few sweeps over $v\in N[r]\setminus\{r\}$: we put $v$ in $S$ iff
+joining $S$ costs $v$ less than staying in the remainder of its current
+cluster.  Both costs are computed exactly from counts of weighted positive
+neighbours.  We then compute the exact change of the objective in
+$O(\sum_{v\in S}\deg v)$ time and apply the insertion if it is negative.
+Rounds of insertions alternate with a multilevel (Louvain-type) vertex-move
+local search.  That search works on the weighted objective, moves super nodes
+at coarse levels and hence also merges clusters.  \textsc{IteratedFlip}
+follows \citet{CohenAddadLPTYZ24}.  Positive weights take values in
+$\{1,1.5,2\}$ (we double all weights to stay in integers).  Each round flips
+the pairs cut by the previous solution, re-optimises, flips and re-optimises
+again, and combines the last three solutions with their $3$-way pivot.  The
+best candidate under the original objective is returned.
+
+\begin{theorem}\label{thm:certiflip}
+Let $\mathcal C$ and $\LB$ be the output of Algorithm~\ref{alg:certiflip}.
+\begin{enumerate}
+\item[(a)] $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.
+\item[(b)] $\LB\le\OPT$, so $\cost(\mathcal C)/\lceil\LB\rceil$ is an upper
+bound on the approximation ratio achieved on the instance.
+\item[(c)] If line~6 is executed, $\mathbb E[\cost(\mathcal C)]\le 2.06\,\OPT$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Every step after line~1 returns a clustering no worse than its input: the
+local searches only apply improving moves, \textsc{IteratedFlip} returns the
+best of its candidates, which include the local optimum reached from its input,
+and \textsc{GapLNS} accepts only improvements.  (a) then follows from the
+Pivot guarantee~\citep{AilonCN08}.  (b) is Theorem~\ref{thm:anytime}(a) and
+the integrality of $\OPT$.  (c) If one block covered $V$ and separation
+converged, the block LP primal $x^\star$ satisfies all
+rows~\eqref{eq:t1}--\eqref{eq:t2}.  Its cost equals the block LP value, which
+is at most $\mathrm{LP}_P$ plus the value added by the extra valid rows, and
+hence at most $\OPT$.  By Theorem~\ref{thm:sparse}(b,c),
+$\mathbb E[\cost(\textsc{CMSY-Round}(x^\star))]\le 2.06\,\OPT$.  The remaining
+steps are monotone.
+\end{proof}
+
+\begin{remark}
+If the insertion local search reached an optimum with respect to
+\emph{all} cluster insertions, \citet{CohenAddadLPTYZ24} would give a factor of
+$2$, and $2-2/13$ with enough flipping rounds.  Our candidate generation
+explores a polynomial subfamily of insertions, so we do not claim these
+factors.  The certificate of Theorem~\ref{thm:certiflip}(b), however, is
+valid in every case.
+\end{remark}
+
+\paragraph{Running time.}  Pivot takes $O(n+m)$ time.  One round of insertions
+takes $O(\sum_v\sum_{u\in N(v)}\deg u)=O(\sum_u\deg(u)^2)$, the same order as
+the size of $P$ and the number of bad triangles.  The support takes
+$O(\sum_w\deg(w)^2)$ time and memory.  The block LPs dominate the running
+time, and the time spent on them is set by the budget $T$.
+
+\section{Experiments}\label{sec:exp}
+\input{experiments}
+
+\section{Conclusion}
+
+Correlation clustering has moved quickly in theory, but certified solution
+quality on real instances had not kept pace.  The distance-two relaxation,
+the anytime block-dual bound and the gap decomposition make the LP machinery
+usable at scale and give a primal heuristic that knows where to search.
+Open directions include parallel block solves, cluster-LP columns inside
+blocks, and replacing METIS partitions by overlapping blocks with Lagrangian
+cost splitting.
+
+\paragraph{Code and data availability.}  All code, instance lists and raw
+results are available at
+\url{https://github.com/vinhqdang/correlation_clustering}.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

@@ -69,6 +69,9 @@ def run_bound(name, g, budget):
     from ccbench.support import build_support
     from ccbench.dual import PackingBound, packing_bound
     t0 = time.time()
+    deg = g.degrees.astype(np.float64)
+    if min(g.m + float((deg * (deg - 1) / 2).sum()), g.n * (g.n - 1) / 2) > 3e7:
+        raise MemoryError("distance-2 support too large for this machine")
     sup = build_support(g)
     if name == "lb:greedy":
         v = packing_bound(g, sup)

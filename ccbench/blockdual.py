@@ -396,3 +396,25 @@ def gap_blocks(bd: "BlockDualBound", labels: np.ndarray, size: int, time_limit: 
                   f"({time.time() - t0:.0f}s)", flush=True)
     bd.history.append((time.time() - bd.t0, bd.bound()))
     return it
+
+
+def add_star_packing(bd: "BlockDualBound", rp, rpairs, rk):
+    """Install a star packing as initial multipliers (y = 1 on each star row).
+
+    Row in >= form:  sum_t x_vt - sum_{tt'} x_tt' >= (k - 1) - k(k - 1)/2 ."""
+    ns = len(rk)
+    if ns == 0:
+        return
+    lens = rp[1:] - rp[:-1]
+    k = rk.astype(np.float64)
+    vals = np.empty(len(rpairs))
+    # first k entries of each row are centre pairs (+1), the rest leaf pairs (-1)
+    pos_in_row = np.arange(len(rpairs)) - np.repeat(rp[:-1], lens)
+    vals[:] = np.where(pos_in_row < np.repeat(rk, lens), 1.0, -1.0)
+    b = (k - 1.0) - k * (k - 1.0) / 2.0
+    y = np.ones(ns)
+    np.subtract.at(bd.r, rpairs, vals)
+    bd.by += float(b.sum())
+    first = rpairs[rp[:-1]]
+    anchor = np.minimum(bd.sup.pu[first], bd.sup.pv[first]).astype(np.int64)
+    bd._store(rp.astype(np.int64), rpairs.astype(np.int64), vals, b, y, anchor)

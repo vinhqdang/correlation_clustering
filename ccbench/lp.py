@@ -626,3 +626,79 @@ def _separate_subgraphs(n, ptr, idx, pid, x, npos, eps, hmax, cap_rows, order, f
         if nr >= cap_rows:
             break
     return rows_ptr[:nr + 1], rows_idx[:nz], rows_val[:nz], rows_lb[:nr]
+
+
+@nb.njit(cache=True)
+def _separate_stars_multi(n, ptr, idx, pid, x, eps, max_t, cap_rows, cap_nnz, starts_per_v):
+    """Like _separate_stars, but grows up to ``starts_per_v`` stars per centre,
+    each seeded with a different high-y neighbour (greedy completion)."""
+    rows_ptr = np.zeros(cap_rows + 1, dtype=np.int64)
+    rows_idx = np.empty(cap_nnz, dtype=np.int64)
+    rows_val = np.empty(cap_nnz, dtype=np.float64)
+    rows_ub = np.empty(cap_rows, dtype=np.float64)
+    nr = 0
+    nz = 0
+    cand = np.empty(n, dtype=np.int64)
+    candy = np.empty(n, dtype=np.float64)
+    candp = np.empty(n, dtype=np.int64)
+    T = np.empty(max_t, dtype=np.int64)
+    Tp = np.empty(max_t, dtype=np.int64)
+    for v in range(n):
+        k = 0
+        for p in range(ptr[v], ptr[v + 1]):
+            y = 1.0 - x[pid[p]]
+            if y > eps:
+                cand[k] = idx[p]
+                candy[k] = y
+                candp[k] = pid[p]
+                k += 1
+        if k < 3:
+            continue
+        order = np.argsort(-candy[:k])
+        for st in range(min(starts_per_v, k)):
+            nt = 0
+            lhs = 0.0
+            # seed with the st-th best neighbour, then greedy over the rest
+            for pass_ in range(2):
+                for oi in range(k):
+                    if pass_ == 0 and oi != st:
+                        continue
+                    if pass_ == 1 and oi == st:
+                        continue
+                    i = order[oi]
+                    t = cand[i]
+                    gain = candy[i]
+                    for j in range(nt):
+                        r = _find(ptr, idx, t, T[j])
+                        if r >= 0:
+                            gain -= 1.0 - x[pid[r]]
+                    if gain > eps:
+                        T[nt] = t
+                        Tp[nt] = candp[i]
+                        nt += 1
+                        lhs += gain
+                        if nt == max_t:
+                            break
+                if nt == max_t:
+                    break
+            if nt >= 3 and lhs > 1.0 + eps:
+                need = nt + nt * (nt - 1) // 2
+                if nr >= cap_rows or nz + need > cap_nnz:
+                    return rows_ptr[:nr + 1], rows_idx[:nz], rows_val[:nz], rows_ub[:nr]
+                ub = 1.0 - nt
+                for j in range(nt):
+                    rows_idx[nz] = Tp[j]
+                    rows_val[nz] = -1.0
+                    nz += 1
+                for a in range(nt):
+                    for b in range(a + 1, nt):
+                        r = _find(ptr, idx, T[a], T[b])
+                        if r >= 0:
+                            rows_idx[nz] = pid[r]
+                            rows_val[nz] = 1.0
+                            nz += 1
+                            ub += 1.0
+                rows_ub[nr] = ub
+                nr += 1
+                rows_ptr[nr] = nz
+    return rows_ptr[:nr + 1], rows_idx[:nz], rows_val[:nz], rows_ub[:nr]

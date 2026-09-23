@@ -507,3 +507,453 @@ class StarPackingBound:
         self.phases = ph
         self.lower = value / mx if mx > 0 else 0.0
         return self.lower
+
+
+@nb.njit(cache=True)
+def _greedy_packing_mask(n, indptr, indices, eid, n2ptr, n2idx, n2id, npairs, order):
+    """Like _greedy_packing but returns the mask of pairs used by the packing."""
+    used = np.zeros(npairs, dtype=np.bool_)
+    for k in range(n):
+        w = order[k]
+        s = indptr[w]
+        e = indptr[w + 1]
+        for p in range(s, e):
+            if used[eid[p]]:
+                continue
+            u = indices[p]
+            for q in range(p + 1, e):
+                if used[eid[q]] or used[eid[p]]:
+                    continue
+                v = indices[q]
+                lo = indptr[u]
+                hi = indptr[u + 1]
+                while lo < hi:
+                    mid = (lo + hi) >> 1
+                    if indices[mid] < v:
+                        lo = mid + 1
+                    else:
+                        hi = mid
+                if lo < indptr[u + 1] and indices[lo] == v:
+                    continue
+                lo = n2ptr[u]
+                hi = n2ptr[u + 1]
+                while lo < hi:
+                    mid = (lo + hi) >> 1
+                    if n2idx[mid] < v:
+                        lo = mid + 1
+                    else:
+                        hi = mid
+                r = n2id[lo]
+                if used[r]:
+                    continue
+                used[eid[p]] = True
+                used[eid[q]] = True
+                used[r] = True
+    return used
+
+
+def match_flip_pivot(g: Graph, sup: Support | None = None, rng=None):
+    """MatchFlipPivot (Veldt, ICML 2022, Algorithm 3): maximal pair-disjoint set of
+    open wedges (a maximal matching of the open-wedge hypergraph), flip every
+    pair of the matched wedges, and run Pivot on the flipped graph.  Returns
+    (labels, lower bound = number of matched wedges)."""
+    from .graph import from_edges
+    from .pivot import pivot
+    rng = np.random.default_rng(rng)
+    sup = sup if sup is not None else build_support(g)
+    order = rng.permutation(g.n).astype(np.int64)
+    used = _greedy_packing_mask(g.n, g.indptr, g.indices, sup.eid, sup.n2ptr, sup.n2idx,
+                                sup.n2id, sup.npairs, order)
+    pos = np.arange(sup.npairs) < sup.npos
+    keep = pos ^ used
+    h = from_edges(g.n, np.stack([sup.pu[keep], sup.pv[keep]], axis=1))
+    return pivot(h, rng), int(used.sum() // 3)
+
+
+# --------------------------------------------------------------------------
+# greedy integral packing of induced stars (sparse)
+# --------------------------------------------------------------------------
+
+@nb.njit(cache=True)
+def _star_pack(n, indptr, indices, eid, ptr, idx, pid, npairs, order, leaf_rank):
+    """Pair-disjoint packing of induced stars (centre v, >= 2 pairwise
+    non-adjacent leaves).  A star with k leaves certifies k - 1 mistakes.
+
+    Returns (value, row_ptr, row_pairs, row_sizes): each star's pair ids
+    (centre pairs first, then leaf pairs) and its number of leaves."""
+    used = np.zeros(npairs, dtype=np.bool_)
+    cap = npairs + 1
+    rp = np.zeros(npairs // 3 + 2, dtype=np.int64)
+    rpairs = np.empty(cap, dtype=np.int64)
+    rk = np.empty(npairs // 3 + 1, dtype=np.int64)
+    ns = 0
+    nz = 0
+    maxd = 0
+    for v in range(n):
+        if indptr[v + 1] - indptr[v] > maxd:
+            maxd = indptr[v + 1] - indptr[v]
+    T = np.empty(maxd + 1, dtype=np.int64)
+    Tc = np.empty(maxd + 1, dtype=np.int64)
+    inner = np.empty(maxd * 4 + 16, dtype=np.int64)
+    value = 0
+    for oi in range(n):
+        v = order[oi]
+        d = indptr[v + 1] - indptr[v]
+        if d < 2:
+            continue
+        # scan leaves in the order given by leaf_rank (e.g. low degree first)
+        cand = np.empty(d, dtype=np.int64)
+        for i in range(d):
+            cand[i] = indptr[v] + i
+        keys = np.empty(d, dtype=np.int64)
+        for i in range(d):
+            keys[i] = leaf_rank[indices[cand[i]]]
+        o = np.argsort(keys)
+        while True:
+            k = 0
+            ni = 0
+            for oj in range(d):
+                p = cand[o[oj]]
+                if used[eid[p]]:
+                    continue
+                t = indices[p]
+                ok = True
+                start_ni = ni
+                for j in range(k):
+                    s = T[j]
+                    # t and s must be non-adjacent
+                    lo = indptr[t]
+                    hi = indptr[t + 1]
+                    while lo < hi:
+                        mid = (lo + hi) >> 1
+                        if indices[mid] < s:
+                            lo = mid + 1
+                        else:
+                            hi = mid
+                    if lo < indptr[t + 1] and indices[lo] == s:
+                        ok = False
+                        break
+                    lo = ptr[t]
+                    hi = ptr[t + 1]
+                    while lo < hi:
+                        mid = (lo + hi) >> 1
+                        if idx[mid] < s:
+                            lo = mid + 1
+                        else:
+                            hi = mid
+                    e2 = pid[lo]
+                    if used[e2]:
+                        ok = False
+                        break
+                    if ni >= inner.shape[0]:
+                        ok = False
+                        break
+                    inner[ni] = e2
+                    ni += 1
+                if not ok:
+                    ni = start_ni
+                    continue
+                T[k] = t
+                Tc[k] = eid[p]
+                k += 1
+            if k < 2:
+                break
+            for j in range(k):
+                used[Tc[j]] = True
+                rpairs[nz] = Tc[j]
+                nz += 1
+            for j in range(ni):
+                used[inner[j]] = True
+                rpairs[nz] = inner[j]
+                nz += 1
+            rk[ns] = k
+            ns += 1
+            rp[ns] = nz
+            value += k - 1
+    return value, rp[:ns + 1], rpairs[:nz], rk[:ns]
+
+
+def star_packing(g: Graph, sup: Support | None = None, pgraph=None, order: str = "degree",
+                 rng=None):
+    """Greedy integral star packing.  Returns (value, rows) with rows usable as
+    initial multipliers (y = 1) in the block dual."""
+    from .lp import _pgraph
+    sup = sup if sup is not None else build_support(g)
+    if pgraph is None:
+        pgraph = _pgraph(g.n, g.indptr, g.indices, sup.eid, sup.n2ptr, sup.n2idx, sup.n2id)
+    ptr, idx, pid = pgraph
+    deg = g.degrees
+    rng = np.random.default_rng(rng)
+    if order == "degree":
+        ordv = np.lexsort((rng.random(g.n), deg)).astype(np.int64)
+    elif order == "degree-desc":
+        ordv = np.lexsort((rng.random(g.n), -deg)).astype(np.int64)
+    else:
+        ordv = rng.permutation(g.n).astype(np.int64)
+    leaf_rank = np.argsort(np.argsort(deg + rng.random(g.n))).astype(np.int64)
+    return _star_pack(g.n, g.indptr, g.indices, sup.eid, ptr, idx, pid, sup.npairs, ordv,
+                      leaf_rank)
+
+
+# --------------------------------------------------------------------------
+# ruin-and-recreate local search for the star packing
+# --------------------------------------------------------------------------
+
+@nb.njit(cache=True)
+def _find_pair(indptr, indices, ptr, idx, pid, t, s):
+    """(adjacent?, pair id of ts in P or -1)."""
+    lo = indptr[t]
+    hi = indptr[t + 1]
+    while lo < hi:
+        mid = (lo + hi) >> 1
+        if indices[mid] < s:
+            lo = mid + 1
+        else:
+            hi = mid
+    adj = lo < indptr[t + 1] and indices[lo] == s
+    lo = ptr[t]
+    hi = ptr[t + 1]
+    while lo < hi:
+        mid = (lo + hi) >> 1
+        if idx[mid] < s:
+            lo = mid + 1
+        else:
+            hi = mid
+    if lo < ptr[t + 1] and idx[lo] == s:
+        return adj, pid[lo]
+    return adj, -1
+
+
+@nb.njit(cache=True)
+def _build_star(v, indptr, indices, eid, ptr, idx, pid, owner, perm_keys, T, Tc, inner):
+    """Greedy star at centre v over pairs with owner == -1.  Returns (k, ni)."""
+    d = indptr[v + 1] - indptr[v]
+    o = np.argsort(perm_keys[indptr[v]:indptr[v + 1]])
+    k = 0
+    ni = 0
+    for oj in range(d):
+        p = indptr[v] + o[oj]
+        if owner[eid[p]] != -1:
+            continue
+        t = indices[p]
+        ok = True
+        start = ni
+        for j in range(k):
+            adj, e2 = _find_pair(indptr, indices, ptr, idx, pid, t, T[j])
+            if adj or e2 < 0 or owner[e2] != -1 or ni >= inner.shape[0]:
+                ok = False
+                break
+            inner[ni] = e2
+            ni += 1
+        if not ok:
+            ni = start
+            continue
+        T[k] = t
+        Tc[k] = eid[p]
+        k += 1
+    return k, ni
+
+
+@nb.njit(cache=True)
+def _star_ls(n, indptr, indices, eid, ptr, idx, pid, npairs, init_order, iters, radius_cap,
+             seed, pool_cap):
+    np.random.seed(seed)
+    owner = -np.ones(npairs, dtype=np.int64)
+    maxd = 1
+    for v in range(n):
+        if indptr[v + 1] - indptr[v] > maxd:
+            maxd = indptr[v + 1] - indptr[v]
+    T = np.empty(maxd + 1, dtype=np.int64)
+    Tc = np.empty(maxd + 1, dtype=np.int64)
+    inner = np.empty(maxd * 8 + 64, dtype=np.int64)
+    # star storage (append-only pool)
+    smax = npairs // 3 + 16 + iters * 4
+    s_center = np.empty(smax, dtype=np.int64)
+    s_k = np.empty(smax, dtype=np.int64)
+    s_start = np.empty(smax, dtype=np.int64)
+    s_len = np.empty(smax, dtype=np.int64)
+    s_alive = np.zeros(smax, dtype=np.bool_)
+    pool = np.empty(pool_cap, dtype=np.int64)
+    # stars per centre: linked lists
+    head = -np.ones(n, dtype=np.int64)
+    nxt = -np.ones(smax, dtype=np.int64)
+    ns = 0
+    npool = 0
+    value = 0
+    keys = np.random.random(indptr[n])
+
+    def dummy():
+        return 0
+
+    for oi in range(n):
+        v = init_order[oi]
+        while True:
+            k, ni = _build_star(v, indptr, indices, eid, ptr, idx, pid, owner, keys, T, Tc, inner)
+            if k < 2 or ns >= smax or npool + k + ni > pool_cap:
+                break
+            s = ns
+            ns += 1
+            s_center[s] = v
+            s_k[s] = k
+            s_start[s] = npool
+            s_len[s] = k + ni
+            s_alive[s] = True
+            for j in range(k):
+                pool[npool] = Tc[j]
+                owner[Tc[j]] = s
+                npool += 1
+            for j in range(ni):
+                pool[npool] = inner[j]
+                owner[inner[j]] = s
+                npool += 1
+            nxt[s] = head[v]
+            head[v] = s
+            value += k - 1
+    best = value
+    # local search
+    region = np.empty(radius_cap, dtype=np.int64)
+    inR = np.zeros(n, dtype=np.bool_)
+    removed = np.empty(smax, dtype=np.int64)
+    created = np.empty(smax, dtype=np.int64)
+    for it in range(iters):
+        if npool + 10 * maxd * maxd > pool_cap or ns + 4 * radius_cap > smax:
+            # compact pool: rebuild from alive stars
+            np2 = 0
+            newpool = np.empty(pool_cap, dtype=np.int64)
+            for s in range(ns):
+                if s_alive[s]:
+                    for q in range(s_len[s]):
+                        newpool[np2 + q] = pool[s_start[s] + q]
+                    s_start[s] = np2
+                    np2 += s_len[s]
+            pool[:np2] = newpool[:np2]
+            npool = np2
+            if ns + 4 * radius_cap > smax:
+                break
+        v0 = np.random.randint(n)
+        if indptr[v0 + 1] - indptr[v0] == 0:
+            continue
+        # region: v0 and a random subset of its neighbours (+ their neighbours)
+        nr = 1
+        region[0] = v0
+        inR[v0] = True
+        h = 0
+        while h < nr and nr < radius_cap:
+            u = region[h]
+            h += 1
+            for p in range(indptr[u], indptr[u + 1]):
+                w = indices[p]
+                if not inR[w] and np.random.random() < 0.5:
+                    inR[w] = True
+                    region[nr] = w
+                    nr += 1
+                    if nr == radius_cap:
+                        break
+        # ruin: remove stars centred in the region
+        nrem = 0
+        old_val = 0
+        for i in range(nr):
+            u = region[i]
+            s = head[u]
+            while s != -1:
+                if s_alive[s]:
+                    s_alive[s] = False
+                    removed[nrem] = s
+                    nrem += 1
+                    old_val += s_k[s] - 1
+                    for q in range(s_len[s]):
+                        owner[pool[s_start[s] + q]] = -1
+                s = nxt[s]
+            head[u] = -1
+        # recreate in random order with fresh leaf keys
+        for i in range(nr):
+            u = region[i]
+            for p in range(indptr[u], indptr[u + 1]):
+                keys[p] = np.random.random()
+        perm = np.random.permutation(nr)
+        ncr = 0
+        new_val = 0
+        for i in range(nr):
+            u = region[perm[i]]
+            while True:
+                k, ni = _build_star(u, indptr, indices, eid, ptr, idx, pid, owner, keys, T, Tc,
+                                    inner)
+                if k < 2 or ns >= smax or npool + k + ni > pool_cap:
+                    break
+                s = ns
+                ns += 1
+                s_center[s] = u
+                s_k[s] = k
+                s_start[s] = npool
+                s_len[s] = k + ni
+                s_alive[s] = True
+                for j in range(k):
+                    pool[npool] = Tc[j]
+                    owner[Tc[j]] = s
+                    npool += 1
+                for j in range(ni):
+                    pool[npool] = inner[j]
+                    owner[inner[j]] = s
+                    npool += 1
+                nxt[s] = head[u]
+                head[u] = s
+                created[ncr] = s
+                ncr += 1
+                new_val += k - 1
+        if new_val < old_val:
+            # revert
+            for c in range(ncr):
+                s = created[c]
+                s_alive[s] = False
+                for q in range(s_len[s]):
+                    owner[pool[s_start[s] + q]] = -1
+            for i in range(nr):
+                head[region[i]] = -1
+            for c in range(nrem):
+                s = removed[c]
+                s_alive[s] = True
+                for q in range(s_len[s]):
+                    owner[pool[s_start[s] + q]] = s
+                u = s_center[s]
+                nxt[s] = head[u]
+                head[u] = s
+        else:
+            value += new_val - old_val
+        for i in range(nr):
+            inR[region[i]] = False
+    # export alive stars
+    cnt = 0
+    tot = 0
+    for s in range(ns):
+        if s_alive[s]:
+            cnt += 1
+            tot += s_len[s]
+    rp = np.zeros(cnt + 1, dtype=np.int64)
+    rpairs = np.empty(tot, dtype=np.int64)
+    rk = np.empty(cnt, dtype=np.int64)
+    c = 0
+    z = 0
+    for s in range(ns):
+        if s_alive[s]:
+            for q in range(s_len[s]):
+                rpairs[z] = pool[s_start[s] + q]
+                z += 1
+            rk[c] = s_k[s]
+            c += 1
+            rp[c] = z
+    return value, rp, rpairs, rk
+
+
+def star_packing_ls(g: Graph, sup: Support | None = None, pgraph=None, iters: int = 200000,
+                    region: int = 12, seed: int = 0):
+    """Star packing improved by ruin-and-recreate local search (never decreases)."""
+    from .lp import _pgraph
+    sup = sup if sup is not None else build_support(g)
+    if pgraph is None:
+        pgraph = _pgraph(g.n, g.indptr, g.indices, sup.eid, sup.n2ptr, sup.n2idx, sup.n2id)
+    ptr, idx, pid = pgraph
+    rng = np.random.default_rng(seed)
+    order = np.lexsort((rng.random(g.n), -g.degrees)).astype(np.int64)
+    pool_cap = int(2 * sup.npairs + 10 * int(g.degrees.max()) ** 2 + 1000)
+    return _star_ls(g.n, g.indptr, g.indices, sup.eid, ptr, idx, pid, sup.npairs, order,
+                    iters, region, seed, pool_cap)

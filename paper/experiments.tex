@@ -1,0 +1,62 @@
+\subsection{Setup}
+
+\paragraph{Implementation.}  All our algorithms are implemented in Python
+with Numba-compiled kernels in the package \texttt{ccbench}.  LPs and MIPs are
+solved with HiGHS~1.15~\citep{HuangfuH18} and graph partitions are computed
+with METIS~\citep{KarypisK98}.  Experiments ran on a 4-core virtual machine
+with 15\,GB of memory.  Each run used one thread, and four runs executed in
+parallel.
+
+\paragraph{Algorithms.}  We compare the following.
+\emph{Pivot}~\citep{AilonCN08}.
+\emph{Pivot-50}: the best of 50 Pivot runs.
+\emph{MatchFlipPivot}~\citep{veldt2022stc}.
+\emph{Vote}: best-improvement vertex moves from singletons, in the spirit
+of~\citep{elsner2009bounding}.
+\emph{Louvain-CC}: our multilevel implementation of the vertex-move local
+search.
+\emph{Leiden-CPM}: Leiden with the constant Potts model at resolution
+$1/2$~\citep{TraagWvE19}, which optimises the correlation clustering
+objective~\citep{veldt2018lambdacc}.
+\emph{Insertion LS}: our cluster-insertion local search.
+\emph{IteratedFlip}: five flipping rounds, following~\citep{CohenAddadLPTYZ24}.
+\emph{KaPoCE}: the PACE~2021 winner of both tracks, heuristic
+version~\citep{BlasiusEtAl21kapoceHeur}.
+\emph{CertiFlip}: Algorithm~\ref{alg:certiflip}.
+KaPoCE and CertiFlip receive the same wall-clock budget $T$.  The other
+methods run to completion, with three seeds each.
+
+\paragraph{Lower bounds.}  We report the following bounds.
+\emph{Greedy packing}: a maximal pair-disjoint packing of bad triangles, i.e.\
+the matching bound of MatchFlipPivot.
+\emph{Triangle packing}: a fractional packing by the Garg--K\"onemann
+scheme~\citep{GargK07,Fleischer00} with $\varepsilon=0.05$, normalised by its
+maximum load, hence always valid.  Its value approximates the covering LP
+over bad triangles.
+The \emph{CertiFlip bound}: Theorem~\ref{thm:anytime}.
+On PACE instances we also use the root \emph{star-packing} and
+\emph{$P_3$-packing} bounds of the KaPoCE branch-and-bound, as published by
+its authors~\citep{BlasiusEtAl22sea}.  All reported bounds are rounded up to
+integers.
+
+\paragraph{Instances.}  (i)~The 200 instances of the PACE~2021 exact
+track~\citep{KellerhalsKNZ21pace} ($n\le 620$).  173 of them have a known
+optimum and 27 are open.  (ii)~Fifteen SNAP graphs, used as complete
+instances with $\Ep$ given by the edges (for signed networks, by the positive
+edges): collaboration networks \texttt{ca-*}, \texttt{email-Enron},
+\texttt{loc-Brightkite}, \texttt{soc-Epinions}, the positive parts of
+Slashdot, Epinions and the two Bitcoin trust networks~\citep{leskovec2010signedchi,kumar2016bitcoin},
+and the community graphs \texttt{com-Amazon}, \texttt{com-DBLP} and
+\texttt{com-Youtube}~\citep{yang2012groundtruth}.
+
+\subsection{PACE 2021 exact track}
+
+\input{pace_results}
+
+\subsection{SNAP graphs}
+
+\input{snap_results}
+
+\subsection{Ablations}
+
+\input{ablation_results}

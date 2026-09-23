@@ -76,39 +76,6 @@ def leiden_cpm(g: Graph, rng=None, iterations: int = -1):
 
 
 def match_flip_pivot(g: Graph, rng=None):
-    """MatchFlipPivot (Veldt, ICML 2022): maximal pair-disjoint set of open
-    wedges, flip all their pairs, run Pivot on the flipped graph."""
-    from ccbench.support import build_support
-    rng = np.random.default_rng(rng)
-    sup = build_support(g)
-    order = rng.permutation(g.n)
-    used = np.zeros(sup.npairs, dtype=bool)
-    flip = []
-    ip, ix = g.indptr, g.indices
-    adj = [set(ix[ip[v]:ip[v + 1]].tolist()) for v in range(g.n)] if g.n < 200000 else None
-    from ccbench.support import pair_id
-    for w in order:
-        nb = ix[ip[w]:ip[w + 1]]
-        for i in range(len(nb)):
-            e1 = sup.eid[ip[w] + i]
-            if used[e1]:
-                continue
-            for j in range(i + 1, len(nb)):
-                e2 = sup.eid[ip[w] + j]
-                if used[e2] or used[e1]:
-                    continue
-                u, v = int(nb[i]), int(nb[j])
-                if v in adj[u]:
-                    continue
-                e3 = pair_id(ip, ix, sup.eid, sup.n2ptr, sup.n2idx, sup.n2id, u, v)
-                if used[e3]:
-                    continue
-                used[e1] = used[e2] = used[e3] = True
-                flip += [e1, e2, e3]
-    flip = np.array(flip, dtype=np.int64)
-    fl = np.zeros(sup.npairs, dtype=bool)
-    fl[flip] = True
-    pos = np.arange(sup.npairs) < sup.npos
-    keep = pos ^ fl
-    h = from_edges(g.n, np.stack([sup.pu[keep], sup.pv[keep]], axis=1))
-    return cc.pivot(h, rng)
+    """MatchFlipPivot (Veldt, ICML 2022, Algorithm 3); see ccbench.dual."""
+    from ccbench.dual import match_flip_pivot as mfp
+    return mfp(g, rng=rng)[0]
