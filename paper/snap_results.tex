@@ -1,1 +1,30 @@
-(results pending)
+Table~\ref{tab:snap-primal} reports the best objective value per method on the
+SNAP graphs.  KaPoCE and CertiFlip had $600$\,s.  CertiFlip spends half of its
+remaining budget on the lower bound.  On the four graphs whose distance-two
+support exceeds $3\cdot10^7$ pairs, the support does not fit into memory
+together with three parallel runs.  There CertiFlip skips the bound and
+spends the whole budget on the primal side.  MatchFlipPivot and the packing
+bounds are not reported on these graphs.
+
+\begin{table}[t]
+\centering
+\caption{SNAP graphs: best objective value found (bold: best in the row).
+All methods except KaPoCE and CertiFlip ran to completion; for these, the
+best of three seeds is shown.}
+\label{tab:snap-primal}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{tables/snap_primal}}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{SNAP graphs: lower bounds and certified optimality gaps.  The gap is
+$(\mathrm{UB}-\lceil\LB\rceil)/\lceil\LB\rceil$, where UB is the best value found by any
+method and LB is the CertiFlip bound.}
+\label{tab:snap-bounds}
+\small
+\input{tables/snap_bounds}
+\end{table}
+
+\input{snap_discussion}

@@ -198,7 +198,8 @@ def _within2(g: Graph, u: int, v: int) -> bool:
     return bool(_within2_nb(g.indptr, g.indices, u, v))
 
 
-def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: float = 20.0):
+def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: float = 20.0,
+                     max_join: int = 8, max_super: int = 500):
     """Best re-clustering of the vertices B with everything else fixed, among
     re-clusterings in which no pair at G+-distance >= 3 shares a cluster.
 
@@ -222,6 +223,25 @@ def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: fl
             if not inB[u]:
                 key = (i, int(lab[u]))
                 wK[key] = wK.get(key, 0) + 1
+    # restrict join options: each vertex may join its (at most) ``max_join`` best
+    # outside clusters, and at most ``max_super`` super nodes overall; other
+    # options are fixed apart (their cost is a constant of the sub-problem).
+    n_super = len({K for (_, K) in wK})
+    per_v = {}
+    for (i, K), w in (wK.items() if n_super > max_super else ()):
+        per_v.setdefault(i, []).append((w, K))
+    keep = {} if n_super > max_super else dict(wK)
+    for i, lst in per_v.items():
+        lst.sort(reverse=True)
+        for w, K in lst[:max_join]:
+            keep[(i, K)] = w
+    tot = {}
+    for (i, K), w in keep.items():
+        tot[K] = tot.get(K, 0) + w
+    if len(tot) > max_super:
+        allowed = set(sorted(tot, key=lambda K: -tot[K])[:max_super])
+        keep = {key: w for key, w in keep.items() if key[1] in allowed}
+    wK = keep  # dropped options only add a constant to the sub-problem
     Ks = sorted({K for (_, K) in wK})
     kpos = {K: len(B) + j for j, K in enumerate(Ks)}
     k = len(B) + len(Ks)

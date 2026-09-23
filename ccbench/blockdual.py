@@ -322,6 +322,7 @@ class BlockDualBound:
             anchor = np.minimum(self.sup.pu[first], self.sup.pv[first]).astype(np.int64)
             self._store(rptr, gidx, rval, rb, y, anchor)
         self._compact()
+        self.history.append((time.time() - self.t0, self.bound()))
         return self.bound() - old_bound
 
     def _compact(self):

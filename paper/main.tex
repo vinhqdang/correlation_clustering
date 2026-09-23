@@ -168,9 +168,15 @@ is solved to optimality.  It returns a certified lower bound with every
 solution (Theorem~\ref{thm:certiflip}).
 
 \item \textbf{Evaluation pipeline and experiments} (Section~\ref{sec:exp}).
-We release an open-source pipeline with thirteen solvers and bounds.  We run
-it on the 200 PACE~2021 exact-track instances, whose optima are mostly known,
-and on fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices.
+We release an open-source pipeline with ten solvers and five lower bounds.
+On the 200 PACE~2021 exact-track instances, whose optima are mostly known, the
+CertiFlip bound proves optimality on 111 of the 173 solved instances.  The
+root bounds of the state-of-the-art branch-and-bound prove it on 79.  The
+CertiFlip bound also improves the published lower bounds of two open
+instances.  On fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices, it
+certifies the best known solutions within $0.2\%$ to $9.2\%$ of optimal.
+Previously scalable bounds certified factors of $1.17$ to $1.81$ on the same
+graphs.
 \end{enumerate}
 
 \section{Preliminaries and related work}\label{sec:prelim}
@@ -530,12 +536,33 @@ time, and the time spent on them is set by the budget $T$.
 \section{Conclusion}
 
 Correlation clustering has moved quickly in theory, but certified solution
-quality on real instances had not kept pace.  The distance-two relaxation,
-the anytime block-dual bound and the gap decomposition make the LP machinery
-usable at scale and give a primal heuristic that knows where to search.
-Open directions include parallel block solves, cluster-LP columns inside
-blocks, and replacing METIS partitions by overlapping blocks with Lagrangian
-cost splitting.
+quality on real instances had not kept pace.  Three ingredients make LP-based
+certificates usable at scale: the distance-two relaxation, the anytime
+block-dual bound warm-started by sparse packings, and the gap decomposition.
+They also give a primal method that knows where to search.  Our
+implementation of the iterated flipping local search of
+\citet{CohenAddadLPTYZ24} is, to our knowledge, the first of a sub-$3$
+combinatorial scheme.  It comes within a few tenths of a percent of the
+best engineered heuristic in a fraction of its running time.
+
+\paragraph{Limitations.}
+\begin{itemize}
+\item The best primal solutions on our benchmarks still come from KaPoCE,
+which is $0.1\%$--$0.4\%$ better than CertiFlip on the SNAP graphs.
+\item On dense instances the packing bounds of the KaPoCE branch-and-bound
+remain stronger than ours.
+\item The distance-two support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs
+with strong hubs it exceeds the memory of our machine, and CertiFlip then
+reports no bound.  Restricting the support to centres of bounded degree keeps
+the bound valid and is a natural next step.
+\item The $2.06$ a-priori guarantee applies only when a single block covers
+the graph and separation converges.
+\end{itemize}
+
+\paragraph{Open directions.}  Parallel block solves; cluster-LP columns
+inside blocks, where the recent roundings of \citet{CaoCLLNV24} and
+\citet{GarciaSorianoS26} could be applied; and overlapping blocks with
+Lagrangian cost splitting.
 
 \paragraph{Code and data availability.}  All code, instance lists and raw
 results are available at

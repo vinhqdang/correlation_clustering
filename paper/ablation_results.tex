@@ -1,1 +1,49 @@
-(results pending)
+\paragraph{Components of the bound.}  Table~\ref{tab:ablation} evaluates the
+components of the lower bound on five graphs whose size allows running the
+dense-matrix KaPoCE bounds for comparison.  Each variant had a budget of
+$300$\,s.  Gaps are measured against the best known solution.
+\begin{itemize}
+\item \emph{Triangle packings.}  Packings of bad triangles, greedy or
+fractional, leave gaps of $28\%$ to $88\%$.  This is the factor-two regime of
+previous scalable bounds.
+\item \emph{Star packings.}  A greedy star packing on the sparse support
+already reaches gaps of $5\%$ to $8\%$ in well under a second.  The
+ruin-and-recreate local search lowers them to $0.7\%$ to $6.3\%$.
+\item \emph{Block LPs.}  Without a warm start, block LPs converge slowly and
+reach only an $18\%$ to $75\%$ gap within the budget; \texttt{ca-GrQc} is
+the exception.  Started from the packing, they improve the bound in every
+case, to $0.2\%$ to $6.2\%$.  Gap-guided blocks add a little more.
+\item \emph{Comparison with KaPoCE.}  The root star-packing bound of the
+KaPoCE branch-and-bound is weaker than ours on \texttt{ca-GrQc}, equal on
+\texttt{ca-HepTh}, and stronger on \texttt{BitcoinAlpha+} ($3.6\%$ against
+$6.1\%$), where it needed $850$\,s.  On \texttt{BitcoinOTC+} and
+\texttt{ca-CondMat} it did not finish within one hour.
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{Ablation of the lower bound (budget $300$\,s per variant): certified
+gap to the best known solution and running time.  ``--'': did not finish
+within one hour.}
+\label{tab:ablation}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{\input{tables/ablation_lb}}
+\end{table}
+
+\paragraph{Scaling.}  Table~\ref{tab:scaling} reports running times on
+synthetic sparse instances with planted clusters of mean size $10$,
+intra-cluster density $0.7$ and two random inter-cluster edges per vertex.
+Building the distance-two support and one pass of Louvain-type local search
+take seconds even at $10^6$ vertices.  The iterated flipping local search
+grows almost linearly.  One million ruin-and-recreate steps of the packing
+local search take less than a minute beyond the linear-time initial
+construction.
+
+\begin{table}[t]
+\centering
+\caption{Running times (s) on synthetic sparse instances.}
+\label{tab:scaling}
+\small
+\input{tables/scaling}
+\end{table}

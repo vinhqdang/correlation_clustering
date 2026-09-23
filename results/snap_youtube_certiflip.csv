@@ -1,0 +1,2 @@
+instance,n,m,algo,seed,cost,lb,time,error
+com-Youtube,,,certiflip,0,,,,"MemoryError((120587, 120587), dtype('int64'))"

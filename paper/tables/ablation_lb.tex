@@ -1,0 +1,16 @@
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{\texttt{ca-GrQc}} & \multicolumn{2}{c}{\texttt{ca-HepTh}} & \multicolumn{2}{c}{\texttt{BitcoinAlpha+}} & \multicolumn{2}{c}{\texttt{BitcoinOTC+}} & \multicolumn{2}{c}{\texttt{ca-CondMat}}\\
+Bound & gap (\%) & s & gap (\%) & s & gap (\%) & s & gap (\%) & s & gap (\%) & s\\
+\midrule
+greedy triangle packing & 35.07 & 0 & 45.95 & 0 & 80.54 & 0 & 80.17 & 0 & 44.32 & 0\\
+triangle packing (MWU) & 28.04 & 0 & 45.26 & 0 & 86.45 & 1 & 87.62 & 2 & 43.15 & 3\\
+greedy star packing & 5.09 & 3 & 5.96 & 0 & 7.98 & 0 & 7.33 & 0 & 5.58 & 0\\
+star packing + local search & 0.73 & 62 & 0.93 & 46 & 6.34 & 39 & 5.62 & 55 & 3.23 & 20\\
+block LP (cold start) & 0.78 & 230 & 17.85 & 382 & 47.86 & 361 & 74.94 & 317 & 59.20 & 678\\
+packing + block LP & 0.22 & 130 & 0.76 & 304 & 6.16 & 303 & 5.45 & 468 & 2.04 & 666\\
+packing + block LP + gap blocks & 0.18 & 300 & 0.75 & 343 & 6.14 & 305 & 5.46 & 470 & 2.03 & 667\\
+KaPoCE root p3 packing & 23.19 & 47 & 38.14 & 374 & 76.72 & 9 & -- & -- & -- & --\\
+KaPoCE root star packing & 0.58 & 31 & 0.92 & 277 & 3.61 & 850 & -- & -- & -- & --\\
+\bottomrule
+\end{tabular}
