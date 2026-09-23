@@ -117,10 +117,11 @@ def anneal(g: Graph, labels: np.ndarray, iters: int | None = None, time_limit: f
 
 @nb.njit(cache=True)
 def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_single, p_best,
-              seed, cur_cost):
+              seed, cur_cost, nodes=np.empty(0, dtype=np.int64)):
     """Annealing where node i stands for size[i] vertices and w[p] counts the
     positive pairs between the endpoint sets.  Moving i (size s) from A to B
-    changes the cost by s (S_B - S_A + s) + 2 (w(i, A - i) - w(i, B))."""
+    changes the cost by s (S_B - S_A + s) + 2 (w(i, A - i) - w(i, B)).
+    If ``nodes`` is non-empty only these nodes are moved."""
     np.random.seed(seed)
     csize = np.zeros(n, dtype=np.int64)
     for i in range(n):
@@ -140,10 +141,16 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
     lt1 = np.log(t_end)
     cand = np.empty(n, dtype=np.int64)
     nc = 0
-    for v in range(n):
-        if indptr[v + 1] > indptr[v]:
-            cand[nc] = v
-            nc += 1
+    if nodes.shape[0] > 0:
+        for v in nodes:
+            if indptr[v + 1] > indptr[v]:
+                cand[nc] = v
+                nc += 1
+    else:
+        for v in range(n):
+            if indptr[v + 1] > indptr[v]:
+                cand[nc] = v
+                nc += 1
     if nc == 0:
         return best, best_cost
     T = t_start
@@ -219,23 +226,39 @@ def _rate(fn, *args, pilot=200000):
     return pilot / max(time.time() - t, 1e-3)
 
 
+_RATE = {}
+
+
+def anneal_w(wg, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 0.6,
+             t_end: float = 0.03, p_single: float = 0.03, p_best: float = 0.3, rng=None,
+             nodes: np.ndarray | None = None, max_sweeps: float | None = None):
+    """Node-level annealing with greedy-biased proposals on a weighted instance
+    (:class:`ccbench.reduce.WGraph`).  With ``nodes`` only these nodes move; the
+    number of proposals is rate * time_limit, capped at max_sweeps * len(nodes)."""
+    rng = np.random.default_rng(rng)
+    lab = _compact(np.asarray(labels))[0].copy()
+    c0 = wg.cost(lab)
+    args = (wg.n, wg.indptr, wg.indices, wg.w, wg.size)
+    key = (id(wg.indptr), wg.n)
+    if key not in _RATE:
+        _anneal_w(*args, lab.copy(), 10, t_end, t_end, p_single, p_best, 1, c0)  # compile
+        t = time.time()
+        _anneal_w(*args, lab.copy(), 100000, t_end, t_end, p_single, p_best, 1, c0)
+        _RATE[key] = 100000 / max(time.time() - t, 1e-3)
+    iters = int(_RATE[key] * time_limit)
+    nd = np.empty(0, dtype=np.int64) if nodes is None else np.asarray(nodes, dtype=np.int64)
+    if max_sweeps is not None and nodes is not None:
+        iters = min(iters, int(max_sweeps * max(1, len(nd))))
+    best, bc = _anneal_w(*args, lab, iters, t_start, t_end, p_single, p_best,
+                         int(rng.integers(1 << 30)), c0, nd)
+    return best
+
+
 def anneal2(g: Graph, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 0.6,
             t_end: float = 0.03, p_single: float = 0.03, p_best: float = 0.3, rng=None):
     """Vertex-level annealing with greedy-biased proposals."""
-    rng = np.random.default_rng(rng)
-    lab = _compact(np.asarray(labels))[0].copy()
-    one = np.ones(g.indices.shape[0], dtype=np.int64)
-    sz = np.ones(g.n, dtype=np.int64)
-    c0 = cost(g, lab)
-    _anneal_w(g.n, g.indptr, g.indices, one, sz, lab.copy(), 10, t_end, t_end, p_single,
-              p_best, 1, c0)  # compile
-    t = time.time()
-    _anneal_w(g.n, g.indptr, g.indices, one, sz, lab.copy(), 100000, t_end, t_end, p_single,
-              p_best, 1, c0)
-    rate = 100000 / max(time.time() - t, 1e-3)
-    best, bc = _anneal_w(g.n, g.indptr, g.indices, one, sz, lab, int(rate * time_limit),
-                         t_start, t_end, p_single, p_best, int(rng.integers(1 << 30)), c0)
-    return best
+    from .reduce import unit
+    return anneal_w(unit(g), labels, time_limit, t_start, t_end, p_single, p_best, rng)
 
 
 def ml_anneal(g: Graph, labels: np.ndarray, time_limit: float = 60.0, cycles: int = 4,

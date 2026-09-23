@@ -26,6 +26,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(ROOT, "results", "colab")
 QUEUE = os.path.join(OUT, "queue.json")
 STATE = os.path.join(OUT, "fleet_state.json")
+INBOX = os.path.join(OUT, "inbox")  # job batches added while the fleet runs
 LOG = os.path.join(OUT, "fleet.log")
 COLAB = os.path.expanduser("/root/.local/bin/colab")
 STAGE = os.environ.get("FLEET_STAGE", "/root/fleet_stage")  # cc.tgz, kapoce_src.tgz, ...
@@ -154,8 +155,27 @@ def git_push():
         log("push failed")
 
 
+def merge_inbox(queue):
+    """Add the job batches dropped into INBOX (by ``add``) to the queue."""
+    os.makedirs(INBOX, exist_ok=True)
+    ids = {j["id"] for j in queue}
+    for f in sorted(os.listdir(INBOX)):
+        path = os.path.join(INBOX, f)
+        batch = load(path, None)
+        if batch is None:
+            continue
+        jobs = [j for j in batch["jobs"] if j["id"] not in ids]
+        if batch.get("front"):
+            queue[:0] = jobs
+        else:
+            queue.extend(jobs)
+        os.remove(path)
+        log(f"queued {len(jobs)} jobs from {f}")
+    return queue
+
+
 def step(state):
-    queue = load(QUEUE, [])
+    queue = merge_inbox(load(QUEUE, []))
     by_id = {j["id"]: j for j in queue}
     new_files = False
     with ThreadPoolExecutor(len(SESSIONS)) as ex:
@@ -228,23 +248,18 @@ def main():
         time.sleep(POLL)
 
 
-def add(tag, T, seeds, graphs):
-    queue = load(QUEUE, [])
-    ids = {j["id"] for j in queue}
-    for seed in seeds:
-        for gname in graphs:
-            jid = f"{tag}_{gname}_{seed}"
-            if jid not in ids:
-                queue.append(dict(id=jid, tag=tag, T=T, seed=seed, graph=gname,
-                                  status="pending", machine=None))
-    save(QUEUE, queue)
-    print(len(queue), "jobs")
+def add(tag, T, seeds, graphs, front=False):
+    jobs = [dict(id=f"{tag}_{gname}_{seed}", tag=tag, T=T, seed=seed, graph=gname,
+                 status="pending", machine=None) for seed in seeds for gname in graphs]
+    os.makedirs(INBOX, exist_ok=True)
+    save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"front": front, "jobs": jobs})
+    print(len(jobs), "jobs submitted")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "add":
-        # add TAG T SEEDS(comma) GRAPH...
+    if len(sys.argv) > 1 and sys.argv[1] in ("add", "add-front"):
+        # add[-front] TAG T SEEDS(comma) GRAPH...
         add(sys.argv[2], float(sys.argv[3]), [int(x) for x in sys.argv[4].split(",")],
-            sys.argv[5:])
+            sys.argv[5:], front=sys.argv[1] == "add-front")
     else:
         main()
