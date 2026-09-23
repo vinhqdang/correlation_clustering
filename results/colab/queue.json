@@ -249,7 +249,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790206342.4962997
  },
@@ -309,8 +309,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790207142.6735585
  },
  {
   "id": "e1_BitcoinAlpha+_2",
