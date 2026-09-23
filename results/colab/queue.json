@@ -269,7 +269,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790206847.5316668
  },
@@ -319,8 +319,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790207490.5013547
  },
  {
   "id": "e1_ca-HepPh_2",
