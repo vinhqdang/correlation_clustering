@@ -34,7 +34,7 @@ import numba as nb
 
 from .graph import Graph
 from .support import Support, build_support
-from .lp import _pgraph, _separate, _separate_stars
+from .lp import _pgraph, _separate, _separate_stars, _separate_subgraphs
 
 
 @nb.njit(cache=True)
@@ -71,8 +71,9 @@ def _local_pgraph(nodes, pos, ptr, idx, pid):
 
 
 class _BlockLP:
-    def __init__(self, costs, n, ptr, idx, pid):
+    def __init__(self, costs, n, ptr, idx, pid, npos=None):
         self.n, self.ptr, self.idx, self.pid = n, ptr, idx, pid
+        self.npos = npos
         N = costs.shape[0]
         h = highspy.Highs()
         h.setOptionValue("output_flag", False)
@@ -126,8 +127,13 @@ class _BlockLP:
             return
         self._push(rp[:-1].astype(np.int64), ri.astype(np.int64), -rv, -np.asarray(ub))
 
+    def add_subgraphs(self, rp, ri, rv, lb):
+        if len(lb) == 0:
+            return
+        self._push(rp[:-1].astype(np.int64), ri.astype(np.int64), rv, np.asarray(lb))
+
     def solve(self, eps=1e-6, max_rounds=100, time_limit=600.0, stars=True, max_t=50,
-              star_cap=20000, cap=100000):
+              star_cap=20000, cap=100000, subgraphs=False, hmax=8, sub_cap=20000, seed=0):
         t0 = time.time()
         rounds = 0
         while True:
@@ -146,6 +152,12 @@ class _BlockLP:
                                                     1e-4, max_t, star_cap, star_cap * 60)
                 ns = len(ub)
                 self.add_stars(rp, ri, rv, ub)
+            if found == 0 and ns == 0 and subgraphs and self.npos is not None:
+                order = np.random.default_rng(seed + rounds).permutation(self.n).astype(np.int64)
+                rp, ri, rv, lbs = _separate_subgraphs(self.n, self.ptr, self.idx, self.pid, x,
+                                                      self.npos, 1e-4, hmax, sub_cap, order, True)
+                ns = len(lbs)
+                self.add_subgraphs(rp, ri, rv, lbs)
             if (found == 0 and ns == 0) or rounds >= max_rounds or \
                     time.time() - t0 > time_limit:
                 break
@@ -275,7 +287,8 @@ class BlockDualBound:
             self.by -= float(ch["b"][sel] @ ch["y"][sel])
             init.append((ch, sel, flat))
         costs = self.r[gids].copy()
-        lp = _BlockLP(costs, len(nodes), lptr, lidx, lpid.astype(np.int64))
+        lp = _BlockLP(costs, len(nodes), lptr, lidx, lpid.astype(np.int64),
+                      npos=int(np.searchsorted(gids, self.sup.npos)))
         # initial rows (translated to local pair ids)
         for ch, sel, flat in init:
             lens = ch["ptr"][sel + 1] - ch["ptr"][sel]
@@ -283,7 +296,9 @@ class BlockDualBound:
             starts[1:] = np.cumsum(lens)[:-1]
             loc = np.searchsorted(gids, ch["idx"][flat])
             lp._push(starts, loc, ch["val"][flat], ch["b"][sel])
-        lp.solve(**kw)
+        xloc = lp.solve(**kw)
+        self.last_block = {"gids": gids, "x": np.clip(xloc, 0.0, 1.0),
+                           "converged": bool(lp.converged), "whole": len(nodes) == self.g.n}
         y = lp.duals()
         rptr, ridx, rval, rb = lp.rows()
         rloc = costs.copy()
@@ -349,3 +364,35 @@ def metis_blocks(g: Graph, block_size: int, seed: int = 0) -> np.ndarray:
     out = np.empty(g.n, dtype=np.int64)
     out[:] = parts[perm]
     return out
+
+
+def gap_blocks(bd: "BlockDualBound", labels: np.ndarray, size: int, time_limit: float,
+               rng=None, block_kw=None, verbose=False, min_gain: float = 1e-3):
+    """Dual-gap guided block steps: repeatedly grow a block of ``size`` vertices
+    (BFS in G+, preferring high-gap vertices) around the vertex with the largest
+    share of cost(C) - LB and re-solve it.  Returns the number of blocks."""
+    from .lns import gap_map, grow_block
+    rng = np.random.default_rng(rng)
+    block_kw = block_kw or {}
+    g = bd.g
+    t0 = time.time()
+    used = np.zeros(g.n, dtype=np.int64)
+    it = 0
+    while time.time() - t0 < time_limit:
+        vg, _, _ = gap_map(bd, labels)
+        eff = vg / (1.0 + used)
+        seed = int(np.argmax(eff))
+        if eff[seed] <= 1e-9:
+            break
+        B = grow_block(g, seed, size, vg, rng)
+        used[B] += 1
+        before = bd.bound()
+        bd.solve_block(B, time_limit=max(1.0, min(block_kw.get("time_limit", 120),
+                                                   time_limit - (time.time() - t0))),
+                       **{k: v for k, v in block_kw.items() if k != "time_limit"})
+        it += 1
+        if verbose:
+            print(f"  gap block {it}: {before:.1f} -> {bd.bound():.1f} "
+                  f"({time.time() - t0:.0f}s)", flush=True)
+    bd.history.append((time.time() - bd.t0, bd.bound()))
+    return it

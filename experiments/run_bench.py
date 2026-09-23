@@ -31,7 +31,7 @@ from ccbench.insertion import insertion_search  # noqa: E402
 
 ALGOS = ["pivot", "pivot50", "vote", "louvain", "leiden", "mfp", "ins", "flip", "certiflip",
          "kapoce"]
-BOUNDS = ["lb:greedy", "lb:tri-mwu", "lb:block-star"]
+BOUNDS = ["lb:greedy", "lb:tri-mwu"]
 
 
 def run_algo(name, g, seed, budget):
@@ -77,7 +77,7 @@ def run_bound(name, g, budget):
         v = P.run(0.05, 1e-6)
     elif name == "lb:block-star":
         from ccbench.certiflip import block_bound
-        bd = block_bound(g, sup, time_limit=budget)
+        bd = block_bound(g, sup, time_limit=budget, labels=None)
         v = bd.bound()
     else:
         raise KeyError(name)
@@ -143,7 +143,7 @@ def main():
     jobs = []
     for inst in insts:
         for algo in algos:
-            seeds = [0] if algo.startswith("lb:") or algo in ("kapoce",) else range(a.seeds)
+            seeds = [0] if algo.startswith("lb:") or algo in ("kapoce", "certiflip") else range(a.seeds)
             for s in seeds:
                 if (inst, algo, s) not in done:
                     jobs.append((inst, algo, s, a.budget))

@@ -169,8 +169,38 @@ def _solve_sub(coef, const, pairidx, init_x=None, time_limit=30.0, max_rounds=50
     return None
 
 
+@nb.njit(cache=True)
+def _within2_nb(indptr, indices, u, v):
+    """True iff u and v are adjacent or share a neighbour in G+."""
+    i = indptr[u]
+    j = indptr[v]
+    while i < indptr[u + 1] and j < indptr[v + 1]:
+        a = indices[i]
+        b = indices[j]
+        if a == b or a == v or b == u:
+            return True
+        if a < b:
+            i += 1
+        else:
+            j += 1
+    while i < indptr[u + 1]:
+        if indices[i] == v:
+            return True
+        i += 1
+    while j < indptr[v + 1]:
+        if indices[j] == u:
+            return True
+        j += 1
+    return False
+
+
+def _within2(g: Graph, u: int, v: int) -> bool:
+    return bool(_within2_nb(g.indptr, g.indices, u, v))
+
+
 def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: float = 20.0):
-    """Best re-clustering of the vertices B with everything else fixed.
+    """Best re-clustering of the vertices B with everything else fixed, among
+    re-clusterings in which no pair at G+-distance >= 3 shares a cluster.
 
     Returns new labels (or None if the sub-MIP failed)."""
     lab = np.asarray(labels).copy()
@@ -206,6 +236,8 @@ def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: fl
     nv = 0
     for i in range(len(B)):
         for j in range(i + 1, len(B)):
+            if (i, j) not in E and not _within2(g, int(B[i]), int(B[j])):
+                continue  # far pair: must be separated
             pairidx[i, j] = pairidx[j, i] = nv
             nv += 1
             if (i, j) in E:
@@ -213,7 +245,18 @@ def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: fl
             else:
                 coef.append(-1.0)          # together costs 1 - x
                 cst += 1.0
+    # a vertex may join an outside cluster only if it is within G+-distance 2 of
+    # all of its members (P-feasibility: optimal clusters have diameter <= 2)
+    # members of the touched outside clusters (one pass)
+    if Ks:
+        outside = np.flatnonzero(np.isin(lab, Ks) & ~inB)
+        members = {K: [] for K in Ks}
+        for u in outside:
+            members[int(lab[u])].append(int(u))
     for (i, K), w in wK.items():
+        v = int(B[i])
+        if any(not _within2_nb(g.indptr, g.indices, v, u) for u in members[K]):
+            continue
         j = kpos[K]
         s = float(outer_size[K])
         pairidx[i, j] = pairidx[j, i] = nv
@@ -226,9 +269,11 @@ def reoptimize_block(g: Graph, labels: np.ndarray, B: np.ndarray, time_limit: fl
     x0 = np.ones(nv)
     for i in range(len(B)):
         for j in range(i + 1, len(B)):
-            x0[pairidx[i, j]] = float(lab[B[i]] != lab[B[j]])
+            if pairidx[i, j] >= 0:
+                x0[pairidx[i, j]] = float(lab[B[i]] != lab[B[j]])
     for (i, K) in wK:
-        x0[pairidx[i, kpos[K]]] = float(lab[B[i]] != K)
+        if pairidx[i, kpos[K]] >= 0:
+            x0[pairidx[i, kpos[K]]] = float(lab[B[i]] != K)
     x = _solve_sub(coef, cst, pairidx, x0, time_limit)
     if x is None:
         return None
@@ -277,38 +322,121 @@ def grow_block(g: Graph, seed: int, size: int, score: np.ndarray, rng) -> np.nda
     return np.array(chosen, dtype=np.int64)
 
 
+def touching_gap(bd, labels: np.ndarray, B: np.ndarray) -> float:
+    """Gap mass of all terms (pairs and rows) touching the vertex set B.
+
+    Local certificate: no re-clustering of B (outside fixed) can decrease the
+    cost by more than this amount, because every term not touching B is
+    unchanged and every term is non-negative."""
+    sup = bd.sup
+    lab = np.asarray(labels)
+    inB = np.zeros(bd.g.n if bd.g is not None else len(lab), dtype=bool)
+    inB[B] = True
+    touch = inB[sup.pu] | inB[sup.pv]
+    xs = (lab[sup.pu[touch]] != lab[sup.pv[touch]]).astype(np.float64)
+    r = bd.r[touch]
+    tot = float((r * xs - np.minimum(r, 0.0)).sum())
+    from .blockdual import _gather
+    xfull = None
+    for ch in bd._chunks:
+        sel = np.flatnonzero(ch["alive"])
+        if len(sel) == 0:
+            continue
+        flat, rowof = _gather(ch["ptr"], sel)
+        pids = ch["idx"][flat]
+        t_row = np.zeros(len(sel), dtype=bool)
+        np.logical_or.at(t_row, rowof, inB[sup.pu[pids]] | inB[sup.pv[pids]])
+        if not t_row.any():
+            continue
+        if xfull is None:
+            xfull = (lab[sup.pu] != lab[sup.pv]).astype(np.float64)
+        ax = np.zeros(len(sel))
+        np.add.at(ax, rowof, ch["val"][flat] * xfull[pids])
+        slack = np.maximum(ch["y"][sel] * (ax - ch["b"][sel]), 0.0)
+        tot += float(slack[t_row].sum())
+    return tot
+
+
+def cluster_block(g: Graph, labels: np.ndarray, seed: int, size: int, score: np.ndarray):
+    """Union of the seed's cluster and neighbouring clusters (highest total score
+    first), truncated to ``size`` vertices by score."""
+    lab = np.asarray(labels)
+    members = {}
+    order = np.argsort(lab, kind="stable")
+    # cheap member lookup for the touched clusters only
+    cand = {int(lab[seed])}
+    for u in g.indices[g.indptr[seed]:g.indptr[seed + 1]]:
+        cand.add(int(lab[u]))
+    mask = np.isin(lab, list(cand))
+    verts = np.flatnonzero(mask)
+    for v in verts:
+        members.setdefault(int(lab[v]), []).append(int(v))
+    ranked = sorted(members, key=lambda c: -sum(score[members[c]]))
+    ranked.remove(int(lab[seed]))
+    ranked = [int(lab[seed])] + ranked
+    out = []
+    for c in ranked:
+        out += members[c]
+        if len(out) >= size:
+            break
+    out = np.array(out, dtype=np.int64)
+    if len(out) > size:
+        keep = np.argsort(-score[out])[:size]
+        out = out[keep]
+        if seed not in set(out.tolist()):
+            out[-1] = seed
+    return out
+
+
 def gap_lns(g: Graph, labels: np.ndarray, bd=None, size: int = 60, iters: int = 200,
-            time_limit: float = 300.0, sub_time: float = 10.0, rng=None, verbose=False):
+            time_limit: float = 300.0, sub_time: float = 10.0, rng=None, verbose=False,
+            modes=("bfs", "cluster"), stats: dict | None = None):
     """Dual-gap guided LNS.  Without a bound ``bd``, seeds are chosen by the
-    local disagreement count."""
+    local disagreement count.  Neighbourhoods whose touching gap is < 1 are
+    certified locally optimal and skipped."""
     rng = np.random.default_rng(rng)
     lab = _compact(np.asarray(labels))[0].copy()
     cur = cost(g, lab)
     t0 = time.time()
     tabu = np.zeros(g.n, dtype=np.int64)
     it = 0
-    accepted = 0
+    st = {"tried": 0, "improved": 0, "skipped": 0, "failed": 0}
+    score = None
     while it < iters and time.time() - t0 < time_limit:
-        if bd is not None:
-            score, _, _ = gap_map(bd, lab)
-        else:
-            src = np.repeat(np.arange(g.n), g.degrees)
-            cut = lab[src] != lab[g.indices]
-            score = np.bincount(src[cut], minlength=g.n).astype(float)
-        score = score - 1e3 * (tabu > it)
-        order = np.argsort(-score)
+        if score is None or st["improved"] or it % 10 == 0:
+            if bd is not None:
+                score, _, _ = gap_map(bd, lab)
+            else:
+                src = np.repeat(np.arange(g.n), g.degrees)
+                cut = lab[src] != lab[g.indices]
+                score = np.bincount(src[cut], minlength=g.n).astype(float)
+        eff = score - 1e3 * (tabu > it)
+        if eff.max() <= 1e-9:
+            break
+        order = np.argsort(-eff)
         seed = int(order[rng.integers(0, min(20, g.n))])
-        B = grow_block(g, seed, size, score, rng)
+        mode = modes[it % len(modes)]
+        if mode == "bfs":
+            B = grow_block(g, seed, size, score, rng)
+        else:
+            B = cluster_block(g, lab, seed, size, score)
         tabu[B] = it + 10
-        new = reoptimize_block(g, lab, B, sub_time)
         it += 1
+        if bd is not None and touching_gap(bd, lab, B) < 1.0 - 1e-6:
+            st["skipped"] += 1
+            continue
+        st["tried"] += 1
+        new = reoptimize_block(g, lab, B, sub_time)
         if new is None:
+            st["failed"] += 1
             continue
         c = cost(g, new)
         if c < cur:
             lab = _compact(new)[0].copy()
-            accepted += 1
+            st["improved"] += 1
             if verbose:
-                print(f"  lns it {it}: {cur} -> {c} ({time.time() - t0:.1f}s)", flush=True)
+                print(f"  lns it {it} ({mode}): {cur} -> {c} ({time.time() - t0:.1f}s)", flush=True)
             cur = c
+    if stats is not None:
+        stats.update(st)
     return lab

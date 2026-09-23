@@ -483,3 +483,146 @@ def _solve_with_stars(self, eps: float = 1e-6, max_rounds: int = 200, time_limit
 
 SparseLP.solve_with_stars = _solve_with_stars
 SparseLP.add_general = _add_general
+
+
+# --------------------------------------------------------------------------
+# local subgraph inequalities
+# --------------------------------------------------------------------------
+#
+# For any vertex set H, every clustering makes at least OPT(G[H]) mistakes on
+# the pairs inside H.  In x-variables (far pairs have x = 1 and contribute 0):
+#     sum_{e in E+(H)} x_e - sum_{e in N2(H)} x_e >= OPT(H) - |N2(H)|.
+# Stars (H = v + independent neighbours) and bad triangles are special cases;
+# odd chordless cycles are the simplest new ones (OPT(C_k) = ceil(k/2) while the
+# triangle LP only certifies k/2).  OPT(H) is computed by enumerating set
+# partitions (|H| <= 9).
+
+@nb.njit(cache=True)
+def small_opt(k, adj):
+    """Exact CC optimum of a k-vertex graph given by a boolean adjacency matrix."""
+    best = 1 << 30
+    lab = np.zeros(k, dtype=np.int64)
+    mx = np.zeros(k + 1, dtype=np.int64)  # mx[i] = max label among lab[:i] + 1
+    # iterative enumeration of restricted growth strings
+    i = 1
+    lab[0] = 0
+    mx[1] = 1
+    while True:
+        if i == k:
+            c = 0
+            for a in range(k):
+                for b in range(a + 1, k):
+                    if adj[a, b]:
+                        if lab[a] != lab[b]:
+                            c += 1
+                    elif lab[a] == lab[b]:
+                        c += 1
+            if c < best:
+                best = c
+            # backtrack
+            i -= 1
+            while i > 0:
+                if lab[i] < mx[i]:
+                    lab[i] += 1
+                    mx[i + 1] = max(mx[i], lab[i] + 1)
+                    i += 1
+                    break
+                i -= 1
+            if i == 0:
+                break
+            continue
+        lab[i] = 0
+        mx[i + 1] = mx[i]
+        i += 1
+    return best
+
+
+@nb.njit(cache=True)
+def _separate_subgraphs(n, ptr, idx, pid, x, npos, eps, hmax, cap_rows, order, frac_only):
+    """Grow H around each vertex through fractional pairs and test m(H) >= OPT(H)."""
+    rows_ptr = np.zeros(cap_rows + 1, dtype=np.int64)
+    cap_nnz = cap_rows * hmax * (hmax - 1) // 2
+    rows_idx = np.empty(cap_nnz, dtype=np.int64)
+    rows_val = np.empty(cap_nnz, dtype=np.float64)
+    rows_lb = np.empty(cap_rows, dtype=np.float64)
+    nr = 0
+    nz = 0
+    H = np.empty(hmax, dtype=np.int64)
+    inH = np.zeros(n, dtype=np.bool_)
+    adj = np.zeros((hmax, hmax), dtype=np.bool_)
+    ids = np.full((hmax, hmax), -1, dtype=np.int64)
+    for oi in range(order.shape[0]):
+        v = order[oi]
+        # BFS through pairs with fractional x (or any close pair)
+        k = 1
+        H[0] = v
+        inH[v] = True
+        head = 0
+        while head < k and k < hmax:
+            u = H[head]
+            head += 1
+            for p in range(ptr[u], ptr[u + 1]):
+                w = idx[p]
+                if inH[w]:
+                    continue
+                xe = x[pid[p]]
+                if frac_only:
+                    if xe < eps or xe > 1.0 - eps:
+                        continue
+                elif xe > 1.0 - eps:
+                    continue
+                H[k] = w
+                inH[w] = True
+                k += 1
+                if k == hmax:
+                    break
+        if k >= 4:
+            # pair data
+            m = 0.0
+            nneg = 0
+            for a in range(k):
+                for b in range(a + 1, k):
+                    ua = H[a]
+                    ub = H[b]
+                    lo = ptr[ua]
+                    hi = ptr[ua + 1]
+                    while lo < hi:
+                        mid = (lo + hi) >> 1
+                        if idx[mid] < ub:
+                            lo = mid + 1
+                        else:
+                            hi = mid
+                    if lo < ptr[ua + 1] and idx[lo] == ub:
+                        e = pid[lo]
+                        ids[a, b] = e
+                        if e < npos:
+                            adj[a, b] = True
+                            adj[b, a] = True
+                            m += x[e]
+                        else:
+                            adj[a, b] = False
+                            adj[b, a] = False
+                            m += 1.0 - x[e]
+                            nneg += 1
+                    else:
+                        ids[a, b] = -1
+                        adj[a, b] = False
+                        adj[b, a] = False
+            if m < k * k:  # always true; compute OPT only if possibly violated
+                opt = small_opt(k, adj[:k, :k])
+                if m < opt - 1e-4 and nr < cap_rows:
+                    for a in range(k):
+                        for b in range(a + 1, k):
+                            e = ids[a, b]
+                            if e >= 0:
+                                rows_idx[nz] = e
+                                rows_val[nz] = 1.0 if e < npos else -1.0
+                                nz += 1
+                    rows_lb[nr] = opt - nneg
+                    nr += 1
+                    rows_ptr[nr] = nz
+        for a in range(k):
+            inH[H[a]] = False
+        if nr >= cap_rows:
+            break
+    return rows_ptr[:nr + 1], rows_idx[:nz], rows_val[:nz], rows_lb[:nr]
