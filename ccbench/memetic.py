@@ -177,3 +177,67 @@ def memetic(g: Graph, time_limit: float = 300.0, rng=None, pop_size: int = 10,
                   flush=True)
     best = int(np.argmin(costs))
     return pop[best], costs[best]
+
+
+def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
+               init_share: float = 0.4, child_share: float = 0.04, t_child: float = 0.3,
+               verbose: bool = False, history: list | None = None):
+    """Memetic search whose improvement operator is simulated annealing.
+
+    Initial population: independent (Pivot -> flip -> annealing) runs.
+    Offspring: overlay recombination of two parents followed by a short, cooler
+    annealing run; crowding replacement keeps the population diverse."""
+    from .anneal import anneal2
+    rng = np.random.default_rng(rng)
+    t0 = time.time()
+    E = g.edges()
+    samp = E[rng.choice(len(E), size=min(len(E), 20000), replace=False)].T
+    pop, costs, keys = [], [], []
+
+    def rec():
+        if history is not None:
+            history.append((time.time() - t0, min(costs)))
+
+    t_init = init_share * time_limit / pop_size
+    for i in range(pop_size):
+        s = int(rng.integers(1 << 30))
+        lab = iterated_flip(g, pivot(g, s), 1, rng=s, time_limit=0.2 * t_init)
+        lab = anneal2(g, lab, time_limit=max(1.0, t_init - 0.0), rng=s)
+        lab = _compact(lab)[0].copy()
+        pop.append(lab)
+        costs.append(cost(g, lab))
+        keys.append(_key(lab))
+        rec()
+        if verbose:
+            print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
+    gen = 0
+    while time.time() - t0 < time_limit:
+        gen += 1
+        P = len(pop)
+        i1 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+        i2 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+        if i1 == i2:
+            i2 = (i1 + 1 + int(rng.integers(P - 1))) % P
+        child = overlay_combine(g, pop[i1], pop[i2], rng)
+        left = time_limit - (time.time() - t0)
+        child = anneal2(g, child, time_limit=max(0.5, min(child_share * time_limit, left)),
+                        t_start=t_child, rng=rng)
+        child = _compact(child)[0].copy()
+        c = cost(g, child)
+        k = _key(child)
+        if k not in keys:
+            d = [_distance(child, q, samp) for q in pop]
+            for j in np.argsort(d)[:2]:
+                if c < costs[j] or (c == costs[j] and d[j] > 0):
+                    pop[j], costs[j], keys[j] = child, c, k
+                    break
+            else:
+                worst = int(np.argmax(costs))
+                if c < costs[worst]:
+                    pop[worst], costs[worst], keys[worst] = child, c, k
+        rec()
+        if verbose:
+            print(f"gen {gen}: child {c} best {min(costs)} worst {max(costs)} "
+                  f"t={time.time() - t0:.0f}", flush=True)
+    best = int(np.argmin(costs))
+    return pop[best], costs[best]
