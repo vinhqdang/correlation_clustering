@@ -69,9 +69,10 @@ has an a-priori guarantee ($3$ in expectation, and $2.06$ whenever the
 relaxation is solved to optimality) and outputs a certified bound on its own
 approximation ratio.  On the PACE~2021 exact track it improves the best published
 bounds of three open instances, and its bound proves optimality on more
-instances than the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs its
-bounds certify the solutions of the PACE~2021 winner within about one percent
-of optimal, on graphs far beyond the reach of dense-matrix bounds.
+instances than the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs with up to $10^6$
+edges, its bounds certify the best known solutions within $0.2\%$ to $9.2\%$
+of optimal, where previously scalable bounds certify only factors of $1.17$ to
+$1.81$.
 \end{abstract}
 
 \section{Introduction}
@@ -144,10 +145,11 @@ LP is solved exactly by cutting planes, with costs equal to the current
 reduced costs.  The bound is valid after every step, never decreases, and
 stores only the reduced cost of each pair and the rows with positive
 multipliers (Theorem~\ref{thm:anytime}).  Any packing of induced stars or bad
-triangles is a feasible starting point.  We compute one on the sparse support
-with a ruin-and-recreate local search: on \texttt{ca-HepTh} it exceeds the
-root bound of the KaPoCE branch-and-bound in less than half the time and
-with $O(|P|)$ instead of $\Theta(n^2)$ memory.  Blocks come from randomised
+triangles is a feasible starting point.  We compute one on the sparse support with a
+ruin-and-recreate local search, using $O(|P|)$ instead of $\Theta(n^2)$
+memory.  On \texttt{ca-HepTh}, after 46\,s it is within $0.02\%$ of the
+root bound of the KaPoCE branch-and-bound, which needs 277\,s; together with
+the block LPs, our bound exceeds it.  Blocks come from randomised
 graph partitions and from regions where the current optimality gap is large.
 
 \item \textbf{Gap decomposition and local certificates}
@@ -173,10 +175,11 @@ On the 200 PACE~2021 exact-track instances, whose optima are mostly known, the
 CertiFlip bound proves optimality on 111 of the 173 solved instances.  The
 root bounds of the state-of-the-art branch-and-bound prove it on 79.  The
 CertiFlip bound also improves the published lower bounds of two open
-instances.  On fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices, it
-certifies the best known solutions within $0.2\%$ to $9.2\%$ of optimal.
-Previously scalable bounds certified factors of $1.17$ to $1.81$ on the same
-graphs.
+instances.  We also use fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices.  On the
+eleven whose distance-two support fits into memory (up to $3\cdot10^5$
+vertices and $10^6$ edges), the CertiFlip bound certifies the best known
+solutions within $0.2\%$ to $9.2\%$ of optimal.  Previously scalable bounds
+certified only factors of $1.17$ to $1.81$ on the same graphs.
 \end{enumerate}
 
 \section{Preliminaries and related work}\label{sec:prelim}

@@ -36,7 +36,8 @@ synthetic sparse instances with planted clusters of mean size $10$,
 intra-cluster density $0.7$ and two random inter-cluster edges per vertex.
 Building the distance-two support and one pass of Louvain-type local search
 take seconds even at $10^6$ vertices.  The iterated flipping local search
-grows almost linearly.  One million ruin-and-recreate steps of the packing
+grows slightly faster than linearly, from $65$\,s at $10^5$ to about
+$20$ minutes at $10^6$ vertices.  One million ruin-and-recreate steps of the packing
 local search take less than a minute beyond the linear-time initial
 construction.
 
