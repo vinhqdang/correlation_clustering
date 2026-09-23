@@ -12,7 +12,7 @@ ruin-and-recreate local search lowers them to $0.7\%$ to $6.3\%$.
 \item \emph{Block LPs.}  Without a warm start, block LPs converge slowly and
 reach only an $18\%$ to $75\%$ gap within the budget; \texttt{ca-GrQc} is
 the exception.  Started from the packing, they improve the bound in every
-case, to $0.2\%$ to $6.2\%$.  Gap-guided blocks add a little more.
+case, to $0.2\%$ to $6.2\%$.  Gap-guided blocks add a little more on four of the five graphs.
 \item \emph{Comparison with KaPoCE.}  The root star-packing bound of the
 KaPoCE branch-and-bound is weaker than ours on \texttt{ca-GrQc}, equal on
 \texttt{ca-HepTh}, and stronger on \texttt{BitcoinAlpha+} ($3.6\%$ against
@@ -30,6 +30,21 @@ within one hour.}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\textwidth}{!}{\input{tables/ablation_lb}}
 \end{table}
+
+Figure~\ref{fig:anytime} shows the anytime behaviour on \texttt{ca-HepTh} and
+\texttt{com-DBLP}.  From a cold start the certified gap is still $15\%$ and
+$1412\%$ after ten minutes.  With the packing warm start it is below $1\%$
+and at $3\%$, respectively, as soon as the packing phase ends, and it keeps
+decreasing afterwards.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/anytime.pdf}
+\caption{Certified gap $(\mathrm{UB}-\LB)/\LB$ of the anytime bound over
+time, against the best known solution (log scale).  The warm-started curve
+begins when the star packing has been installed.}
+\label{fig:anytime}
+\end{figure}
 
 \paragraph{Scaling.}  Table~\ref{tab:scaling} reports running times on
 synthetic sparse instances with planted clusters of mean size $10$,

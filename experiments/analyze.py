@@ -110,7 +110,7 @@ def write_pace_tables(path):
             lb = int(r.our_lb) if not math.isnan(r.our_lb) else "--"
             ubs = f"\\textbf{{{ub}}}" if ub != "--" and ub < r.upper else f"{ub}"
             lbs = f"\\textbf{{{lb}}}" if lb != "--" and lb > r.low_star else f"{lb}"
-            fh.write(f"{nm} & {r.n} & {r.m} & {int(r.upper)} & {int(r.low_star)} & {ubs} & {lbs}\\\\\n")
+            fh.write(f"{nm} & {int(r.n)} & {int(r.m)} & {int(r.upper)} & {int(r.low_star)} & {ubs} & {lbs}\\\\\n")
         fh.write("\\bottomrule\n\\end{tabular}\n")
     print(prim.to_string())
     print(lbt.to_string())

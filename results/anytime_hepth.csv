@@ -1,0 +1,28 @@
+graph,variant,time,lb
+ca-HepTh,block LP (cold start),65.21266722679138,3251.0793454726518
+ca-HepTh,block LP (cold start),71.55792188644409,4675.1793454726285
+ca-HepTh,block LP (cold start),134.65064215660095,7687.081443554809
+ca-HepTh,block LP (cold start),254.9901478290558,12212.161999110365
+ca-HepTh,block LP (cold start),255.0238220691681,12212.161999110365
+ca-HepTh,block LP (cold start),271.79396200180054,12359.550671385427
+ca-HepTh,block LP (cold start),334.9585585594177,12633.730696282815
+ca-HepTh,block LP (cold start),395.8709089756012,13065.648124871805
+ca-HepTh,block LP (cold start),517.095333814621,13482.000345112843
+ca-HepTh,block LP (cold start),517.1285471916199,13482.000345112843
+ca-HepTh,block LP (cold start),560.7944097518921,13612.877251282625
+ca-HepTh,block LP (cold start),561.8357450962067,13641.728435753437
+ca-HepTh,block LP (cold start),600.4269065856934,13791.166919513722
+ca-HepTh,block LP (cold start),600.4330847263336,13791.166919513722
+ca-HepTh,packing + block LP + gap blocks,100.56696772575378,15694.0
+ca-HepTh,packing + block LP + gap blocks,170.96880960464478,15697.563702946703
+ca-HepTh,packing + block LP + gap blocks,179.08256220817566,15704.22843881324
+ca-HepTh,packing + block LP + gap blocks,241.12915420532227,15707.543942689197
+ca-HepTh,packing + block LP + gap blocks,329.75546765327454,15709.773109355883
+ca-HepTh,packing + block LP + gap blocks,329.7698121070862,15709.773109355883
+ca-HepTh,packing + block LP + gap blocks,371.78566122055054,15710.203625037771
+ca-HepTh,packing + block LP + gap blocks,441.10679864883423,15710.884345889295
+ca-HepTh,packing + block LP + gap blocks,475.59116554260254,15710.884345889266
+ca-HepTh,packing + block LP + gap blocks,558.8383009433746,15711.10517922262
+ca-HepTh,packing + block LP + gap blocks,558.8553335666656,15711.10517922262
+ca-HepTh,packing + block LP + gap blocks,600.8359291553497,15711.10517922262
+ca-HepTh,packing + block LP + gap blocks,600.8526690006256,15711.10517922262

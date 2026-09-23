@@ -73,9 +73,26 @@ python experiments/run_bench.py --suite pace-exact --algos all --budget 60 --out
 python experiments/run_bench.py --suite snap --algos all --budget 600 --workers 3 --out results/snap.csv
 python experiments/ablation.py bounds --budget 300 --out results/ablation_lb.csv
 python experiments/ablation.py scaling --out results/scaling.csv
-python experiments/analyze.py --pace-exact results/pace_exact.csv --snap results/snap.csv
+python experiments/anytime.py results/anytime_hepth.csv 600 ca-HepTh
+python experiments/anytime.py results/anytime_dblp.csv 600 com-DBLP
+python experiments/plot_anytime.py
+python experiments/analyze.py --pace-exact results/pace_exact.csv --snap results/snap.csv \
+    --ablation results/ablation_lb.csv --scaling results/scaling.csv
 cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
+
+## Main results (see `paper/main.pdf`)
+
+* PACE 2021 exact track (200 instances): the CertiFlip bound proves optimality
+  on 111 of the 173 instances with known optimum (root bounds of the KaPoCE
+  branch-and-bound: 79); published lower bounds improved on the open instances
+  exact179 (632) and exact180 (1069); a solution of cost 2788 for exact183
+  (published upper bound 2789), stored in `results/solutions/`.
+* SNAP graphs with up to 10^6 edges: best known solutions certified within
+  0.2%-9.2% of optimal, where greedy / fractional triangle packings certify
+  only factors 1.17-1.81.
+* IteratedFlip stays within 0.10%-0.44% of the PACE 2021 winner KaPoCE on
+  SNAP graphs, at a fraction of its running time.
 
 ## License
 
