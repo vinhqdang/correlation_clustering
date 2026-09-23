@@ -44,32 +44,34 @@ British University Vietnam, Hung Yen, Vietnam\\
 
 \begin{abstract}
 Correlation clustering on complete signed graphs (equivalently, cluster
-editing) has seen rapid progress on approximation ratios: LP and SDP
+editing) has seen rapid progress on approximation ratios.  LP and SDP
 hierarchies now give ratios below $1.5$, and a combinatorial algorithm
 achieves $2-2/13$ in near-linear time.  In practice, however, the solutions of
-engineered heuristics come with no quality guarantee on large graphs: exact
-solvers stop at a few hundred vertices, the metric LP has $\Theta(n^3)$
-constraints, and the scalable lower bounds known so far certify only a factor
-of about two.  We close this gap from both sides.  (i)~Using the fact that
-optimal clusters have diameter at most two, we show that the metric LP can be
-restricted to the $O(\sum_v \deg(v)^2)$ pairs at distance at most two without
+engineered heuristics come with no quality guarantee on large graphs.  Exact
+solvers stop at a few hundred vertices, and the metric LP has $\Theta(n^3)$
+constraints.  The strongest combinatorial lower bounds, the packing bounds of
+branch-and-bound solvers, store the instance as a dense matrix, and the
+bounds that do scale certify only a factor of about two.  We close this gap
+from both sides.
+(i)~Optimal clusters have diameter at most two.  We use this to restrict the
+metric LP to the $O(\sum_v \deg(v)^2)$ pairs at distance at most two, without
 losing validity or the guarantees of LP-rounding algorithms, and we
-strengthen it with star and local subgraph inequalities that close most of the
-remaining integrality gap on real graphs.  (ii)~We give an anytime,
-always-valid lower bound computed by dual block-coordinate ascent in which
-every block is an exact LP; it needs only one number per pair and runs on graphs
-with millions of pairs.  (iii)~We prove an exact decomposition of the
-optimality gap into non-negative per-pair and per-constraint terms, which
-yields a local optimality certificate and guides a large-neighbourhood search
-with exact sub-MIPs.  Combined with the first implementation of the iterated
-flipping local search of Cohen-Addad et al., these ingredients form
-\emph{CertiFlip}, an algorithm with an a-priori guarantee ($3$ in expectation,
-and $2.06$ whenever the relaxation is solved to optimality) that outputs a
-certified bound on its own approximation ratio.  On the PACE~2021 benchmark
-and on fifteen SNAP graphs with up to $3\cdot 10^6$ edges, CertiFlip matches
-the solution quality of the PACE~2021 winner and certifies it within a few
-percent of optimal where previously no certificate below a factor of about two
-was available.
+strengthen it with star and local subgraph inequalities.
+(ii)~We compute an anytime, always-valid lower bound by dual
+block-coordinate ascent.  It is warm-started by sparse star packings improved
+with ruin-and-recreate local search, and every block is an exact LP.
+(iii)~We prove an exact decomposition of the optimality gap into non-negative
+per-pair and per-constraint terms.  It yields a local optimality certificate
+and guides a large-neighbourhood search with exact sub-MIPs.
+Together with the first implementation of the iterated flipping local search
+of Cohen-Addad et al., these ingredients form \emph{CertiFlip}.  CertiFlip
+has an a-priori guarantee ($3$ in expectation, and $2.06$ whenever the
+relaxation is solved to optimality) and outputs a certified bound on its own
+approximation ratio.  On the PACE~2021 exact track it finds a new best
+solution for an open instance and proves optimality on more instances than
+the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs its
+bounds certify the solutions of the PACE~2021 winner within about one percent
+of optimal, on graphs far beyond the reach of dense-matrix bounds.
 \end{abstract}
 
 \section{Introduction}
@@ -108,8 +110,10 @@ solutions.  However, nobody can say \emph{how} good these solutions are on
 large graphs.  Exact branch-and-bound solves instances with a few hundred
 vertices~\citep{BlasiusEtAl22sea}.  Metric-LP solvers based on projection
 methods reach about $10^4$ vertices~\citep{veldt2019metric,ruggles2020parallel}.
-The scalable combinatorial lower bounds certify solutions only within a factor
-of about two~\citep{veldt2022stc}.  The PACE report~\citep{KellerhalsKNZ21pace}
+The branch-and-bound algorithm of \citet{BlasiusEtAl22sea} uses strong
+packing lower bounds, but its implementation stores the instance as a dense
+matrix.  The combinatorial bounds that scale to large graphs certify
+solutions only within a factor of about two~\citep{veldt2022stc}.  The PACE report~\citep{KellerhalsKNZ21pace}
 lists 27 exact-track instances with up to 620 vertices whose optimum is
 still unknown.
 
@@ -130,16 +134,21 @@ LP-rounding algorithms~\citep{AilonCN08,ChawlaMSY15} keep their guarantees,
 and the relaxation has $O(\sum_v\deg(v)^2)$ variables instead of
 $\binom{n}{2}$.  We strengthen it with star inequalities and \emph{local
 subgraph inequalities} (Proposition~\ref{prop:subgraph}).  On real graphs
-these raise the bound substantially: on \texttt{ca-GrQc} the gap to the best
-known solution shrinks from $23\%$ to $0.5\%$.
+these raise the bound substantially.  On \texttt{ca-GrQc}, the gap between
+the metric LP and the best known solution is $23\%$; with these inequalities
+it falls below $0.2\%$.
 
 \item \textbf{Anytime dual bounds} (Section~\ref{sec:dual}).  We compute a
 lower bound by dual block-coordinate ascent.  Each block is a vertex set whose
 LP is solved exactly by cutting planes, with costs equal to the current
 reduced costs.  The bound is valid after every step, never decreases, and
 stores only the reduced cost of each pair and the rows with positive
-multipliers (Theorem~\ref{thm:anytime}).  Blocks come from randomised graph
-partitions and from regions where the current optimality gap is large.
+multipliers (Theorem~\ref{thm:anytime}).  Any packing of induced stars or bad
+triangles is a feasible starting point.  We compute one on the sparse support
+with a ruin-and-recreate local search: on \texttt{ca-HepTh} it exceeds the
+root bound of the KaPoCE branch-and-bound in less than half the time and
+with $O(|P|)$ instead of $\Theta(n^2)$ memory.  Blocks come from randomised
+graph partitions and from regions where the current optimality gap is large.
 
 \item \textbf{Gap decomposition and local certificates}
 (Section~\ref{sec:gap}).  For any clustering, the difference between its cost
