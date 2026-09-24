@@ -2,6 +2,9 @@
 # Supervisor: keeps the fleet manager running.  It is restarted when it exits
 # and killed and restarted when its heartbeat is older than 20 minutes.
 cd "$(dirname "$0")/.."
+# only one supervisor at a time
+exec 9> /tmp/colab_fleet.lock
+flock -n 9 || exit 0
 HB=results/colab/heartbeat
 while true; do
     date +%s > "$HB"
