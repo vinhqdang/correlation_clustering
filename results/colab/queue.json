@@ -85,7 +85,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790214259.5470123
  },
@@ -165,8 +165,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790214894.2962465
  },
  {
   "id": "m1_ca-AstroPh_1",
