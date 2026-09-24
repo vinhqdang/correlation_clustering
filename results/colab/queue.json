@@ -1,11 +1,212 @@
 [
  {
+  "id": "h1+p_self=0.5+px_accept=1_com-Amazon_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790211875.3901691
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_com-DBLP_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790211882.402505
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_email-Enron_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790211888.432194
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_loc-Brightkite_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_ca-HepTh_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_BitcoinOTC+_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_ca-AstroPh_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_ca-CondMat_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_ca-HepPh_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_ca-GrQc_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1_BitcoinAlpha+_0",
+  "tag": "h1+p_self=0.5+px_accept=1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_com-Amazon_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_com-DBLP_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_email-Enron_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_loc-Brightkite_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-HepTh_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_BitcoinOTC+_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-AstroPh_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-CondMat_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-HepPh_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-GrQc_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_BitcoinAlpha+_0",
+  "tag": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
   "id": "p2_com-Amazon_0",
   "tag": "p2",
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790211201.2302697
  },
@@ -15,7 +216,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790211218.1309714
  },
@@ -25,7 +226,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790211234.247139
  },
