@@ -45,8 +45,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790212132.049887
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_BitcoinOTC+_0",
@@ -54,8 +55,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790212138.7593167
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_ca-AstroPh_0",
@@ -247,7 +249,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790211494.4249842
  },
@@ -257,7 +259,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790211510.9578147
  },
