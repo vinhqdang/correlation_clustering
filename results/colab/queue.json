@@ -5199,7 +5199,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur121.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790287083.7839699
  },
@@ -5239,7 +5239,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur129.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790287087.5931454
  },
@@ -5319,7 +5319,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur145.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790288023.2070723
  },
@@ -5379,7 +5379,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur157.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790289725.5968778
  },
@@ -5419,7 +5419,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur165.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790289736.6194313
  },
@@ -5449,7 +5449,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur171.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790290608.5618474
  },
@@ -5489,7 +5489,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur179.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790290960.3549082
  },
@@ -5529,8 +5529,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur187.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790292524.6994007
  },
  {
   "id": "s1h_pace-heur_heur189.gr_0",
@@ -5538,8 +5539,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur189.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790292524.6994033
  },
  {
   "id": "s1h_pace-heur_heur191.gr_0",
@@ -5547,8 +5549,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur191.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790292524.6994045
  },
  {
   "id": "s1h_pace-heur_heur193.gr_0",
@@ -5556,8 +5559,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur193.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790292524.699405
  },
  {
   "id": "s1h_pace-heur_heur195.gr_0",
@@ -5565,8 +5569,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur195.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790292529.4009027
  },
  {
   "id": "s1h_pace-heur_heur197.gr_0",
@@ -5574,8 +5579,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur197.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790292529.400904
  },
  {
   "id": "s1h_pace-heur_heur199.gr_0",
@@ -5583,8 +5589,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur199.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790292529.4009042
  },
  {
   "id": "s1t60_ca-GrQc_0",
@@ -5592,8 +5599,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790292529.4009042
  },
  {
   "id": "s1t60_ca-HepTh_0",
@@ -5601,8 +5609,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790292531.6752598
  },
  {
   "id": "s1t60_ca-HepPh_0",
@@ -5610,8 +5619,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790292531.675262
  },
  {
   "id": "s1t60_ca-AstroPh_0",
@@ -5619,8 +5629,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790292531.6752625
  },
  {
   "id": "s1t60_ca-CondMat_0",
@@ -5628,8 +5639,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790292531.6752627
  },
  {
   "id": "s1t60_email-Enron_0",
