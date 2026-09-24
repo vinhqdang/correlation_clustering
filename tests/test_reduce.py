@@ -79,3 +79,12 @@ def test_anneal_journal_and_swaps_consistent():
             best, bc = _anneal_w(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab.copy(), iters,
                                  1.0, 0.05, 0.03, 0.3, 7, c0, np.empty(0, np.int64), ps)
             assert bc == wg.cost(best) and bc <= c0
+
+
+def test_px_anneal_monotone():
+    from ccbench.memetic import px_anneal
+    g, _ = planted_partition(0, 0, 0.8, 0.02, rng=9, sizes=np.full(12, 10))
+    h = []
+    lab, c = px_anneal(g, time_limit=6, rng=0, step=1.0, history=h)
+    assert c == cc.cost(g, lab)
+    assert all(b[1] <= a[1] for a, b in zip(h, h[1:]))

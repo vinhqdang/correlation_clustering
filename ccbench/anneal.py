@@ -309,10 +309,11 @@ _RATE = {}
 def anneal_w(wg, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 0.6,
              t_end: float = 0.03, p_single: float = 0.03, p_best: float = 0.3, rng=None,
              nodes: np.ndarray | None = None, max_sweeps: float | None = None,
-             p_swap: float = 0.0):
+             p_swap: float = 0.0, last: bool = False):
     """Node-level annealing with greedy-biased proposals on a weighted instance
     (:class:`ccbench.reduce.WGraph`).  With ``nodes`` only these nodes move; the
-    number of proposals is rate * time_limit, capped at max_sweeps * len(nodes)."""
+    number of proposals is rate * time_limit, capped at max_sweeps * len(nodes).
+    Returns the best clustering seen, or with ``last`` the final state."""
     rng = np.random.default_rng(rng)
     lab = _compact(np.asarray(labels))[0].copy()
     c0 = wg.cost(lab)
@@ -329,7 +330,7 @@ def anneal_w(wg, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 
         iters = min(iters, int(max_sweeps * max(1, len(nd))))
     best, bc = _anneal_w(*args, lab, iters, t_start, t_end, p_single, p_best,
                          int(rng.integers(1 << 30)), c0, nd, p_swap)
-    return best
+    return lab if last else best
 
 
 def anneal2(g: Graph, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 0.6,
