@@ -2969,7 +2969,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790243227.593982
  },
@@ -2979,7 +2979,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790243227.5939827
  }
