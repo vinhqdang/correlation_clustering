@@ -5359,7 +5359,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur153.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790288289.6553617
  },
@@ -5649,8 +5649,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790292778.5131335
  },
  {
   "id": "s1t60_loc-Brightkite_0",
@@ -5658,8 +5659,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790292778.5131352
  },
  {
   "id": "s1t60_soc-Epinions_0",
@@ -5667,8 +5669,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790292778.5131354
  },
  {
   "id": "s1t60_Slashdot+_0",
@@ -5676,8 +5679,9 @@
   "T": 60.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790292778.5131357
  },
  {
   "id": "s1t60_Epinions+_0",
