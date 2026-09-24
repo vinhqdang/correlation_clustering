@@ -3309,8 +3309,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790255256.0220876
  },
  {
   "id": "s1_ca-AstroPh_2",
@@ -3318,8 +3319,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790255256.0220897
  },
  {
   "id": "s1_ca-CondMat_2",
@@ -3327,8 +3329,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790255256.0220902
  },
  {
   "id": "s1_email-Enron_2",
@@ -3336,8 +3339,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790255256.0220907
  },
  {
   "id": "s1_loc-Brightkite_2",

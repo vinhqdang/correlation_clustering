@@ -1,31 +1,35 @@
 CertiFlip certifies its solutions, but on large graphs they remain
 $0.1\%$--$0.4\%$ above those of KaPoCE (Section~\ref{sec:exp}).  This section
-describes a second primal solver, \emph{PXMem}, whose solutions match or
-beat KaPoCE on most of our graphs.  It rests on two exact facts: twins can be
-contracted, and two clusterings can be recombined block by block without
-losing anything.  Both results, the move formulas used by the implementation
-and the guarantee of Theorem~\ref{thm:pxmem} are machine-checked
-(Section~\ref{sec:lean}).
+describes a second primal solver, \emph{PXMem}.  It rests on two elementary
+exact facts: twins can be contracted, and two clusterings can be recombined
+block by block without losing anything.  Neither fact is deep, and both have
+close relatives in the literature, which we point out below; what we add is
+their combination into a solver whose incremental formulas and
+recombination are machine-checked (Section~\ref{sec:lean}).
 
 \subsection{Critical-clique contraction}
 
 Two vertices $u\ne v$ are \emph{twins} if $uv\in\Ep$ and $N(u)\setminus\{v\}=
 N(v)\setminus\{u\}$, i.e.\ they have the same closed neighbourhood.  The classes
-of twins are the \emph{critical cliques} of \citet{Guo09kernel}.
+of twins are the \emph{critical cliques} of \citet{Guo09kernel}.  The
+following lemma is due to \citet{Guo09kernel}; we include the short proof
+because the implementation relies on its exact form.
 
-\begin{lemma}\label{lem:twins}
+\begin{lemma}[\citealp{Guo09kernel}]\label{lem:twins}
 Let $u,v$ be twins and $\mathcal C$ a clustering that separates them.  Moving
 $v$ into the cluster of $u$ and moving $u$ into the cluster of $v$ change the
 cost by $\delta_1$ and $\delta_2$ with $\delta_1+\delta_2=-2$.  Hence every
 optimal clustering keeps every critical clique inside one cluster.
 \end{lemma}
 \begin{proof}
-Let $A\ni u$ and $B\ni v$ be the two clusters and, for a cluster $X$, let
-$f(X)$ be the number of mistakes between a vertex $z\in\{u,v\}$ and the
-vertices of $X\setminus\{u,v\}$ if $z$ is placed in $X$; it is the same for $u$
-and $v$ because they are twins.  Besides the cut positive pair $uv$, the
-current cost involving $u$ or $v$ is $f(A)+f(B)$; after the first move it is
-$2f(A)$, after the second $2f(B)$.  So $\delta_1+\delta_2=2f(A)+2f(B)
+Let $A\ni u$ and $B\ni v$ be the two clusters.  For a cluster $X$ let
+$f(X)$ be the number of mistakes on the pairs $zw$ with $w\in
+V\setminus\{u,v\}$ when a vertex $z\in\{u,v\}$ is placed in $X$ (all other
+vertices staying where they are).  It is the same for $u$ and $v$ because
+they have the same neighbours in $V\setminus\{u,v\}$.  The moves do not change
+$A\setminus\{u,v\}$ and $B\setminus\{u,v\}$.  Besides the cut positive pair $uv$,
+the current cost of the pairs involving $u$ or $v$ is $f(A)+f(B)$; after the
+first move it is $2f(A)$, after the second $2f(B)$.  So $\delta_1+\delta_2=2f(A)+2f(B)
 -2(f(A)+f(B)+1)=-2$ and one of the moves is a strict improvement.
 \end{proof}
 
@@ -39,7 +43,8 @@ a clustering $c$ of $U$ is
 The pairs inside a critical clique are positive and never cut.  Hence the cost
 of the expanded clustering on $G^+$ equals $\cost_w(c)$, and by
 Lemma~\ref{lem:twins} an optimal clustering of the contracted instance expands
-to an optimal clustering of $G^+$.  On the collaboration graphs the
+to an optimal clustering of $G^+$.  Merging vertices into weighted nodes in
+this way is standard in cluster editing~\citep{Guo09kernel}.  On the collaboration graphs the
 contraction removes $13\%$--$22\%$ of the vertices.  Pivot never separates
 twins either: whether a vertex joins the cluster of the pivot $p$ depends only
 on its closed neighbourhood, so each round treats twins alike.  A Pivot
@@ -49,7 +54,10 @@ cost.
 \subsection{Partition crossover}
 
 \begin{theorem}[partition crossover]\label{thm:px}
-Let $a$ and $b$ be clusterings and let $H$ be the bipartite graph whose nodes
+Let the cost of a clustering be any sum of pair terms that depend only on
+whether the two vertices of the pair share a cluster (this covers $\cost$ and
+the weighted cost~\eqref{eq:wcost}).  Let $a$ and $b$ be clusterings and let
+$H$ be the bipartite graph whose nodes
 are the clusters of $a$ and of $b$, with an edge between $A\in a$ and $B\in b$
 whenever $A\cap B\ne\emptyset$.  Each connected component of $H$ covers a
 vertex set $X$, the \emph{block}, which is a union of clusters of $a$ and also
@@ -73,12 +81,15 @@ exchanging the roles of $a$ and $b$ gives the bound by $\cost(b)$.
 
 The blocks are the connected components of a bipartite graph with at most $n$
 edges, and the block costs need one pass over $\Ep$.  Hence $\chi$ is computed in
-$O(n+m)$ time.  The blocks are also the finest sets on which a block-wise
-choice between the two parents always gives a clustering: any finer set would
-split a cluster of $a$ or of $b$.  The operator is the analogue for clusterings
-of the partition crossover of \citet{WhitleyHH09gpx} for tours.  It combines
-\emph{any} two clusterings, including clusterings produced by different
-solvers.  On our graphs, two independent runs typically differ in thousands of
+$O(n+m)$ time.  The blocks form the join $a\vee b$ of the two partitions in the partition
+lattice: the finest partition whose parts are unions of clusters of $a$ and
+also of $b$.  It is the finest partition for which every block-wise choice
+between the parents yields each parent as one of the choices and leaves the
+pairs between blocks separated in both.  The idea of decomposing two parents
+into independent components and taking the better parent in each is that of
+the partition crossover of \citet{WhitleyHH09gpx} for tours; the argument is a
+few lines, and we claim no novelty for it.  It combines \emph{any} two
+clusterings, including clusterings produced by different solvers.  On our graphs, two independent runs typically differ in thousands of
 blocks, most of them ties, and each run wins some of the others.
 
 \subsection{Annealing moves}
@@ -142,7 +153,13 @@ degree.
 Algorithm~\ref{alg:pxmem} keeps a population of four clusterings.  A crossover
 child enters the population only by replacing a member that is not cheaper,
 preferring the most similar members (crowding); the other two operators
-replace a member only if they improve it.
+replace a member only if they improve it.  Contracting the blocks common to
+both parents and continuing with a multilevel search from the recombined
+clustering follows the recombination of memetic graph partitioners and
+clusterers~\citep{hausberger2025scc}.  The flipping round of line~3 costs a few
+full local-search passes whatever its time limit; with budgets below
+\SI{300}{s} the seeds are therefore Pivot clusterings only, and no further seed
+is generated once half of the budget is used.
 
 \begin{theorem}\label{thm:pxmem}
 Let $\mathcal C$ be the output of Algorithm~\ref{alg:pxmem} and $p_1$ the first
@@ -151,6 +168,11 @@ the random choices, and hence $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.  Togethe
 with a lower bound $\LB$ from Section~\ref{sec:dual},
 $\cost(\mathcal C)/\lceil\LB\rceil$ bounds the ratio achieved on the instance.
 \end{theorem}
+The guarantee is inherited from the Pivot seed, as for any procedure that
+starts from a Pivot clustering and never makes its best solution worse; we state
+it because every operator of the search must respect it, and this is what the
+formal development checks.
+
 \begin{proof}
 The seed $x_1$ costs at most $\cost(p_1)$: Pivot does not separate twins, so its
 contraction preserves its cost, and $x_1$ is the cheaper of the two

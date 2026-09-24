@@ -22,6 +22,7 @@ For every clustering C that separates far pairs, cost(C) = |N2| + sum_P c_p x_p
 and ceil(LB) is a certified lower bound.
 
 usage: check_certificate.py GRAPH CERT.npz [GRAPH CERT.npz ...]
+       check_certificate.py --dir CERT_DIR OUT.csv
 """
 import sys
 from fractions import Fraction
@@ -275,9 +276,43 @@ def check(g, cert):
     return report
 
 
+def check_dir(cert_dir, out_csv):
+    """Check every certificate in cert_dir (files named as by run_bench.py:
+    <instance with '/' replaced by '_'>_s<seed>.npz) and write one CSV row each."""
+    import csv
+    import glob
+    import os
+    import datasets as D
+    rows = []
+    for path in sorted(glob.glob(os.path.join(cert_dir, "*.npz"))):
+        base = os.path.basename(path)[:-4]
+        inst, seed = base.rsplit("_s", 1)
+        for pre in ("pace-exact", "pace-heur"):
+            if inst.startswith(pre + "_"):
+                inst = pre + "/" + inst[len(pre) + 1:]
+        row = {"instance": inst, "seed": seed}
+        try:
+            rep = check(D.load(inst), np.load(path))
+            row.update(rep)
+            row["status"] = "ok"
+        except ValueError as exc:
+            row["status"] = f"rejected: {exc}"
+        rows.append(row)
+        print(row, flush=True)
+    keys = ["instance", "seed", "status", "rows", "nnz", "brute_rows", "star_rows",
+            "lb_exact", "certified", "solver_bound"]
+    with open(out_csv, "w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=keys, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rows)
+
+
 def main(argv):
     sys.path.insert(0, ".")
     sys.path.insert(0, "experiments")
+    if argv and argv[0] == "--dir":
+        check_dir(argv[1], argv[2])
+        return
     import datasets as D
     for name, path in zip(argv[0::2], argv[1::2]):
         g = D.load(name)
