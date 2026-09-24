@@ -2909,7 +2909,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790241744.3350961
  },
@@ -2949,7 +2949,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790241747.6835065
  },
