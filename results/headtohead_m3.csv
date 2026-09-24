@@ -1,0 +1,12 @@
+graph,runs,mean_rel_diff_pct,wins,ties,losses,sign_p
+BitcoinAlpha+,10,0.00087,0,9,1,1.0000
+BitcoinOTC+,10,0.00061,0,9,1,1.0000
+ca-AstroPh,9,-0.01858,9,0,0,0.0039
+ca-CondMat,10,-0.03570,10,0,0,0.0020
+ca-GrQc,10,0.00000,0,10,0,1.0000
+ca-HepPh,9,0.00000,0,9,0,1.0000
+ca-HepTh,10,-0.00632,8,2,0,0.0078
+com-Amazon,10,0.00413,0,0,10,0.0020
+com-DBLP,10,-0.00376,9,0,1,0.0215
+email-Enron,8,0.00224,4,0,4,1.0000
+loc-Brightkite,9,0.00089,2,3,4,0.6875
