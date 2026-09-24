@@ -4889,7 +4889,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur059.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790284382.3740375
  },
