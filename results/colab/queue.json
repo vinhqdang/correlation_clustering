@@ -5,7 +5,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790212811.3613167
  },
@@ -145,8 +145,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790213518.636457
  },
  {
   "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_ca-HepTh_0",
