@@ -145,7 +145,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790214803.303973
  },
@@ -155,7 +155,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790214816.1970763
  },
@@ -235,8 +235,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790215446.0895698
  },
  {
   "id": "m1_email-Enron_2",
@@ -244,8 +245,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790215448.6024284
  },
  {
   "id": "m1_loc-Brightkite_2",
