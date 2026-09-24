@@ -247,7 +247,9 @@ def step(state):
             log(f"{s}: probe failed ({st['fails']}): {LAST_ERR.get(s, '')}")
             # a failed probe is often a stale token after this manager was down;
             # recreating destroys running jobs, so only do it after a long outage
-            if st["fails"] >= 6 and time.time() - st["fail_since"] > 1800:
+            # "not found" after adopt(): no local session and no VM to re-attach
+            gone = "not found" in LAST_ERR.get(s, "") and st["fails"] >= 2
+            if gone or (st["fails"] >= 6 and time.time() - st["fail_since"] > 1800):
                 for j in queue:
                     if j.get("machine") == s and j["status"] == "running":
                         j["status"], j["machine"] = "pending", None
