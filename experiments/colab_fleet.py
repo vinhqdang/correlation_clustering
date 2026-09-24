@@ -193,9 +193,12 @@ def merge_inbox(queue):
 
 
 def step(state):
-    queue = merge_inbox(load(QUEUE, []))
+    queue = load(QUEUE, [])
+    n0 = len(queue)
+    queue = merge_inbox(queue)
     by_id = {j["id"]: j for j in queue}
-    new_files = False
+    # push queue changes at once: the working copy may not survive a restart
+    new_files = len(queue) != n0
     with ThreadPoolExecutor(len(SESSIONS)) as ex:
         probes = dict(zip(SESSIONS, ex.map(probe, SESSIONS)))
     if all(p is None for p in probes.values()):
