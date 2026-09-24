@@ -25,7 +25,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790208741.0882897
  },
@@ -449,8 +449,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790209373.5788643
  },
  {
   "id": "e3+p_swap=0.1_com-DBLP_0",
