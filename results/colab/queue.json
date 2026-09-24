@@ -17,7 +17,7 @@
   "graph": "com-DBLP",
   "status": "running",
   "machine": "w4",
-  "started": 1790211882.402505
+  "started": 1790213253.895126
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_email-Enron_0",
@@ -27,7 +27,7 @@
   "graph": "email-Enron",
   "status": "running",
   "machine": "w5",
-  "started": 1790211888.432194
+  "started": 1790213255.362879
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_loc-Brightkite_0",
@@ -37,7 +37,7 @@
   "graph": "loc-Brightkite",
   "status": "running",
   "machine": "w6",
-  "started": 1790212041.0486495
+  "started": 1790213356.1951678
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_ca-HepTh_0",
@@ -45,7 +45,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790212812.8931031
  },
@@ -85,7 +85,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790212825.5198572
  },
@@ -125,8 +125,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790213431.725884
  },
  {
   "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_email-Enron_0",
@@ -134,8 +135,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790213434.446528
  },
  {
   "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_loc-Brightkite_0",
