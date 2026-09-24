@@ -6,8 +6,8 @@
   "seed": 0,
   "graph": "com-Amazon",
   "status": "running",
-  "machine": "w2",
-  "started": 1790211875.3901691
+  "machine": "w1",
+  "started": 1790212811.3613167
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_com-DBLP_0",
@@ -46,8 +46,8 @@
   "seed": 0,
   "graph": "ca-HepTh",
   "status": "running",
-  "machine": "w1",
-  "started": 1790212132.049887
+  "machine": "w3",
+  "started": 1790212812.8931031
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_BitcoinOTC+_0",
@@ -55,7 +55,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790212138.7593167
  },
@@ -85,8 +85,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790212825.5198572
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_ca-GrQc_0",
@@ -281,8 +282,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
-  "machine": "w3",
+  "status": "pending",
+  "machine": null,
   "started": 1790211612.3415763
  },
  {
