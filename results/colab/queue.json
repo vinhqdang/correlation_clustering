@@ -3979,7 +3979,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790265469.863602
  },
@@ -4189,8 +4189,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790270129.094433
  },
  {
   "id": "s1_email-Enron_7",
@@ -4198,8 +4199,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790270129.0944345
  },
  {
   "id": "s1_loc-Brightkite_7",
@@ -4207,8 +4209,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790270129.094435
  },
  {
   "id": "s1_soc-Epinions_7",
@@ -4216,8 +4219,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790270129.0944357
  },
  {
   "id": "s1_Slashdot+_7",
