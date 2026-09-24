@@ -4269,7 +4269,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790277393.9789588
  },
