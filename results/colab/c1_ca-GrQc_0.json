@@ -1,0 +1,1 @@
+{"graph": "ca-GrQc", "n": 5242, "m": 14484, "T": 600.0, "seed": 0, "tag": "c1", "commit": "2f7a159", "python": "3.13.15", "cost": 6058, "lb": 6034.445713523703, "time": 600.2254812717438, "check": "ok", "certified": 6035, "lb_exact": 6034.445712560788, "rows": 4078, "star_rows": 74, "check_time": 1.6315832138061523}

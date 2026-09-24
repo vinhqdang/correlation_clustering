@@ -1,0 +1,1 @@
+{"graph": "ca-CondMat", "n": 23133, "m": 93439, "T": 600.0, "seed": 0, "tag": "c1", "commit": "2f7a159", "python": "3.13.15", "cost": 56977, "lb": 55157.54980640893, "time": 600.4738245010376, "check": "ok", "certified": 55158, "lb_exact": 55157.549805586226, "rows": 23860, "star_rows": 1016, "check_time": 4.524145603179932}
