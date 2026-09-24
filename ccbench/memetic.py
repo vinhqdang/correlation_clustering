@@ -343,7 +343,8 @@ def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 
                  verbose: bool = False, history: list | None = None, **kw):
     """memetic_w on the critical-clique contraction of g.  Seeds: Pivot (which
     never splits a critical clique) followed by one round of flipping local
-    search, projected onto the contracted nodes."""
+    search, projected onto the contracted nodes.  No operator increases the
+    cost of the best member, so E[cost] <= 3 OPT (the Pivot guarantee)."""
     from .reduce import contract
     rng = np.random.default_rng(rng)
     t0 = time.time()
@@ -354,7 +355,11 @@ def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 
     init = []
     for _ in range(pop_size):
         s = int(rng.integers(1 << 30))
-        init.append(iterated_flip(g, pivot(g, s), 1, rng=s, time_limit=t_seed)[first])
+        p = pivot(g, s)
+        f = iterated_flip(g, p, 1, rng=s, time_limit=t_seed)[first]
+        # Pivot never splits a critical clique, so its projection is exact; the
+        # projection of the flip result may cost more, keep the better one
+        init.append(f if wg.cost(f) <= cost(g, p) else p[first])
     lab, c = memetic_w(wg, time_limit, rng, init, pop_size=pop_size, verbose=verbose,
                        history=history, t0=t0, **kw)
     out = lab[grp]
