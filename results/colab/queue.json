@@ -125,8 +125,8 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790221112.5167172
  },
  {
@@ -135,8 +135,8 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790221112.5167193
  },
  {
@@ -145,8 +145,8 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790221112.51672
  },
  {
@@ -155,8 +155,8 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790221112.516721
  },
  {
@@ -325,8 +325,8 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "running",
-  "machine": "w7",
+  "status": "pending",
+  "machine": null,
   "started": 1790220559.817912
  },
  {
