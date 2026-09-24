@@ -85,8 +85,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790214259.5470123
  },
  {
   "id": "m1_ca-GrQc_0",
@@ -430,7 +431,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790213586.3918529
  },
