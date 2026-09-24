@@ -4559,7 +4559,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790278943.8315003
  },
@@ -4849,8 +4849,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur051.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790283668.1883347
  },
  {
   "id": "s1h_pace-heur_heur053.gr_0",
@@ -4858,8 +4859,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur053.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790283668.1883366
  },
  {
   "id": "s1h_pace-heur_heur055.gr_0",
@@ -4867,8 +4869,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur055.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790283668.188337
  },
  {
   "id": "s1h_pace-heur_heur057.gr_0",
@@ -4876,8 +4879,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur057.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790283668.1883376
  },
  {
   "id": "s1h_pace-heur_heur059.gr_0",
