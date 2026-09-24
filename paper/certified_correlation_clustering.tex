@@ -249,14 +249,28 @@ kernels~\citep{Guo09kernel,CaoC12kernel} and practical branch-and-bound
 algorithms~\citep{BockerBK11exact,BlasiusEtAl22sea}.  The latter use packings
 of stars and induced paths as lower bounds, and mark pairs at distance at
 least three as forbidden.  \citet{BastosOPSMP16} note that such pairs are
-separated in every optimal solution.  Cutting-plane methods for the clique
-partitioning polytope go back to \citet{GrotschelW89}, with recent work on
-facets and redundancy~\citep{irmai2024chorded,koshimura2022concise}.  For
+separated in every optimal solution.  Twin (critical-clique) reductions and
+their weighted variants are standard in the parameterised
+algorithms~\citep{Guo09kernel,ProttiDS09modular,BockerBBT09weighted,
+Bocker12golden,ChenM12kernel} and in practical tools such as FORCE and
+TransClust~\citep{WittkopBLR07force,WittkopEtAl10transclust}.  Cutting-plane
+methods for the clique partitioning polytope go back to
+\citet{GrotschelW89,GrotschelW90facets}, with recent work on facets and
+redundancy~\citep{irmai2024chorded,koshimura2022concise}.
+\citet{MiyauchiS15redundant} and \citet{miyauchi2018exact} show that many
+triangle inequalities of the clique partitioning formulation are redundant;
+the distance-two relaxation is a different reduction, which removes
+variables rather than rows.  The LP relaxations of \citet{veldt2022stc}, based
+on strong triadic closure, are also supported on the open wedges of $G^+$;
+they yield fast approximation algorithms and bounds within a factor of about
+two, while our relaxation keeps the metric LP on $P$.  For
 sparse weighted graphs (multicut), dual decomposition and message passing
 give fast lower bounds~\citep{SwobodaA17multicut,AbbasS22rama,lange2018partial}.
 On complete graphs, however, the number of variables is quadratic.  Our
 distance-two support removes exactly this obstacle.  Local search heuristics
-include vertex moves~\citep{elsner2009bounding}, Louvain and Leiden with the
+include vertex moves~\citep{elsner2009bounding}, heuristics for clique
+partitioning~\citep{BruscoK09clique,ZhouHG16threephase,LuZH22hybrid}, local
+search for multicut~\citep{levinkov2017comparative}, Louvain and Leiden with the
 constant Potts model at resolution $1/2$, which optimises the same
 objective~\citep{veldt2018lambdacc,BlondelGLL08,TraagWvE19}, and memetic
 multilevel schemes~\citep{hausberger2025scc,BlasiusEtAl21kapoceHeur}.
@@ -352,7 +366,9 @@ inside $H$ are separated and cost nothing, so all its mistakes are counted
 on the left-hand side.
 \end{proof}
 
-Bad triangles ($\OPT=1$) and induced stars with $k$ independent leaves
+The local subgraph inequalities are local cuts in the sense of
+\citet{ApplegateBCC01localcuts}: valid inequalities obtained by solving a small
+subproblem exactly.  Bad triangles ($\OPT=1$) and induced stars with $k$ independent leaves
 ($\OPT=k-1$) are local subgraph inequalities.  So are chordless cycles $C_k$,
 for which $\OPT(C_k)=\lceil k/2\rceil$ while the metric LP only certifies
 $k/2$ (put $x=1/2$ on the cycle edges).  We separate stars greedily around
@@ -481,7 +497,9 @@ Apply~\eqref{eq:gap} to both clusterings.  Terms not touching $B$ coincide,
 and the terms of $\mathcal C'$ are non-negative.  Costs are integers.
 \end{proof}
 
-\paragraph{Gap-guided LNS.}  Large-neighbourhood search~\citep{Shaw98} fixes
+\paragraph{Gap-guided LNS.}  Large-neighbourhood search~\citep{Shaw98}, here
+with exact sub-MIPs in the spirit of RINS and local
+branching~\citep{DannaRL05rins,FischettiL03local}, fixes
 the clustering outside a vertex set $B$ ($|B|\le 60$) and re-optimises $B$
 exactly.  Let $\mathcal K$ be the outside clusters with a positive edge into
 $B$.  Re-clusterings of $B$ correspond to clusterings of $B$ together with one

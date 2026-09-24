@@ -12,8 +12,9 @@ recombination are machine-checked (Section~\ref{sec:lean}).
 Two vertices $u\ne v$ are \emph{twins} if $uv\in\Ep$ and $N(u)\setminus\{v\}=
 N(v)\setminus\{u\}$, i.e.\ they have the same closed neighbourhood.  The classes
 of twins are the \emph{critical cliques} of \citet{Guo09kernel}.  The
-following lemma is due to \citet{Guo09kernel}; we include the short proof
-because the implementation relies on its exact form.
+following lemma is due to \citet{Guo09kernel} (see also
+\citet{ProttiDS09modular}); we include the short proof because the
+implementation relies on its exact form.
 
 \begin{lemma}[\citealp{Guo09kernel}]\label{lem:twins}
 Let $u,v$ be twins and $\mathcal C$ a clustering that separates them.  Moving
@@ -44,7 +45,7 @@ The pairs inside a critical clique are positive and never cut.  Hence the cost
 of the expanded clustering on $G^+$ equals $\cost_w(c)$, and by
 Lemma~\ref{lem:twins} an optimal clustering of the contracted instance expands
 to an optimal clustering of $G^+$.  Merging vertices into weighted nodes in
-this way is standard in cluster editing~\citep{Guo09kernel}.  On the collaboration graphs the
+this way is standard in cluster editing~\citep{Guo09kernel,BockerBBT09weighted}.  On the collaboration graphs the
 contraction removes $13\%$--$22\%$ of the vertices.  Pivot never separates
 twins either: whether a vertex joins the cluster of the pivot $p$ depends only
 on its closed neighbourhood, so each round treats twins alike.  A Pivot
@@ -87,8 +88,16 @@ also of $b$.  It is the finest partition for which every block-wise choice
 between the parents yields each parent as one of the choices and leaves the
 pairs between blocks separated in both.  The idea of decomposing two parents
 into independent components and taking the better parent in each is that of
-the partition crossover of \citet{WhitleyHH09gpx} for tours; the argument is a
-few lines, and we claim no novelty for it.  It combines \emph{any} two
+the partition crossover of \citet{WhitleyHH09gpx,WhitleyHH10hybrid} for tours,
+of its generalisation GPX2~\citep{TinosWO20gpx2}, and of partition crossover
+for pseudo-Boolean functions~\citep{TinosWC15px}; see also optimal
+recombination~\citep{EremeevK14orp}.  Recombination through the overlap of the
+parents' groups is also common in grouping genetic
+algorithms~\citep{Falkenauer98grouping,GalinierH99coloring}, memetic graph
+partitioning~\citep{SandersS12kaffpae,BenlicH11multilevel}, memetic
+clustering~\citep{BiedermannHSS18memetic} and ensemble clustering with core
+groups~\citep{OvelgonneG13ensemble}.  The argument is a few lines, and we
+claim no novelty for it.  It combines \emph{any} two
 clusterings, including clusterings produced by different solvers.  On our graphs, two independent runs typically differ in thousands of
 blocks, most of them ties, and each run wins some of the others.
 
@@ -156,7 +165,7 @@ preferring the most similar members (crowding); the other two operators
 replace a member only if they improve it.  Contracting the blocks common to
 both parents and continuing with a multilevel search from the recombined
 clustering follows the recombination of memetic graph partitioners and
-clusterers~\citep{hausberger2025scc}.  The flipping round of line~3 costs a few
+clusterers~\citep{SandersS12kaffpae,BiedermannHSS18memetic,hausberger2025scc}.  The flipping round of line~3 costs a few
 full local-search passes whatever its time limit; with budgets below
 \SI{300}{s} the seeds are therefore Pivot clusterings only, and no further seed
 is generated once half of the budget is used.
