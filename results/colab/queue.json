@@ -45,8 +45,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
-  "machine": "w7",
+  "status": "pending",
+  "machine": null,
   "started": 1790208997.1006298
  },
  {
@@ -65,7 +65,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790209076.124338
  },
@@ -75,7 +75,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790209077.4486227
  },
@@ -85,7 +85,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790209142.8517704
  },
@@ -95,8 +95,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790209218.0055277
  },
  {
@@ -105,8 +105,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790209220.353024
  },
  {
@@ -469,8 +469,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790209889.4990594
  },
  {
   "id": "e3+p_swap=0.1_loc-Brightkite_0",
@@ -478,8 +479,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790209892.2912104
  },
  {
   "id": "e3+p_swap=0.1_ca-HepTh_0",
@@ -487,8 +489,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790209894.7667317
  },
  {
   "id": "e3+p_swap=0.1_BitcoinOTC+_0",
@@ -496,8 +499,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790209897.4493492
  },
  {
   "id": "e3+p_swap=0.1_ca-AstroPh_0",
