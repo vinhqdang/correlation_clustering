@@ -1,7 +1,10 @@
 \paragraph{Components of the bound.}  Table~\ref{tab:ablation} evaluates the
 components of the lower bound on five graphs whose size allows running the
 dense-matrix KaPoCE bounds for comparison.  Each variant had a budget of
-$300$\,s.  Gaps are measured against the best known solution.
+$300$\,s.  Gaps are measured against the best solution of
+Table~\ref{tab:snap-primal}.  These are the floating-point values of the
+solver from local runs; the checked bounds of Table~\ref{tab:snap-bounds} come
+from separate runs.
 \begin{itemize}
 \item \emph{Triangle packings.}  Packings of bad triangles, greedy or
 fractional, leave gaps of $28\%$ to $88\%$.  This is the factor-two regime of
@@ -14,8 +17,9 @@ reach only an $18\%$ to $75\%$ gap within the budget; \texttt{ca-GrQc} is
 the exception.  Started from the packing, they improve the bound in every
 case, to $0.2\%$ to $6.2\%$.  Gap-guided blocks add a little more on four of the five graphs.
 \item \emph{Comparison with KaPoCE.}  The root star-packing bound of the
-KaPoCE branch-and-bound is weaker than ours on \texttt{ca-GrQc}, equal on
-\texttt{ca-HepTh}, and stronger on \texttt{BitcoinAlpha+} ($3.6\%$ against
+KaPoCE branch-and-bound is weaker than ours on \texttt{ca-GrQc} ($0.58\%$
+against $0.18\%$) and on \texttt{ca-HepTh} ($0.92\%$ against $0.75\%$), and
+stronger on \texttt{BitcoinAlpha+} ($3.6\%$ against
 $6.1\%$), where it needed $850$\,s.  On \texttt{BitcoinOTC+} and
 \texttt{ca-CondMat} it did not finish within one hour.
 \end{itemize}

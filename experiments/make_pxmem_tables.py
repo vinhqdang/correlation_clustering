@@ -66,12 +66,14 @@ par = defaultdict(dict)
 for r in csv.DictReader(open(os.path.join(R, "parallel_px.csv"))):
     par[r["graph"]][(r["k"], r["method"])] = float(r["cost"])
 cols = [("1", "best-of-k"), ("2", "best-of-k"), ("2", "PX-of-k"), ("4", "best-of-k"),
-        ("4", "PX-of-k"), ("1", "KaPoCE"), ("1", "PX(KaPoCE, ours)")]
+        ("4", "PX-of-k"), ("1", "KaPoCE"), ("1", "PX(KaPoCE, ours)"),
+        ("4", "PX(KaPoCE, 4 x ours)")]
 with open(os.path.join(T, "parallel.tex"), "w") as fh:
-    fh.write("\\begin{tabular}{lrrrrrrr}\n\\toprule\n")
-    fh.write(" & 1 run & \\multicolumn{2}{c}{2 runs} & \\multicolumn{2}{c}{4 runs} & & PX(KaPoCE, \\\\\n")
-    fh.write("\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\n")
-    fh.write("graph & & best & PX & best & PX & KaPoCE & PXMem) \\\\\n\\midrule\n")
+    fh.write("\\begin{tabular}{lrrrrrrrr}\n\\toprule\n")
+    fh.write(" & 1 run & \\multicolumn{2}{c}{2 runs} & \\multicolumn{2}{c}{4 runs} & & "
+             "\\multicolumn{2}{c}{PX with KaPoCE} \\\\\n")
+    fh.write("\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\\cmidrule(lr){8-9}\n")
+    fh.write("graph & & best & PX & best & PX & KaPoCE & 1 run & 4 runs \\\\\n\\midrule\n")
     for g in [x for x in ORDER if x in par]:
         vals = [par[g][c] for c in cols]
         best = min(vals)

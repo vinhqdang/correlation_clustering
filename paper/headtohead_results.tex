@@ -27,7 +27,7 @@ correction over the fifteen graphs (bold if below $0.05$); $t_{=}$: median time
 at which PXMem first reached the final cost of KaPoCE (``--'' if it did not in
 most runs).  KaPoCE returned a valid solution in every run.}\label{tab:h2h}
 \small
-\input{tables/headtohead}
+\resizebox{\textwidth}{!}{\input{tables/headtohead}}
 \end{table}
 
 \paragraph{Solution quality at \SI{600}{s}.}  Table~\ref{tab:h2h} shows that on
@@ -79,9 +79,13 @@ than the best of four runs on four of the five graphs where the runs differ
 (all but \texttt{email-Enron}), and never worse than the best of two.  With four
 runs PXMem matches or beats KaPoCE on five of the six graphs and is one
 disagreement behind on \texttt{com-Amazon}.  Applied to the solutions of
-KaPoCE, the crossover improves them on all five graphs where they are not
-already equal to ours (by $2$ to $51$ disagreements), which makes it useful as
-a post-processing step for any solver.  These numbers compare four cores with
+KaPoCE, the crossover with one PXMem run improves them on all five graphs
+where they are not already equal to ours (by $2$ to $51$ disagreements).
+Crossing the KaPoCE solution with all four PXMem runs gives the best value in
+every row; on \texttt{loc-Brightkite}, \texttt{com-DBLP} and \texttt{com-Amazon}
+it is better than every input, including the crossover of the four PXMem runs
+(by $2$, $1$ and $8$ disagreements).  This makes the crossover useful as a
+post-processing step for any solver.  These numbers compare four cores with
 one and complement, but do not replace, the single-core comparison of
 Table~\ref{tab:h2h}.
 
@@ -90,10 +94,10 @@ Table~\ref{tab:h2h}.
 \caption{Four independent PXMem runs (\SI{300}{s} each, run in parallel):
 best of $k$ runs and partition crossover of $k$ runs (averaged over all
 subsets of size $k$), KaPoCE (\SI{300}{s}, one core), and the partition
-crossover of the KaPoCE solution with a PXMem solution (averaged over the four
-runs).  The best value in each row is bold.}\label{tab:parallel}
+crossover of the KaPoCE solution with one PXMem solution (averaged over the
+four runs) and with all four.  The best value in each row is bold.}\label{tab:parallel}
 \small
-\input{tables/parallel}
+\resizebox{\textwidth}{!}{\input{tables/parallel}}
 \end{table}
 
 \paragraph{Memory.}  PXMem needs more memory than KaPoCE.  The peak resident
