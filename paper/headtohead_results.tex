@@ -1,36 +1,51 @@
-\paragraph{Setup.}  The head-to-head runs used Google Colab CPU machines with two
-cores and 12\,GB of memory.  On every machine KaPoCE and PXMem ran at the same
-time with the same wall-clock budget, one core each.  Each of the eleven
-graphs was run with ten seeds of PXMem; KaPoCE fixes its seed internally, so
-its results vary only through timing.  KaPoCE keeps a solution only after it
-has completed a full repetition of its search.  When it is stopped earlier it
-returns an empty clustering.  This happened in $5$ of the $110$ runs, on graphs
-with up to $6\cdot10^4$ vertices; there PXMem returned a valid solution under
-the same conditions.  We count these runs as wins for PXMem, as the PACE rules
-do, show them separately, and leave them out of the mean differences.  The
-sign test is two-sided and ignores ties.
+\paragraph{Setup.}  The head-to-head runs used Google Colab machines with one
+physical core (two hyperthreads) and 12\,GB of memory.  On every machine the
+two solvers ran one after the other, each pinned to the same logical CPU while
+the rest of the machine was idle, with the same wall-clock budget of
+\SI{600}{s}.  KaPoCE was stopped as in PACE~2021, by SIGTERM at the limit; it
+normally stops itself after 590\,s.  Its seed, fixed in the released code, was
+set to the run seed (a one-line change), so that its ten runs per graph are
+independent.  Its output was checked: an edit set is valid iff the edited graph
+is a disjoint union of cliques.  A run in which KaPoCE returned no valid
+solution would count as a win for PXMem, as in the PACE rules; this did not
+occur in any of the 150 runs.  PXMem ran with the released configuration.  The
+Numba kernels were compiled once per machine before the timed runs, as KaPoCE
+is compiled ahead of time.  We used all fifteen SNAP graphs, ten seeds each.
+The configuration of PXMem was developed on eleven of these graphs; the PACE
+heuristic-track instances below were not used during development.  We report
+the mean paired difference $\bar\Delta$ (PXMem minus KaPoCE, in
+disagreements) with a 95\% bootstrap interval, wins, ties and losses, the
+two-sided sign test and its Holm correction over the fifteen graphs.
 
 \begin{table}[t]
 \centering
-\caption{PXMem against KaPoCE, \SI{600}{s} per run on the same machine (ten
-runs per graph).  Mean costs; KaPoCE averaged over the runs in which it returned
-a solution.  $\Delta$: mean relative difference $(\text{PXMem}-\text{KaPoCE})/\text{KaPoCE}$
-over those runs.  W/T/L: wins, ties and losses of PXMem, including the runs in
-which KaPoCE did not finish (``unfin.'').  $p$: two-sided sign test; bold if
-$p<0.05$.}\label{tab:h2h}
+\caption{PXMem against KaPoCE, \SI{600}{s} per run, run one after the other on
+the same machine and CPU (ten seeds per graph).  Mean costs; $\bar\Delta$: mean
+paired difference PXMem$-$KaPoCE with a 95\% bootstrap interval; W/T/L: wins,
+ties and losses of PXMem; $p$: two-sided sign test; $p_{\mathrm{Holm}}$: Holm
+correction over the fifteen graphs (bold if below $0.05$); $t_{=}$: median time
+at which PXMem first reached the final cost of KaPoCE (``--'' if it did not in
+most runs).  KaPoCE returned a valid solution in every run.}\label{tab:h2h}
 \small
 \input{tables/headtohead}
 \end{table}
 
-\paragraph{Solution quality at \SI{600}{s}.}  Table~\ref{tab:h2h} shows
-statistically significant wins for PXMem on four graphs (\texttt{ca-CondMat},
-\texttt{ca-AstroPh}, \texttt{ca-HepTh} and \texttt{com-DBLP}), no significant
-difference on six, and a significant loss on \texttt{com-Amazon}, where
-PXMem is $0.004\%$ worse in all ten runs.  Over all runs PXMem wins $47$,
-ties $42$ and loses $21$.  The differences are small in relative terms, as is
-expected between two strong heuristics.  In absolute terms PXMem saves $20$
-disagreements on \texttt{ca-CondMat} and $23$ on \texttt{com-DBLP} on average.
-On \texttt{com-Amazon} we compared the two solutions of a local \SI{300}{s}
+\paragraph{Solution quality at \SI{600}{s}.}  Table~\ref{tab:h2h} shows that on
+the four smallest graphs and on \texttt{ca-HepPh} both solvers find the same
+solutions in every run; PXMem reaches them after one to three minutes.  PXMem
+is better in every run on \texttt{ca-AstroPh} (by 63 disagreements on average)
+and in eight to nine of ten runs on \texttt{ca-CondMat}, \texttt{email-Enron}
+and \texttt{com-DBLP} (by 11 to 34).  These four differences are significant by
+the sign test, but after the Holm correction over fifteen graphs only
+\texttt{ca-AstroPh} remains so.  On the four social networks of medium size the
+two solvers are statistically indistinguishable.  KaPoCE is better in every run
+on \texttt{com-Amazon} (by 17 disagreements, $0.003\%$), which survives the
+correction, and on average on \texttt{com-Youtube}, where the runs of both
+solvers vary by several hundred disagreements and the sign test is not
+significant.  Over all 150 runs PXMem wins 67, ties 49 and loses 34.  The
+differences are small in relative terms (at most $0.05\%$), far below the
+certified gaps of Section~\ref{sec:snap}; they matter only when the last
+fraction of a percent is wanted.  On \texttt{com-Amazon} we compared the two solutions of a local \SI{300}{s}
 run block by block with Theorem~\ref{thm:px}.  They differed in more than $16{,}000$ blocks, almost all
 ties, and KaPoCE was better in $24$ blocks of $8$ to $77$ vertices, each
 containing a vertex of degree $22$ to $142$.  Solving these blocks exactly
@@ -81,7 +96,7 @@ runs).  The best value in each row is bold.}\label{tab:parallel}
 \input{tables/parallel}
 \end{table}
 
-\paragraph{Memory.}  PXMem needs more memory than KaPoCE: on
-\texttt{com-Amazon} and \texttt{com-DBLP} its peak resident size is about
-\SI{330}{MB}, of which about \SI{110}{MB} are the Python runtime and the graph,
-against about \SI{130}{MB} for KaPoCE.
+\paragraph{Memory.}  PXMem needs more memory than KaPoCE.  The peak resident
+set sizes measured in the runs of Table~\ref{tab:h2h} are \SI{360}{MB} to
+\SI{370}{MB} against \SI{180}{MB} to \SI{190}{MB} on \texttt{com-Amazon} and
+\texttt{com-DBLP}, and \SI{970}{MB} against \SI{730}{MB} on \texttt{com-Youtube}.

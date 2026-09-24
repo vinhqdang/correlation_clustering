@@ -18,39 +18,44 @@ def read(path):
     return {r["graph"]: r for r in csv.DictReader(open(path))}
 
 
-# per-graph mean costs from the raw runs
-runs = defaultdict(list)
-for f in glob.glob(os.path.join(R, "colab", "m3_*.json")):
-    r = json.load(open(f))
-    if r["tag"] == "m3":
-        runs[r["graph"]].append(r)
+ORDER15 = ["ca-GrQc", "BitcoinAlpha+", "BitcoinOTC+", "ca-HepTh", "ca-HepPh", "ca-AstroPh",
+           "ca-CondMat", "email-Enron", "loc-Brightkite", "Slashdot+", "soc-Epinions",
+           "Epinions+", "com-DBLP", "com-Amazon", "com-Youtube"]
 
-h = read(os.path.join(R, "headtohead_m3.csv"))
+
+def pval(p):
+    p = float(p)
+    return ("\\textbf{%.3f}" % p) if p < 0.05 else ("%.2f" % p if p >= 0.01 else "%.3f" % p)
+
+
+# head-to-head, sequential protocol (experiments/seq_stats.py s1)
+h = read(os.path.join(R, "headtohead_s1.csv"))
 with open(os.path.join(T, "headtohead.tex"), "w") as fh:
-    fh.write("\\begin{tabular}{lrrrrrcr}\n\\toprule\n")
-    fh.write("graph & $n$ & PXMem & KaPoCE & $\\Delta$ (\\%) & W/T/L & unfin. & $p$ \\\\\n\\midrule\n")
-    for g in ORDER:
+    fh.write("\\begin{tabular}{lrrrrrrrr}\n\\toprule\n")
+    fh.write("graph & $n$ & PXMem & KaPoCE & $\\bar\\Delta$ [95\\% CI] & W/T/L & $p$ & "
+             "$p_{\\mathrm{Holm}}$ & $t_{=}$ (s) \\\\\n\\midrule\n")
+    for g in ORDER15:
         r = h[g]
-        rs = runs[g]
-        ok = [x for x in rs if x["kapoce"] <= 1.5 * x["ours"]]
-        ours = sum(x["ours"] for x in rs) / len(rs)
-        kap = sum(x["kapoce"] for x in ok) / len(ok)
-        p = float(r["sign_p"])
-        ps = ("\\textbf{%.3f}" % p) if p < 0.05 else "%.2f" % p
-        fh.write(f"{tt(g)} & \\num{{{rs[0]['n']}}} & \\num{{{ours:.1f}}} & \\num{{{kap:.1f}}} & "
-                 f"${float(r['mean_rel_diff_pct_valid_runs']):+.4f}$ & {r['wins']}/{r['ties']}/{r['losses']} & "
-                 f"{r['kapoce_unfinished'] if r['kapoce_unfinished'] != '0' else '--'} & {ps} \\\\\n")
+        d = float(r["diff_mean"])
+        ci = f"$[{float(r['ci_lo']):+.1f}, {float(r['ci_hi']):+.1f}]$" if d != 0 else ""
+        ttt = float(r["ttt"])
+        ts = "--" if ttt == float("inf") else f"{ttt:.0f}"
+        fh.write(f"{tt(g)} & \\num{{{r['n']}}} & \\num{{{float(r['ours_mean']):.1f}}} & "
+                 f"\\num{{{float(r['kapoce_mean']):.1f}}} & ${d:+.1f}$ {ci} & "
+                 f"{r['wins']}/{r['ties']}/{r['losses']} & {pval(r['sign_p'])} & "
+                 f"{pval(r['holm_p'])} & {ts} \\\\\n")
     fh.write("\\bottomrule\n\\end{tabular}\n")
 
 # budget dependence
 b60 = read(os.path.join(R, "headtohead_m3t60.csv"))
 b150 = read(os.path.join(R, "headtohead_m3t150.csv"))
+b600 = read(os.path.join(R, "headtohead_m3.csv"))
 with open(os.path.join(T, "budget.tex"), "w") as fh:
     fh.write("\\begin{tabular}{lrrr}\n\\toprule\n")
     fh.write("graph & \\SI{60}{s} & \\SI{150}{s} & \\SI{600}{s} \\\\\n\\midrule\n")
     for g in ORDER:
         cells = []
-        for d in (b60, b150, h):
+        for d in (b60, b150, b600):
             r = d[g]
             cells.append(f"${float(r['mean_rel_diff_pct_valid_runs']):+.3f}$")
         fh.write(f"{tt(g)} & " + " & ".join(cells) + " \\\\\n")
