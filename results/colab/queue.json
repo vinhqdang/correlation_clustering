@@ -4409,9 +4409,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null,
-  "started": 1790270876.4072149
+  "status": "running",
+  "machine": "w5",
+  "started": 1790274688.6405668
  },
  {
   "id": "s1_com-Amazon_8",
@@ -4419,9 +4419,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null,
-  "started": 1790270876.407215
+  "status": "running",
+  "machine": "w5",
+  "started": 1790274688.640569
  },
  {
   "id": "s1_com-DBLP_8",
@@ -4429,8 +4429,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790274688.64057
  },
  {
   "id": "s1_com-Youtube_8",
@@ -4438,8 +4439,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790274688.6405702
  },
  {
   "id": "s1_ca-GrQc_9",
