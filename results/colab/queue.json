@@ -4219,7 +4219,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790277391.9032266
  },
@@ -4259,7 +4259,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790277393.9789584
  },
@@ -4309,7 +4309,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790275587.7400572
  },
@@ -4349,7 +4349,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790275589.2942028
  },
@@ -4439,7 +4439,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790274688.6405702
  },
@@ -4449,8 +4449,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-GrQc",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790278284.1519883
  },
  {
@@ -4459,8 +4459,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-HepTh",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790278284.15199
  },
  {
@@ -4469,8 +4469,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-HepPh",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790278284.1519904
  },
  {
@@ -4479,8 +4479,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-AstroPh",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790278284.1519911
  },
  {
@@ -4569,8 +4569,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790279908.1105506
  },
  {
   "id": "s1_com-DBLP_9",
@@ -4578,8 +4579,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790279908.1105525
  },
  {
   "id": "s1_com-Youtube_9",
@@ -4587,8 +4589,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790279908.110553
  },
  {
   "id": "s1h_pace-heur_heur001.gr_0",
@@ -4596,8 +4599,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur001.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790279908.1105535
  },
  {
   "id": "s1h_pace-heur_heur003.gr_0",
