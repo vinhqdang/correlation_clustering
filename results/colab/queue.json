@@ -2869,7 +2869,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790241736.0457985
  },
