@@ -2849,7 +2849,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790241736.0457976
  },
@@ -2889,7 +2889,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790241744.3350954
  },
@@ -2929,7 +2929,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790241747.6835053
  },
