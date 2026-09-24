@@ -104,11 +104,17 @@ def save(path, obj):
     os.replace(tmp, path)
 
 
+LAST_ERR = {}
+
+
 def probe(s):
-    code, out = colab(s, ["exec", "-s", s], timeout=120, stdin=PROBE)
-    for line in out.splitlines():
-        if line.startswith("PROBE"):
-            return json.loads(line[5:])
+    for attempt in range(2):
+        code, out = colab(s, ["exec", "-s", s], timeout=120, stdin=PROBE)
+        for line in out.splitlines():
+            if line.startswith("PROBE"):
+                return json.loads(line[5:])
+        LAST_ERR[s] = " ".join(out.split())[-160:]
+        time.sleep(5)
     return None
 
 
@@ -237,8 +243,11 @@ def step(state):
         pr = probes[s]
         if pr is None:
             st["fails"] += 1
-            log(f"{s}: probe failed ({st['fails']})")
-            if st["fails"] >= 4:
+            st.setdefault("fail_since", time.time())
+            log(f"{s}: probe failed ({st['fails']}): {LAST_ERR.get(s, '')}")
+            # a failed probe is often a stale token after this manager was down;
+            # recreating destroys running jobs, so only do it after a long outage
+            if st["fails"] >= 6 and time.time() - st["fail_since"] > 1800:
                 for j in queue:
                     if j.get("machine") == s and j["status"] == "running":
                         j["status"], j["machine"] = "pending", None
@@ -246,8 +255,10 @@ def step(state):
                     st["setup_started"] = time.time()
                     st["code"] = time.time()
                 st["fails"] = 0
+                st.pop("fail_since", None)
             continue
         st["fails"] = 0
+        st.pop("fail_since", None)
         # collect finished results
         for f in pr["results"]:
             jid = f[:-5]
