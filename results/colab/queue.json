@@ -2859,7 +2859,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790241736.0457983
  },
@@ -2899,7 +2899,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790241744.335096
  },
@@ -2939,7 +2939,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790241747.6835063
  },
