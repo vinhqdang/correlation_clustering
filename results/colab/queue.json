@@ -3859,7 +3859,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790265433.5622869
  },
@@ -4019,7 +4019,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790265478.751637
  },
@@ -4229,8 +4229,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790270209.4032798
  },
  {
   "id": "s1_Epinions+_7",
@@ -4238,8 +4239,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790270209.4032815
  },
  {
   "id": "s1_BitcoinOTC+_7",
@@ -4247,8 +4249,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790270209.4032817
  },
  {
   "id": "s1_BitcoinAlpha+_7",
@@ -4256,8 +4259,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790270209.403282
  },
  {
   "id": "s1_com-Amazon_7",
@@ -4265,8 +4269,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790270212.003912
  },
  {
   "id": "s1_com-DBLP_7",
@@ -4274,8 +4279,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790270212.0039134
  },
  {
   "id": "s1_com-Youtube_7",
@@ -4283,8 +4289,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790270212.0039136
  },
  {
   "id": "s1_ca-GrQc_8",
@@ -4292,8 +4299,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790270212.0039139
  },
  {
   "id": "s1_ca-HepTh_8",
