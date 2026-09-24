@@ -65,8 +65,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790212223.0545838
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_ca-CondMat_0",
@@ -269,7 +270,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790211518.9644306
  },
