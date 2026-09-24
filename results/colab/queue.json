@@ -25,7 +25,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790239657.71972
  },
@@ -65,7 +65,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790239664.2104917
  },
@@ -105,7 +105,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790239669.7934613
  },
@@ -135,7 +135,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790239774.8295867
  },
@@ -175,7 +175,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790239782.3557384
  },
