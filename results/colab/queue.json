@@ -95,7 +95,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790214694.9295268
  },
@@ -175,8 +175,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790215270.2349336
  },
  {
   "id": "m1_ca-CondMat_1",
