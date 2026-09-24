@@ -171,3 +171,52 @@ def exact_union_search(g: Graph, labels: np.ndarray, time_limit: float = 60.0,
     if stats is not None:
         stats.update(st)
     return lab
+
+
+def hub_union_search(g: Graph, labels: np.ndarray, time_limit: float = 60.0,
+                     max_size: int = 100, min_deg: int = 15, sub_time: float = 5.0,
+                     rng=None, verbose: bool = False, stats: dict | None = None):
+    """Exact re-optimisation of the union of the clusters of a vertex and of all
+    its neighbours, for vertices of degree >= ``min_deg`` in random order
+    (cluster-union neighbourhood centred at hubs; never increases the cost)."""
+    rng = np.random.default_rng(rng)
+    lab = _compact(np.asarray(labels))[0].copy()
+    t0 = time.time()
+    hubs = np.flatnonzero(g.degrees >= min_deg)
+    rng.shuffle(hubs)
+    st = {"tried": 0, "improved": 0, "gain": 0, "failed": 0, "big": 0}
+    order = np.argsort(lab, kind="stable")
+    start = np.zeros(lab.max() + 2, dtype=np.int64)
+    start[1:] = np.cumsum(np.bincount(lab, minlength=lab.max() + 1))
+    for v in hubs:
+        if time.time() - t0 > time_limit:
+            break
+        cl = np.unique(lab[np.append(g.indices[g.indptr[v]:g.indptr[v + 1]], v)])
+        size = int((start[cl + 1] - start[cl]).sum())
+        if size > max_size:
+            st["big"] += 1
+            continue
+        X = np.concatenate([order[start[c]:start[c + 1]] for c in cl])
+        h = induced(g, X)
+        cur_lab = _compact(lab[X])[0]
+        cur = cost(h, cur_lab)
+        st["tried"] += 1
+        res = solve_exact(h, cur_lab, min(sub_time, max(0.5, time_limit - (time.time() - t0))))
+        if res is None:
+            st["failed"] += 1
+            continue
+        sub, val = res
+        if val < cur:
+            lab[X] = lab.max() + 1 + sub
+            lab = _compact(lab)[0].copy()
+            order = np.argsort(lab, kind="stable")
+            start = np.zeros(lab.max() + 2, dtype=np.int64)
+            start[1:] = np.cumsum(np.bincount(lab, minlength=lab.max() + 1))
+            st["improved"] += 1
+            st["gain"] += cur - val
+            if verbose:
+                print(f"  hub {v} (deg {g.degrees[v]}): {len(X)} vertices -{cur - val} "
+                      f"({time.time() - t0:.1f}s)", flush=True)
+    if stats is not None:
+        stats.update(st)
+    return lab

@@ -254,7 +254,8 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
               t0: float | None = None, px: bool = True, local: bool = True,
               max_sweeps: float = 3000.0, p_swap: float = 0.0, p_self: float = 0.0,
               px_accept: bool = False, temps=(0.3, 0.6, 1.2, 2.0), explore: float = 0.2,
-              adaptive: bool = False, use_local: bool = False, region_size: int = 30):
+              adaptive: bool = False, use_local: bool = False, region_size: int = 30,
+              deg_bias: float = 0.5):
     """Memetic search with annealing as improvement operator on a weighted
     instance.  ``init`` are starting clusterings of the nodes; each is annealed
     for init_share * time_limit / pop_size seconds to form the population.
@@ -306,7 +307,7 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
             i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
             left = time_limit - (time.time() - t0)
             child = local_ils(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
-                              region_size=region_size, rng=rng)
+                              region_size=region_size, rng=rng, deg_bias=deg_bias)
             c = wg.cost(child)
             gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
             op_score[2] = gain if not np.isfinite(op_score[2]) else 0.7 * op_score[2] + 0.3 * gain
@@ -450,7 +451,7 @@ def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
             i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
             left = time_limit - (time.time() - t0)
             child = local_ils(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
-                              region_size=region_size, rng=rng)
+                              region_size=region_size, rng=rng, deg_bias=deg_bias)
             c = wg.cost(child)
             gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
             op_score[2] = gain if not np.isfinite(op_score[2]) else 0.7 * op_score[2] + 0.3 * gain
@@ -565,6 +566,6 @@ def pxmem(g: Graph, time_limit: float = 600.0, rng=None, history: list | None = 
     of offspring by partition crossover, PX-annealing self-improvement steps,
     localized iterated annealing with rollback, and bandit selection of the
     operator and of the reheating temperature."""
-    opts = dict(pop_size=4, init_share=0.15, px_accept=True, adaptive=True, use_local=True)
+    opts = dict(pop_size=4, init_share=0.1, px_accept=True, adaptive=True, use_local=True)
     opts.update(kw)
     return memetic_twin(g, time_limit, rng=rng, history=history, verbose=verbose, **opts)

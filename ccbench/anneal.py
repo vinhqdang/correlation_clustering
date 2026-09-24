@@ -402,13 +402,14 @@ def _mv(v, b, s, labels, csize, free, nfree):
 
 @nb.njit(cache=True)
 def _local_ils(n, indptr, indices, w, size, labels, steps, region_size, sweeps, t_hot, t_cold,
-               p_single, p_best, seed, cur_cost):
+               p_single, p_best, seed, cur_cost, deg_bias=0.0):
     """Localized iterated annealing.  Every step grows a BFS region of at most
     ``region_size`` nodes around a random node, anneals the nodes of the region
     from t_hot to t_cold (sweeps * |region| proposals, the rest of the graph
     fixed), finishes with greedy best moves, and keeps the result only if the
     cost did not increase; otherwise all moves are undone exactly.  The cost
-    never increases."""
+    never increases.  With probability ``deg_bias`` the centre is drawn with
+    probability proportional to its degree (the endpoint of a random edge slot)."""
     np.random.seed(seed)
     csize = np.zeros(n, dtype=np.int64)
     for i in range(n):
@@ -441,7 +442,10 @@ def _local_ils(n, indptr, indices, w, size, labels, steps, region_size, sweeps, 
     accepted = 0
     for step in range(steps):
         stamp = step + 1
-        v0 = cand[np.random.randint(nc)]
+        if deg_bias > 0.0 and np.random.random() < deg_bias:
+            v0 = indices[np.random.randint(indptr[n])]
+        else:
+            v0 = cand[np.random.randint(nc)]
         region[0] = v0
         mark[v0] = stamp
         nr = 1
@@ -547,7 +551,8 @@ def _local_ils(n, indptr, indices, w, size, labels, steps, region_size, sweeps, 
 
 def local_ils(wg, labels: np.ndarray, time_limit: float = 10.0, region_size: int = 30,
               sweeps: int = 20, t_hot: float = 1.0, t_cold: float = 0.05,
-              p_single: float = 0.03, p_best: float = 0.3, rng=None, chunk: int = 2000):
+              p_single: float = 0.03, p_best: float = 0.3, rng=None, chunk: int = 2000,
+              deg_bias: float = 0.0):
     """Localized iterated annealing with exact rollback (never increases the cost)."""
     rng = np.random.default_rng(rng)
     lab = _compact(np.asarray(labels))[0].copy()
@@ -556,5 +561,5 @@ def local_ils(wg, labels: np.ndarray, time_limit: float = 10.0, region_size: int
     while time.time() - t0 < time_limit:
         lab, c, _ = _local_ils(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab, chunk,
                                region_size, sweeps, t_hot, t_cold, p_single, p_best,
-                               int(rng.integers(1 << 30)), c)
+                               int(rng.integers(1 << 30)), c, deg_bias)
     return lab
