@@ -1,0 +1,1 @@
+{"graph": "ca-HepTh", "n": 9877, "m": 25973, "T": 600.0, "seed": 0, "tag": "c1", "commit": "2f7a159", "python": "3.13.15", "cost": 15864, "lb": 15698.022377874906, "time": 600.136958360672, "check": "ok", "certified": 15699, "lb_exact": 15698.022377552465, "rows": 6599, "star_rows": 243, "check_time": 0.5644948482513428}
