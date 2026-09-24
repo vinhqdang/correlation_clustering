@@ -1772,5 +1772,225 @@
   "status": "done",
   "machine": "w6",
   "started": 1790209897.4493492
+ },
+ {
+  "id": "m3_com-Amazon_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "com-Amazon",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790237118.9566436
+ },
+ {
+  "id": "m3_com-DBLP_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "com-DBLP",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790237118.9566462
+ },
+ {
+  "id": "m3_email-Enron_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "email-Enron",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790237118.9566472
+ },
+ {
+  "id": "m3_loc-Brightkite_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "loc-Brightkite",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790237118.9566479
+ },
+ {
+  "id": "m3_ca-HepTh_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790237120.525891
+ },
+ {
+  "id": "m3_BitcoinOTC+_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "BitcoinOTC+",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790237120.5258932
+ },
+ {
+  "id": "m3_ca-AstroPh_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-AstroPh",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790237120.5258942
+ },
+ {
+  "id": "m3_ca-CondMat_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-CondMat",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790237120.5258954
+ },
+ {
+  "id": "m3_ca-HepPh_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-HepPh",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790237121.8523645
+ },
+ {
+  "id": "m3_ca-GrQc_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790237121.8523672
+ },
+ {
+  "id": "m3_BitcoinAlpha+_3",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "BitcoinAlpha+",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790237121.8523679
+ },
+ {
+  "id": "m3_com-Amazon_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "com-Amazon",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790237121.8523688
+ },
+ {
+  "id": "m3_com-DBLP_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "com-DBLP",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790237123.3104246
+ },
+ {
+  "id": "m3_email-Enron_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "email-Enron",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790237123.3104265
+ },
+ {
+  "id": "m3_loc-Brightkite_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "loc-Brightkite",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790237123.3104267
+ },
+ {
+  "id": "m3_ca-HepTh_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790237123.3104272
+ },
+ {
+  "id": "m3_BitcoinOTC+_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "BitcoinOTC+",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790237124.6371028
+ },
+ {
+  "id": "m3_ca-AstroPh_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-AstroPh",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790237124.6371043
+ },
+ {
+  "id": "m3_ca-CondMat_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-CondMat",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790237124.6371055
+ },
+ {
+  "id": "m3_ca-HepPh_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-HepPh",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790237124.6371057
+ },
+ {
+  "id": "m3_ca-GrQc_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790237137.6733394
+ },
+ {
+  "id": "m3_BitcoinAlpha+_4",
+  "tag": "m3",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "BitcoinAlpha+",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790237137.673341
  }
 ]
