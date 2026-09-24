@@ -35,8 +35,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790212041.0486495
  },
  {
   "id": "h1+p_self=0.5+px_accept=1_ca-HepTh_0",
@@ -236,7 +237,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790211403.886102
  },
