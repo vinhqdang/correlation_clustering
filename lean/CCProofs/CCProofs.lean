@@ -7,3 +7,8 @@ import CCProofs.Packing
 import CCProofs.Lagrangian
 import CCProofs.Distance
 import CCProofs.Guarantee
+import CCProofs.Relabel
+import CCProofs.Unordered
+import CCProofs.FarDual
+import CCProofs.FarRows
+import CCProofs.WCrossover
