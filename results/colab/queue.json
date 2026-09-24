@@ -95,7 +95,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790212919.3386865
  },
@@ -155,8 +155,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790213586.3918529
  },
  {
   "id": "h1+p_self=0.5+px_accept=1+pop_size=4+init_share=0.2_BitcoinOTC+_0",
