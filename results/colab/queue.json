@@ -3339,7 +3339,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790255256.0220907
  },
@@ -3669,8 +3669,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790260219.867675
  },
  {
   "id": "s1_Epinions+_4",
@@ -3678,8 +3679,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790260219.8676767
  },
  {
   "id": "s1_BitcoinOTC+_4",
@@ -3687,8 +3689,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790260219.8676772
  },
  {
   "id": "s1_BitcoinAlpha+_4",
@@ -3696,8 +3699,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790260219.8676775
  },
  {
   "id": "s1_com-Amazon_4",
