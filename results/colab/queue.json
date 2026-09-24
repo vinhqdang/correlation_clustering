@@ -5469,7 +5469,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur175.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790290608.5618498
  },
@@ -5529,7 +5529,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur187.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790292524.6994007
  },
@@ -5569,7 +5569,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur195.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790292529.4009027
  },
@@ -5739,7 +5739,7 @@
   "T": 60.0,
   "seed": 0,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790293364.8332057
  },
@@ -5749,7 +5749,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790293364.8332064
  },
@@ -5759,7 +5759,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790293364.8332071
  },
@@ -5779,7 +5779,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790293370.1496487
  },
@@ -5789,7 +5789,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790293370.1496491
  },
@@ -5799,7 +5799,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790293370.1496494
  },
@@ -5809,7 +5809,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790293525.1314049
  },
@@ -5819,7 +5819,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790293525.1314068
  },
@@ -5829,7 +5829,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790293525.1314073
  },
@@ -5839,7 +5839,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790293525.1314075
  },
@@ -5849,8 +5849,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790294207.1235948
  },
  {
   "id": "s1t60_BitcoinAlpha+_1",
@@ -5858,8 +5859,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790294207.1235964
  },
  {
   "id": "s1t60_com-Amazon_1",
@@ -5867,8 +5869,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790294207.1235974
  },
  {
   "id": "s1t60_com-DBLP_1",
@@ -5876,8 +5879,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790294207.1235979
  },
  {
   "id": "s1t60_com-Youtube_1",
@@ -5885,8 +5889,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790294212.5452964
  },
  {
   "id": "s1t60_ca-GrQc_2",
@@ -5894,8 +5899,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790294212.5452983
  },
  {
   "id": "s1t60_ca-HepTh_2",
@@ -5903,8 +5909,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790294212.545299
  },
  {
   "id": "s1t60_ca-HepPh_2",
@@ -5912,8 +5919,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790294212.5452995
  },
  {
   "id": "s1t60_ca-AstroPh_2",
@@ -5921,8 +5929,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790294237.9212499
  },
  {
   "id": "s1t60_ca-CondMat_2",
@@ -5930,8 +5939,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790294237.9212513
  },
  {
   "id": "s1t60_email-Enron_2",
@@ -5939,8 +5949,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790294237.921252
  },
  {
   "id": "s1t60_loc-Brightkite_2",
@@ -5948,8 +5959,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790294237.921253
  },
  {
   "id": "s1t60_soc-Epinions_2",
