@@ -1779,7 +1779,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790237118.9566436
  },
@@ -1789,7 +1789,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790237118.9566462
  },
@@ -1819,7 +1819,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790237120.525891
  },
@@ -1829,7 +1829,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790237120.5258932
  },
@@ -1859,7 +1859,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790237121.8523645
  },
@@ -1869,7 +1869,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790237121.8523672
  },
@@ -1899,7 +1899,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790237123.3104246
  },
@@ -1909,7 +1909,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790237123.3104265
  },
@@ -1939,7 +1939,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790237124.6371028
  },
@@ -1949,7 +1949,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790237124.6371043
  },
@@ -1979,7 +1979,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790237137.6733394
  },
@@ -1989,7 +1989,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790237137.673341
  }
