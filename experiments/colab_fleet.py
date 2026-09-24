@@ -39,6 +39,8 @@ ACCOUNTS = {"a1": "/root", "a2": "/root/colab2", "a3": "/root/colab3"}
 SESSIONS = {"w1": "a1", "w2": "a1", "w3": "a1", "w4": "a2", "w5": "a2", "w6": "a2",
             "w7": "a3", "w8": "a3", "w9": "a3"}
 SLOTS = 1  # concurrent jobs per machine (a job itself uses both cores)
+BATCH = 4  # jobs handed to a machine at once and run one after another, so that
+           # machines keep working while this manager is not running
 
 PROBE = r'''
 import os, json, subprocess, glob
@@ -139,12 +141,12 @@ def refresh_code(s, st):
     return False
 
 
-def launch(s, job):
-    cmd = (f"nohup python3 /content/run_pair.py {job['T']} {job['seed']} {job['tag']} "
-           f"{job['graph']} > /content/log_{job['id']}.txt 2>&1 &")
-    code, out = colab(s, ["exec", "-s", s], timeout=120,
-                      stdin=f'import subprocess\nsubprocess.Popen("{cmd}", shell=True)\n'
-                            f'print("ok")\n')
+def launch(s, jobs):
+    """Start the jobs on machine s, one after another, in one detached shell."""
+    seq = "; ".join(f"python3 /content/run_pair.py {j['T']} {j['seed']} '{j['tag']}' "
+                    f"'{j['graph']}' > /content/log_{j['id']}.txt 2>&1" for j in jobs)
+    script = f"import subprocess\nsubprocess.Popen({('nohup bash -c ' + repr(seq) + ' > /dev/null 2>&1 &')!r}, shell=True)\nprint('ok')\n"
+    code, out = colab(s, ["exec", "-s", s], timeout=120, stdin=script)
     return "ok" in out
 
 
@@ -239,10 +241,11 @@ def step(state):
                     j["status"], j["machine"] = "pending", None
             busy = []
         if len(busy) < SLOTS and not pr["running"]:
-            nxt = next((j for j in queue if j["status"] == "pending"), None)
+            nxt = [j for j in queue if j["status"] == "pending"][:BATCH]
             if nxt and refresh_code(s, st) and launch(s, nxt):
-                nxt["status"], nxt["machine"], nxt["started"] = "running", s, time.time()
-                log(f"{s}: launched {nxt['id']}")
+                for j in nxt:
+                    j["status"], j["machine"], j["started"] = "running", s, time.time()
+                log(f"{s}: launched {', '.join(j['id'] for j in nxt)}")
     save(QUEUE, queue)
     save(STATE, state)
     return new_files
