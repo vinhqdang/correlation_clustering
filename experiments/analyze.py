@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import argparse
+import glob
+import json
 import math
 import os
 
@@ -31,6 +33,15 @@ def load(path):
 
 def pace_exact(path):
     d = load(path)
+    # CertiFlip: use the certificate run and the bounds of the independent checker
+    cert_run = os.path.join(ROOT, "results", "pace_exact_cert.csv")
+    cert_chk = os.path.join(ROOT, "results", "pace_exact_cert_check.csv")
+    if os.path.exists(cert_run) and os.path.exists(cert_chk):
+        c = load(cert_run)
+        k = pd.read_csv(cert_chk)
+        k = k[k["status"] == "ok"].set_index("instance")["certified"]
+        c["lb"] = c["instance"].map(k).astype(float)
+        d = pd.concat([d[d.algo != "certiflip"], c], ignore_index=True)
     d["inst"] = d["instance"].str.split("/").str[-1]
     ref = pd.read_csv(os.path.join(ROOT, "data", "pace2021_exact_kapoce_bounds.csv"))
     ref = ref.rename(columns={"instance": "inst"})
@@ -144,15 +155,31 @@ def write_snap_tables(path):
                     cells.append(f"{int(v)}")
             fh.write(f"\\texttt{{{inst}}} & {n} & {m} & " + " & ".join(cells) + "\\\\\n")
         fh.write("\\bottomrule\n\\end{tabular}\n")
+    # best known UB: all runs of this table and of the head-to-head experiments;
+    # CertiFlip LB: the bound accepted by the independent checker (Colab tag c1)
+    best_known = {}
+    for f in ("headtohead_s1_runs.csv", "headtohead_m3_runs.csv"):
+        fp = os.path.join(ROOT, "results", f)
+        if os.path.exists(fp):
+            h = pd.read_csv(fp)
+            for col in ("ours", "kapoce"):
+                v = pd.to_numeric(h[col], errors="coerce")
+                for gname, x in v.groupby(h.graph).min().items():
+                    best_known[gname] = min(best_known.get(gname, np.inf), x)
+    checked = {}
+    for f in glob.glob(os.path.join(ROOT, "results", "colab", "c1_*.json")):
+        r = json.load(open(f))
+        if r.get("check") == "ok":
+            checked[r["graph"]] = max(checked.get(r["graph"], 0), r["certified"])
     with open(os.path.join(TAB, "snap_bounds.tex"), "w") as fh:
         fh.write("\\begin{tabular}{lrrrrr}\n\\toprule\n")
         fh.write("Graph & best UB & greedy packing & triangle packing & CertiFlip LB & certified gap (\\%)\\\\\n\\midrule\n")
         for inst in insts:
             s = d[d.instance == inst]
-            ub = s[~s.algo.str.startswith("lb:")]["cost"].min()
+            ub = min(s[~s.algo.str.startswith("lb:")]["cost"].min(), best_known.get(inst, np.inf))
             g = s[s.algo == "lb:greedy"]["lb"].max()
             t = s[s.algo == "lb:tri-mwu"]["lb"].max()
-            c = s[s.algo == "certiflip"]["lb"].max()
+            c = float(checked.get(inst, float("nan")))
             gap = 100 * (ub - math.ceil(c - 1e-6)) / max(1, math.ceil(c - 1e-6)) if not math.isnan(c) else float("nan")
             fh.write(f"\\texttt{{{inst}}} & {int(ub) if not math.isnan(ub) else '--'} & "
                      f"{int(g) if not math.isnan(g) else '--'} & {int(math.ceil(t-1e-6)) if not math.isnan(t) else '--'} & "

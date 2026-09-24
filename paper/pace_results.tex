@@ -19,15 +19,16 @@ is $0.018\%$ and a run takes three seconds on average.  Its approximation
 guarantee is only $3$ in expectation, but in practice it is an order of
 magnitude better than Louvain- or Leiden-type local search.  Those methods
 optimise the same objective but reach only 153 and 158 instances, with mean
-gaps of $0.54\%$ and $0.45\%$.  CertiFlip reaches 192 instances, and its
-largest gap is $0.45\%$.  KaPoCE reaches all 200 instances.  This is not
+gaps of $0.54\%$ and $0.45\%$.  CertiFlip reaches 191 instances, and its
+largest gap is $0.32\%$.  KaPoCE reaches all 200 instances.  This is not
 surprising: the best known values come from its own branch-and-bound
 runs~\citep{BlasiusEtAl22sea}, and it was engineered for this benchmark.
 Pivot and MatchFlipPivot are far from optimal on these fairly dense
 instances.  Among the 27 open instances, the best published upper bound of
 \texttt{exact183} is 2789, and both KaPoCE and CertiFlip find solutions of
-cost 2788 within the budget.  We verified the CertiFlip solution
-independently, and it is included in the repository.
+cost 2788 within the budget, so this improvement is shared by the two solvers.
+We verified the CertiFlip solution independently, and it is included in the
+repository.
 
 \begin{table}[t]
 \centering
@@ -40,23 +41,27 @@ instances whose bound proves optimality.}
 \end{table}
 
 \paragraph{Lower bounds.}  Table~\ref{tab:pace-bounds} compares the bounds.
-The CertiFlip bound (Theorem~\ref{thm:anytime}), computed within half of the
+All CertiFlip bounds in this section are the values returned by the
+independent checker of Section~\ref{sec:lean} on the exported
+certificates; the checker accepted all 200 certificates.  The CertiFlip bound
+(Theorem~\ref{thm:anytime}), computed within half of the
 60\,s budget, proves optimality on 111 of the 173 instances.  The root
 star-packing bound of the KaPoCE branch-and-bound proves optimality on 79,
 its $P_3$-packing bound on 59, and the classical packings of bad triangles on
-at most 30.  Our bound exceeds the star-packing bound on 59 instances, is
-lower on 43 and equal on 71.  The comparison depends on density.  On the 35
+at most 30.  Our bound exceeds the star-packing bound on 60 instances, is
+lower on 43 and equal on 70.  The comparison depends on density.  On the 35
 instances with edge density below $0.1$, our bound attains $99.8\%$ of the
 optimum on average, against $99.3\%$ for the star packing.  On denser
-instances the star packing is better ($99.5\%$ to $99.7\%$ against
-$98.0\%$ to $98.9\%$).  There the block LPs are too large to converge within the budget,
+instances the star packing is better ($99.4\%$ to $99.7\%$ against
+$98.0\%$ to $98.8\%$).  There the block LPs are too large to converge within the budget,
 and the bound falls back to the best packing.
 
 \begin{table}[t]
 \centering
 \caption{The 27 open PACE 2021 exact instances: published upper bound (UB)
-and star-packing lower bound (LB)~\citep{BlasiusEtAl22sea}, and our best
-solution and bound from one 60\,s CertiFlip run.  Bold marks improvements
+and star-packing lower bound (LB)~\citep{BlasiusEtAl22sea}, our best
+solution over all methods and runs, and the checked CertiFlip bound of one
+60\,s run.  Bold marks improvements
 over the published values.}
 \label{tab:pace-open}
 \small
@@ -64,7 +69,8 @@ over the published values.}
 \end{table}
 
 Table~\ref{tab:pace-open} lists the open instances.  Our bound improves the
-published lower bound on \texttt{exact179} (from 620 to 632, so the optimum is
-now known to be 632 or 633) and on \texttt{exact180} (from 1052 to 1069).  On
+published lower bound on two of them: on \texttt{exact179} from 620 to 632,
+so the optimum is now known to be 632 or 633, and on \texttt{exact180} from
+1052 to 1068.  On
 the other open instances, which are dense, the published star-packing bound
 remains stronger.

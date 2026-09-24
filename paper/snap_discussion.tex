@@ -13,15 +13,18 @@ constructions are not interrupted.  This does not change the comparison,
 since its solutions there are still worse than KaPoCE's.
 
 \paragraph{Certificates.}  Table~\ref{tab:snap-bounds} is the main result of
-this section.  On the eleven graphs whose support fits into memory, the
-CertiFlip bound certifies the best known solutions within $0.2\%$ to $9.2\%$
-of optimal.  The median gap is about $6\%$, and on the collaboration networks
+this section.  For these bounds CertiFlip exported its certificate, and every
+bound in the table is the value computed by the independent checker of
+Section~\ref{sec:lean}, which accepted all eleven certificates (the check took
+1 to 34\,s).  On the eleven graphs whose support fits into memory, the
+CertiFlip bound certifies the best known solutions within $0.25\%$ to $10.1\%$
+of optimal.  The median gap is $6.4\%$, and on the collaboration networks
 \texttt{ca-GrQc} and \texttt{ca-HepTh} it is below $1\%$.  The classical
 scalable bounds, a maximal packing of bad triangles (the bound of
 MatchFlipPivot) and the fractional triangle packing, certify only factors of
 $1.17$ to $1.81$ on the same graphs.  As far as we know, no certificate of this
 quality was previously available for correlation clustering instances of
-this size.  The bounds for \texttt{com-Amazon} and \texttt{com-DBLP}
-($3\cdot10^5$ vertices, $10^6$ edges) were computed in under five minutes on
-one core.  The dense-matrix implementation of the KaPoCE packing bounds cannot
+this size.  The certificates for \texttt{com-Amazon} and \texttt{com-DBLP}
+($3\cdot10^5$ vertices, $10^6$ edges) were computed within the 600\,s budget
+on one core.  The dense-matrix implementation of the KaPoCE packing bounds cannot
 represent these graphs.

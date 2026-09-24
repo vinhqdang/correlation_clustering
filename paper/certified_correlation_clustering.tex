@@ -43,49 +43,33 @@ British University Vietnam, Hung Yen, Vietnam\\
 \maketitle
 
 \begin{abstract}
-Correlation clustering on complete signed graphs (equivalently, cluster
-editing) has seen rapid progress on approximation ratios.  LP and SDP
-hierarchies now give ratios below $1.5$, and a combinatorial algorithm
-achieves $2-2/13$ in near-linear time.  In practice, however, the solutions of
-engineered heuristics come with no quality guarantee on large graphs.  Exact
-solvers stop at a few hundred vertices, and the metric LP has $\Theta(n^3)$
-constraints.  The strongest combinatorial lower bounds, the packing bounds of
-branch-and-bound solvers, store the instance as a dense matrix, and the
-bounds that do scale certify only a factor of about two.  We close this gap
-from both sides.
-(i)~Optimal clusters have diameter at most two.  We use this to restrict the
-metric LP to the $O(\sum_v \deg(v)^2)$ pairs at distance at most two, without
-losing validity or the guarantees of LP-rounding algorithms, and we
-strengthen it with star and local subgraph inequalities.
-(ii)~We compute an anytime, always-valid lower bound by dual
-block-coordinate ascent.  It is warm-started by sparse star packings improved
-with ruin-and-recreate local search, and every block is an exact LP.
-(iii)~We prove an exact decomposition of the optimality gap into non-negative
-per-pair and per-constraint terms.  It yields a local optimality certificate
-and guides a large-neighbourhood search with exact sub-MIPs.
-Together with the first implementation of the iterated flipping local search
-of Cohen-Addad et al., these ingredients form \emph{CertiFlip}.  CertiFlip
-has an a-priori guarantee ($3$ in expectation, and $2.06$ whenever the
-relaxation is solved to optimality) and outputs a certified bound on its own
-approximation ratio.  On the PACE~2021 exact track it improves the best published
-bounds of three open instances, and its bound proves optimality on more
-instances than the root bounds of the state-of-the-art branch-and-bound.  On SNAP graphs with up to $10^6$
-edges, its bounds certify the best known solutions within $0.2\%$ to $9.2\%$
-of optimal, where previously scalable bounds certify only factors of $1.17$ to
-$1.81$.
-(iv)~We show that two clusterings can be recombined exactly: in every block
-of the overlap of their clusters one may take either parent, and the best
-choice is never worse than either parent.  With the contraction of critical
-cliques, annealing with region-wise acceptance and localized annealing with
-exact rollback, this gives a memetic solver, \emph{PXMem}, with the same
-guarantee of $3$ in expectation.  In 110 head-to-head runs of 600\,s against
-the PACE~2021 winner KaPoCE on the same machine, PXMem is significantly better
-on four of eleven graphs, significantly worse on one (by $0.004\%$), and
-equivalent on six.  The same crossover combines parallel runs and improves
-the solutions of KaPoCE itself.
-(v)~The combinatorial statements behind both solvers, including the move
-formulas used by the implementation, the lower-bound certificates and the
-approximation guarantee, are machine-checked in Lean~4.
+Correlation clustering (equivalently, cluster editing) has approximation
+algorithms with ratios below $1.5$, but the heuristics used in practice come
+with no quality guarantee on large graphs: exact solvers stop at a few
+hundred vertices, and the lower bounds that scale certify only a factor of
+about two.  We attack this gap from both sides.
+(i)~Since optimal clusters have diameter at most two, the metric LP can be
+restricted to the $O(\sum_v\deg(v)^2)$ pairs at distance at most two without
+losing validity or LP-rounding guarantees; we strengthen it with star and
+local subgraph inequalities.
+(ii)~Dual block-coordinate ascent turns this relaxation into an anytime lower
+bound that is valid after every step.  Its certificates are checked in exact
+arithmetic by a short checker that shares no code with the solver.
+(iii)~The optimality gap decomposes exactly into non-negative local terms,
+which yields local optimality certificates and guides a large-neighbourhood
+search.  The resulting algorithm, CertiFlip, has expected cost at most
+$3\,\OPT$ and returns a certified bound with every solution.  On the PACE~2021
+exact track its bound proves optimality on 111 of 173 solved instances,
+against 79 for the root bounds of the state-of-the-art branch-and-bound, and
+improves the published lower bounds of two open instances.  On SNAP graphs
+with up to $10^6$ edges it certifies the best known solutions within
+$0.25\%$ to $10.1\%$, where scalable bounds certify factors of $1.17$ to $1.81$.
+(iv)~Two clusterings can be recombined exactly, block by block of their
+overlap.  The memetic solver PXMem built on this recombination keeps the
+guarantee of $3$ in expectation.  In 150 runs of 600\,s on fifteen SNAP
+graphs, run one after the other on the same core as the PACE~2021 winner
+KaPoCE, it wins 67, ties 49 and loses 34.
+(v)~The main combinatorial arguments are machine-checked in Lean~4.
 \end{abstract}
 
 \section{Introduction}
@@ -189,13 +173,18 @@ blocks of the overlap of two clusterings are independent: taking the better
 parent in each block gives a clustering that is never worse than either
 parent (Theorem~\ref{thm:px}).  Together with the contraction of critical
 cliques (Lemma~\ref{lem:twins}) this yields PXMem, a memetic solver that keeps
-the guarantee of $3$ in expectation (Theorem~\ref{thm:pxmem}) and beats
-KaPoCE with statistical significance on four of eleven SNAP graphs.
+the guarantee of $3$ in expectation (Theorem~\ref{thm:pxmem}).  Against KaPoCE,
+run one after the other on the same core with 600\,s each, it is better on
+four of fifteen SNAP graphs and worse on one by the sign test (one each after
+Holm correction), and equal or indistinguishable on the others.
 
-\item \textbf{Machine-checked proofs} (Section~\ref{sec:lean}).  The
-combinatorial lemmas and theorems of the paper, the incremental cost formulas
-of the implementation and the certificate and approximation arguments are
-proved in Lean~4 with Mathlib.
+\item \textbf{Machine-checked proofs and checked certificates}
+(Section~\ref{sec:lean}).  The main combinatorial lemmas, the incremental
+cost formulas of the implementation, the validity of the dual bound and the
+crossover theorem are proved in Lean~4 with Mathlib; Table~\ref{tab:lean}
+lists what is and is not covered.  Every lower bound reported in the
+experiments is recomputed from its exported certificate by an independent
+checker in exact arithmetic.
 
 \item \textbf{Evaluation pipeline and experiments} (Section~\ref{sec:exp}).
 We release an open-source pipeline with ten solvers and five lower bounds.
@@ -206,7 +195,7 @@ CertiFlip bound also improves the published lower bounds of two open
 instances.  We also use fifteen SNAP graphs with up to $1.1\cdot 10^6$ vertices.  On the
 eleven whose distance-two support fits into memory (up to $3\cdot10^5$
 vertices and $10^6$ edges), the CertiFlip bound certifies the best known
-solutions within $0.2\%$ to $9.2\%$ of optimal.  Previously scalable bounds
+solutions within $0.25\%$ to $10.1\%$ of optimal.  Previously scalable bounds
 certified only factors of $1.17$ to $1.81$ on the same graphs.
 \end{enumerate}
 
@@ -619,16 +608,17 @@ version of the iterated flipping local search of \citet{CohenAddadLPTYZ24}
 comes within a few tenths of a percent of the best engineered heuristic in a
 fraction of its running time.  The exact
 partition crossover closes the remaining gap on most graphs: PXMem keeps the
-a-priori guarantee, is significantly better than KaPoCE on four of eleven
-graphs at equal budget, and turns additional cores into better solutions.  All
-combinatorial arguments are machine-checked.
+a-priori guarantee, is not significantly worse than KaPoCE on fourteen of fifteen graphs at
+equal budget on the same core, and turns additional cores into better
+solutions.  The main combinatorial arguments are machine-checked, and every
+reported lower bound is confirmed by an independent exact checker.
 
 \paragraph{Limitations.}
 \begin{itemize}
-\item KaPoCE remains better than PXMem on \texttt{com-Amazon} (by $0.004\%$ at
-\SI{600}{s}) and, at short budgets of \SI{60}{s}--\SI{150}{s}, on the largest
+\item KaPoCE remains better than PXMem on \texttt{com-Amazon} (by $0.003\%$ at
+\SI{600}{s}) and, not significantly, on \texttt{com-Youtube} and, at short budgets of \SI{60}{s}--\SI{150}{s}, on the largest
 graphs (by $0.1\%$--$0.7\%$), where our initial population takes too much of
-the budget.  PXMem also needs about $2.5$ times the memory of KaPoCE.
+the budget.  PXMem also needs up to twice the memory of KaPoCE.
 \item The formal development covers the statements listed in
 Table~\ref{tab:lean}, not all results of the paper, and it covers the
 mathematics, not the code.  The Pivot guarantee used in

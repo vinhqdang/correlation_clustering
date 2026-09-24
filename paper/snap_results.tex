@@ -21,8 +21,10 @@ best of three seeds is shown.  ``--'': support too large for memory
 \begin{table}[t]
 \centering
 \caption{SNAP graphs: lower bounds and certified optimality gaps.  The gap is
-$(\mathrm{UB}-\lceil\LB\rceil)/\lceil\LB\rceil$, where UB is the best value found by any
-method and LB is the CertiFlip bound.}
+$(\mathrm{UB}-\LB)/\LB$, where UB is the best value found in any of our
+runs (including the head-to-head runs of Section~\ref{sec:h2h}) and LB is the
+CertiFlip bound accepted by the independent checker (one 600\,s run on a
+Colab machine, Section~\ref{sec:h2h}).}
 \label{tab:snap-bounds}
 \small
 \input{tables/snap_bounds}
