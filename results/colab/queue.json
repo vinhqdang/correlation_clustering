@@ -2829,7 +2829,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790241631.6672168
  },
