@@ -66,3 +66,16 @@ def test_memetic_twin_runs():
     lab, c = memetic_twin(g, time_limit=6, rng=0, pop_size=3)
     assert c == cc.cost(g, lab)
     assert c <= cc.cost(g, pivot(g, 0))
+
+
+def test_anneal_journal_and_swaps_consistent():
+    from ccbench.anneal import _anneal_w
+    g, _ = planted_partition(0, 0, 0.7, 0.03, rng=11, sizes=np.full(15, 12))
+    wg, grp = contract(g)
+    lab = _project(g, grp, wg.n, pivot(g, 3))
+    c0 = wg.cost(lab)
+    for ps in (0.0, 0.3):
+        for iters in (50, 5000, 200000):
+            best, bc = _anneal_w(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab.copy(), iters,
+                                 1.0, 0.05, 0.03, 0.3, 7, c0, np.empty(0, np.int64), ps)
+            assert bc == wg.cost(best) and bc <= c0

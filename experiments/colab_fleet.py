@@ -29,6 +29,8 @@ STATE = os.path.join(OUT, "fleet_state.json")
 INBOX = os.path.join(OUT, "inbox")  # job batches added while the fleet runs
 LOG = os.path.join(OUT, "fleet.log")
 COLAB = os.path.expanduser("/root/.local/bin/colab")
+COLAB_PY = "/root/.local/share/uv/tools/google-colab-cli/bin/python"
+REAP = os.path.join(ROOT, "experiments", "colab_reap.py")
 STAGE = os.environ.get("FLEET_STAGE", "/root/fleet_stage")  # cc.tgz, kapoce_src.tgz, ...
 POLL = 60
 PUSH_EVERY = 600
@@ -95,6 +97,15 @@ def probe(s):
 def setup(s):
     """(Re)create the session and start the detached setup script."""
     colab(s, ["stop", "-s", s], timeout=120)
+    # dead VMs keep their assignment (and count against the quota) until released
+    env = dict(os.environ, HOME=ACCOUNTS[SESSIONS[s]])
+    try:
+        r = subprocess.run([COLAB_PY, REAP], env=env, capture_output=True, text=True,
+                           timeout=180)
+        if r.stdout.strip():
+            log(f"{s}: {r.stdout.strip()}")
+    except subprocess.TimeoutExpired:
+        pass
     code, out = colab(s, ["new", "-s", s], timeout=600)
     if "READY" not in out:
         log(f"{s}: new failed: {out[-200:]}")
@@ -164,7 +175,12 @@ def merge_inbox(queue):
         batch = load(path, None)
         if batch is None:
             continue
-        jobs = [j for j in batch["jobs"] if j["id"] not in ids]
+        for pre in batch.get("cancel", []):
+            n0 = len(queue)
+            queue[:] = [j for j in queue if not (j["status"] == "pending" and
+                                                   j["id"].startswith(pre))]
+            log(f"cancelled {n0 - len(queue)} pending jobs matching {pre}")
+        jobs = [j for j in batch.get("jobs", []) if j["id"] not in ids]
         if batch.get("front"):
             queue[:0] = jobs
         else:
@@ -257,7 +273,11 @@ def add(tag, T, seeds, graphs, front=False):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] in ("add", "add-front"):
+    if len(sys.argv) > 1 and sys.argv[1] == "cancel":
+        # cancel PREFIX...   (pending jobs whose id starts with a prefix)
+        os.makedirs(INBOX, exist_ok=True)
+        save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"cancel": sys.argv[2:]})
+    elif len(sys.argv) > 1 and sys.argv[1] in ("add", "add-front"):
         # add[-front] TAG T SEEDS(comma) GRAPH...
         add(sys.argv[2], float(sys.argv[3]), [int(x) for x in sys.argv[4].split(",")],
             sys.argv[5:], front=sys.argv[1] == "add-front")

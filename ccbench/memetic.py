@@ -252,7 +252,7 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
               pop_size: int = 6, init_share: float = 0.4, child_share: float = 0.04,
               t_child: float = 0.3, verbose: bool = False, history: list | None = None,
               t0: float | None = None, px: bool = True, local: bool = True,
-              max_sweeps: float = 3000.0):
+              max_sweeps: float = 3000.0, p_swap: float = 0.0):
     """Memetic search with annealing as improvement operator on a weighted
     instance.  ``init`` are starting clusterings of the nodes; each is annealed
     for init_share * time_limit / pop_size seconds to form the population.
@@ -271,7 +271,7 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
 
     t_init = init_share * time_limit / pop_size
     for i, lab in enumerate(init):
-        lab = anneal_w(wg, lab, time_limit=max(1.0, t_init), rng=rng)
+        lab = anneal_w(wg, lab, time_limit=max(1.0, t_init), rng=rng, p_swap=p_swap)
         lab = _compact(lab)[0].copy()
         pop.append(lab)
         costs.append(wg.cost(lab))
@@ -292,7 +292,8 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
         left = time_limit - (time.time() - t0)
         region = _diff_region(wg, pop[i1], pop[i2]) if local else None
         child = anneal_w(wg, child, time_limit=max(0.5, min(child_share * time_limit, left)),
-                         t_start=t_child, rng=rng, nodes=region, max_sweeps=max_sweeps)
+                         t_start=t_child, rng=rng, nodes=region, max_sweeps=max_sweeps,
+                         p_swap=p_swap)
         child = _compact(child)[0].copy()
         c = wg.cost(child)
         k = _key(child)

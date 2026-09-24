@@ -117,11 +117,15 @@ def anneal(g: Graph, labels: np.ndarray, iters: int | None = None, time_limit: f
 
 @nb.njit(cache=True)
 def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_single, p_best,
-              seed, cur_cost, nodes=np.empty(0, dtype=np.int64)):
+              seed, cur_cost, nodes=np.empty(0, dtype=np.int64), p_swap=0.0):
     """Annealing where node i stands for size[i] vertices and w[p] counts the
     positive pairs between the endpoint sets.  Moving i (size s) from A to B
     changes the cost by s (S_B - S_A + s) + 2 (w(i, A - i) - w(i, B)).
-    If ``nodes`` is non-empty only these nodes are moved."""
+    Proposals: move to a new singleton (p_single), best move (p_best), swap
+    with a random neighbour in another cluster (p_swap), else move to the
+    cluster of a random neighbour.  If ``nodes`` is non-empty only these nodes
+    are moved.  The best clustering is recovered with an undo journal, so
+    recording a new best costs O(1)."""
     np.random.seed(seed)
     csize = np.zeros(n, dtype=np.int64)
     for i in range(n):
@@ -135,6 +139,10 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
     acc = np.zeros(n, dtype=np.int64)
     touched = np.empty(n, dtype=np.int64)
     best = labels.copy()
+    stored = True          # best[] holds the best state (else: labels minus journal)
+    jv = np.empty(n, dtype=np.int64)
+    jl = np.empty(n, dtype=np.int64)
+    jn = 0
     best_cost = cur_cost
     cost_ = cur_cost
     lt0 = np.log(t_start)
@@ -160,6 +168,61 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
         v = cand[np.random.randint(nc)]
         a = labels[v]
         s = size[v]
+        r = np.random.random()
+        if r < p_swap:
+            u = indices[indptr[v] + np.random.randint(indptr[v + 1] - indptr[v])]
+            b = labels[u]
+            if b == a:
+                continue
+            su = size[u]
+            wva = 0
+            wvb = 0
+            wuv = 0
+            for p in range(indptr[v], indptr[v + 1]):
+                x = indices[p]
+                lx = labels[x]
+                if lx == a:
+                    wva += w[p]
+                elif lx == b:
+                    wvb += w[p]
+                    if x == u:
+                        wuv = w[p]
+            wua = 0
+            wub = 0
+            for p in range(indptr[u], indptr[u + 1]):
+                lx = labels[indices[p]]
+                if lx == a:
+                    wua += w[p]
+                elif lx == b:
+                    wub += w[p]
+            d1 = s * (csize[b] - csize[a] + s) + 2 * (wva - wvb)
+            sa2 = csize[a] - s
+            sb2 = csize[b] + s
+            d2 = su * (sa2 - sb2 + su) + 2 * ((wub + wuv) - (wua - wuv))
+            delta = d1 + d2
+            if delta <= 0 or np.random.random() < np.exp(-delta / T):
+                if jn + 2 > n:
+                    if not stored:
+                        best[:] = labels
+                        for q in range(jn - 1, -1, -1):
+                            best[jv[q]] = jl[q]
+                        stored = True
+                    jn = 0
+                jv[jn] = v
+                jl[jn] = a
+                jv[jn + 1] = u
+                jl[jn + 1] = b
+                jn += 2
+                csize[a] += su - s
+                csize[b] += s - su
+                labels[v] = b
+                labels[u] = a
+                cost_ += delta
+                if cost_ < best_cost:
+                    best_cost = cost_
+                    stored = False
+                    jn = 0
+            continue
         # neighbour cluster weights
         nt = 0
         for p in range(indptr[v], indptr[v + 1]):
@@ -170,15 +233,14 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
             acc[c] += w[p]
         wa = acc[a]
         base = -s * (csize[a] - s) + 2 * wa
-        r = np.random.random()
-        if r < p_single:
+        if r < p_swap + p_single:
             if csize[a] == s:
                 for t in range(nt):
                     acc[touched[t]] = 0
                 continue
             b = -1
             delta = base
-        elif r < p_single + p_best:
+        elif r < p_swap + p_single + p_best:
             b = -1
             delta = base if csize[a] > s else 1 << 40
             for t in range(nt):
@@ -207,6 +269,16 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
             if b == -1:
                 nfree -= 1
                 b = free[nfree]
+            if jn + 1 > n:
+                if not stored:
+                    best[:] = labels
+                    for q in range(jn - 1, -1, -1):
+                        best[jv[q]] = jl[q]
+                    stored = True
+                jn = 0
+            jv[jn] = v
+            jl[jn] = a
+            jn += 1
             csize[a] -= s
             if csize[a] == 0:
                 free[nfree] = a
@@ -216,7 +288,12 @@ def _anneal_w(n, indptr, indices, w, size, labels, iters, t_start, t_end, p_sing
             cost_ += delta
             if cost_ < best_cost:
                 best_cost = cost_
-                best[:] = labels
+                stored = False
+                jn = 0
+    if not stored:
+        best[:] = labels
+        for q in range(jn - 1, -1, -1):
+            best[jv[q]] = jl[q]
     return best, best_cost
 
 
@@ -231,7 +308,8 @@ _RATE = {}
 
 def anneal_w(wg, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 0.6,
              t_end: float = 0.03, p_single: float = 0.03, p_best: float = 0.3, rng=None,
-             nodes: np.ndarray | None = None, max_sweeps: float | None = None):
+             nodes: np.ndarray | None = None, max_sweeps: float | None = None,
+             p_swap: float = 0.0):
     """Node-level annealing with greedy-biased proposals on a weighted instance
     (:class:`ccbench.reduce.WGraph`).  With ``nodes`` only these nodes move; the
     number of proposals is rate * time_limit, capped at max_sweeps * len(nodes)."""
@@ -250,7 +328,7 @@ def anneal_w(wg, labels: np.ndarray, time_limit: float = 60.0, t_start: float = 
     if max_sweeps is not None and nodes is not None:
         iters = min(iters, int(max_sweeps * max(1, len(nd))))
     best, bc = _anneal_w(*args, lab, iters, t_start, t_end, p_single, p_best,
-                         int(rng.integers(1 << 30)), c0, nd)
+                         int(rng.integers(1 << 30)), c0, nd, p_swap)
     return best
 
 
