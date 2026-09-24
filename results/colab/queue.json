@@ -45,8 +45,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790210810.222812
  },
  {
   "id": "p1+t_reheat=1.0_BitcoinOTC+_0",
@@ -54,8 +55,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790210813.0380507
  },
  {
   "id": "p1+t_reheat=1.0_ca-AstroPh_0",
@@ -63,8 +65,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790210815.5218253
  },
  {
   "id": "p1+t_reheat=1.0_ca-CondMat_0",
@@ -108,7 +111,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790210088.8777497
  },
@@ -118,7 +121,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790210094.7186418
  },
@@ -128,7 +131,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790210099.8892636
  },
