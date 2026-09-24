@@ -300,8 +300,8 @@
   "seed": 0,
   "graph": "com-DBLP",
   "status": "running",
-  "machine": "w4",
-  "started": 1790207053.557946
+  "machine": "w8",
+  "started": 1790207865.4618013
  },
  {
   "id": "e2_com-Amazon_0",
@@ -310,8 +310,8 @@
   "seed": 0,
   "graph": "com-Amazon",
   "status": "running",
-  "machine": "w5",
-  "started": 1790207142.6735585
+  "machine": "w9",
+  "started": 1790207867.0335176
  },
  {
   "id": "e1_BitcoinAlpha+_2",
@@ -319,7 +319,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790207490.5013547
  },
@@ -330,7 +330,7 @@
   "seed": 2,
   "graph": "ca-HepPh",
   "status": "running",
-  "machine": "w6",
-  "started": 1790207570.9529517
+  "machine": "w7",
+  "started": 1790208171.899079
  }
 ]
