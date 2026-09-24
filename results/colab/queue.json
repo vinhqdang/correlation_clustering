@@ -215,7 +215,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790240384.477114
  },
@@ -335,7 +335,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790240586.82579
  },
@@ -375,7 +375,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790240592.0687456
  },
@@ -385,7 +385,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790240592.0687463
  },
@@ -405,7 +405,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790240723.5347052
  },
