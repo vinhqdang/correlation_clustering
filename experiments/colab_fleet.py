@@ -198,6 +198,10 @@ def step(state):
     new_files = False
     with ThreadPoolExecutor(len(SESSIONS)) as ex:
         probes = dict(zip(SESSIONS, ex.map(probe, SESSIONS)))
+    if all(p is None for p in probes.values()):
+        # every machine unreachable at once: a local network problem, not dead VMs
+        log("all probes failed; skipping this round")
+        return False
     for s in SESSIONS:
         st = state.setdefault(s, {"fails": 0, "setup_started": 0})
         pr = probes[s]
