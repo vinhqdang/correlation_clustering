@@ -3819,7 +3819,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790265424.8870478
  },
@@ -3849,7 +3849,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790265433.5622869
  },
@@ -3889,7 +3889,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790265442.745695
  },
@@ -3969,7 +3969,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790265469.8636017
  },
@@ -4009,7 +4009,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790265478.7516365
  },
@@ -4149,8 +4149,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790269157.7187297
  },
  {
   "id": "s1_ca-HepTh_7",
@@ -4158,8 +4159,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790269157.7187312
  },
  {
   "id": "s1_ca-HepPh_7",
@@ -4167,8 +4169,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790269157.7187319
  },
  {
   "id": "s1_ca-AstroPh_7",
@@ -4176,8 +4179,9 @@
   "T": 600.0,
   "seed": 7,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790269157.7187324
  },
  {
   "id": "s1_ca-CondMat_7",
