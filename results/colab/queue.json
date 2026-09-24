@@ -35,7 +35,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790208922.6873612
  },
@@ -459,8 +459,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790209612.493883
  },
  {
   "id": "e3+p_swap=0.1_email-Enron_0",
