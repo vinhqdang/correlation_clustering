@@ -5,7 +5,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790213963.9829624
  },
@@ -15,7 +15,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790213980.0360038
  },
@@ -25,7 +25,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790213985.211332
  },
@@ -35,7 +35,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790213991.1956012
  },
@@ -45,7 +45,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790213996.5397081
  },
@@ -55,7 +55,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790214088.2264347
  },
@@ -95,8 +95,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790214694.9295268
  },
  {
   "id": "m1_BitcoinAlpha+_0",
@@ -104,8 +105,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790214696.3825114
  },
  {
   "id": "m1_com-Amazon_1",
@@ -113,8 +115,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790214699.1854818
  },
  {
   "id": "m1_com-DBLP_1",
@@ -122,8 +125,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790214712.1483881
  },
  {
   "id": "m1_email-Enron_1",
@@ -131,8 +135,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790214715.1985192
  },
  {
   "id": "m1_loc-Brightkite_1",
