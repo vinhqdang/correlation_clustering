@@ -109,3 +109,10 @@ def test_local_ils_consistent():
         out, c, _ = _local_ils(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab.copy(), 3000,
                                R, sw, 1.5, 0.05, 0.03, 0.3, 3, c0)
         assert c == wg.cost(out) and c <= c0
+
+
+def test_memetic_sa_runs():
+    from ccbench.memetic import memetic_sa
+    g, _ = planted_partition(0, 0, 0.8, 0.02, rng=19, sizes=np.full(8, 10))
+    lab, c = memetic_sa(g, time_limit=6, rng=0, pop_size=3)
+    assert c == cc.cost(g, lab)

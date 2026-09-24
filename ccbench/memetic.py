@@ -435,52 +435,9 @@ def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
         if verbose:
             print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
     gen = 0
-    score = np.full(len(temps), np.inf)
-    n_ops = 3 if use_local else 2
-    op_score = np.full(n_ops, np.inf)  # 0: crossover, 1: self step, 2: local ILS
     while time.time() - t0 < time_limit:
         gen += 1
         P = len(pop)
-        if adaptive:
-            op = int(rng.integers(n_ops)) if rng.random() < explore else int(np.argmax(op_score))
-        else:
-            op = 1 if rng.random() < p_self else 0
-        self_step = op == 1
-        ts = time.time()
-        if op == 2:
-            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
-            left = time_limit - (time.time() - t0)
-            child = local_ils(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
-                              region_size=region_size, rng=rng, deg_bias=deg_bias)
-            c = wg.cost(child)
-            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
-            op_score[2] = gain if not np.isfinite(op_score[2]) else 0.7 * op_score[2] + 0.3 * gain
-            if c < costs[i]:
-                pop[i], costs[i], keys[i] = child, c, _key(child)
-            rec()
-            if verbose:
-                print(f"gen {gen}: local {c} best {min(costs)} t={time.time() - t0:.0f}",
-                      flush=True)
-            continue
-        if self_step:
-            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
-            k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
-            ts = time.time()
-            left = time_limit - (time.time() - t0)
-            y = anneal_w(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
-                         t_start=temps[k], rng=rng, p_swap=p_swap, last=True)
-            child = partition_crossover(wg, pop[i], y)[0]
-            c = wg.cost(child)
-            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
-            score[k] = gain if not np.isfinite(score[k]) else 0.6 * score[k] + 0.4 * gain
-            op_score[1] = gain if not np.isfinite(op_score[1]) else 0.7 * op_score[1] + 0.3 * gain
-            if c < costs[i]:
-                pop[i], costs[i], keys[i] = child, c, _key(child)
-            rec()
-            if verbose:
-                print(f"gen {gen}: self T={temps[k]} {c} best {min(costs)} "
-                      f"t={time.time() - t0:.0f}", flush=True)
-            continue
         i1 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         i2 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         if i1 == i2:
