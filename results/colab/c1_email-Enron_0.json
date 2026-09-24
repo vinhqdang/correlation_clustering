@@ -1,0 +1,1 @@
+{"graph": "email-Enron", "n": 36692, "m": 183831, "T": 600.0, "seed": 0, "tag": "c1", "commit": "2f7a159", "python": "3.13.15", "cost": 150701, "lb": 140551.0, "time": 1014.3389863967896, "check": "ok", "certified": 140551, "lb_exact": 140551.0, "rows": 25127, "star_rows": 4481, "check_time": 10.158011674880981}
