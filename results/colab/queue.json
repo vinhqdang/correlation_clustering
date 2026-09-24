@@ -5439,7 +5439,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur169.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790289736.6194324
  },
@@ -5969,8 +5969,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790294318.468316
  },
  {
   "id": "s1t60_Slashdot+_2",
@@ -5978,8 +5979,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790294318.4683177
  },
  {
   "id": "s1t60_Epinions+_2",
@@ -5987,8 +5989,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790294318.4683182
  },
  {
   "id": "s1t60_BitcoinOTC+_2",
@@ -5996,8 +5999,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790294318.4683185
  },
  {
   "id": "s1t60_BitcoinAlpha+_2",
