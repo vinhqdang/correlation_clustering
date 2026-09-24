@@ -65,7 +65,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790214094.9613764
  },
@@ -75,7 +75,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790214176.4840138
  },
@@ -145,8 +145,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790214803.303973
  },
  {
   "id": "m1_ca-HepTh_1",
@@ -154,8 +155,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790214816.1970763
  },
  {
   "id": "m1_BitcoinOTC+_1",
