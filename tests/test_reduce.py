@@ -97,4 +97,3 @@ def test_pxmem_runs():
     lab, c = pxmem(g, time_limit=8, rng=0, history=h)
     assert c == cc.cost(g, lab)
     assert all(b[1] <= a[1] for a, b in zip(h, h[1:]))
-    assert c <= cc.cost(g, pivot(g, 0)) or True
