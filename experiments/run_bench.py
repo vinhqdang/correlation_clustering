@@ -34,6 +34,9 @@ ALGOS = ["pivot", "pivot50", "vote", "louvain", "leiden", "mfp", "ins", "flip", 
 BOUNDS = ["lb:greedy", "lb:tri-mwu"]
 
 
+INSTANCE = [None]  # name of the instance being solved (for certificate files)
+
+
 def run_algo(name, g, seed, budget):
     t0 = time.time()
     extra = {}
@@ -55,7 +58,12 @@ def run_algo(name, g, seed, budget):
         lab = iterated_flip(g, cc.pivot(g, seed), 5, rng=seed)
     elif name == "certiflip":
         from ccbench.certiflip import certiflip
-        res = certiflip(g, time_limit=budget, rng=seed)
+        cert = None
+        if os.environ.get("CERT_DIR") and INSTANCE[0]:
+            os.makedirs(os.environ["CERT_DIR"], exist_ok=True)
+            cert = os.path.join(os.environ["CERT_DIR"],
+                                INSTANCE[0].replace("/", "_") + f"_s{seed}.npz")
+        res = certiflip(g, time_limit=budget, rng=seed, cert_path=cert)
         lab = res.labels
         extra = {"lb": res.lower_bound, "lb_time": res.lb_time}
     elif name == "kapoce":
@@ -91,6 +99,7 @@ def job(args):
     inst, algo, seed, budget = args
     try:
         g = D.load(inst)
+        INSTANCE[0] = inst
         if algo.startswith("lb:"):
             v, t = run_bound(algo, g, budget)
             return dict(instance=inst, n=g.n, m=g.m, algo=algo, seed=seed, cost="", lb=v, time=t)

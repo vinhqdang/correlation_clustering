@@ -261,6 +261,33 @@ class BlockDualBound:
                              "b": rb[sel], "y": y[sel], "anchor": anchor[sel],
                              "alive": np.ones(len(sel), dtype=bool)})
 
+    def certificate(self) -> dict:
+        """The stored rows with positive multipliers, as vertex pairs.
+
+        Any y >= 0 on valid rows gives a valid bound, so the rows are a
+        certificate that can be checked independently of this code
+        (experiments/check_certificate.py)."""
+        ptrs, us, vs, vals, bs, ys = [np.zeros(1, dtype=np.int64)], [], [], [], [], []
+        off = 0
+        for ch in self._chunks:
+            sel = np.flatnonzero(ch["alive"])
+            if len(sel) == 0:
+                continue
+            flat, _ = _gather(ch["ptr"], sel)
+            lens = ch["ptr"][sel + 1] - ch["ptr"][sel]
+            ptrs.append(off + np.cumsum(lens))
+            off += int(lens.sum())
+            pid = ch["idx"][flat]
+            us.append(self.sup.pu[pid].astype(np.int64))
+            vs.append(self.sup.pv[pid].astype(np.int64))
+            vals.append(ch["val"][flat])
+            bs.append(ch["b"][sel])
+            ys.append(ch["y"][sel])
+        cat = lambda a, dt: np.concatenate(a).astype(dt) if a else np.zeros(0, dtype=dt)
+        return {"n": self.g.n, "ptr": np.concatenate(ptrs), "u": cat(us, np.int64),
+                "v": cat(vs, np.int64), "val": cat(vals, np.float64), "b": cat(bs, np.float64),
+                "y": cat(ys, np.float64), "bound": self.bound()}
+
     @property
     def nrows(self) -> int:
         return int(sum(ch["alive"].sum() for ch in self._chunks))

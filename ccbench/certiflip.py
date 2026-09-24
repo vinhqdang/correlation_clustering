@@ -134,7 +134,7 @@ def _packing_rate(g, bd, pilot: int = 20000):
 def certiflip(g: Graph, time_limit: float = 300.0, rng=None, lb_fraction: float = 0.5,
               flip_rounds: int = 5, lns_size: int = 40, block_size: int = 2500,
               use_lp_seed: bool = True, max_pairs: float = 3e7,
-              verbose: bool = False) -> CertiFlipResult:
+              verbose: bool = False, cert_path: str | None = None) -> CertiFlipResult:
     rng = np.random.default_rng(rng)
     t0 = time.time()
     hist = []
@@ -162,6 +162,8 @@ def certiflip(g: Graph, time_limit: float = 300.0, rng=None, lb_fraction: float 
                      block_size=block_size, seed=int(rng.integers(1 << 30)), labels=lab)
     lb = bd.bound()
     lb_time = time.time() - t1
+    if cert_path is not None:
+        np.savez_compressed(cert_path, **bd.certificate())
     hist.append(("bound", time.time() - t0, lb))
     if verbose:
         print(hist[-1], flush=True)

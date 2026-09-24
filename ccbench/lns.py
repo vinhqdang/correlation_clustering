@@ -408,6 +408,43 @@ def cluster_block(g: Graph, labels: np.ndarray, seed: int, size: int, score: np.
     return out
 
 
+@nb.njit(cache=True)
+def _singleton_cleanup(n, indptr, indices, lab, nxt):
+    """Move to a new singleton every vertex v with |N(v) & S| < (|S| - 1)/2 in
+    its cluster S, until none is left.  Each move lowers the cost."""
+    size = np.zeros(nxt + n, dtype=np.int64)
+    for v in range(n):
+        size[lab[v]] += 1
+    moved = 0
+    changed = True
+    while changed:
+        changed = False
+        for v in range(n):
+            c = lab[v]
+            k = 0
+            for p in range(indptr[v], indptr[v + 1]):
+                if lab[indices[p]] == c:
+                    k += 1
+            if 2 * k < size[c] - 1:
+                size[c] -= 1
+                lab[v] = nxt
+                size[nxt] = 1
+                nxt += 1
+                moved += 1
+                changed = True
+    return moved
+
+
+def separate_far(g: Graph, labels: np.ndarray) -> np.ndarray:
+    """Improve ``labels`` by singleton moves until every vertex has at least
+    (|S| - 1)/2 neighbours in its cluster S.  Two non-adjacent vertices of such
+    a cluster then have a common neighbour in it, so the result separates all
+    far pairs, as the gap decomposition requires (Lemma 1)."""
+    lab = _compact(np.asarray(labels))[0].astype(np.int64).copy()
+    _singleton_cleanup(g.n, g.indptr, g.indices, lab, int(lab.max()) + 1 if g.n else 0)
+    return _compact(lab)[0].copy()
+
+
 def gap_lns(g: Graph, labels: np.ndarray, bd=None, size: int = 60, iters: int = 200,
             time_limit: float = 300.0, sub_time: float = 10.0, rng=None, verbose=False,
             modes=("bfs", "cluster"), stats: dict | None = None):
@@ -415,7 +452,9 @@ def gap_lns(g: Graph, labels: np.ndarray, bd=None, size: int = 60, iters: int = 
     local disagreement count.  Neighbourhoods whose touching gap is < 1 are
     certified locally optimal and skipped."""
     rng = np.random.default_rng(rng)
-    lab = _compact(np.asarray(labels))[0].copy()
+    # the local certificate (touching gap < 1) needs a clustering that separates
+    # far pairs; the clean-up only lowers the cost
+    lab = separate_far(g, labels)
     cur = cost(g, lab)
     t0 = time.time()
     tabu = np.zeros(g.n, dtype=np.int64)
@@ -452,7 +491,8 @@ def gap_lns(g: Graph, labels: np.ndarray, bd=None, size: int = 60, iters: int = 
             continue
         c = cost(g, new)
         if c < cur:
-            lab = _compact(new)[0].copy()
+            lab = separate_far(g, new)
+            c = cost(g, lab)
             st["improved"] += 1
             if verbose:
                 print(f"  lns it {it} ({mode}): {cur} -> {c} ({time.time() - t0:.1f}s)", flush=True)
