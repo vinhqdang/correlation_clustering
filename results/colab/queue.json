@@ -5,7 +5,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790239657.7197173
  },
@@ -45,7 +45,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790239664.2104876
  },
@@ -85,7 +85,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790239669.7934585
  },
@@ -2415,7 +2415,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790239205.064734
  },
@@ -2495,7 +2495,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790239211.9543266
  },
@@ -2535,7 +2535,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790239223.695305
  },
