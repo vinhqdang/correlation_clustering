@@ -5459,7 +5459,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur173.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790290608.5618496
  },
