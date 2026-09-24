@@ -125,8 +125,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790239774.8295836
  },
  {
   "id": "m3t150_email-Enron_1",
@@ -134,8 +135,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790239774.8295867
  },
  {
   "id": "m3t150_loc-Brightkite_1",
@@ -143,8 +145,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790239774.8295877
  },
  {
   "id": "m3t150_ca-HepTh_1",
@@ -152,8 +155,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790239774.8295884
  },
  {
   "id": "m3t150_BitcoinOTC+_1",
@@ -161,8 +165,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790239782.355736
  },
  {
   "id": "m3t150_ca-AstroPh_1",
@@ -170,8 +175,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790239782.3557384
  },
  {
   "id": "m3t150_ca-CondMat_1",
@@ -179,8 +185,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790239782.3557394
  },
  {
   "id": "m3t150_ca-HepPh_1",
@@ -188,8 +195,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790239782.35574
  },
  {
   "id": "m3t150_ca-GrQc_1",
@@ -2217,7 +2225,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790237118.9566479
  },
@@ -2337,7 +2345,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790237123.3104272
  },
