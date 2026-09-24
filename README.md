@@ -38,7 +38,11 @@ certified lower bound on the optimum:
 | `ccbench/blockdual.py` | anytime dual block-coordinate ascent |
 | `ccbench/lns.py` | gap map, local certificates, exact sub-MIP neighbourhoods |
 | `ccbench/certiflip.py` | the CertiFlip pipeline |
-| `experiments/` | datasets, baselines (KaPoCE, Leiden-CPM), benchmark runner, analysis, ablations |
+| `ccbench/reduce.py` | exact critical-clique (twin) contraction to a weighted instance |
+| `ccbench/anneal.py` | simulated annealing on (weighted) vertex moves and swaps |
+| `ccbench/memetic.py` | partition crossover, PX-annealing, memetic search (`pxmem`) |
+| `lean/CCProofs/` | Lean 4 proofs of the move/swap formulas, twin lemma, contraction identity and partition crossover |
+| `experiments/` | datasets, baselines (KaPoCE, Leiden-CPM), benchmark runner, analysis, ablations, Colab fleet |
 | `results/` | raw CSV results |
 | `paper/` | manuscript (LaTeX) |
 | `data/pace2021_exact_kapoce_bounds.csv` | published per-instance optima and bounds for the PACE 2021 exact track |
