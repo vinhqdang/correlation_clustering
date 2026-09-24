@@ -3929,7 +3929,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790265461.2068107
  },
@@ -4049,7 +4049,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790265501.045412
  },
@@ -4069,7 +4069,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790267458.87002
  },
