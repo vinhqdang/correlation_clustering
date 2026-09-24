@@ -199,9 +199,13 @@ def step(state):
     with ThreadPoolExecutor(len(SESSIONS)) as ex:
         probes = dict(zip(SESSIONS, ex.map(probe, SESSIONS)))
     if all(p is None for p in probes.values()):
-        # every machine unreachable at once: a local network problem, not dead VMs
-        log("all probes failed; skipping this round")
-        return False
+        # every machine unreachable at once: either a local network problem or all
+        # VMs were reclaimed (e.g. while this manager was down); ask the server
+        code, out = colab(next(iter(SESSIONS)), ["sessions"], timeout=120)
+        if code != 0 or "[colab]" not in out:
+            log("all probes failed and the server is unreachable; skipping this round")
+            return False
+        log("all probes failed but the server answers: recreating machines")
     for s in SESSIONS:
         st = state.setdefault(s, {"fails": 0, "setup_started": 0})
         pr = probes[s]
