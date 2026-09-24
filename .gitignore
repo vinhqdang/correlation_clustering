@@ -233,3 +233,4 @@ results/colab/heartbeat
 results/colab/fleet.out
 results/colab/fleet_state.json
 results/colab/*.tmp
+results/colab/inbox/
