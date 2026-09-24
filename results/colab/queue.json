@@ -35,8 +35,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790210731.9231205
  },
  {
   "id": "p1+t_reheat=1.0_ca-HepTh_0",
@@ -675,7 +676,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790209897.4493492
  },
