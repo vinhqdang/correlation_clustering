@@ -105,8 +105,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790212922.1976483
  },
  {
@@ -115,8 +115,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790212927.6735632
  },
  {
@@ -135,8 +135,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w7",
+  "status": "pending",
+  "machine": null,
   "started": 1790213434.446528
  },
  {
