@@ -97,3 +97,15 @@ def test_pxmem_runs():
     lab, c = pxmem(g, time_limit=8, rng=0, history=h)
     assert c == cc.cost(g, lab)
     assert all(b[1] <= a[1] for a, b in zip(h, h[1:]))
+
+
+def test_local_ils_consistent():
+    from ccbench.anneal import _local_ils, anneal_w
+    g, _ = planted_partition(0, 0, 0.7, 0.03, rng=17, sizes=np.full(15, 12))
+    wg, grp = contract(g)
+    lab = anneal_w(wg, _project(g, grp, wg.n, pivot(g, 5)), time_limit=0.3, rng=1)
+    c0 = wg.cost(lab)
+    for R, sw in ((5, 5), (30, 20)):
+        out, c, _ = _local_ils(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab.copy(), 3000,
+                               R, sw, 1.5, 0.05, 0.03, 0.3, 3, c0)
+        assert c == wg.cost(out) and c <= c0

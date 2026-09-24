@@ -254,7 +254,7 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
               t0: float | None = None, px: bool = True, local: bool = True,
               max_sweeps: float = 3000.0, p_swap: float = 0.0, p_self: float = 0.0,
               px_accept: bool = False, temps=(0.3, 0.6, 1.2, 2.0), explore: float = 0.2,
-              adaptive: bool = False):
+              adaptive: bool = False, use_local: bool = False, region_size: int = 30):
     """Memetic search with annealing as improvement operator on a weighted
     instance.  ``init`` are starting clusterings of the nodes; each is annealed
     for init_share * time_limit / pop_size seconds to form the population.
@@ -265,8 +265,10 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
     probability ``p_self`` a generation is instead a PX-annealing step on one
     member (reheating temperature chosen from ``temps`` by a bandit); with
     ``adaptive`` the choice between the two operators is also made by an
-    epsilon-greedy bandit on the gain per second."""
-    from .anneal import anneal_w
+    epsilon-greedy bandit on the gain per second.  With ``use_local`` a third
+    operator, localized iterated annealing with rollback (``local_ils``) on one
+    member, joins the bandit."""
+    from .anneal import anneal_w, local_ils
     rng = np.random.default_rng(rng)
     t0 = time.time() if t0 is None else t0
     E = wg.edges()
@@ -289,16 +291,32 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
             print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
     gen = 0
     score = np.full(len(temps), np.inf)
-    op_score = np.full(2, np.inf)  # 0: crossover, 1: self step
+    n_ops = 3 if use_local else 2
+    op_score = np.full(n_ops, np.inf)  # 0: crossover, 1: self step, 2: local ILS
     while time.time() - t0 < time_limit:
         gen += 1
         P = len(pop)
         if adaptive:
-            self_step = (rng.random() < 0.5) if rng.random() < explore else \
-                bool(np.argmax(op_score))
+            op = int(rng.integers(n_ops)) if rng.random() < explore else int(np.argmax(op_score))
         else:
-            self_step = rng.random() < p_self
+            op = 1 if rng.random() < p_self else 0
+        self_step = op == 1
         ts = time.time()
+        if op == 2:
+            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+            left = time_limit - (time.time() - t0)
+            child = local_ils(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
+                              region_size=region_size, rng=rng)
+            c = wg.cost(child)
+            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
+            op_score[2] = gain if not np.isfinite(op_score[2]) else 0.7 * op_score[2] + 0.3 * gain
+            if c < costs[i]:
+                pop[i], costs[i], keys[i] = child, c, _key(child)
+            rec()
+            if verbose:
+                print(f"gen {gen}: local {c} best {min(costs)} t={time.time() - t0:.0f}",
+                      flush=True)
+            continue
         if self_step:
             i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
             k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
@@ -353,7 +371,8 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
 
 
 def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
-                 verbose: bool = False, history: list | None = None, **kw):
+                 verbose: bool = False, history: list | None = None, flip_seeds: bool = True,
+                 **kw):
     """memetic_w on the critical-clique contraction of g.  Seeds: Pivot (which
     never splits a critical clique) followed by one round of flipping local
     search, projected onto the contracted nodes.  No operator increases the
@@ -364,11 +383,14 @@ def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 
     wg, grp = contract(g)
     first = np.full(wg.n, -1, dtype=np.int64)
     first[grp[::-1]] = np.arange(g.n)[::-1]
-    t_seed = 0.2 * 0.4 * time_limit / pop_size
+    t_seed = 0.2 * kw.get("init_share", 0.4) * time_limit / pop_size
     init = []
     for _ in range(pop_size):
         s = int(rng.integers(1 << 30))
         p = pivot(g, s)
+        if not flip_seeds:
+            init.append(p[first])
+            continue
         f = iterated_flip(g, p, 1, rng=s, time_limit=t_seed)[first]
         # Pivot never splits a critical clique, so its projection is exact; the
         # projection of the flip result may cost more, keep the better one
@@ -413,16 +435,32 @@ def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
             print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
     gen = 0
     score = np.full(len(temps), np.inf)
-    op_score = np.full(2, np.inf)  # 0: crossover, 1: self step
+    n_ops = 3 if use_local else 2
+    op_score = np.full(n_ops, np.inf)  # 0: crossover, 1: self step, 2: local ILS
     while time.time() - t0 < time_limit:
         gen += 1
         P = len(pop)
         if adaptive:
-            self_step = (rng.random() < 0.5) if rng.random() < explore else \
-                bool(np.argmax(op_score))
+            op = int(rng.integers(n_ops)) if rng.random() < explore else int(np.argmax(op_score))
         else:
-            self_step = rng.random() < p_self
+            op = 1 if rng.random() < p_self else 0
+        self_step = op == 1
         ts = time.time()
+        if op == 2:
+            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+            left = time_limit - (time.time() - t0)
+            child = local_ils(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
+                              region_size=region_size, rng=rng)
+            c = wg.cost(child)
+            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
+            op_score[2] = gain if not np.isfinite(op_score[2]) else 0.7 * op_score[2] + 0.3 * gain
+            if c < costs[i]:
+                pop[i], costs[i], keys[i] = child, c, _key(child)
+            rec()
+            if verbose:
+                print(f"gen {gen}: local {c} best {min(costs)} t={time.time() - t0:.0f}",
+                      flush=True)
+            continue
         if self_step:
             i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
             k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
@@ -525,7 +563,8 @@ def pxmem(g: Graph, time_limit: float = 600.0, rng=None, history: list | None = 
     """PX-memetic annealing (the default configuration): memetic search on the
     critical-clique contraction with a population of 4, region-wise acceptance
     of offspring by partition crossover, PX-annealing self-improvement steps,
-    and bandit selection of the operator and of the reheating temperature."""
-    opts = dict(pop_size=4, init_share=0.15, px_accept=True, adaptive=True)
+    localized iterated annealing with rollback, and bandit selection of the
+    operator and of the reheating temperature."""
+    opts = dict(pop_size=4, init_share=0.15, px_accept=True, adaptive=True, use_local=True)
     opts.update(kw)
     return memetic_twin(g, time_limit, rng=rng, history=history, verbose=verbose, **opts)

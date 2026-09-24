@@ -373,3 +373,188 @@ def ml_anneal(g: Graph, labels: np.ndarray, time_limit: float = 60.0, cycles: in
         if cost(g, new) <= cost(g, lab):
             lab = _compact(new)[0].copy()
     return lab
+
+
+# --------------------------------------------------------------------------
+# localized iterated annealing with rollback
+# --------------------------------------------------------------------------
+
+@nb.njit(cache=True)
+def _mv(v, b, s, labels, csize, free, nfree):
+    """Move node v (size s) to cluster b (-1: a new cluster).  Returns
+    (b, nfree, new_b, emptied_a) so that the move can be undone exactly."""
+    a = labels[v]
+    newb = False
+    if b == -1:
+        nfree -= 1
+        b = free[nfree]
+        newb = True
+    csize[a] -= s
+    emptied = False
+    if csize[a] == 0:
+        free[nfree] = a
+        nfree += 1
+        emptied = True
+    csize[b] += s
+    labels[v] = b
+    return b, nfree, newb, emptied
+
+
+@nb.njit(cache=True)
+def _local_ils(n, indptr, indices, w, size, labels, steps, region_size, sweeps, t_hot, t_cold,
+               p_single, p_best, seed, cur_cost):
+    """Localized iterated annealing.  Every step grows a BFS region of at most
+    ``region_size`` nodes around a random node, anneals the nodes of the region
+    from t_hot to t_cold (sweeps * |region| proposals, the rest of the graph
+    fixed), finishes with greedy best moves, and keeps the result only if the
+    cost did not increase; otherwise all moves are undone exactly.  The cost
+    never increases."""
+    np.random.seed(seed)
+    csize = np.zeros(n, dtype=np.int64)
+    for i in range(n):
+        csize[labels[i]] += size[i]
+    free = np.empty(n, dtype=np.int64)
+    nfree = 0
+    for c in range(n - 1, -1, -1):
+        if csize[c] == 0:
+            free[nfree] = c
+            nfree += 1
+    acc = np.zeros(n, dtype=np.int64)
+    touched = np.empty(n, dtype=np.int64)
+    mark = np.zeros(n, dtype=np.int64)
+    region = np.empty(region_size, dtype=np.int64)
+    cap = sweeps * region_size + 4 * region_size + 8
+    jv = np.empty(cap, dtype=np.int64)
+    ja = np.empty(cap, dtype=np.int64)
+    jb = np.empty(cap, dtype=np.int64)
+    jnew = np.empty(cap, dtype=np.bool_)
+    jemp = np.empty(cap, dtype=np.bool_)
+    cand = np.empty(n, dtype=np.int64)
+    nc = 0
+    for v in range(n):
+        if indptr[v + 1] > indptr[v]:
+            cand[nc] = v
+            nc += 1
+    if nc == 0:
+        return labels, cur_cost, 0
+    lr = np.log(t_cold / t_hot)
+    accepted = 0
+    for step in range(steps):
+        stamp = step + 1
+        v0 = cand[np.random.randint(nc)]
+        region[0] = v0
+        mark[v0] = stamp
+        nr = 1
+        head = 0
+        while head < nr and nr < region_size:
+            u = region[head]
+            head += 1
+            deg = indptr[u + 1] - indptr[u]
+            off = np.random.randint(deg) if deg > 0 else 0
+            for k in range(deg):
+                x = indices[indptr[u] + (off + k) % deg]
+                if mark[x] != stamp:
+                    mark[x] = stamp
+                    region[nr] = x
+                    nr += 1
+                    if nr >= region_size:
+                        break
+        jn = 0
+        dtot = 0
+        iters = sweeps * nr
+        for it in range(iters + 2 * nr):
+            greedy = it >= iters
+            if greedy:
+                v = region[(it - iters) % nr]
+            else:
+                v = region[np.random.randint(nr)]
+            if indptr[v + 1] == indptr[v]:
+                continue
+            a = labels[v]
+            s = size[v]
+            nt = 0
+            for p in range(indptr[v], indptr[v + 1]):
+                c = labels[indices[p]]
+                if acc[c] == 0:
+                    touched[nt] = c
+                    nt += 1
+                acc[c] += w[p]
+            base = -s * (csize[a] - s) + 2 * acc[a]
+            r = np.random.random()
+            b = -2
+            delta = 0
+            if greedy or (r >= p_single and r < p_single + p_best):
+                b = -2
+                delta = 1 << 40
+                if csize[a] > s:
+                    b = -1
+                    delta = base
+                for t in range(nt):
+                    c = touched[t]
+                    if c == a:
+                        continue
+                    d = s * csize[c] + base - 2 * acc[c]
+                    if d < delta:
+                        delta = d
+                        b = c
+            elif r < p_single:
+                if csize[a] > s:
+                    b = -1
+                    delta = base
+            else:
+                u = indices[indptr[v] + np.random.randint(indptr[v + 1] - indptr[v])]
+                if labels[u] != a:
+                    b = labels[u]
+                    delta = s * csize[b] + base - 2 * acc[b]
+            for t in range(nt):
+                acc[touched[t]] = 0
+            if b == -2 or jn >= cap:
+                continue
+            if greedy:
+                ok = delta < 0
+            else:
+                T = t_hot * np.exp(lr * it / iters)
+                ok = delta <= 0 or np.random.random() < np.exp(-delta / T)
+            if ok:
+                bb, nfree, nw, em = _mv(v, b, s, labels, csize, free, nfree)
+                jv[jn] = v
+                ja[jn] = a
+                jb[jn] = bb
+                jnew[jn] = nw
+                jemp[jn] = em
+                jn += 1
+                dtot += delta
+        if dtot > 0:
+            for q in range(jn - 1, -1, -1):
+                v = jv[q]
+                a = ja[q]
+                b = jb[q]
+                s = size[v]
+                if jemp[q]:
+                    nfree -= 1
+                csize[a] += s
+                csize[b] -= s
+                labels[v] = a
+                if jnew[q]:
+                    free[nfree] = b
+                    nfree += 1
+        else:
+            cur_cost += dtot
+            if dtot < 0:
+                accepted += 1
+    return labels, cur_cost, accepted
+
+
+def local_ils(wg, labels: np.ndarray, time_limit: float = 10.0, region_size: int = 30,
+              sweeps: int = 20, t_hot: float = 1.0, t_cold: float = 0.05,
+              p_single: float = 0.03, p_best: float = 0.3, rng=None, chunk: int = 2000):
+    """Localized iterated annealing with exact rollback (never increases the cost)."""
+    rng = np.random.default_rng(rng)
+    lab = _compact(np.asarray(labels))[0].copy()
+    c = wg.cost(lab)
+    t0 = time.time()
+    while time.time() - t0 < time_limit:
+        lab, c, _ = _local_ils(wg.n, wg.indptr, wg.indices, wg.w, wg.size, lab, chunk,
+                               region_size, sweeps, t_hot, t_cold, p_single, p_best,
+                               int(rng.integers(1 << 30)), c)
+    return lab
