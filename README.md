@@ -82,10 +82,10 @@ python experiments/anytime.py results/anytime_dblp.csv 600 com-DBLP
 python experiments/plot_anytime.py
 python experiments/analyze.py --pace-exact results/pace_exact.csv --snap results/snap.csv \
     --ablation results/ablation_lb.csv --scaling results/scaling.csv
-cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
+cd paper && pdflatex certified_correlation_clustering && bibtex certified_correlation_clustering && pdflatex certified_correlation_clustering && pdflatex certified_correlation_clustering
 ```
 
-## Main results (see `paper/main.pdf`)
+## Main results (see `paper/certified_correlation_clustering.pdf`)
 
 * PACE 2021 exact track (200 instances): the CertiFlip bound proves optimality
   on 111 of the 173 instances with known optimum (root bounds of the KaPoCE
