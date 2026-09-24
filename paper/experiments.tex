@@ -23,6 +23,7 @@ objective~\citep{veldt2018lambdacc}.
 \emph{KaPoCE}: the PACE~2021 winner of both tracks, heuristic
 version~\citep{BlasiusEtAl21kapoceHeur}.
 \emph{CertiFlip}: Algorithm~\ref{alg:certiflip}.
+\emph{PXMem}: Algorithm~\ref{alg:pxmem} (Section~\ref{sec:h2h}).
 KaPoCE and CertiFlip receive the same wall-clock budget $T$.  The other
 methods run to completion, with three seeds each.
 
@@ -60,3 +61,7 @@ and the community graphs \texttt{com-Amazon}, \texttt{com-DBLP} and
 \subsection{Ablations}
 
 \input{ablation_results}
+
+\subsection{PXMem against KaPoCE}\label{sec:h2h}
+
+\input{headtohead_results}

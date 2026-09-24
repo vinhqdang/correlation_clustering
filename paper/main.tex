@@ -31,7 +31,7 @@
 \newcommand{\R}{\mathbb{R}}
 
 \title{Certified Correlation Clustering at Scale:\\
-Distance-Two Relaxations, Anytime Dual Bounds,\\ and Gap-Guided Local Search}
+Distance-Two Relaxations, Anytime Dual Bounds,\\ and Exact Partition Crossover}
 
 \author{Quang-Vinh Dang\\
 British University Vietnam, Hung Yen, Vietnam\\
@@ -73,6 +73,19 @@ instances than the root bounds of the state-of-the-art branch-and-bound.  On SNA
 edges, its bounds certify the best known solutions within $0.2\%$ to $9.2\%$
 of optimal, where previously scalable bounds certify only factors of $1.17$ to
 $1.81$.
+(iv)~We show that two clusterings can be recombined exactly: in every block
+of the overlap of their clusters one may take either parent, and the best
+choice is never worse than either parent.  With the contraction of critical
+cliques, annealing with region-wise acceptance and localized annealing with
+exact rollback, this gives a memetic solver, \emph{PXMem}, with the same
+guarantee of $3$ in expectation.  In 110 head-to-head runs of 600\,s against
+the PACE~2021 winner KaPoCE on the same machine, PXMem is significantly better
+on four of eleven graphs, significantly worse on one (by $0.004\%$), and
+equivalent on six.  The same crossover combines parallel runs and improves
+the solutions of KaPoCE itself.
+(v)~The combinatorial statements behind both solvers, including the move
+formulas used by the implementation, the lower-bound certificates and the
+approximation guarantee, are machine-checked in Lean~4.
 \end{abstract}
 
 \section{Introduction}
@@ -168,6 +181,19 @@ with the three components above this yields an algorithm whose expected cost
 is at most $3\,\OPT$, and at most $2.06\,\OPT$ when a single-block relaxation
 is solved to optimality.  It returns a certified lower bound with every
 solution (Theorem~\ref{thm:certiflip}).
+
+\item \textbf{Exact recombination and PXMem} (Section~\ref{sec:pxmem}).  The
+blocks of the overlap of two clusterings are independent: taking the better
+parent in each block gives a clustering that is never worse than either
+parent (Theorem~\ref{thm:px}).  Together with the contraction of critical
+cliques (Lemma~\ref{lem:twins}) this yields PXMem, a memetic solver that keeps
+the guarantee of $3$ in expectation (Theorem~\ref{thm:pxmem}) and beats
+KaPoCE with statistical significance on four of eleven SNAP graphs.
+
+\item \textbf{Machine-checked proofs} (Section~\ref{sec:lean}).  The
+combinatorial lemmas and theorems of the paper, the incremental cost formulas
+of the implementation and the certificate and approximation arguments are
+proved in Lean~4 with Mathlib.
 
 \item \textbf{Evaluation pipeline and experiments} (Section~\ref{sec:exp}).
 We release an open-source pipeline with ten solvers and five lower bounds.
@@ -533,6 +559,12 @@ the size of $P$ and the number of bad triangles.  The support takes
 $O(\sum_w\deg(w)^2)$ time and memory.  The block LPs dominate the running
 time, and the time spent on them is set by the budget $T$.
 
+\section{Exact recombination: the PXMem solver}\label{sec:pxmem}
+\input{pxmem}
+
+\section{Machine-checked proofs}\label{sec:lean}
+\input{verification}
+
 \section{Experiments}\label{sec:exp}
 \input{experiments}
 
@@ -546,12 +578,21 @@ They also give a primal method that knows where to search.  Our
 implementation of the iterated flipping local search of
 \citet{CohenAddadLPTYZ24} is, to our knowledge, the first of a sub-$3$
 combinatorial scheme.  It comes within a few tenths of a percent of the
-best engineered heuristic in a fraction of its running time.
+best engineered heuristic in a fraction of its running time.  The exact
+partition crossover closes the remaining gap on most graphs: PXMem keeps the
+a-priori guarantee, is significantly better than KaPoCE on four of eleven
+graphs at equal budget, and turns additional cores into better solutions.  All
+combinatorial arguments are machine-checked.
 
 \paragraph{Limitations.}
 \begin{itemize}
-\item The best primal solutions on our benchmarks still come from KaPoCE,
-which is $0.1\%$--$0.4\%$ better than CertiFlip on the SNAP graphs.
+\item KaPoCE remains better than PXMem on \texttt{com-Amazon} (by $0.004\%$ at
+\SI{600}{s}) and, at short budgets of \SI{60}{s}--\SI{150}{s}, on the largest
+graphs (by $0.1\%$--$0.7\%$), where our initial population takes too much of
+the budget.  PXMem also needs about $2.5$ times the memory of KaPoCE.
+\item The Pivot guarantee used in Theorems~\ref{thm:certiflip}
+and~\ref{thm:pxmem} is taken from the literature; our Lean development proves
+everything else in these theorems but not this probabilistic argument.
 \item On dense instances the packing bounds of the KaPoCE branch-and-bound
 remain stronger than ours.
 \item The distance-two support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs

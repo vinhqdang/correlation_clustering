@@ -1,0 +1,166 @@
+CertiFlip certifies its solutions, but on large graphs they remain
+$0.1\%$--$0.4\%$ above those of KaPoCE (Section~\ref{sec:exp}).  This section
+describes a second primal solver, \emph{PXMem}, whose solutions match or
+beat KaPoCE on most of our graphs.  It rests on two exact facts: twins can be
+contracted, and two clusterings can be recombined block by block without
+losing anything.  Both results, the move formulas used by the implementation
+and the guarantee of Theorem~\ref{thm:pxmem} are machine-checked
+(Section~\ref{sec:lean}).
+
+\subsection{Critical-clique contraction}
+
+Two vertices $u\ne v$ are \emph{twins} if $uv\in\Ep$ and $N(u)\setminus\{v\}=
+N(v)\setminus\{u\}$, i.e.\ they have the same closed neighbourhood.  The classes
+of twins are the \emph{critical cliques} of \citet{Guo09kernel}.
+
+\begin{lemma}\label{lem:twins}
+Let $u,v$ be twins and $\mathcal C$ a clustering that separates them.  Moving
+$v$ into the cluster of $u$ and moving $u$ into the cluster of $v$ change the
+cost by $\delta_1$ and $\delta_2$ with $\delta_1+\delta_2=-2$.  Hence every
+optimal clustering keeps every critical clique inside one cluster.
+\end{lemma}
+\begin{proof}
+Let $A\ni u$ and $B\ni v$ be the two clusters and, for a cluster $X$, let
+$f(X)$ be the number of mistakes between a vertex $z\in\{u,v\}$ and the
+vertices of $X\setminus\{u,v\}$ if $z$ is placed in $X$; it is the same for $u$
+and $v$ because they are twins.  Besides the cut positive pair $uv$, the
+current cost involving $u$ or $v$ is $f(A)+f(B)$; after the first move it is
+$2f(A)$, after the second $2f(B)$.  So $\delta_1+\delta_2=2f(A)+2f(B)
+-2(f(A)+f(B)+1)=-2$ and one of the moves is a strict improvement.
+\end{proof}
+
+Contracting every critical clique $K$ to a node of size $s_K=|K|$ gives a
+weighted instance on the node set $U$: two nodes $K\ne L$ carry the weight
+$w_{KL}=s_Ks_L$ if $K$ and $L$ are adjacent and $0$ otherwise, and the cost of
+a clustering $c$ of $U$ is
+\begin{equation}\label{eq:wcost}
+\cost_w(c)=\sum_{\{K,L\}:\,c(K)=c(L)}(s_Ks_L-w_{KL})+\sum_{\{K,L\}:\,c(K)\ne c(L)}w_{KL}.
+\end{equation}
+The pairs inside a critical clique are positive and never cut.  Hence the cost
+of the expanded clustering on $G^+$ equals $\cost_w(c)$, and by
+Lemma~\ref{lem:twins} an optimal clustering of the contracted instance expands
+to an optimal clustering of $G^+$.  On the collaboration graphs the
+contraction removes $13\%$--$22\%$ of the vertices.  Pivot never separates
+twins either: whether a vertex joins the cluster of the pivot $p$ depends only
+on its closed neighbourhood, so each round treats twins alike.  A Pivot
+clustering therefore maps to the contracted instance without changing its
+cost.
+
+\subsection{Partition crossover}
+
+\begin{theorem}[partition crossover]\label{thm:px}
+Let $a$ and $b$ be clusterings and let $H$ be the bipartite graph whose nodes
+are the clusters of $a$ and of $b$, with an edge between $A\in a$ and $B\in b$
+whenever $A\cap B\ne\emptyset$.  Each connected component of $H$ covers a
+vertex set $X$, the \emph{block}, which is a union of clusters of $a$ and also
+a union of clusters of $b$.  For a clustering $c$ let $\cost_X(c)$ count the
+mistakes on the pairs inside $X$.  Choose, independently in every block, the
+clusters of $b$ if $\cost_X(b)<\cost_X(a)$ and those of $a$ otherwise.  The
+resulting clustering $\chi$ satisfies
+\[
+\cost(\chi)=\cost(a)-\sum_X\max\bigl(0,\cost_X(a)-\cost_X(b)\bigr)
+\le\min\bigl(\cost(a),\cost(b)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+A pair $u,v$ in different blocks is separated by $a$, by $b$ and by $\chi$,
+because each of their clusters lies inside one block.  It therefore
+contributes the same amount to all three costs.  A pair inside a block $X$ is
+treated by $\chi$ exactly as by the parent chosen for $X$.  Summing over the
+pairs gives the equality.  Every term of the sum is non-negative, and
+exchanging the roles of $a$ and $b$ gives the bound by $\cost(b)$.
+\end{proof}
+
+The blocks are the connected components of a bipartite graph with at most $n$
+edges, and the block costs need one pass over $\Ep$.  Hence $\chi$ is computed in
+$O(n+m)$ time.  The blocks are also the finest sets on which a block-wise
+choice between the two parents always gives a clustering: any finer set would
+split a cluster of $a$ or of $b$.  The operator is the analogue for clusterings
+of the partition crossover of \citet{WhitleyHH09gpx} for tours.  It combines
+\emph{any} two clusterings, including clusterings produced by different
+solvers.  On our graphs, two independent runs typically differ in thousands of
+blocks, most of them ties, and each run wins some of the others.
+
+\subsection{Annealing moves}
+
+The search moves nodes of the contracted instance.  Let $S_X=\sum_{K\in X}s_K$
+be the size of a cluster $X$ and $w(K,X)=\sum_{L\in X\setminus\{K\}}w_{KL}$.
+Moving a node $K$ of size $s$ from its cluster $A$ to a cluster $B$ changes
+$\cost_w$ by
+\begin{equation}\label{eq:move}
+\delta=s\,(S_B-S_A+s)+2\,\bigl(w(K,A)-w(K,B)\bigr).
+\end{equation}
+Exchanging $K\in A$ with $L\in B$ changes it by the sum of two such terms,
+where the second one uses $S_A-s_K$, $S_B+s_K$, $w(L,B)+w_{KL}$ and
+$w(L,A)-w_{KL}$.  Both are evaluated in $O(\deg K+\deg L)$ time.  The
+simulated annealing~\citep{KirkpatrickGV83} proposes the move to the cluster
+of a random neighbour, the best move, or a move to a new cluster, and accepts
+with the Metropolis rule under a geometric cooling schedule.  It records the
+best state with an undo journal, so a new best state costs $O(1)$ instead of
+a copy of the labelling.  This alone made the annealing $7.3$ times faster on
+\texttt{com-Amazon}.
+
+\paragraph{Region-wise acceptance.}  Theorem~\ref{thm:px} turns annealing into
+an iterated local search with a decomposed acceptance test.  From the current
+clustering $x$ we anneal a copy, starting at a raised temperature, down to its
+final state $y$, and set $x\gets\chi(x,y)$.  Every block in which $y$ improved
+on $x$ is kept, even if $y$ is worse overall, and the cost of $x$ never
+increases.
+
+\paragraph{Localized annealing with rollback.}  A step grows a region of at
+most $30$ nodes by breadth-first search around a centre, anneals only the
+nodes of the region from a high to a low temperature, finishes with greedy best
+moves, and undoes all moves if their total change is positive.  The undo is
+exact: moves are reversed in LIFO order together with the free list of
+cluster labels.  Half of the centres are drawn with probability proportional to
+the degree.  Comparing our solutions with those of KaPoCE block by block showed
+why: the blocks in which KaPoCE was better all contained a vertex of high
+degree.
+
+\subsection{The memetic search}
+
+\begin{algorithm}[t]
+\caption{PXMem$(G^+,T)$}\label{alg:pxmem}
+\begin{algorithmic}[1]
+\State contract the critical cliques
+\For{$i=1,\dots,4$}
+  \State $p_i\gets\textsc{Pivot}(G^+)$; $f_i\gets$ one round of \textsc{IteratedFlip}$(p_i)$
+  \State $x_i\gets$ the cheaper of $p_i$ and $f_i$ on the contracted nodes; anneal $x_i$
+\EndFor
+\While{time remains}
+  \State choose an operator by an $\varepsilon$-greedy bandit on the recent gain per second
+  \State \textbf{crossover:} parents $a,b$ by binary tournaments; $z\gets\chi(a,b)$;
+  \Statex \hspace{\algorithmicindent} contract the blocks common to $a$ and $b$ and run a multilevel local search from $z$;
+  \Statex \hspace{\algorithmicindent} anneal on the nodes where $a$ and $b$ disagree; accept region-wise; crowding replacement
+  \State \textbf{PX-annealing step} on a member (temperature chosen by a second bandit)
+  \State \textbf{localized annealing} with rollback on a member
+\EndWhile
+\State \Return the cheapest member, expanded to $V$
+\end{algorithmic}
+\end{algorithm}
+
+Algorithm~\ref{alg:pxmem} keeps a population of four clusterings.  A crossover
+child enters the population only by replacing a member that is not cheaper,
+preferring the most similar members (crowding); the other two operators
+replace a member only if they improve it.
+
+\begin{theorem}\label{thm:pxmem}
+Let $\mathcal C$ be the output of Algorithm~\ref{alg:pxmem} and $p_1$ the first
+Pivot clustering.  Then $\cost(\mathcal C)\le\cost(p_1)$ for every outcome of
+the random choices, and hence $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.  Together
+with a lower bound $\LB$ from Section~\ref{sec:dual},
+$\cost(\mathcal C)/\lceil\LB\rceil$ bounds the ratio achieved on the instance.
+\end{theorem}
+\begin{proof}
+The seed $x_1$ costs at most $\cost(p_1)$: Pivot does not separate twins, so its
+contraction preserves its cost, and $x_1$ is the cheaper of the two
+candidates.  The annealing returns the cheapest state of a trajectory that
+starts at its input; region-wise acceptance does not increase the cost by
+Theorem~\ref{thm:px}; the localized annealing keeps a step only if its total
+change is non-positive; and every replacement is by a clustering that is not
+more expensive than the member it replaces.  By induction over the
+replacements, some member always costs at most $\cost(x_1)$, so the cheapest
+final member costs at most $\cost(p_1)$.  Taking expectations and applying the
+Pivot guarantee~\citep{AilonCN08} gives the second claim.  The last claim is
+Theorem~\ref{thm:anytime}(a).
+\end{proof}

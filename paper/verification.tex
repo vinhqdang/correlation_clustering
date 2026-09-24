@@ -1,0 +1,54 @@
+The correctness of the solvers rests on a number of short combinatorial
+arguments and on exact formulas that the implementation evaluates millions of
+times per second.  An error in a sign or in a boundary case would not crash
+the code; it would silently produce worse or invalid results.  We therefore
+formalised these statements in Lean~4~\citep{deMouraU21lean4} with
+Mathlib~\citep{mathlib2020}.  The development has about 1{,}200 lines in nine
+files and is part of the repository (\texttt{lean/CCProofs}).  Every theorem
+in Table~\ref{tab:lean} is checked by the Lean kernel without \texttt{sorry}
+and depends only on the standard axioms \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}.
+
+The formal model is the one of Section~\ref{sec:prelim}: a finite vertex set,
+a simple graph $G^+$ and a labelling $c:V\to\alpha$ into an arbitrary type
+with decidable equality.  The cost is summed over ordered pairs, so every
+count appears multiplied by two.  The weighted instance has integer node
+sizes and symmetric weights, as in~\eqref{eq:wcost}.
+
+\begin{table}[t]
+\centering
+\caption{Machine-checked statements (Lean~4 and Mathlib).  The Pivot
+guarantee~\citep{AilonCN08} enters \texttt{search\_guarantee} as a hypothesis
+and is not re-proved.}\label{tab:lean}
+\small
+\begin{tabular}{p{0.52\linewidth}p{0.4\linewidth}}
+\toprule
+statement & Lean theorem \\
+\midrule
+relabelling a vertex changes only the pairs through it & \texttt{cost\_update}, \texttt{sum\_update\_pairs} \\
+move formula $(|B|-2k_B)-(|A|-1-2k_A)$ and its weighted form~\eqref{eq:move} & \texttt{cost\_move}, \texttt{costW\_move} \\
+swap of two nodes as two dependent moves & \texttt{costW\_swap} \\
+twins are together in every optimal clustering (Lemma~\ref{lem:twins}) & \texttt{twins\_split\_improvable}, \texttt{optimal\_keeps\_twins} \\
+a Pivot round never separates twins & \texttt{pivot\_round\_twins} \\
+contraction of critical cliques preserves the cost & \texttt{cost\_contract} \\
+partition crossover (Theorem~\ref{thm:px}) & \texttt{d\_child}, \texttt{cost\_child\_a}, \texttt{crossover\_le} \\
+pairs that are non-adjacent and have no common neighbour are separated by every optimal clustering (Lemma~\ref{lem:half}) & \texttt{optimal\_separates\_far} \\
+packing bound: vertex sets with load at most $1$ per pair and a lower bound on the mistakes inside each set & \texttt{packing\_bound} \\
+at least one mistake on every bad triangle and $k-1$ on a star with $k$ independent leaves & \texttt{bad\_triangle\_costIn}, \texttt{star\_bound} \\
+Lagrangian bound $K+b^\top y+\sum_p\min(0,w_p-(A^\top y)_p)\le\cost(c)$ for rows valid for clusterings; triangle rows are valid & \texttt{lagrangian\_weak\_duality}, \texttt{cc\_dual\_bound}, \texttt{sep\_triangle} \\
+non-worsening replacements keep the best member; output $\le$ Pivot seed; $\mathbb E[\cost]\le 3\,\OPT$ (Theorem~\ref{thm:pxmem}) & \texttt{reach\_le}, \texttt{output\_le}, \texttt{search\_guarantee} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two remarks on the scope.  First, the formalisation covers the mathematics,
+not the Python and Numba code; the code is tested against the same statements
+(exact costs of random clusterings on contracted instances, consistency of the
+tracked cost with a recomputation after every annealing and rollback step,
+and brute force on small graphs).  Second, the statements are proved in the
+generality in which the code uses them.  For example, \texttt{crossover\_le}
+holds for \emph{any} block labelling that is constant on the clusters of both
+parents, not only for the components of Theorem~\ref{thm:px}, and
+\texttt{cc\_dual\_bound} holds for every family of rows that all clusterings
+satisfy, so it also covers the star and local-subgraph rows of
+Section~\ref{sec:relax}.

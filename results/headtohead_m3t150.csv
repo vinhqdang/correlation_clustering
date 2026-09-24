@@ -1,0 +1,12 @@
+graph,runs,kapoce_unfinished,mean_rel_diff_pct_valid_runs,wins,ties,losses,sign_p
+BitcoinAlpha+,2,0,0.00437,0,1,1,1.0000
+BitcoinOTC+,2,0,0.00911,0,1,1,1.0000
+ca-AstroPh,2,0,-0.01593,2,0,0,0.5000
+ca-CondMat,2,0,-0.03781,2,0,0,0.5000
+ca-GrQc,2,0,0.00000,0,2,0,1.0000
+ca-HepPh,2,0,-0.00650,2,0,0,0.5000
+ca-HepTh,2,0,-0.01897,2,0,0,0.5000
+com-Amazon,2,0,0.56088,0,0,2,0.5000
+com-DBLP,2,0,0.10563,0,0,2,0.5000
+email-Enron,2,0,0.01296,0,0,2,0.5000
+loc-Brightkite,2,0,0.00744,0,0,2,0.5000
