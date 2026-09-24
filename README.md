@@ -85,16 +85,46 @@ python experiments/analyze.py --pace-exact results/pace_exact.csv --snap results
 cd paper && pdflatex certified_correlation_clustering && bibtex certified_correlation_clustering && pdflatex certified_correlation_clustering && pdflatex certified_correlation_clustering
 ```
 
+Lower-bound certificates and their independent check:
+
+```bash
+# PACE exact track: CertiFlip writes one certificate per instance, then check all of them
+CERT_DIR=results/certificates/pace-exact python experiments/run_bench.py --suite pace-exact \
+    --algos certiflip --budget 60 --out results/pace_exact_cert.csv
+python experiments/check_certificate.py --dir results/certificates/pace-exact results/pace_exact_cert_check.csv
+# a single graph (SNAP certificates, Colab tag c1): run, write and check
+python experiments/colab_run_cert.py 600 0 c1 ca-GrQc
+```
+
+Head-to-head against KaPoCE (one machine, solvers run one after the other,
+both pinned to CPU 0 with `taskset`; KaPoCE seeded through `KAPOCE_SEED`).
+Outside Colab set `CC_ROOT` (this repository), `KAPOCE_SRC` (a KaPoCE checkout,
+patched and built on first use), `RESULTS_DIR` and `SEQ_READY`:
+
+```bash
+python experiments/colab_run_seq.py 600 0 s1 ca-AstroPh      # one graph, one seed
+python experiments/seq_stats.py s1 results/headtohead_s1.csv results/headtohead_s1_runs.csv
+python experiments/seq_stats.py --pace s1h                     # PACE heuristic track, pooled
+python experiments/make_pxmem_tables.py
+```
+
+`experiments/colab_fleet.py` distributes these jobs over Colab machines
+(`experiments/colab_fleet.sh` keeps it running); results land in `results/colab/`.
+
 ## Main results (see `paper/certified_correlation_clustering.pdf`)
 
 * PACE 2021 exact track (200 instances): the CertiFlip bound proves optimality
   on 111 of the 173 instances with known optimum (root bounds of the KaPoCE
   branch-and-bound: 79); published lower bounds improved on the open instances
-  exact179 (632) and exact180 (1069); a solution of cost 2788 for exact183
-  (published upper bound 2789), stored in `results/solutions/`.
+  exact179 (632) and exact180 (1068); a solution of cost 2788 for exact183
+  (published upper bound 2789), stored in `results/solutions/`.  All 200
+  certificates are accepted by the independent checker.
 * SNAP graphs with up to 10^6 edges: best known solutions certified within
-  0.2%-9.2% of optimal, where greedy / fractional triangle packings certify
-  only factors 1.17-1.81.
+  0.25%-10.1% of optimal (checked certificates), where greedy / fractional
+  triangle packings certify only factors 1.17-1.81.
+* PXMem against KaPoCE, 600 s each on the same core, fifteen SNAP graphs, ten
+  seeds: 67 wins, 49 ties, 34 losses; better on four graphs and worse on one
+  by the sign test (one each after Holm correction).
 * IteratedFlip stays within 0.10%-0.44% of the PACE 2021 winner KaPoCE on
   SNAP graphs, at a fraction of its running time.
 
