@@ -5,8 +5,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790208542.9686491
  },
  {
   "id": "e3_com-DBLP_0",
@@ -14,8 +15,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790208549.4552193
  },
  {
   "id": "e3_email-Enron_0",
@@ -398,7 +400,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790207865.4618013
  },
@@ -408,7 +410,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790207867.0335176
  },
