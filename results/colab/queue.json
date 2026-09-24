@@ -2669,7 +2669,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790240926.1704488
  },
