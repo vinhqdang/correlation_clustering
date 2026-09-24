@@ -252,12 +252,17 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
               pop_size: int = 6, init_share: float = 0.4, child_share: float = 0.04,
               t_child: float = 0.3, verbose: bool = False, history: list | None = None,
               t0: float | None = None, px: bool = True, local: bool = True,
-              max_sweeps: float = 3000.0, p_swap: float = 0.0):
+              max_sweeps: float = 3000.0, p_swap: float = 0.0, p_self: float = 0.0,
+              px_accept: bool = False, temps=(0.3, 0.6, 1.2, 2.0), explore: float = 0.2):
     """Memetic search with annealing as improvement operator on a weighted
     instance.  ``init`` are starting clusterings of the nodes; each is annealed
     for init_share * time_limit / pop_size seconds to form the population.
     Offspring: overlay recombination of two parents followed by a short, cooler
-    annealing run; crowding replacement keeps the population diverse."""
+    annealing run; crowding replacement keeps the population diverse.
+    With ``px_accept`` the offspring annealing runs to its final state and is
+    accepted region-wise (partition crossover with its starting point).  With
+    probability ``p_self`` a generation is instead a PX-annealing step on one
+    member (reheating temperature chosen from ``temps`` by a bandit)."""
     from .anneal import anneal_w
     rng = np.random.default_rng(rng)
     t0 = time.time() if t0 is None else t0
@@ -280,9 +285,28 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
         if verbose:
             print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
     gen = 0
+    score = np.full(len(temps), np.inf)
     while time.time() - t0 < time_limit:
         gen += 1
         P = len(pop)
+        if rng.random() < p_self:
+            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+            k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
+            ts = time.time()
+            left = time_limit - (time.time() - t0)
+            y = anneal_w(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
+                         t_start=temps[k], rng=rng, p_swap=p_swap, last=True)
+            child = partition_crossover(wg, pop[i], y)[0]
+            c = wg.cost(child)
+            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
+            score[k] = gain if not np.isfinite(score[k]) else 0.6 * score[k] + 0.4 * gain
+            if c < costs[i]:
+                pop[i], costs[i], keys[i] = child, c, _key(child)
+            rec()
+            if verbose:
+                print(f"gen {gen}: self T={temps[k]} {c} best {min(costs)} "
+                      f"t={time.time() - t0:.0f}", flush=True)
+            continue
         i1 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         i2 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         if i1 == i2:
@@ -291,10 +315,10 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
         child = overlay_combine_w(wg, pop[i1], pop[i2], rng, start)
         left = time_limit - (time.time() - t0)
         region = _diff_region(wg, pop[i1], pop[i2]) if local else None
-        child = anneal_w(wg, child, time_limit=max(0.5, min(child_share * time_limit, left)),
-                         t_start=t_child, rng=rng, nodes=region, max_sweeps=max_sweeps,
-                         p_swap=p_swap)
-        child = _compact(child)[0].copy()
+        y = anneal_w(wg, child, time_limit=max(0.5, min(child_share * time_limit, left)),
+                     t_start=t_child, rng=rng, nodes=region, max_sweeps=max_sweeps,
+                     p_swap=p_swap, last=px_accept)
+        child = partition_crossover(wg, child, y)[0] if px_accept else _compact(y)[0].copy()
         c = wg.cost(child)
         k = _key(child)
         if k not in keys:
@@ -370,9 +394,28 @@ def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
         if verbose:
             print(f"init {i}: {costs[-1]}  t={time.time() - t0:.0f}", flush=True)
     gen = 0
+    score = np.full(len(temps), np.inf)
     while time.time() - t0 < time_limit:
         gen += 1
         P = len(pop)
+        if rng.random() < p_self:
+            i = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
+            k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
+            ts = time.time()
+            left = time_limit - (time.time() - t0)
+            y = anneal_w(wg, pop[i], time_limit=max(0.5, min(child_share * time_limit, left)),
+                         t_start=temps[k], rng=rng, p_swap=p_swap, last=True)
+            child = partition_crossover(wg, pop[i], y)[0]
+            c = wg.cost(child)
+            gain = (costs[i] - c) / max(time.time() - ts, 1e-3)
+            score[k] = gain if not np.isfinite(score[k]) else 0.6 * score[k] + 0.4 * gain
+            if c < costs[i]:
+                pop[i], costs[i], keys[i] = child, c, _key(child)
+            rec()
+            if verbose:
+                print(f"gen {gen}: self T={temps[k]} {c} best {min(costs)} "
+                      f"t={time.time() - t0:.0f}", flush=True)
+            continue
         i1 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         i2 = min(rng.choice(P, 2, replace=False), key=lambda i: costs[i])
         if i1 == i2:

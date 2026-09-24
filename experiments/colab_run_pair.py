@@ -17,7 +17,8 @@ def main(graphs, T, seed, tag):
     opts = {}
     for part in tag.split('+')[1:]:
         k, v = part.split('=')
-        opts[k] = float(v)
+        v = float(v)
+        opts[k] = int(v) if v.is_integer() else v
     for name in graphs:
         g = D.load(name)
         res = {'graph': name, 'n': g.n, 'm': g.m, 'T': T, 'seed': seed, 'tag': tag, 'opts': opts}
