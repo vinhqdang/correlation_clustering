@@ -31,6 +31,22 @@ LOG = os.path.join(OUT, "fleet.log")
 COLAB = os.path.expanduser("/root/.local/bin/colab")
 COLAB_PY = "/root/.local/share/uv/tools/google-colab-cli/bin/python"
 REAP = os.path.join(ROOT, "experiments", "colab_reap.py")
+ADOPT = os.path.join(ROOT, "experiments", "colab_adopt.py")
+
+
+def adopt():
+    """Re-attach running VMs whose local session was lost and restart dead
+    keep-alive processes (see colab_adopt.py)."""
+    for acc, home in ACCOUNTS.items():
+        names = [s for s, a in SESSIONS.items() if a == acc]
+        try:
+            r = subprocess.run([COLAB_PY, ADOPT] + names, env=dict(os.environ, HOME=home),
+                               capture_output=True, text=True, timeout=180)
+            for line in r.stdout.splitlines():
+                if line.startswith("adopted"):
+                    log(line)
+        except subprocess.TimeoutExpired:
+            pass
 STAGE = os.environ.get("FLEET_STAGE", "/root/fleet_stage")  # cc.tgz, kapoce_src.tgz, ...
 POLL = 60
 PUSH_EVERY = 600
@@ -193,6 +209,7 @@ def merge_inbox(queue):
 
 
 def step(state):
+    adopt()
     queue = load(QUEUE, [])
     n0 = len(queue)
     queue = merge_inbox(queue)
@@ -205,7 +222,7 @@ def step(state):
         # every machine unreachable at once: either a local network problem or all
         # VMs were reclaimed (e.g. while this manager was down); ask the server
         code, out = colab(next(iter(SESSIONS)), ["sessions"], timeout=120)
-        if code != 0 or "[colab]" not in out:
+        if code != 0:
             log("all probes failed and the server is unreachable; skipping this round")
             return False
         log("all probes failed but the server answers: recreating machines")
