@@ -5849,7 +5849,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790294207.1235948
  },
@@ -5889,7 +5889,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790294212.5452964
  },
@@ -5929,7 +5929,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790294237.9212499
  },
