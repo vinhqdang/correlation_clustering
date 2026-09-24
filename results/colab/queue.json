@@ -3029,7 +3029,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790254996.0420272
  },
@@ -3069,7 +3069,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790255003.3958743
  },
@@ -3109,7 +3109,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790255010.777322
  },
@@ -3149,7 +3149,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790255017.489932
  },
@@ -3189,7 +3189,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790255024.796853
  },
@@ -3229,7 +3229,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790255036.9968994
  },
@@ -3269,7 +3269,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790255174.5627718
  },
