@@ -145,7 +145,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790239774.8295877
  },
@@ -185,7 +185,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790239782.3557394
  },
