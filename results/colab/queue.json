@@ -75,8 +75,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790211612.3415763
  },
  {
   "id": "p2_ca-HepPh_0",
@@ -84,8 +85,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790211623.783549
  },
  {
   "id": "p2_ca-GrQc_0",
@@ -181,7 +183,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790210897.1571789
  },
@@ -191,7 +193,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790210976.1371737
  },
