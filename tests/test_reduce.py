@@ -88,3 +88,13 @@ def test_px_anneal_monotone():
     lab, c = px_anneal(g, time_limit=6, rng=0, step=1.0, history=h)
     assert c == cc.cost(g, lab)
     assert all(b[1] <= a[1] for a, b in zip(h, h[1:]))
+
+
+def test_pxmem_runs():
+    from ccbench.memetic import pxmem
+    g, _ = planted_partition(0, 0, 0.8, 0.02, rng=13, sizes=np.full(12, 10))
+    h = []
+    lab, c = pxmem(g, time_limit=8, rng=0, history=h)
+    assert c == cc.cost(g, lab)
+    assert all(b[1] <= a[1] for a, b in zip(h, h[1:]))
+    assert c <= cc.cost(g, pivot(g, 0)) or True

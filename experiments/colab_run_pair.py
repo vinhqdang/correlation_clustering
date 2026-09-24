@@ -2,14 +2,15 @@
 run concurrently (one core each).
 
 usage: colab_run_pair.py T SEED TAG GRAPH...
-TAG "e1..." runs memetic_sa, "p..." px_anneal, any other TAG memetic_twin; options can be
+TAG "e1..." runs memetic_sa, "p..." px_anneal, "m..." pxmem, any other TAG
+memetic_twin; options can be
 appended to the tag as "+key=value" (e.g. e3+p_swap=0)."""
 import json, os, sys, time, threading
 sys.path.insert(0, '/content/cc'); sys.path.insert(0, '/content/cc/experiments')
 os.environ.setdefault('KAPOCE_BIN', '/content/kapoce/build/ClusterEditing')
 import numpy as np
 import datasets as D, baselines as B, ccbench as cc
-from ccbench.memetic import memetic_sa, memetic_twin, px_anneal
+from ccbench.memetic import memetic_sa, memetic_twin, px_anneal, pxmem
 
 
 def main(graphs, T, seed, tag):
@@ -33,6 +34,8 @@ def main(graphs, T, seed, tag):
         hist = []
         if tag.startswith('e1'):
             lab, c = memetic_sa(g, T, rng=seed, history=hist)
+        elif tag.startswith('m'):
+            lab, c = pxmem(g, T, rng=seed, history=hist, **opts)
         elif tag.startswith('p'):
             lab, c = px_anneal(g, T, rng=seed, history=hist, **opts)
         else:
