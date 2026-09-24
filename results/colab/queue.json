@@ -15,7 +15,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790239657.7197192
  },
@@ -55,7 +55,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790239664.2104907
  },
@@ -95,7 +95,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790239669.7934601
  },
@@ -125,7 +125,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790239774.8295836
  },
@@ -165,7 +165,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790239782.355736
  },
@@ -2455,7 +2455,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790239208.6554534
  },
