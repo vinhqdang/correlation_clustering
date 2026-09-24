@@ -165,7 +165,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790214894.2962465
  },
@@ -255,8 +255,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790215525.6763563
  },
  {
   "id": "m1_ca-HepTh_2",
