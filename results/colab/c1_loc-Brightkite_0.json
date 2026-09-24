@@ -1,0 +1,1 @@
+{"graph": "loc-Brightkite", "n": 58228, "m": 214078, "T": 600.0, "seed": 0, "tag": "c1", "commit": "2f7a159", "python": "3.13.15", "cost": 175114, "lb": 163166.0, "time": 606.576503276825, "check": "ok", "certified": 163166, "lb_exact": 163166.0, "rows": 33543, "star_rows": 5200, "check_time": 10.100787162780762}
