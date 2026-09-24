@@ -2982,5 +2982,5887 @@
   "status": "done",
   "machine": "w6",
   "started": 1790243227.5939827
+ },
+ {
+  "id": "s1_ca-GrQc_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w1",
+  "started": 1790254989.0789912
+ },
+ {
+  "id": "s1_ca-HepTh_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w1",
+  "started": 1790254989.078994
+ },
+ {
+  "id": "s1_ca-HepPh_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "running",
+  "machine": "w1",
+  "started": 1790254989.0789945
+ },
+ {
+  "id": "s1_ca-AstroPh_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "running",
+  "machine": "w1",
+  "started": 1790254989.078995
+ },
+ {
+  "id": "s1_ca-CondMat_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790254996.0420272
+ },
+ {
+  "id": "s1_email-Enron_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790254996.0420291
+ },
+ {
+  "id": "s1_loc-Brightkite_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790254996.0420299
+ },
+ {
+  "id": "s1_soc-Epinions_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "soc-Epinions",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790254996.0420306
+ },
+ {
+  "id": "s1_Slashdot+_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "Slashdot+",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790255003.3958743
+ },
+ {
+  "id": "s1_Epinions+_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "Epinions+",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790255003.3958764
+ },
+ {
+  "id": "s1_BitcoinOTC+_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790255003.395877
+ },
+ {
+  "id": "s1_BitcoinAlpha+_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "running",
+  "machine": "w3",
+  "started": 1790255003.3958771
+ },
+ {
+  "id": "s1_com-Amazon_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790255010.777322
+ },
+ {
+  "id": "s1_com-DBLP_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790255010.7773232
+ },
+ {
+  "id": "s1_com-Youtube_0",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-Youtube",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790255010.7773237
+ },
+ {
+  "id": "s1_ca-GrQc_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w4",
+  "started": 1790255010.777324
+ },
+ {
+  "id": "s1_ca-HepTh_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790255017.489932
+ },
+ {
+  "id": "s1_ca-HepPh_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "ca-HepPh",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790255017.4899333
+ },
+ {
+  "id": "s1_ca-AstroPh_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "ca-AstroPh",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790255017.4899337
+ },
+ {
+  "id": "s1_ca-CondMat_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "ca-CondMat",
+  "status": "running",
+  "machine": "w5",
+  "started": 1790255017.489934
+ },
+ {
+  "id": "s1_email-Enron_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "email-Enron",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790255024.796853
+ },
+ {
+  "id": "s1_loc-Brightkite_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "loc-Brightkite",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790255024.7968554
+ },
+ {
+  "id": "s1_soc-Epinions_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "soc-Epinions",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790255024.7968562
+ },
+ {
+  "id": "s1_Slashdot+_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "Slashdot+",
+  "status": "running",
+  "machine": "w6",
+  "started": 1790255024.7968564
+ },
+ {
+  "id": "s1_Epinions+_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "Epinions+",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790255036.9968994
+ },
+ {
+  "id": "s1_BitcoinOTC+_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "BitcoinOTC+",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790255036.9969006
+ },
+ {
+  "id": "s1_BitcoinAlpha+_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "BitcoinAlpha+",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790255036.9969008
+ },
+ {
+  "id": "s1_com-Amazon_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "com-Amazon",
+  "status": "running",
+  "machine": "w7",
+  "started": 1790255036.996901
+ },
+ {
+  "id": "s1_com-DBLP_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "com-DBLP",
+  "status": "running",
+  "machine": "w9",
+  "started": 1790255174.5627718
+ },
+ {
+  "id": "s1_com-Youtube_1",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 1,
+  "graph": "com-Youtube",
+  "status": "running",
+  "machine": "w9",
+  "started": 1790255174.5627735
+ },
+ {
+  "id": "s1_ca-GrQc_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w9",
+  "started": 1790255174.562774
+ },
+ {
+  "id": "s1_ca-HepTh_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w9",
+  "started": 1790255174.5627744
+ },
+ {
+  "id": "s1_ca-HepPh_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_2",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 2,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_3",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 3,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_4",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 4,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_5",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 5,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_6",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 6,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_7",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 7,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_8",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 8,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-GrQc_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepTh_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-HepPh_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-AstroPh_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_ca-CondMat_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_email-Enron_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_loc-Brightkite_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_soc-Epinions_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Slashdot+_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_Epinions+_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinOTC+_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_BitcoinAlpha+_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Amazon_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-DBLP_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1_com-Youtube_9",
+  "tag": "s1",
+  "T": 600.0,
+  "seed": 9,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur001.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur001.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur003.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur003.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur005.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur005.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur007.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur007.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur009.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur009.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur011.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur011.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur013.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur013.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur015.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur015.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur017.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur017.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur019.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur019.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur021.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur021.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur023.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur023.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur025.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur025.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur027.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur027.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur029.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur029.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur031.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur031.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur033.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur033.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur035.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur035.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur037.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur037.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur039.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur039.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur041.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur041.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur043.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur043.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur045.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur045.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur047.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur047.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur049.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur049.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur051.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur051.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur053.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur053.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur055.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur055.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur057.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur057.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur059.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur059.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur061.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur061.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur063.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur063.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur065.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur065.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur067.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur067.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur069.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur069.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur071.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur071.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur073.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur073.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur075.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur075.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur077.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur077.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur079.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur079.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur081.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur081.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur083.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur083.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur085.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur085.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur087.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur087.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur089.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur089.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur091.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur091.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur093.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur093.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur095.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur095.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur097.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur097.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur099.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur099.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur101.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur101.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur103.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur103.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur105.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur105.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur107.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur107.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur109.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur109.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur111.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur111.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur113.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur113.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur115.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur115.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur117.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur117.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur119.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur119.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur121.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur121.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur123.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur123.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur125.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur125.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur127.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur127.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur129.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur129.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur131.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur131.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur133.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur133.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur135.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur135.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur137.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur137.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur139.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur139.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur141.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur141.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur143.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur143.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur145.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur145.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur147.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur147.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur149.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur149.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur151.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur151.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur153.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur153.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur155.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur155.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur157.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur157.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur159.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur159.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur161.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur161.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur163.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur163.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur165.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur165.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur167.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur167.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur169.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur169.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur171.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur171.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur173.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur173.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur175.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur175.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur177.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur177.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur179.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur179.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur181.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur181.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur183.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur183.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur185.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur185.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur187.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur187.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur189.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur189.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur191.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur191.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur193.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur193.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur195.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur195.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur197.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur197.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur199.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur199.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_0",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 0,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_1",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 1,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_2",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 2,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_3",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 3,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_4",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 4,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_5",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 5,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_6",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 6,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_7",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 7,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_8",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 8,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-GrQc_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepTh_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-HepPh_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-AstroPh_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_ca-CondMat_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_email-Enron_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_loc-Brightkite_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_soc-Epinions_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Slashdot+_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_Epinions+_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinOTC+_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_BitcoinAlpha+_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Amazon_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-DBLP_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t60_com-Youtube_9",
+  "tag": "s1t60",
+  "T": 60.0,
+  "seed": 9,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_0",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 0,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_1",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 1,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_2",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 2,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_3",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 3,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_4",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 4,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_5",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 5,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_6",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 6,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_7",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 7,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_8",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 8,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-GrQc_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "ca-GrQc",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepTh_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-HepPh_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-AstroPh_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_ca-CondMat_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_email-Enron_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_loc-Brightkite_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_soc-Epinions_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Slashdot+_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_Epinions+_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinOTC+_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_BitcoinAlpha+_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Amazon_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-DBLP_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1t150_com-Youtube_9",
+  "tag": "s1t150",
+  "T": 150.0,
+  "seed": 9,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur002.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur002.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur004.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur004.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur006.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur006.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur008.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur008.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur010.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur010.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur012.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur012.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur014.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur014.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur016.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur016.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur018.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur018.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur020.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur020.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur022.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur022.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur024.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur024.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur026.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur026.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur028.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur028.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur030.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur030.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur032.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur032.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur034.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur034.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur036.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur036.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur038.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur038.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur040.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur040.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur042.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur042.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur044.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur044.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur046.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur046.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur048.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur048.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur050.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur050.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur052.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur052.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur054.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur054.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur056.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur056.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur058.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur058.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur060.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur060.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur062.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur062.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur064.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur064.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur066.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur066.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur068.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur068.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur070.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur070.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur072.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur072.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur074.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur074.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur076.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur076.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur078.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur078.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur080.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur080.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur082.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur082.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur084.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur084.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur086.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur086.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur088.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur088.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur090.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur090.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur092.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur092.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur094.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur094.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur096.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur096.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur098.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur098.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur100.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur100.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur102.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur102.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur104.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur104.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur106.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur106.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur108.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur108.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur110.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur110.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur112.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur112.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur114.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur114.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur116.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur116.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur118.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur118.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur120.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur120.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur122.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur122.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur124.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur124.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur126.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur126.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur128.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur128.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur130.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur130.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur132.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur132.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur134.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur134.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur136.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur136.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur138.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur138.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur140.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur140.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur142.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur142.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur144.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur144.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur146.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur146.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur148.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur148.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur150.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur150.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur152.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur152.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur154.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur154.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur156.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur156.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur158.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur158.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur160.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur160.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur162.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur162.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur164.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur164.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur166.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur166.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur168.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur168.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur170.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur170.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur172.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur172.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur174.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur174.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur176.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur176.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur178.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur178.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur180.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur180.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur182.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur182.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur184.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur184.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur186.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur186.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur188.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur188.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur190.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur190.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur192.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur192.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur194.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur194.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur196.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur196.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur198.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur198.gr",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "s1h_pace-heur_heur200.gr_0",
+  "tag": "s1h",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "pace-heur/heur200.gr",
+  "status": "pending",
+  "machine": null
  }
 ]
