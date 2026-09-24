@@ -1799,7 +1799,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790237118.9566472
  },
@@ -1839,7 +1839,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790237120.5258942
  },
@@ -1879,7 +1879,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790237121.8523679
  },
@@ -1919,7 +1919,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790237123.3104267
  },
@@ -1959,7 +1959,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790237124.6371055
  },
