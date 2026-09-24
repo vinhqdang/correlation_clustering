@@ -3,3 +3,7 @@ import CCProofs.Moves
 import CCProofs.Twins
 import CCProofs.Crossover
 import CCProofs.Contraction
+import CCProofs.Packing
+import CCProofs.Lagrangian
+import CCProofs.Distance
+import CCProofs.Guarantee
