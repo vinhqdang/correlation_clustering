@@ -403,21 +403,26 @@ def memetic_sa(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 6,
 
 
 def px_anneal(g: Graph, time_limit: float = 600.0, rng=None, step: float | None = None,
-              t_reheat: float = 0.3, init_share: float = 0.1, p_swap: float = 0.0,
-              verbose: bool = False, history: list | None = None):
+              t_reheat: float | None = None, temps=(0.3, 0.6, 1.2, 2.0), explore: float = 0.2,
+              init_share: float = 0.1, p_swap: float = 0.0, verbose: bool = False,
+              history: list | None = None):
     """PX-annealing: iterated annealing with region-wise acceptance.
 
     On the critical-clique contraction, starting from an annealed Pivot
-    clustering x, repeat: anneal a copy of x from temperature ``t_reheat``
-    down to the final state y, then x <- partition_crossover(x, y), which keeps,
+    clustering x, repeat: anneal a copy of x from a reheating temperature down
+    to the final state y, then x <- partition_crossover(x, y), which keeps,
     independently in every region where x and y differ, the better of the two.
     Improvements found anywhere are kept even when y is worse overall, and
-    the cost of x never increases."""
+    the cost of x never increases.  The reheating temperature is ``t_reheat``
+    if given, else chosen from ``temps`` by an epsilon-greedy bandit on the
+    recent gain per second."""
     from .reduce import contract
     from .anneal import anneal_w
     rng = np.random.default_rng(rng)
     t0 = time.time()
     step = float(np.clip(time_limit / 40, 3.0, 20.0)) if step is None else step
+    temps = [float(t_reheat)] if t_reheat is not None else list(temps)
+    score = np.full(len(temps), np.inf)  # optimistic start: try every arm once
     wg, grp = contract(g)
     first = np.full(wg.n, -1, dtype=np.int64)
     first[grp[::-1]] = np.arange(g.n)[::-1]
@@ -428,14 +433,19 @@ def px_anneal(g: Graph, time_limit: float = 600.0, rng=None, step: float | None 
         history.append((time.time() - t0, c))
     while time.time() - t0 < time_limit:
         left = time_limit - (time.time() - t0)
-        y = anneal_w(wg, x, max(0.5, min(step, left)), t_start=t_reheat, rng=rng,
+        k = int(rng.integers(len(temps))) if rng.random() < explore else int(np.argmax(score))
+        ts = time.time()
+        y = anneal_w(wg, x, max(0.5, min(step, left)), t_start=temps[k], rng=rng,
                      p_swap=p_swap, last=True)
         x, nb = partition_crossover(wg, x, y)
-        c = wg.cost(x)
+        c_new = wg.cost(x)
+        gain = (c - c_new) / max(time.time() - ts, 1e-3)
+        score[k] = gain if not np.isfinite(score[k]) else 0.6 * score[k] + 0.4 * gain
+        c = c_new
         if history is not None:
             history.append((time.time() - t0, c))
         if verbose:
-            print(f"t={time.time() - t0:.0f} cost {c} regions taken {nb}", flush=True)
+            print(f"t={time.time() - t0:.0f} T={temps[k]} cost {c} regions {nb}", flush=True)
     out = x[grp]
     assert cost(g, out) == c
     return out, c
