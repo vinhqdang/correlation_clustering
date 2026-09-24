@@ -3359,7 +3359,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790260074.4980824
  },
@@ -3399,7 +3399,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790260078.1750593
  },
@@ -3409,7 +3409,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790260078.1750596
  },
@@ -3439,7 +3439,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790260092.2536933
  },
@@ -3449,7 +3449,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790260092.253694
  },
@@ -3479,7 +3479,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790260106.4419847
  },
@@ -3519,7 +3519,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790260110.3070724
  },
@@ -3559,7 +3559,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790260114.23811
  },
@@ -3569,7 +3569,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790260114.2381103
  },
@@ -3599,7 +3599,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790260128.7534068
  },
@@ -3609,7 +3609,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790260128.7534077
  },
@@ -3639,7 +3639,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790260133.911434
  },
@@ -3679,7 +3679,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790260219.8676767
  },
@@ -3689,7 +3689,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790260219.8676772
  },
