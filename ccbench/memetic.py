@@ -392,7 +392,10 @@ def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 
         if not flip_seeds:
             init.append(p[first])
             continue
+        tf = time.time()
         f = iterated_flip(g, p, 1, rng=s, time_limit=t_seed)[first]
+        if time.time() - tf > 0.04 * time_limit:
+            flip_seeds = False  # one flip round is too slow for this budget
         # Pivot never splits a critical clique, so its projection is exact; the
         # projection of the flip result may cost more, keep the better one
         init.append(f if wg.cost(f) <= cost(g, p) else p[first])
