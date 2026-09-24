@@ -75,8 +75,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790214176.4840138
  },
  {
   "id": "m1_ca-HepPh_0",
@@ -419,7 +420,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790213518.636457
  },
