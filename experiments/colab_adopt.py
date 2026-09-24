@@ -41,8 +41,15 @@ def main(names):
     local = state.store.list()
     known = {s.endpoint for s in local.values()}
     free = [n for n in names if n not in local]
+    by_endpoint = {s.endpoint: n for n, s in local.items()}
     for a in state.client.list_assignments():
         if a.endpoint in known:
+            # refresh the runtime token: a stored token expires about an hour
+            # after its keep-alive process died, and the CLI then drops the session
+            s = local[by_endpoint[a.endpoint]]
+            if s.token != a.runtime_proxy_info.token or s.url != a.runtime_proxy_info.url:
+                s.token, s.url = a.runtime_proxy_info.token, a.runtime_proxy_info.url
+                state.store.add(s)
             continue
         name = emap.get(a.endpoint)
         if name not in free:
