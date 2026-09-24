@@ -75,7 +75,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790264763.9828005
  },
@@ -3839,7 +3839,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790265433.5622864
  },
@@ -3879,7 +3879,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790265442.7456949
  },
@@ -3919,7 +3919,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790265461.2068105
  },
@@ -3959,7 +3959,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790265469.8636014
  },
@@ -3999,7 +3999,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790265478.7516363
  },
@@ -4039,7 +4039,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790265501.0454116
  },
@@ -4109,8 +4109,9 @@
   "T": 600.0,
   "seed": 6,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790268270.2959752
  },
  {
   "id": "s1_com-Amazon_6",
@@ -4118,8 +4119,9 @@
   "T": 600.0,
   "seed": 6,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790268270.2959769
  },
  {
   "id": "s1_com-DBLP_6",
@@ -4127,8 +4129,9 @@
   "T": 600.0,
   "seed": 6,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790268270.2959774
  },
  {
   "id": "s1_com-Youtube_6",
@@ -4136,8 +4139,9 @@
   "T": 600.0,
   "seed": 6,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790268270.2959778
  },
  {
   "id": "s1_ca-GrQc_7",
