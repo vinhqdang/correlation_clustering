@@ -282,7 +282,10 @@ def memetic_w(wg, time_limit: float = 600.0, rng=None, init: list | None = None,
 
     t_init = init_share * time_limit / pop_size
     for i, lab in enumerate(init):
-        lab = anneal_w(wg, lab, time_limit=max(1.0, t_init), rng=rng, p_swap=p_swap)
+        left = time_limit - (time.time() - t0)
+        if i == 0 or left > 1.0:
+            lab = anneal_w(wg, lab, time_limit=max(0.5, min(t_init, left)), rng=rng,
+                           p_swap=p_swap)
         lab = _compact(lab)[0].copy()
         pop.append(lab)
         costs.append(wg.cost(lab))
@@ -385,8 +388,13 @@ def memetic_twin(g: Graph, time_limit: float = 600.0, rng=None, pop_size: int = 
     first = np.full(wg.n, -1, dtype=np.int64)
     first[grp[::-1]] = np.arange(g.n)[::-1]
     t_seed = 0.2 * kw.get("init_share", 0.4) * time_limit / pop_size
+    # one flipping round costs a few full local-search passes whatever its
+    # time limit, which a short budget cannot afford
+    flip_seeds = flip_seeds and time_limit >= 300
     init = []
     for _ in range(pop_size):
+        if len(init) >= 2 and time.time() - t0 > 0.5 * time_limit:
+            break  # keep the budget: fewer seeds rather than a late first solution
         s = int(rng.integers(1 << 30))
         p = pivot(g, s)
         if not flip_seeds:

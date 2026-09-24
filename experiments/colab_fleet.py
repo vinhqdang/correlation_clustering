@@ -67,7 +67,7 @@ if (not os.path.exists("/content/SETUP_OK") and os.path.exists("/content/kapoce/
 out = {"setup": os.path.exists("/content/SETUP_OK"),
        "results": sorted(os.path.basename(p) for p in glob.glob("/content/results/*.json")),
        "running": [l for l in subprocess.run(["ps", "-eo", "args"], capture_output=True,
-                   text=True).stdout.splitlines() if "run_pair.py" in l and "python3" in l]}
+                   text=True).stdout.splitlines() if ("run_pair.py" in l or "run_seq.py" in l) and "python3" in l]}
 print("PROBE" + json.dumps(out))
 '''
 
@@ -128,7 +128,7 @@ def setup(s):
     if "READY" not in out:
         log(f"{s}: new failed: {out[-200:]}")
         return False
-    for f in ["cc.tgz", "kapoce_src.tgz", "setup_full.sh", "run_pair.py"]:
+    for f in ["cc.tgz", "kapoce_src.tgz", "setup_full.sh", "run_pair.py", "run_seq.py"]:
         colab(s, ["upload", "-s", s, os.path.join(STAGE, f), f"/content/{f}"], timeout=900)
     launch = ('import subprocess\nsubprocess.Popen("nohup bash /content/setup_full.sh > '
               '/content/setup.log 2>&1 && touch /content/SETUP_OK &", shell=True)\nprint("ok")\n')
@@ -137,7 +137,7 @@ def setup(s):
     return True
 
 
-CODE_FILES = ["cc.tgz", "run_pair.py"]
+CODE_FILES = ["cc.tgz", "run_pair.py", "run_seq.py"]
 
 
 def refresh_code(s, st):
@@ -159,7 +159,9 @@ def refresh_code(s, st):
 
 def launch(s, jobs):
     """Start the jobs on machine s, one after another, in one detached shell."""
-    seq = "; ".join(f"python3 /content/run_pair.py {j['T']} {j['seed']} '{j['tag']}' "
+    # tags starting with "s": the sequential protocol (colab_run_seq.py)
+    seq = "; ".join(f"python3 /content/{'run_seq' if j['tag'].startswith('s') else 'run_pair'}.py "
+                    f"{j['T']} {j['seed']} '{j['tag']}' "
                     f"'{j['graph']}' > /content/log_{j['id']}.txt 2>&1" for j in jobs)
     script = f"import subprocess\nsubprocess.Popen({('nohup bash -c ' + repr(seq) + ' > /dev/null 2>&1 &')!r}, shell=True)\nprint('ok')\n"
     code, out = colab(s, ["exec", "-s", s], timeout=120, stdin=script)
@@ -296,7 +298,7 @@ def main():
 
 
 def add(tag, T, seeds, graphs, front=False):
-    jobs = [dict(id=f"{tag}_{gname}_{seed}", tag=tag, T=T, seed=seed, graph=gname,
+    jobs = [dict(id=f"{tag}_{gname.replace('/', '_')}_{seed}", tag=tag, T=T, seed=seed, graph=gname,
                  status="pending", machine=None) for seed in seeds for gname in graphs]
     os.makedirs(INBOX, exist_ok=True)
     save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"front": front, "jobs": jobs})
