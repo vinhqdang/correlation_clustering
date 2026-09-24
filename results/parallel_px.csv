@@ -1,0 +1,55 @@
+graph,T,k,method,cost
+com-Amazon,300.0,1,best-of-k,612374.50
+com-Amazon,300.0,1,PX-of-k,612374.50
+com-Amazon,300.0,2,best-of-k,612361.67
+com-Amazon,300.0,2,PX-of-k,612330.33
+com-Amazon,300.0,4,best-of-k,612350.00
+com-Amazon,300.0,4,PX-of-k,612317.00
+com-Amazon,300.0,1,KaPoCE,612316.00
+com-Amazon,300.0,1,"PX(KaPoCE, ours)",612309.25
+com-Amazon,300.0,4,"PX(KaPoCE, 4 x ours)",612308.00
+com-DBLP,300.0,1,best-of-k,606773.75
+com-DBLP,300.0,1,PX-of-k,606773.75
+com-DBLP,300.0,2,best-of-k,606761.17
+com-DBLP,300.0,2,PX-of-k,606735.33
+com-DBLP,300.0,4,best-of-k,606754.00
+com-DBLP,300.0,4,PX-of-k,606720.00
+com-DBLP,300.0,1,KaPoCE,606779.00
+com-DBLP,300.0,1,"PX(KaPoCE, ours)",606728.25
+com-DBLP,300.0,4,"PX(KaPoCE, 4 x ours)",606719.00
+ca-AstroPh,300.0,1,best-of-k,125544.50
+ca-AstroPh,300.0,1,PX-of-k,125544.50
+ca-AstroPh,300.0,2,best-of-k,125542.83
+ca-AstroPh,300.0,2,PX-of-k,125541.67
+ca-AstroPh,300.0,4,best-of-k,125542.00
+ca-AstroPh,300.0,4,PX-of-k,125540.00
+ca-AstroPh,300.0,1,KaPoCE,125567.00
+ca-AstroPh,300.0,1,"PX(KaPoCE, ours)",125542.75
+ca-AstroPh,300.0,4,"PX(KaPoCE, 4 x ours)",125540.00
+email-Enron,300.0,1,best-of-k,150453.75
+email-Enron,300.0,1,PX-of-k,150453.75
+email-Enron,300.0,2,best-of-k,150445.83
+email-Enron,300.0,2,PX-of-k,150444.50
+email-Enron,300.0,4,best-of-k,150433.00
+email-Enron,300.0,4,PX-of-k,150432.00
+email-Enron,300.0,1,KaPoCE,150438.00
+email-Enron,300.0,1,"PX(KaPoCE, ours)",150435.75
+email-Enron,300.0,4,"PX(KaPoCE, 4 x ours)",150432.00
+loc-Brightkite,300.0,1,best-of-k,174706.25
+loc-Brightkite,300.0,1,PX-of-k,174706.25
+loc-Brightkite,300.0,2,best-of-k,174704.50
+loc-Brightkite,300.0,2,PX-of-k,174699.67
+loc-Brightkite,300.0,4,best-of-k,174703.00
+loc-Brightkite,300.0,4,PX-of-k,174697.00
+loc-Brightkite,300.0,1,KaPoCE,174699.00
+loc-Brightkite,300.0,1,"PX(KaPoCE, ours)",174696.00
+loc-Brightkite,300.0,4,"PX(KaPoCE, 4 x ours)",174695.00
+BitcoinOTC+,300.0,1,best-of-k,16462.00
+BitcoinOTC+,300.0,1,PX-of-k,16462.00
+BitcoinOTC+,300.0,2,best-of-k,16462.00
+BitcoinOTC+,300.0,2,PX-of-k,16462.00
+BitcoinOTC+,300.0,4,best-of-k,16462.00
+BitcoinOTC+,300.0,4,PX-of-k,16462.00
+BitcoinOTC+,300.0,1,KaPoCE,16462.00
+BitcoinOTC+,300.0,1,"PX(KaPoCE, ours)",16462.00
+BitcoinOTC+,300.0,4,"PX(KaPoCE, 4 x ours)",16462.00
