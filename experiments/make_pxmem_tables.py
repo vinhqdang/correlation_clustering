@@ -88,6 +88,30 @@ with open(os.path.join(T, "budget.tex"), "w") as fh:
         fh.write(f"{tt(g)} & " + " & ".join(cells) + " \\\\\n")
     fh.write("\\bottomrule\n\\end{tabular}\n")
 
+# PACE 2021 heuristic track (tag s1h, one run per instance), by instance size
+pace = [json.load(open(f)) for f in glob.glob(os.path.join(R, "colab", "s1h_*.json"))]
+pace = [r for r in pace if r.get("tag") == "s1h"]
+with open(os.path.join(T, "pace_heur.tex"), "w") as fh:
+    fh.write("\\begin{tabular}{lrrrr}\n\\toprule\n")
+    fh.write("vertices & instances & W/T/L & $\\sum$ PXMem$-$KaPoCE & "
+             "rel.\\ (\\%) \\\\\n\\midrule\n")
+    rows = [("$<10^3$", 0, 10 ** 3), ("$10^3$--$10^4$", 10 ** 3, 10 ** 4),
+            ("$10^4$--$10^5$", 10 ** 4, 10 ** 5), ("$\\ge 10^5$", 10 ** 5, 10 ** 9),
+            ("all", 0, 10 ** 9)]
+    for i, (lab, lo, hi) in enumerate(rows):
+        rs = [r for r in pace if lo <= r["n"] < hi]
+        if i == len(rows) - 1:
+            fh.write("\\midrule\n")
+        valid = [r for r in rs if r["kapoce_valid"]]
+        d = [r["ours"] - r["kapoce"] for r in valid]
+        w = sum(x < 0 for x in d) + len(rs) - len(valid)
+        l = sum(x > 0 for x in d)
+        tot_k = sum(r["kapoce"] for r in valid)
+        rel = 100 * sum(d) / tot_k if tot_k else 0.0
+        fh.write(f"{lab} & {len(rs)} & {w}/{len(rs) - w - l}/{l} & ${sum(d):+d}$ & "
+                 f"${rel:+.4f}$ \\\\\n")
+    fh.write("\\bottomrule\n\\end{tabular}\n")
+
 # parallel runs and PX post-processing
 par = defaultdict(dict)
 for r in csv.DictReader(open(os.path.join(R, "parallel_px.csv"))):
