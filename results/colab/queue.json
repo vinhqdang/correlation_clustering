@@ -9429,7 +9429,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur168.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790312612.5771387
  },
