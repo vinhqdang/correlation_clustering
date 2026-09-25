@@ -5549,7 +5549,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur191.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790292524.6994045
  },
@@ -5589,7 +5589,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur199.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790292529.4009042
  },
@@ -6249,7 +6249,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790296028.9929526
  },
@@ -6289,7 +6289,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790296034.0798092
  },
@@ -6329,7 +6329,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790296038.5125303
  },
@@ -6369,7 +6369,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790296042.7624264
  },
@@ -6409,7 +6409,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790296051.235547
  },
@@ -6449,7 +6449,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790296055.2139137
  },
