@@ -83,13 +83,13 @@ run of each solver on each of the 200 instances, with the protocol and budget
 of Table~\ref{tab:h2h}.  KaPoCE returned a valid solution on every instance.
 Most instances are easy for both solvers: below $10^4$ vertices they find
 the same solution on all but 13 of 173 instances.  Between $10^4$ and
-$5\cdot10^5$ vertices PXMem is better on 12 of 19 instances and worse on 4; its largest gain is
-835 disagreements (\texttt{heur190}, $0.05\%$).  On the three instances with more
-than $10^6$ vertices it is behind by $0.02\%$ to $0.11\%$, as on
+$5\cdot10^5$ vertices PXMem is better on 13 of 23 instances and worse on 6; its largest gain is
+835 disagreements (\texttt{heur190}, $0.05\%$).  On the four instances with more
+than $10^6$ vertices (up to $2.0\cdot10^6$) it is behind by $0.02\%$ to $0.32\%$, as on
 \texttt{com-Youtube}: at this size \SI{600}{s} is too short for its
-population.  These three instances dominate the summed difference in
-Table~\ref{tab:paceheur}.  Over all instances PXMem wins 20, ties 163 and
-loses 12; the sign test does not separate the solvers ($p=0.22$).
+population.  These four instances dominate the summed difference in
+Table~\ref{tab:paceheur}.  Over all instances PXMem wins 21, ties 164 and
+loses 15; the sign test does not separate the solvers ($p=0.41$).
 
 \begin{table}[t]
 \centering
