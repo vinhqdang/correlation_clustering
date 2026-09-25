@@ -6529,7 +6529,7 @@
   "T": 60.0,
   "seed": 6,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790296954.059221
  },
@@ -6569,7 +6569,7 @@
   "T": 60.0,
   "seed": 6,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790296959.220794
  },
@@ -6609,7 +6609,7 @@
   "T": 60.0,
   "seed": 6,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790296963.7272754
  },
@@ -6649,7 +6649,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790296968.2480364
  },
@@ -6689,7 +6689,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790296975.54874
  },
@@ -6729,7 +6729,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790296978.3055778
  },
@@ -6769,7 +6769,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790296982.5454268
  },
@@ -6809,7 +6809,7 @@
   "T": 60.0,
   "seed": 8,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790296987.6534786
  },
