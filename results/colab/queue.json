@@ -7509,7 +7509,7 @@
   "T": 150.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790299705.5815413
  },
@@ -7579,7 +7579,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790299960.1195192
  },
