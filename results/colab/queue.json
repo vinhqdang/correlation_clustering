@@ -9509,7 +9509,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur184.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790313206.6430333
  },
