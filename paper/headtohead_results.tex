@@ -78,6 +78,29 @@ search had improved the initial solution and returned a solution $13\%$
 worse; its output was valid, so these runs count as ordinary wins, and the
 median is not affected by them.
 
+\paragraph{PACE 2021 heuristic track.}  Table~\ref{tab:paceheur} reports one
+run of each solver on each of the 200 instances, with the protocol and budget
+of Table~\ref{tab:h2h}.  KaPoCE returned a valid solution on every instance.
+Most instances are easy for both solvers: below $10^4$ vertices they find
+the same solution on all but 13 of 173 instances.  Between $10^4$ and
+$5\cdot10^5$ vertices PXMem is better on 12 of 19 instances and worse on 4, by up to 835 in its favour
+disagreements (\texttt{heur190}, $0.05\%$).  On the three instances with more
+than $10^6$ vertices it is behind by $0.02\%$ to $0.11\%$, as on
+\texttt{com-Youtube}: at this size \SI{600}{s} is too short for its
+population.  These three instances dominate the summed difference in
+Table~\ref{tab:paceheur}.  Over all instances PXMem wins 20, ties 163 and
+loses 12; the sign test does not separate the solvers ($p=0.22$).
+
+\begin{table}[t]
+\centering
+\caption{PACE~2021 heuristic track (200 instances, one run of \SI{600}{s} per
+solver and instance, same protocol as Table~\ref{tab:h2h}), grouped by the
+number of vertices: wins, ties and losses of PXMem, the summed difference of
+the costs and its value relative to the summed KaPoCE cost.}\label{tab:paceheur}
+\small
+\input{tables/pace_heur}
+\end{table}
+
 \paragraph{Parallel runs and post-processing.}  Theorem~\ref{thm:px} gives a
 way to use several cores that heuristics without an exact recombination do not
 have.  Table~\ref{tab:parallel} reports four independent PXMem runs of
