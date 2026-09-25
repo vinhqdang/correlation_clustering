@@ -8569,7 +8569,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790305018.1415062
  },
@@ -8579,7 +8579,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790305018.1415076
  },
@@ -8609,7 +8609,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur004.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790305021.048449
  },
@@ -8649,7 +8649,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur012.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790305033.6207576
  },
@@ -8689,7 +8689,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur020.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790305036.1469576
  },
@@ -8729,7 +8729,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur028.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790305038.5763106
  },
@@ -8809,7 +8809,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur044.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790305059.4357889
  },
