@@ -7879,7 +7879,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790301428.5787425
  },
@@ -7919,7 +7919,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790301432.636543
  },
@@ -7959,7 +7959,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790301436.400537
  },
@@ -7999,7 +7999,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790301449.9802637
  },
@@ -8039,7 +8039,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790301453.5625927
  },
@@ -8079,7 +8079,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790301460.9737837
  },
@@ -8119,7 +8119,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790301465.4621167
  },
@@ -8159,7 +8159,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790301468.0801687
  },
@@ -8189,7 +8189,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790301850.5374122
  },
@@ -8199,7 +8199,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790301850.5374126
  },
@@ -8209,8 +8209,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790303214.7175927
  },
  {
   "id": "s1t150_soc-Epinions_7",
@@ -8218,8 +8219,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790303214.7175949
  },
  {
   "id": "s1t150_Slashdot+_7",
@@ -8227,8 +8229,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790303214.7175953
  },
  {
   "id": "s1t150_Epinions+_7",
@@ -8236,8 +8239,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790303214.7175958
  },
  {
   "id": "s1t150_BitcoinOTC+_7",
@@ -8245,8 +8249,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790303217.21016
  },
  {
   "id": "s1t150_BitcoinAlpha+_7",
@@ -8254,8 +8259,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790303217.210162
  },
  {
   "id": "s1t150_com-Amazon_7",
@@ -8263,8 +8269,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790303217.2101624
  },
  {
   "id": "s1t150_com-DBLP_7",
@@ -8272,8 +8279,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790303217.2101629
  },
  {
   "id": "s1t150_com-Youtube_7",
@@ -8281,8 +8289,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790303220.0369325
  },
  {
   "id": "s1t150_ca-GrQc_8",
@@ -8290,8 +8299,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790303220.0369346
  },
  {
   "id": "s1t150_ca-HepTh_8",
@@ -8299,8 +8309,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790303220.0369349
  },
  {
   "id": "s1t150_ca-HepPh_8",
@@ -8308,8 +8319,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790303220.0369353
  },
  {
   "id": "s1t150_ca-AstroPh_8",
@@ -8317,8 +8329,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790303226.0577266
  },
  {
   "id": "s1t150_ca-CondMat_8",
@@ -8326,8 +8339,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790303226.0577297
  },
  {
   "id": "s1t150_email-Enron_8",
@@ -8335,8 +8349,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790303226.0577302
  },
  {
   "id": "s1t150_loc-Brightkite_8",
@@ -8344,8 +8359,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790303226.0577312
  },
  {
   "id": "s1t150_soc-Epinions_8",
@@ -8353,8 +8369,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790303238.4522264
  },
  {
   "id": "s1t150_Slashdot+_8",
@@ -8362,8 +8379,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790303238.4522283
  },
  {
   "id": "s1t150_Epinions+_8",
@@ -8371,8 +8389,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790303238.4522285
  },
  {
   "id": "s1t150_BitcoinOTC+_8",
@@ -8380,8 +8399,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790303238.4522285
  },
  {
   "id": "s1t150_BitcoinAlpha+_8",
@@ -8389,8 +8409,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790303243.5145395
  },
  {
   "id": "s1t150_com-Amazon_8",
@@ -8398,8 +8419,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790303243.5145416
  },
  {
   "id": "s1t150_com-DBLP_8",
@@ -8407,8 +8429,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790303243.514542
  },
  {
   "id": "s1t150_com-Youtube_8",
@@ -8416,8 +8439,9 @@
   "T": 150.0,
   "seed": 8,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790303243.5145423
  },
  {
   "id": "s1t150_ca-GrQc_9",
@@ -8425,8 +8449,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790303247.1528156
  },
  {
   "id": "s1t150_ca-HepTh_9",
@@ -8434,8 +8459,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790303247.1528177
  },
  {
   "id": "s1t150_ca-HepPh_9",
@@ -8443,8 +8469,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790303247.152818
  },
  {
   "id": "s1t150_ca-AstroPh_9",
@@ -8452,8 +8479,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790303247.1528182
  },
  {
   "id": "s1t150_ca-CondMat_9",
@@ -8461,8 +8489,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790303249.413397
  },
  {
   "id": "s1t150_email-Enron_9",
@@ -8470,8 +8499,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790303249.4133987
  },
  {
   "id": "s1t150_loc-Brightkite_9",
@@ -8479,8 +8509,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790303249.4133992
  },
  {
   "id": "s1t150_soc-Epinions_9",
@@ -8488,8 +8519,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790303249.4133997
  },
  {
   "id": "s1t150_Slashdot+_9",
@@ -8497,8 +8529,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790303251.8097873
  },
  {
   "id": "s1t150_Epinions+_9",
@@ -8506,8 +8539,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790303251.8097894
  },
  {
   "id": "s1t150_BitcoinOTC+_9",
@@ -8515,8 +8549,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790303251.80979
  },
  {
   "id": "s1t150_BitcoinAlpha+_9",
@@ -8524,8 +8559,9 @@
   "T": 150.0,
   "seed": 9,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790303251.8097901
  },
  {
   "id": "s1t150_com-Amazon_9",
