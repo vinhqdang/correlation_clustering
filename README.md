@@ -106,6 +106,7 @@ python experiments/colab_run_seq.py 600 0 s1 ca-AstroPh      # one graph, one se
 python experiments/seq_stats.py s1 results/headtohead_s1.csv results/headtohead_s1_runs.csv
 python experiments/seq_stats.py --pace s1h                     # PACE heuristic track, pooled
 python experiments/make_pxmem_tables.py
+python experiments/make_figures.py        # all figures of the paper
 ```
 
 `experiments/colab_fleet.py` distributes these jobs over Colab machines

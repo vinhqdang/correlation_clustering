@@ -4,7 +4,7 @@ bound~\citep{BlasiusEtAl22sea}, or the best value found in our runs if lower.
 KaPoCE and CertiFlip had a budget of $60$\,s.  The other methods ran to
 completion, and we report the mean over three seeds.
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{PACE 2021 exact track (200 instances): primal quality.  ``Hit''
 counts instances on which the best of the runs matches the best known value;
@@ -30,7 +30,7 @@ cost 2788 within the budget, so this improvement is shared by the two solvers.
 We verified the CertiFlip solution independently, and it is included in the
 repository.
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{PACE 2021 exact track: lower bounds on the 173 instances with known
 optimum.  The last two rows are the root bounds of the KaPoCE
@@ -40,8 +40,18 @@ instances whose bound proves optimality.}
 \input{tables/pace_bounds}
 \end{table}
 
-\paragraph{Lower bounds.}  Table~\ref{tab:pace-bounds} compares the bounds.
-All CertiFlip bounds in this section are the values returned by the
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/fig_pacebounds.pdf}
+\caption{PACE~2021 exact track, 173 instances with known optimum: lower bound
+divided by the optimum against edge density, for the checked CertiFlip bound
+and the root star-packing bound of the KaPoCE branch-and-bound.}
+\label{fig:pacebounds}
+\end{figure}
+
+\paragraph{Lower bounds.}  Table~\ref{tab:pace-bounds} and
+Figure~\ref{fig:pacebounds} compare the bounds.
+All CertiFlip bounds in this subsection are the values returned by the
 independent checker of Section~\ref{sec:lean} on the exported
 certificates; the checker accepted all 200 certificates.  The CertiFlip bound
 (Theorem~\ref{thm:anytime}), computed within half of the
@@ -56,7 +66,7 @@ instances the star packing is better ($99.4\%$ to $99.7\%$ against
 $98.0\%$ to $98.8\%$).  There the block LPs are too large to converge within the budget,
 and the bound falls back to the best packing.
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{The 27 open PACE 2021 exact instances: published upper bound (UB)
 and star-packing lower bound (LB)~\citep{BlasiusEtAl22sea}, our best

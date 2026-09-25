@@ -1,5 +1,5 @@
 CertiFlip certifies its solutions, but on large graphs they remain
-$0.1\%$--$0.4\%$ above those of KaPoCE (Section~\ref{sec:exp}).  This section
+$0.1\%$--$0.4\%$ above those of KaPoCE (Section~\ref{sec:exp}).  This subsection
 describes a second primal solver, \emph{PXMem}.  It rests on two elementary
 exact facts: twins can be contracted, and two clusterings can be recombined
 block by block without losing anything.  Neither fact is deep, and both have
@@ -7,7 +7,7 @@ close relatives in the literature, which we point out below; what we add is
 their combination into a solver whose incremental formulas and
 recombination are machine-checked (Section~\ref{sec:lean}).
 
-\subsection{Critical-clique contraction}
+\subsubsection{Critical-clique contraction}
 
 Two vertices $u\ne v$ are \emph{twins} if $uv\in\Ep$ and $N(u)\setminus\{v\}=
 N(v)\setminus\{u\}$, i.e.\ they have the same closed neighbourhood.  The classes
@@ -52,7 +52,22 @@ on its closed neighbourhood, so each round treats twins alike.  A Pivot
 clustering therefore maps to the contracted instance without changing its
 cost.
 
-\subsection{Partition crossover}
+\subsubsection{Partition crossover}
+
+Figure~\ref{fig:crossover} illustrates the theorem below on two Pivot
+clusterings of the neighbourhood of Figure~\ref{fig:support}.
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/fig_crossover.pdf}
+\caption{Partition crossover (Theorem~\ref{thm:px}) computed by the released
+code.  (a), (b): two Pivot clusterings of the neighbourhood of
+Figure~\ref{fig:support}, both of cost 49; shaded regions are clusters.
+(c): the connected components of the overlap graph $H$ split the vertices into
+seven blocks, and on each block the two parents can be compared on their own.
+(d): taking the better parent on every block gives a clustering of cost 38,
+better than both parents.}\label{fig:crossover}
+\end{figure}
 
 \begin{theorem}[partition crossover]\label{thm:px}
 Let the cost of a clustering be any sum of pair terms that depend only on
@@ -101,7 +116,7 @@ claim no novelty for it.  It combines \emph{any} two
 clusterings, including clusterings produced by different solvers.  On our graphs, two independent runs typically differ in thousands of
 blocks, most of them ties, and each run wins some of the others.
 
-\subsection{Annealing moves}
+\subsubsection{Annealing moves}
 
 The search moves nodes of the contracted instance.  Let $S_X=\sum_{K\in X}s_K$
 be the size of a cluster $X$ and $w(K,X)=\sum_{L\in X\setminus\{K\}}w_{KL}$.
@@ -137,7 +152,7 @@ the degree.  Comparing our solutions with those of KaPoCE block by block showed
 why: the blocks in which KaPoCE was better all contained a vertex of high
 degree.
 
-\subsection{The memetic search}
+\subsubsection{The memetic search}
 
 \begin{algorithm}[t]
 \caption{PXMem$(G^+,T)$}\label{alg:pxmem}

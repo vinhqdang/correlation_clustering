@@ -17,7 +17,7 @@ the mean paired difference $\bar\Delta$ (PXMem minus KaPoCE, in
 disagreements) with a 95\% bootstrap interval, wins, ties and losses, the
 two-sided sign test and its Holm correction over the fifteen graphs.
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{PXMem against KaPoCE, \SI{600}{s} per run, run one after the other on
 the same machine and CPU (ten seeds per graph).  Mean costs; $\bar\Delta$: mean
@@ -45,7 +45,11 @@ solvers vary by several hundred disagreements and the sign test is not
 significant.  Over all 150 runs PXMem wins 67, ties 49 and loses 34.  The
 differences are small in relative terms (at most $0.05\%$), far below the
 certified gaps of Section~\ref{sec:snap}; they matter only when the last
-fraction of a percent is wanted.  On \texttt{com-Amazon} we compared the two solutions of a local \SI{300}{s}
+fraction of a percent is wanted.  Figure~\ref{fig:convergence} shows how the
+runs unfold on four of the graphs: PXMem passes the final KaPoCE value within
+five minutes on \texttt{ca-AstroPh}, \texttt{email-Enron} and
+\texttt{com-DBLP}, and is still converging on \texttt{com-Amazon} when the
+budget ends.  On \texttt{com-Amazon} we compared the two solutions of a local \SI{300}{s}
 run block by block with Theorem~\ref{thm:px}.  They differed in more than $16{,}000$ blocks, almost all
 ties, and KaPoCE was better in $24$ blocks of $8$ to $77$ vertices, each
 containing a vertex of degree $22$ to $142$.  Solving these blocks exactly
@@ -53,17 +57,36 @@ with the MIP of Section~\ref{sec:gap} recovered the value of KaPoCE in $23$ of
 them, mostly in less than a second, so the difficulty lies in finding the blocks,
 not in solving them.
 
-\begin{table}[t]
+\begin{figure}[!tbp]
 \centering
+\includegraphics[width=\textwidth]{figures/fig_convergence.pdf}
+\caption{Best cost of PXMem over time in the sequential \SI{600}{s} runs of
+Table~\ref{tab:h2h} (median and range over ten seeds, blue), against the
+final cost of KaPoCE in the same runs (median and range, orange), as excess
+over the best value found by either solver.  The PXMem curves start when the
+initial population is complete.}\label{fig:convergence}
+\end{figure}
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fig_budget.pdf}
 \caption{PXMem against KaPoCE at three budgets, same protocol as
-Table~\ref{tab:h2h} (ten seeds per graph and budget).  Median paired relative difference
-PXMem$-$KaPoCE in percent (negative values favour PXMem) and wins, ties and
-losses of PXMem.}\label{tab:budget}
+Table~\ref{tab:h2h} (ten seeds per graph and budget): median paired relative
+difference with quartiles (symmetric log scale; left of zero favours PXMem).
+Graphs are ordered by size.  Per-graph wins, ties and losses are in
+Table~\ref{tab:budget}.}\label{fig:budget}
+\end{figure}
+
+\begin{table}[!tbp]
+\centering
+\caption{PXMem against KaPoCE at three budgets (the data of
+Figure~\ref{fig:budget}): median paired relative difference PXMem$-$KaPoCE
+in percent and wins, ties and losses of PXMem.}\label{tab:budget}
 \small
 \resizebox{\textwidth}{!}{\input{tables/budget}}
 \end{table}
 
-\paragraph{Dependence on the budget.}  Table~\ref{tab:budget} shows the
+\paragraph{Dependence on the budget.}  Figure~\ref{fig:budget} and Table~\ref{tab:budget} show the
 main limitation of PXMem.  At \SI{60}{s} and \SI{150}{s} KaPoCE is better
 overall (PXMem wins 43 and 41 runs and loses 84 and 71; sign test $p<0.01$
 for both budgets), while at \SI{600}{s} the balance reverses (67 wins, 34
@@ -78,7 +101,8 @@ search had improved the initial solution and returned a solution $13\%$
 worse; its output was valid, so these runs count as ordinary wins, and the
 median is not affected by them.
 
-\paragraph{PACE 2021 heuristic track.}  Table~\ref{tab:paceheur} reports one
+\paragraph{PACE 2021 heuristic track.}  Table~\ref{tab:paceheur} and
+Figure~\ref{fig:paceheur} report one
 run of each solver on each of the 200 instances, with the protocol and budget
 of Table~\ref{tab:h2h}.  KaPoCE returned a valid solution on every instance.
 Most instances are easy for both solvers: below $10^4$ vertices they find
@@ -91,7 +115,7 @@ population.  These four instances dominate the summed difference in
 Table~\ref{tab:paceheur}.  Over all instances PXMem wins 21, ties 164 and
 loses 15; the sign test does not separate the solvers ($p=0.41$).
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{PACE~2021 heuristic track (200 instances, one run of \SI{600}{s} per
 solver and instance, same protocol as Table~\ref{tab:h2h}), grouped by the
@@ -100,6 +124,14 @@ the costs and its value relative to the summed KaPoCE cost.}\label{tab:paceheur}
 \small
 \input{tables/pace_heur}
 \end{table}
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/fig_paceheur.pdf}
+\caption{PACE~2021 heuristic track: relative difference PXMem$-$KaPoCE per
+instance against the number of vertices (one \SI{600}{s} run per solver;
+symmetric log scale).  Grey points on the zero line are ties.}\label{fig:paceheur}
+\end{figure}
 
 \paragraph{Parallel runs and post-processing.}  Theorem~\ref{thm:px} gives a
 way to use several cores that heuristics without an exact recombination do not
@@ -121,7 +153,7 @@ post-processing step for any solver.  These numbers compare four cores with
 one and complement, but do not replace, the single-core comparison of
 Table~\ref{tab:h2h}.
 
-\begin{table}[t]
+\begin{table}[!tbp]
 \centering
 \caption{Four independent PXMem runs (\SI{300}{s} each, run in parallel):
 best of $k$ runs and partition crossover of $k$ runs (averaged over all

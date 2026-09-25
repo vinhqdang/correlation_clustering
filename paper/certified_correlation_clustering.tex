@@ -7,12 +7,24 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{graphicx}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
 \usepackage{xcolor}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage[hidelinks]{hyperref}
 \usepackage{siunitx}
+\usepackage[section]{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{pxblue}{HTML}{2A78D6}
+\definecolor{pxorange}{HTML}{EB6834}
+\definecolor{pxaqua}{HTML}{1BAF7A}
 \sisetup{group-separator={,},group-minimum-digits=4}
 
 \newtheorem{theorem}{Theorem}
@@ -117,8 +129,22 @@ still unknown.
 
 \paragraph{This paper.}  We ask for a \emph{practical algorithm with a
 provable guarantee that also certifies its own quality on the instance at
-hand}, in the sense of certifying algorithms~\citep{McConnellMNS11}.  Our
+hand}, in the sense of certifying algorithms~\citep{McConnellMNS11}.
+Figure~\ref{fig:overview} shows how the parts fit together.  Our
 contributions are as follows.
+
+\begin{figure}[!tbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/overview}}
+\caption{Overview.  The primal side (blue) computes clusterings: Pivot and
+iterated flipping give a start with $\mathbb E[\cost]\le3\,\OPT$, and either
+the gap-guided LNS of CertiFlip or the memetic search PXMem improves it.  The
+dual side (orange) builds the distance-two support and a lower bound by block
+dual ascent.  The gap decomposition splits $\cost(\mathcal C)-\LB$ into
+non-negative local terms and tells the LNS where to search.  The dual
+certificate is re-checked by an independent program in exact arithmetic.}
+\label{fig:overview}
+\end{figure}
 
 \begin{enumerate}
 \item \textbf{Distance-two relaxations} (Section~\ref{sec:relax}).  Optimal
@@ -264,7 +290,15 @@ constant Potts model at resolution $1/2$, which optimises the same
 objective~\citep{veldt2018lambdacc,BlondelGLL08,TraagWvE19}, and memetic
 multilevel schemes~\citep{hausberger2025scc,BlasiusEtAl21kapoceHeur}.
 
-\section{Distance-two relaxations}\label{sec:relax}
+\section{Certified lower bounds}\label{sec:bounds}
+
+This section develops the lower-bound side of Figure~\ref{fig:overview}: a
+relaxation supported on the pairs at distance at most two
+(Section~\ref{sec:relax}), an anytime dual bound on it
+(Section~\ref{sec:dual}), and an exact decomposition of the optimality gap
+that localises where a clustering can still improve (Section~\ref{sec:gap}).
+
+\subsection{Distance-two relaxations}\label{sec:relax}
 
 \begin{lemma}\label{lem:half}
 Let $\mathcal C$ be an optimal clustering, $S\in\mathcal C$ and $v\in S$.  Then
@@ -281,7 +315,19 @@ elements, and have total size at least $|S|-1$, so they intersect.
 
 Let $\Nt=\{uv\notin\Ep: N(u)\cap N(v)\ne\emptyset\}$, $P=\Ep\cup\Nt$ and
 $F=\binom V2\setminus P$ (the \emph{far} pairs).  Note
-$|P|\le m+\sum_{w}\binom{\deg(w)}{2}$.
+$|P|\le m+\sum_{w}\binom{\deg(w)}{2}$.  Figure~\ref{fig:support} shows
+the support on a small neighbourhood of a collaboration network: already
+there, 587 of the 780 pairs (75\%) are far and disappear from the relaxation.
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/fig_support.pdf}
+\caption{The distance-two support on a 40-vertex neighbourhood of
+\texttt{ca-GrQc}.  Left: the positive graph.  Right: the support $P$ adds the
+non-adjacent pairs with a common neighbour (orange); every other pair is far,
+separated in every optimal clustering (Lemma~\ref{lem:half}), and carries no
+variable.}\label{fig:support}
+\end{figure}
 
 \begin{definition}[distance-two relaxation]
 $\mathrm{LP}_P$ has a variable $x_e\in[0,1]$ for every $e\in P$ and minimises
@@ -365,7 +411,7 @@ each vertex.  For (ii) we grow $H$ ($|H|\le 8$) by breadth-first search along
 fractional pairs and compute $\OPT(H)$ by enumerating the at most $4140$
 set partitions of $H$.
 
-\section{Anytime dual bounds}\label{sec:dual}
+\subsection{Anytime dual bounds}\label{sec:dual}
 
 Write the relaxation as $\min\{K+c^\top x: Ax\ge b,\ 0\le x\le 1\}$ over
 $x\in\R^P$, with $c_e=1$ on $\Ep$, $c_e=-1$ on $\Nt$ and $K=|\Nt|$.  The rows
@@ -452,7 +498,7 @@ bound remains correct even when a block LP hits its time limit.  We only
 clamp the dual values to be non-negative, and reject a block step that would
 lower the bound.
 
-\section{Gap decomposition and local certificates}\label{sec:gap}
+\subsection{Gap decomposition and local certificates}\label{sec:gap}
 
 \begin{theorem}\label{thm:gap}
 Let $y\ge0$, $r=c-A^\top y$, and let $\mathcal C$ be a clustering that separates all
@@ -511,7 +557,35 @@ separates all far pairs.  The certificate $\Gamma_B<1$ covers re-clusterings
 of $B$ that also separate far pairs; by Lemma~\ref{lem:half} these include
 every optimal one.
 
-\section{The CertiFlip algorithm}\label{sec:algo}
+Figure~\ref{fig:gapmap} shows the gap map at work on the neighbourhood of
+Figure~\ref{fig:support}.  For a Pivot clustering the gap of 10 is
+concentrated on one cluster; the LNS re-optimises the blocks around the
+high-gap vertices and reaches a clustering whose cost equals the bound, which
+certifies it optimal.
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/fig_gapmap.pdf}
+\caption{Gap decomposition (Theorem~\ref{thm:gap}) on the neighbourhood of
+Figure~\ref{fig:support}.  Each vertex is coloured by its share of
+$\cost(\mathcal C)-\LB$ (pair terms split between the endpoints, row terms
+between the vertices of the row); shaded regions are clusters, dark edges lie
+inside a cluster.  Left: a Pivot clustering.  Right: after gap-guided LNS the
+gap is zero, so the clustering is optimal.  Computed by the released code.}
+\label{fig:gapmap}
+\end{figure}
+
+\section{Algorithms}\label{sec:algos}
+
+We now describe the two solvers of Figure~\ref{fig:overview}.  CertiFlip
+(Section~\ref{sec:algo}) couples a flipping local search with the bound of
+Section~\ref{sec:bounds} and returns a certificate with every solution.
+PXMem (Section~\ref{sec:pxmem}) is a memetic solver built on an exact
+recombination of clusterings; it aims at the best primal value.
+Section~\ref{sec:lean} states what of both is machine-checked and how the
+reported bounds are verified.
+
+\subsection{CertiFlip}\label{sec:algo}
 
 \begin{algorithm}[t]
 \caption{CertiFlip$(G^+,T)$}\label{alg:certiflip}
@@ -588,10 +662,10 @@ the size of $P$ and the number of bad triangles.  The support takes
 $O(\sum_w\deg(w)^2)$ time and memory.  The block LPs dominate the running
 time, and the time spent on them is set by the budget $T$.
 
-\section{Exact recombination: the PXMem solver}\label{sec:pxmem}
+\subsection{Exact recombination: the PXMem solver}\label{sec:pxmem}
 \input{pxmem}
 
-\section{Machine-checked proofs}\label{sec:lean}
+\subsection{Machine-checked proofs and certificate checking}\label{sec:lean}
 \input{verification}
 
 \section{Experiments}\label{sec:exp}
