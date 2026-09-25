@@ -7119,7 +7119,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790297854.5410545
  },
@@ -7449,8 +7449,9 @@
   "T": 150.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790298923.651375
  },
  {
   "id": "s1t150_loc-Brightkite_2",
@@ -7458,8 +7459,9 @@
   "T": 150.0,
   "seed": 2,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790298923.6513767
  },
  {
   "id": "s1t150_soc-Epinions_2",
@@ -7467,8 +7469,9 @@
   "T": 150.0,
   "seed": 2,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790298923.6513772
  },
  {
   "id": "s1t150_Slashdot+_2",
@@ -7476,8 +7479,9 @@
   "T": 150.0,
   "seed": 2,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790298923.6513774
  },
  {
   "id": "s1t150_Epinions+_2",
