@@ -7479,7 +7479,7 @@
   "T": 150.0,
   "seed": 2,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790298923.6513774
  },
@@ -7499,7 +7499,7 @@
   "T": 150.0,
   "seed": 2,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790299705.5815408
  },
@@ -7539,7 +7539,7 @@
   "T": 150.0,
   "seed": 2,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790299718.031114
  },
@@ -7569,7 +7569,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790299960.1195178
  },
@@ -7609,7 +7609,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790300039.8170378
  },
@@ -7649,7 +7649,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790300042.3509467
  },
@@ -7689,7 +7689,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790300044.741024
  },
@@ -7729,7 +7729,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790300047.1346192
  },
@@ -7769,7 +7769,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790300052.6399107
  },
@@ -7809,8 +7809,9 @@
   "T": 150.0,
   "seed": 4,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790300569.8998199
  },
  {
   "id": "s1t150_com-Amazon_4",
@@ -7818,8 +7819,9 @@
   "T": 150.0,
   "seed": 4,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790300569.8998213
  },
  {
   "id": "s1t150_com-DBLP_4",
@@ -7827,8 +7829,9 @@
   "T": 150.0,
   "seed": 4,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790300569.8998215
  },
  {
   "id": "s1t150_com-Youtube_4",
@@ -7836,8 +7839,9 @@
   "T": 150.0,
   "seed": 4,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790300569.8998218
  },
  {
   "id": "s1t150_ca-GrQc_5",
