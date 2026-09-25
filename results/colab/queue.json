@@ -7549,7 +7549,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790299718.0311146
  },
@@ -7619,7 +7619,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790300039.8170397
  },
@@ -7659,7 +7659,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790300042.3509479
  },
@@ -7699,7 +7699,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790300044.7410254
  },
@@ -7739,7 +7739,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790300047.1346204
  },
@@ -7779,7 +7779,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790300052.6399121
  },
