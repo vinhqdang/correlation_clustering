@@ -8749,7 +8749,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur032.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790305038.576312
  },
