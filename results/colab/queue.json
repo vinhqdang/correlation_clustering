@@ -8669,7 +8669,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur016.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790305033.6207592
  },
@@ -8899,7 +8899,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur062.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790305064.229827
  },
