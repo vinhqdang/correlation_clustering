@@ -9589,7 +9589,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur200.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790316368.2697287
  }
