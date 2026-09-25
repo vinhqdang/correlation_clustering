@@ -7279,7 +7279,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790298732.831605
  },
@@ -7569,8 +7569,9 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790299960.1195178
  },
  {
   "id": "s1t150_ca-AstroPh_3",
@@ -7578,8 +7579,9 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790299960.1195192
  },
  {
   "id": "s1t150_ca-CondMat_3",
@@ -7587,8 +7589,9 @@
   "T": 150.0,
   "seed": 3,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790299960.1195197
  },
  {
   "id": "s1t150_email-Enron_3",
@@ -7596,8 +7599,9 @@
   "T": 150.0,
   "seed": 3,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790299960.11952
  },
  {
   "id": "s1t150_loc-Brightkite_3",
