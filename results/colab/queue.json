@@ -8629,7 +8629,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur008.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790305021.0484507
  },
