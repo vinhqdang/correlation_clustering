@@ -7149,7 +7149,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790297858.8623881
  },
@@ -7189,7 +7189,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790297873.0838616
  },
