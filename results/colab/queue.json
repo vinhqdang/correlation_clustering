@@ -5479,7 +5479,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur177.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790290608.56185
  },
@@ -6209,8 +6209,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790295468.4402058
  },
  {
   "id": "s1t60_ca-HepPh_4",
@@ -6218,8 +6219,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790295468.4402082
  },
  {
   "id": "s1t60_ca-AstroPh_4",
@@ -6227,8 +6229,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790295468.440209
  },
  {
   "id": "s1t60_ca-CondMat_4",
@@ -6236,8 +6239,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790295468.4402094
  },
  {
   "id": "s1t60_email-Enron_4",
