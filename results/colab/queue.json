@@ -9199,7 +9199,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur122.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790308620.976491
  },
@@ -9239,7 +9239,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur130.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790308623.4163592
  },
@@ -9529,8 +9529,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur188.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790313449.089031
  },
  {
   "id": "s1h_pace-heur_heur190.gr_0",
@@ -9538,8 +9539,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur190.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790313449.0890324
  },
  {
   "id": "s1h_pace-heur_heur192.gr_0",
@@ -9547,8 +9549,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur192.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790313449.0890331
  },
  {
   "id": "s1h_pace-heur_heur194.gr_0",
@@ -9556,8 +9559,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur194.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790313449.089034
  },
  {
   "id": "s1h_pace-heur_heur196.gr_0",
@@ -9565,8 +9569,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur196.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790313454.9998732
  },
  {
   "id": "s1h_pace-heur_heur198.gr_0",
@@ -9574,8 +9579,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur198.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790313454.999875
  },
  {
   "id": "s1h_pace-heur_heur200.gr_0",
@@ -9583,7 +9589,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur200.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790313454.9998755
  }
 ]
