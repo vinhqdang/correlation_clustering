@@ -8589,7 +8589,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790305018.1415079
  },
@@ -8769,7 +8769,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur036.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790305056.5367932
  },
@@ -8849,7 +8849,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur052.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790305061.722416
  },
