@@ -9479,7 +9479,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur178.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790313192.9284148
  },
@@ -9519,7 +9519,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur186.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790313206.6430335
  },
