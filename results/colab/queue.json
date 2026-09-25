@@ -8149,7 +8149,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790301468.0801685
  },
@@ -8179,7 +8179,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790301850.5374112
  },
