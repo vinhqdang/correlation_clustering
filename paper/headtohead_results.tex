@@ -56,8 +56,7 @@ not in solving them.
 \begin{table}[t]
 \centering
 \caption{PXMem against KaPoCE at three budgets, same protocol as
-Table~\ref{tab:h2h} (ten seeds per graph and budget; one \SI{150}{s} run on
-\texttt{com-Youtube} is missing).  Median paired relative difference
+Table~\ref{tab:h2h} (ten seeds per graph and budget).  Median paired relative difference
 PXMem$-$KaPoCE in percent (negative values favour PXMem) and wins, ties and
 losses of PXMem.}\label{tab:budget}
 \small
@@ -66,13 +65,13 @@ losses of PXMem.}\label{tab:budget}
 
 \paragraph{Dependence on the budget.}  Table~\ref{tab:budget} shows the
 main limitation of PXMem.  At \SI{60}{s} and \SI{150}{s} KaPoCE is better
-overall (PXMem wins 43 and 41 runs and loses 84 and 70; sign test $p<0.01$
+overall (PXMem wins 43 and 41 runs and loses 84 and 71; sign test $p<0.01$
 for both budgets), while at \SI{600}{s} the balance reverses (67 wins, 34
 losses, $p=0.001$).  The short-budget losses are concentrated on the six
 largest graphs, where KaPoCE wins at least eight of ten runs at \SI{60}{s}.
 There the initial population (Pivot, flipping and annealing runs) takes a
 large part of a short budget; on \texttt{com-Youtube} PXMem is $0.64\%$
-behind at \SI{60}{s} and $0.18\%$ at \SI{150}{s}.  On \texttt{ca-HepTh}
+behind at \SI{60}{s} and $0.19\%$ at \SI{150}{s}.  On \texttt{ca-HepTh}
 and \texttt{ca-CondMat} PXMem is better at every budget.  In two of the ten
 \SI{60}{s} runs on \texttt{com-Youtube} KaPoCE was stopped before its local
 search had improved the initial solution and returned a solution $13\%$
