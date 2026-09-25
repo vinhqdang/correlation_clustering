@@ -7229,7 +7229,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790298728.098781
  },
@@ -7309,7 +7309,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790298737.5571117
  },
@@ -7349,7 +7349,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790298741.790733
  },
@@ -7389,7 +7389,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790298746.0948365
  },
