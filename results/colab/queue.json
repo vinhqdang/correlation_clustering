@@ -8639,7 +8639,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur010.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790305021.0484514
  },
@@ -8709,7 +8709,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur024.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790305036.1469588
  },
@@ -8789,7 +8789,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur040.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790305056.5367954
  },
@@ -8829,7 +8829,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur048.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790305059.4357908
  },
@@ -8869,7 +8869,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur056.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790305061.7224178
  },
@@ -8969,8 +8969,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur076.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790307728.3454552
  },
  {
   "id": "s1h_pace-heur_heur078.gr_0",
@@ -8978,8 +8979,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur078.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790307728.345457
  },
  {
   "id": "s1h_pace-heur_heur080.gr_0",
@@ -8987,8 +8989,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur080.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790307728.3454576
  },
  {
   "id": "s1h_pace-heur_heur082.gr_0",
@@ -8996,8 +8999,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur082.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790307728.345458
  },
  {
   "id": "s1h_pace-heur_heur084.gr_0",
