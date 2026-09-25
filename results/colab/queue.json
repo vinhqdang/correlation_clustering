@@ -8229,7 +8229,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790303214.7175953
  },
@@ -8269,7 +8269,7 @@
   "T": 150.0,
   "seed": 7,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790303217.2101624
  },
@@ -8309,7 +8309,7 @@
   "T": 150.0,
   "seed": 8,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790303220.0369349
  },
@@ -8349,7 +8349,7 @@
   "T": 150.0,
   "seed": 8,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790303226.0577302
  },
@@ -8389,7 +8389,7 @@
   "T": 150.0,
   "seed": 8,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790303238.4522285
  },
@@ -8429,7 +8429,7 @@
   "T": 150.0,
   "seed": 8,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790303243.514542
  },
@@ -8469,7 +8469,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790303247.152818
  },
@@ -8509,7 +8509,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790303249.4133992
  },
@@ -8549,7 +8549,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790303251.80979
  },
