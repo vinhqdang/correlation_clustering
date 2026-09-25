@@ -7849,7 +7849,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790301428.5787396
  },
@@ -7889,7 +7889,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790301432.6365402
  },
@@ -7929,7 +7929,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790301436.4005334
  },
@@ -7969,7 +7969,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790301449.9802618
  },
