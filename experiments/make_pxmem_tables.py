@@ -46,18 +46,45 @@ with open(os.path.join(T, "headtohead.tex"), "w") as fh:
                  f"{pval(r['holm_p'])} & {ts} \\\\\n")
     fh.write("\\bottomrule\n\\end{tabular}\n")
 
-# budget dependence
-b60 = read(os.path.join(R, "headtohead_m3t60.csv"))
-b150 = read(os.path.join(R, "headtohead_m3t150.csv"))
-b600 = read(os.path.join(R, "headtohead_m3.csv"))
+# budget dependence, sequential protocol (tags s1t60, s1t150, s1): per graph the
+# median paired relative difference (%) and wins/ties/losses of PXMem
+def runs(tag):
+    by = defaultdict(list)
+    for f in glob.glob(os.path.join(R, "colab", f"{tag}_*.json")):
+        r = json.load(open(f))
+        if r.get("tag") == tag:
+            by[r["graph"]].append(r)
+    return by
+
+
+def median(xs):
+    xs = sorted(xs)
+    k = len(xs)
+    return (xs[k // 2] + xs[(k - 1) // 2]) / 2
+
+
+budgets = [runs(t) for t in ("s1t60", "s1t150", "s1")]
 with open(os.path.join(T, "budget.tex"), "w") as fh:
-    fh.write("\\begin{tabular}{lrrr}\n\\toprule\n")
-    fh.write("graph & \\SI{60}{s} & \\SI{150}{s} & \\SI{600}{s} \\\\\n\\midrule\n")
-    for g in ORDER:
+    fh.write("\\begin{tabular}{lrrrrrr}\n\\toprule\n")
+    fh.write(" & \\multicolumn{2}{c}{\\SI{60}{s}} & \\multicolumn{2}{c}{\\SI{150}{s}} & "
+             "\\multicolumn{2}{c}{\\SI{600}{s}} \\\\\n")
+    fh.write("\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\n")
+    fh.write("graph & med.\\ (\\%) & W/T/L & med.\\ (\\%) & W/T/L & med.\\ (\\%) & W/T/L "
+             "\\\\\n\\midrule\n")
+    for g in ORDER15:
         cells = []
-        for d in (b60, b150, b600):
-            r = d[g]
-            cells.append(f"${float(r['mean_rel_diff_pct_valid_runs']):+.3f}$")
+        for by in budgets:
+            rs = by.get(g, [])
+            if not rs:
+                cells += ["--", "--"]
+                continue
+            # a run without a valid KaPoCE solution counts as a win (shown in W)
+            valid = [r for r in rs if r["kapoce_valid"]]
+            d = [100 * (r["ours"] - r["kapoce"]) / r["kapoce"] for r in valid]
+            w = sum(x < 0 for x in d) + len(rs) - len(valid)
+            l = sum(x > 0 for x in d)
+            m = round(median(d), 3) + 0.0 if d else None   # + 0.0 turns -0.0 into 0.0
+            cells += [f"${m:+.3f}$" if d else "--", f"{w}/{len(rs) - w - l}/{l}"]
         fh.write(f"{tt(g)} & " + " & ".join(cells) + " \\\\\n")
     fh.write("\\bottomrule\n\\end{tabular}\n")
 

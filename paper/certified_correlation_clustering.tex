@@ -616,9 +616,10 @@ reported lower bound is confirmed by an independent exact checker.
 \paragraph{Limitations.}
 \begin{itemize}
 \item KaPoCE remains better than PXMem on \texttt{com-Amazon} (by $0.003\%$ at
-\SI{600}{s}) and, not significantly, on \texttt{com-Youtube} and, at short budgets of \SI{60}{s}--\SI{150}{s}, on the largest
-graphs (by $0.1\%$--$0.7\%$), where our initial population takes too much of
-the budget.  PXMem also needs up to twice the memory of KaPoCE.
+\SI{600}{s}) and, not significantly, on \texttt{com-Youtube}.  At short
+budgets of \SI{60}{s} and \SI{150}{s} it is better overall, most clearly on
+the six largest graphs (median $0.002\%$ to $0.64\%$), where our initial
+population takes too much of the budget.  PXMem also needs up to twice the memory of KaPoCE.
 \item The formal development covers the statements listed in
 Table~\ref{tab:lean}, not all results of the paper, and it covers the
 mathematics, not the code.  The Pivot guarantee used in
