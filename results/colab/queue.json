@@ -137,7 +137,7 @@
   "graph": "com-Amazon",
   "status": "running",
   "machine": "w7",
-  "started": 1790431082.2269478
+  "started": 1790432954.406896
  },
  {
   "id": "ltri_com-DBLP_0",
@@ -147,7 +147,7 @@
   "graph": "com-DBLP",
   "status": "running",
   "machine": "w7",
-  "started": 1790431082.2269506
+  "started": 1790432954.4068983
  },
  {
   "id": "ltri_email-Eu-core_0",
@@ -16045,7 +16045,7 @@
   "T": 60.0,
   "seed": 9,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790431082.2269528
  },
@@ -16335,8 +16335,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact019.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790432954.406899
  },
  {
   "id": "lpack_pace-exact_exact020.gr_1",
@@ -16344,8 +16345,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact020.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790432954.4068997
  },
  {
   "id": "lpack_pace-exact_exact021.gr_1",
