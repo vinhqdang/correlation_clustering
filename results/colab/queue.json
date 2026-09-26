@@ -15475,7 +15475,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424565.8990498
  },
