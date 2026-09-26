@@ -9609,7 +9609,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790386010.6212502
  },
@@ -9689,7 +9689,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790386040.508572
  },
@@ -9729,7 +9729,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790386049.3800466
  },
@@ -9769,7 +9769,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790386058.0238042
  },
@@ -9809,7 +9809,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790386090.2266037
  },
@@ -9849,7 +9849,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790386124.4563062
  },
