@@ -13255,7 +13255,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790416626.8604207
  },
@@ -14125,7 +14125,7 @@
   "T": 150.0,
   "seed": 4,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790418489.4307888
  },
@@ -14165,7 +14165,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790418494.345396
  },
@@ -14205,7 +14205,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790418496.8610198
  },
@@ -14215,7 +14215,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790419590.7214203
  },
@@ -14255,7 +14255,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790419344.560174
  },
@@ -14265,7 +14265,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790419344.5601754
  },
@@ -14295,7 +14295,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790419380.7066035
  },
@@ -14305,7 +14305,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790419380.706605
  },
@@ -14335,8 +14335,9 @@
   "T": 150.0,
   "seed": 6,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790420265.5751967
  },
  {
   "id": "s2h150_amazon0302_6",
@@ -14344,8 +14345,9 @@
   "T": 150.0,
   "seed": 6,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790420265.575199
  },
  {
   "id": "s2h150_web-NotreDame_6",
@@ -14353,8 +14355,9 @@
   "T": 150.0,
   "seed": 6,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790420265.5752003
  },
  {
   "id": "s2h150_roadNet-PA_6",
@@ -14362,8 +14365,9 @@
   "T": 150.0,
   "seed": 6,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790420265.5752008
  },
  {
   "id": "s2h150_email-Eu-core_7",
@@ -14371,8 +14375,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790420270.8550146
  },
  {
   "id": "s2h150_facebook_7",
@@ -14380,8 +14385,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790420270.8550167
  },
  {
   "id": "s2h150_wiki-Vote_7",
@@ -14389,8 +14395,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790420270.8550172
  },
  {
   "id": "s2h150_cit-HepTh_7",
@@ -14398,8 +14405,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790420270.855018
  },
  {
   "id": "s2h150_cit-HepPh_7",
@@ -14407,8 +14415,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790420273.4403894
  },
  {
   "id": "s2h150_p2p-Gnutella31_7",
@@ -14416,8 +14425,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790420273.4403908
  },
  {
   "id": "s2h150_soc-Slashdot0902_7",
@@ -14425,8 +14435,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790420273.440391
  },
  {
   "id": "s2h150_loc-Gowalla_7",
@@ -14434,8 +14445,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790420273.4403918
  },
  {
   "id": "s2h150_email-EuAll_7",
