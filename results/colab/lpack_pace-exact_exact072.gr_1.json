@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact072.gr", "n": 140, "m": 4347, "pairs": 9711, "mode": "pack", "T": 60.0, "seed": 1, "support_time": 0.4581766128540039, "value": 1804.0, "stars": 1192, "time": 65.73608756065369, "check": "ok", "certified": 1804, "lb_exact": 1804.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
