@@ -12165,7 +12165,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790395099.2356164
  },
@@ -12205,7 +12205,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790395112.0402322
  },
@@ -12245,7 +12245,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790395143.5846598
  },
@@ -12285,7 +12285,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790395182.1764865
  },
@@ -12325,7 +12325,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790395206.913413
  },
@@ -12395,7 +12395,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790395982.3607252
  },
@@ -12435,7 +12435,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790395998.3519998
  },
