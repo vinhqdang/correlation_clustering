@@ -81,6 +81,13 @@ the held-out set was fixed.  Its raw results remain in the repository; it is
 not the basis of any claim in this paper, because the same graphs were used
 for tuning and because it measured the two solvers asymmetrically (KaPoCE's
 time included reading the input, PXMem's did not, and the order was fixed).
+\item \emph{Machines.}  Earlier runs of the PACE exact track on a 4-core
+workstation with four runs in parallel, also with checked certificates,
+proved optimality on 111 of the 173 solved instances.  All numbers in this
+paper are from the runs on the Colab machines described in
+Section~\ref{sec:exp-setup}, which give \numPaceOptOurs{}; we report the
+latter because the other bounds of Table~\ref{tab:pace-bounds} were computed
+on the same machines and because their certificates are the archived ones.
 \item \emph{Held-out data.}  The twelve SNAP graphs marked ``held-out'' in
 Table~\ref{tab:instances} and the analysis plan of
 Section~\ref{sec:exp-setup} were fixed and committed to the repository
