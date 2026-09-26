@@ -1,0 +1,1 @@
+{"graph": "facebook", "n": 4039, "m": 88234, "pairs": 1446301, "mode": "star", "T": 3600.0, "seed": 0, "support_time": 0.7080891132354736, "value": 43699.69030496897, "converged": false, "rounds": 1, "rows": 4678819, "time": 3609.7039580345154, "tag": "lstar", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
