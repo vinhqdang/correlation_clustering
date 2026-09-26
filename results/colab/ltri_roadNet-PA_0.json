@@ -1,0 +1,1 @@
+{"graph": "roadNet-PA", "n": 1088092, "m": 1541898, "pairs": 4421718, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 2.1737136840820312, "value": 769126.25, "converged": true, "rounds": 2, "rows": 3189247, "time": 831.0973465442657, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

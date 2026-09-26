@@ -177,7 +177,7 @@
   "graph": "wiki-Vote",
   "status": "running",
   "machine": "w8",
-  "started": 1790426569.298086
+  "started": 1790427522.756632
  },
  {
   "id": "ltri_cit-HepPh_0",
@@ -187,7 +187,7 @@
   "graph": "cit-HepPh",
   "status": "running",
   "machine": "w8",
-  "started": 1790426569.298088
+  "started": 1790427522.7566338
  },
  {
   "id": "ltri_p2p-Gnutella31_0",
@@ -215,7 +215,7 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790424476.7033737
  },
@@ -15435,7 +15435,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790424476.7033744
  },
@@ -15445,7 +15445,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790424476.703375
  },
@@ -15555,9 +15555,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null,
-  "started": 1790426546.8525627
+  "status": "running",
+  "machine": "w8",
+  "started": 1790427522.7566347
  },
  {
   "id": "s2h60_facebook_5",
@@ -15565,9 +15565,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null,
-  "started": 1790426546.852565
+  "status": "running",
+  "machine": "w8",
+  "started": 1790427522.7566361
  },
  {
   "id": "s2h60_wiki-Vote_5",
@@ -15575,9 +15575,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null,
-  "started": 1790426546.8525655
+  "status": "running",
+  "machine": "w9",
+  "started": 1790427527.6905031
  },
  {
   "id": "s2h60_cit-HepTh_5",
@@ -15585,9 +15585,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null,
-  "started": 1790426546.8525658
+  "status": "running",
+  "machine": "w9",
+  "started": 1790427527.6905055
  },
  {
   "id": "s2h60_cit-HepPh_5",
@@ -15635,7 +15635,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790426569.298089
  },
@@ -15645,7 +15645,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790426569.2980897
  },
@@ -15655,8 +15655,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790427527.6905062
  },
  {
   "id": "s2h60_roadNet-PA_5",
@@ -15664,8 +15665,9 @@
   "T": 60.0,
   "seed": 5,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790427527.6905067
  },
  {
   "id": "s2h60_email-Eu-core_6",
