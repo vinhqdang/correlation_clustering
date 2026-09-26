@@ -12525,7 +12525,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790399904.3025196
  },
