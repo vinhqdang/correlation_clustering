@@ -15505,7 +15505,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790425637.3370533
  },
@@ -15535,7 +15535,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790425660.083842
  },
