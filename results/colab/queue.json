@@ -13685,8 +13685,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790414215.7343452
  },
  {
   "id": "s2h150_cit-HepPh_1",
@@ -13694,8 +13695,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790414215.7343469
  },
  {
   "id": "s2h150_p2p-Gnutella31_1",
@@ -13703,8 +13705,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790414215.7343476
  },
  {
   "id": "s2h150_soc-Slashdot0902_1",
@@ -13712,8 +13715,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790414215.734348
  },
  {
   "id": "s2h150_loc-Gowalla_1",
