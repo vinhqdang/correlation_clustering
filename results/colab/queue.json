@@ -85,7 +85,7 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790424468.569745
  },
@@ -97,7 +97,7 @@
   "graph": "email-Enron",
   "status": "running",
   "machine": "w6",
-  "started": 1790424468.5697467
+  "started": 1790425660.08384
  },
  {
   "id": "ltri_loc-Brightkite_0",
@@ -107,7 +107,7 @@
   "graph": "loc-Brightkite",
   "status": "running",
   "machine": "w6",
-  "started": 1790424468.5697472
+  "started": 1790425660.0838416
  },
  {
   "id": "ltri_BitcoinOTC+_0",
@@ -115,7 +115,7 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790424468.5697482
  },
@@ -15485,7 +15485,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424565.89905
  },
@@ -15495,8 +15495,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790425637.3370512
  },
  {
   "id": "s2h60_loc-Gowalla_4",
@@ -15504,8 +15505,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790425637.3370533
  },
  {
   "id": "s2h60_email-EuAll_4",
@@ -15513,8 +15515,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790425637.337054
  },
  {
   "id": "s2h60_amazon0302_4",
@@ -15522,8 +15525,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790425637.3370545
  },
  {
   "id": "s2h60_web-NotreDame_4",
@@ -15531,8 +15535,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790425660.083842
  },
  {
   "id": "s2h60_roadNet-PA_4",
@@ -15540,8 +15545,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790425660.083843
  },
  {
   "id": "s2h60_email-Eu-core_5",
