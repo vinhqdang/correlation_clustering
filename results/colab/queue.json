@@ -12405,7 +12405,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790395982.360727
  },
@@ -12445,7 +12445,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790395998.352001
  },
