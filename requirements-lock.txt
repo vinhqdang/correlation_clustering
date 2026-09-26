@@ -1,0 +1,9 @@
+# Versions on the machines that produced the results of paper_mpc
+# (Google Colab, Ubuntu 24.04.5, Python 3.13.15, g++ 13.3.0)
+numpy==2.1.3
+scipy==1.16.3
+numba==0.61.2
+llvmlite==0.44.0
+highspy==1.15.1
+pymetis==2025.2.2
+networkx==3.6.1

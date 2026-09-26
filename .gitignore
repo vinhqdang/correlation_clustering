@@ -234,3 +234,9 @@ results/colab/fleet.out
 results/colab/fleet_state.json
 results/colab/*.tmp
 results/colab/inbox/
+data/raw/_pace21/
+paper_mpc/*.aux
+paper_mpc/*.bbl
+paper_mpc/*.blg
+paper_mpc/*.log
+paper_mpc/*.out
