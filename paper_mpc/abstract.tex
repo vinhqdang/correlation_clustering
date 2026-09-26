@@ -1,0 +1,21 @@
+Correlation clustering (equivalently, cluster editing) has strong
+approximation algorithms and strong heuristics, but on large graphs nobody
+can say how far a given clustering is from optimal: exact solvers stop at a
+few hundred vertices, and the lower bounds that scale certify only a factor
+of about two.  We compute certified lower bounds on sparse graphs with up to
+$10^6$ vertices.  Since optimal clusters have diameter at most two, the metric
+LP and its strengthening by star and local subgraph inequalities can be
+restricted to the $O(\sum_v\deg(v)^2)$ pairs at distance at most two without
+losing validity or LP-rounding guarantees.  Dual block-coordinate ascent,
+warm-started by a sparse star packing, turns this relaxation into an anytime
+bound that is valid after every step.  Its certificates are verified against
+the raw instance file, in exact arithmetic, by a short checker that shares no
+code with the solver; the inequality it evaluates is proved in Lean~4.  The
+optimality gap of any clustering decomposes exactly into non-negative local
+terms, which yields local optimality certificates and guides a
+large-neighbourhood search.  On the PACE~2021 exact track the checked bound
+proves optimality on \numPaceOptOurs{} of 173 solved instances and improves
+the published lower bounds of two open instances.  On \numSnapCert{} SNAP
+graphs, \numSnapCertHeld{} of them held out during development, it certifies
+the best known solutions within \numSnapGapLo{} to \numSnapGapHi{}, where
+scalable baselines certify factors of \numBaseFacLo{} to \numBaseFacHi{}.

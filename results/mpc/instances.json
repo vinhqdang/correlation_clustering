@@ -1,0 +1,164 @@
+{
+ "ca-GrQc": {
+  "n": 5242,
+  "m": 14484,
+  "est_pairs": 244351.0,
+  "pairs": 78224
+ },
+ "ca-HepTh": {
+  "n": 9877,
+  "m": 25973,
+  "est_pairs": 325329.0,
+  "pairs": 205421
+ },
+ "ca-HepPh": {
+  "n": 12008,
+  "m": 118489,
+  "est_pairs": 15396500.0,
+  "pairs": 1638915
+ },
+ "ca-AstroPh": {
+  "n": 18772,
+  "m": 198050,
+  "est_pairs": 12947430.0,
+  "pairs": 4639091
+ },
+ "ca-CondMat": {
+  "n": 23133,
+  "m": 93439,
+  "est_pairs": 2061089.0,
+  "pairs": 1169993
+ },
+ "email-Enron": {
+  "n": 36692,
+  "m": 183831,
+  "est_pairs": 25750724.0,
+  "pairs": 15241801
+ },
+ "loc-Brightkite": {
+  "n": 58228,
+  "m": 214078,
+  "est_pairs": 13637481.0,
+  "pairs": 8576618
+ },
+ "soc-Epinions": {
+  "n": 75879,
+  "m": 405740,
+  "est_pairs": 74606860.0,
+  "pairs": null
+ },
+ "Slashdot+": {
+  "n": 75144,
+  "m": 382882,
+  "est_pairs": 50425808.0,
+  "pairs": null
+ },
+ "Epinions+": {
+  "n": 114467,
+  "m": 592591,
+  "est_pairs": 129921822.0,
+  "pairs": null
+ },
+ "BitcoinOTC+": {
+  "n": 5573,
+  "m": 18591,
+  "est_pairs": 1336916.0,
+  "pairs": 972669
+ },
+ "BitcoinAlpha+": {
+  "n": 3683,
+  "m": 12972,
+  "est_pairs": 732180.0,
+  "pairs": 493107
+ },
+ "com-Amazon": {
+  "n": 334863,
+  "m": 925872,
+  "est_pairs": 10678058.0,
+  "pairs": 6933597
+ },
+ "com-DBLP": {
+  "n": 317080,
+  "m": 1049866,
+  "est_pairs": 22830755.0,
+  "pairs": 13718957
+ },
+ "com-Youtube": {
+  "n": 1134890,
+  "m": 2987624,
+  "est_pairs": 1477470184.0,
+  "pairs": null
+ },
+ "email-Eu-core": {
+  "n": 1005,
+  "m": 16064,
+  "est_pairs": 1199280.0,
+  "pairs": 223665
+ },
+ "facebook": {
+  "n": 4039,
+  "m": 88234,
+  "est_pairs": 9403083.0,
+  "pairs": 1446301
+ },
+ "wiki-Vote": {
+  "n": 7115,
+  "m": 100762,
+  "est_pairs": 14646342.0,
+  "pairs": 3473778
+ },
+ "cit-HepTh": {
+  "n": 27770,
+  "m": 352285,
+  "est_pairs": 37453894.0,
+  "pairs": null
+ },
+ "cit-HepPh": {
+  "n": 34546,
+  "m": 420877,
+  "est_pairs": 26719743.0,
+  "pairs": 11577385
+ },
+ "p2p-Gnutella31": {
+  "n": 62586,
+  "m": 147892,
+  "est_pairs": 1716066.0,
+  "pairs": 1663263
+ },
+ "soc-Slashdot0902": {
+  "n": 82168,
+  "m": 504230,
+  "est_pairs": 75487819.0,
+  "pairs": null
+ },
+ "loc-Gowalla": {
+  "n": 196591,
+  "m": 950327,
+  "est_pairs": 291350367.0,
+  "pairs": null
+ },
+ "email-EuAll": {
+  "n": 265214,
+  "m": 364481,
+  "est_pairs": 195653038.0,
+  "pairs": null
+ },
+ "amazon0302": {
+  "n": 262111,
+  "m": 899792,
+  "est_pairs": 10020142.0,
+  "pairs": 6588959
+ },
+ "web-NotreDame": {
+  "n": 325729,
+  "m": 1090108,
+  "est_pairs": 305971282.0,
+  "pairs": null
+ },
+ "roadNet-PA": {
+  "n": 1088092,
+  "m": 1541898,
+  "est_pairs": 4932565.0,
+  "pairs": 4421718
+ }
+}

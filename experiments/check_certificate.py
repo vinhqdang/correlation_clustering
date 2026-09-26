@@ -34,8 +34,13 @@ order; in a signed file only rows with a positive value in the sign column are
 kept; edges are undirected, self-loops and duplicates are dropped.  PACE .gr
 files are 1-indexed with a ``p cep n m`` header.
 
+The upper bound is re-checked in the same way: ``clustering_cost`` evaluates
+the cost of an archived clustering (one label per vertex, in the numbering
+above) on the instance parsed here.
+
 usage: check_certificate.py RAW_FILE CERT.npz [RAW_FILE CERT.npz ...]
        check_certificate.py --dir DATA_DIR CERT_DIR OUT.csv
+       check_certificate.py --labels RAW_FILE FORMAT LABELS.npz
 """
 import gzip
 import hashlib
@@ -403,6 +408,18 @@ def check(g, cert):
     return report
 
 
+def clustering_cost(g, labels):
+    """Exact number of disagreements of a clustering of the instance g."""
+    labels = np.asarray(labels).astype(np.int64)
+    if labels.shape != (g.n,):
+        raise ValueError(f"{labels.shape[0]} labels for n={g.n}")
+    src = np.repeat(np.arange(g.n), np.diff(g.indptr))
+    inside = int((labels[src] == labels[g.indices]).sum()) // 2
+    sizes = np.unique(labels, return_counts=True)[1]
+    pairs_inside = sum(int(s) * (int(s) - 1) // 2 for s in sizes.tolist())
+    return (g.m - inside) + (pairs_inside - inside)
+
+
 # --------------------------------------------------------------------------
 
 def check_file(raw, cert_path, fmt=None, sign_col=None):
@@ -421,6 +438,8 @@ def check_dir(data_dir, cert_dir, out_csv):
     rows = []
     for path in sorted(glob.glob(os.path.join(cert_dir, "**", "*.npz"), recursive=True)):
         cert = dict(np.load(path, allow_pickle=False))
+        if path.endswith(".labels.npz"):
+            continue
         row = {"certificate": os.path.relpath(path, cert_dir)}
         try:
             f = _meta(cert, "instance_file")
@@ -428,13 +447,19 @@ def check_dir(data_dir, cert_dir, out_csv):
                 raise ValueError("certificate names no instance file")
             row["instance"] = f
             row.update(check_file(os.path.join(data_dir, f), path))
+            lab = path[:-4] + ".labels.npz"
+            if os.path.exists(lab):
+                g = read_instance(os.path.join(data_dir, f),
+                                  str(_meta(cert, "instance_format")),
+                                  int(_meta(cert, "sign_col", -1)))
+                row["cost"] = clustering_cost(g, np.load(lab)["labels"])
             row["status"] = "ok"
         except (ValueError, OSError) as exc:
             row["status"] = f"rejected: {exc}"
         rows.append(row)
         print({k: row.get(k) for k in ("certificate", "status", "certified")}, flush=True)
     keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
-            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "raw_sha256",
+            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "raw_sha256",
             "edge_sha256"]
     with open(out_csv, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=keys, extrasaction="ignore")
@@ -446,6 +471,10 @@ def check_dir(data_dir, cert_dir, out_csv):
 
 
 def main(argv):
+    if argv and argv[0] == "--labels":
+        g = read_instance(argv[1], argv[2])
+        print(argv[3], clustering_cost(g, np.load(argv[3])["labels"]), flush=True)
+        return
     if argv and argv[0] == "--dir":
         sys.exit(0 if check_dir(argv[1], argv[2], argv[3]) else 1)
     for raw, path in zip(argv[0::2], argv[1::2]):

@@ -95,3 +95,56 @@ def test_separate_far_improves_and_separates():
         for v in S:
             k = np.isin(g.indices[g.indptr[v]:g.indptr[v + 1]], S).sum()
             assert 2 * k >= len(S) - 1
+
+
+def test_clustering_cost_matches_solver(tmp_path):
+    g, _ = planted_partition(0, 0, 0.6, 0.1, rng=3, sizes=np.full(6, 7))
+    gr = str(tmp_path / "g.gr")
+    _write_pace(g, gr)
+    inst = C.read_instance(gr, "pace")
+    rng = np.random.default_rng(3)
+    for _ in range(5):
+        lab = rng.integers(0, 6, g.n)
+        assert C.clustering_cost(inst, lab) == int(cc.cost(g, lab))
+
+
+def test_certificate_rejects_negative_multiplier(tmp_path):
+    g, _, cert, _ = _cert(tmp_path, seed=1)
+    cert["y"] = cert["y"].copy()
+    cert["y"][0] = -1e-9
+    with pytest.raises(ValueError):
+        C.check(g, cert)
+
+
+def test_star_formula_is_implied_by_enumeration(tmp_path):
+    """Every star row the closed form accepts is valid by exhaustive
+    enumeration, and with R complete the two agree exactly."""
+    g, _ = planted_partition(0, 0, 0.5, 0.08, rng=5, sizes=np.full(6, 8))
+    gr = str(tmp_path / "g.gr")
+    _write_pace(g, gr)
+    inst = C.read_instance(gr, "pace")
+    close = lambda a, c: bool(C._close(inst.indptr, inst.indices, min(a, c), max(a, c)))
+    rng = np.random.default_rng(0)
+    checked = 0
+    for _ in range(400):
+        v = int(rng.integers(g.n))
+        cand = [t for t in range(g.n) if t != v and close(v, t)]
+        if len(cand) < 2:
+            continue
+        T = rng.choice(cand, size=min(len(cand), int(rng.integers(2, 9))), replace=False).tolist()
+        pairs = [(a, c) for i, a in enumerate(T) for c in T[i + 1:] if close(a, c)]
+        complete = rng.random() < 0.5
+        R = pairs if complete else [p for p in pairs if rng.random() < 0.5]
+        us = [min(v, t) for t in T] + [min(p) for p in R]
+        vs = [max(v, t) for t in T] + [max(p) for p in R]
+        val = [1] * len(T) + [-1] * len(R)
+        for b in range(len(T) - len(R) - 3, len(T) - len(R) + 1):
+            ok_star = C._star_valid(us, vs, val, b, close)
+            ok_enum = C._brute_rows(inst.indptr, inst.indices, np.array([0, len(us)]),
+                                    np.array(us), np.array(vs), np.array(val),
+                                    np.array([b]), np.array([0]), 9)[0] == 1
+            assert ok_enum or not ok_star
+            if complete:
+                assert ok_enum == ok_star
+            checked += 1
+    assert checked > 100

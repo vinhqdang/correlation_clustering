@@ -1,0 +1,91 @@
+\section{Formal development}\label{app:lean}
+
+The correctness of the solvers rests on short combinatorial arguments and on
+exact formulas that the implementation evaluates millions of times per
+second.  An error in a sign or a boundary case would not crash the code; it
+would silently produce worse or invalid results.  We formalised part of the
+mathematics in Lean~4~\cite{deMouraU21lean4} with
+Mathlib~\cite{mathlib2020}.  The development (\texttt{lean/CCProofs}, about
+1{,}800 lines in fourteen files) is checked by the Lean kernel without
+\texttt{sorry} and depends only on the axioms \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}.  Table~\ref{tab:lean} lists
+what it covers.  It does \emph{not} cover Theorem~\ref{thm:sparse}, the block
+step and the convergence statement of Theorem~\ref{thm:anytime}(b,c), the gap
+decomposition (Theorem~\ref{thm:gap}) or its local corollary, the $2.06$ part
+of Theorem~\ref{thm:certiflip}, or any code.  The Pivot guarantee enters as a
+hypothesis.
+
+The formal model is that of Section~\ref{sec:prelim}: a finite vertex set, a
+simple graph $G^+$ and a labelling $c:V\to\alpha$ into a type with decidable
+equality.  The cost is summed over ordered pairs, so every count appears
+multiplied by two (\texttt{cost\_eq\_two\_mul\_card} relates it to the
+unordered count).  The weighted instance has integer node sizes and symmetric
+weights, as in~\eqref{eq:wcost}.
+
+\begin{table}[!tbp]
+\centering
+\caption{Coverage of the formal development (Lean~4, Mathlib).  ``Full'': the statement of the
+paper is proved as stated (up to the ordered-pair convention); ``partial'':
+the part named is proved; ``reduction'': proved from the cited guarantee
+taken as a hypothesis; ``--'': not formalised.}\label{tab:lean}
+\small
+\begin{tabular}{p{0.33\linewidth}p{0.12\linewidth}p{0.47\linewidth}}
+\toprule
+result & coverage & Lean theorems \\
+\midrule
+Lemma~\ref{lem:half} & partial & far pairs are separated by every optimal clustering: \texttt{optimal\_separates\_far}, \texttt{sepFar\_of\_optimal} \\
+Theorem~\ref{thm:sparse} & -- & \\
+Proposition~\ref{prop:subgraph}(i) & full & \texttt{star\_row\_valid} (star rows in $x$-form, far-separating clusterings) \\
+Proposition~\ref{prop:subgraph}(ii) & partial & bad triangles and induced stars: \texttt{bad\_triangle\_costIn}, \texttt{star\_bound}; packings: \texttt{packing\_bound} \\
+rows \eqref{eq:t1}--\eqref{eq:t2} & full & \texttt{sep\_triangle}, \texttt{sep\_far\_triangle} \\
+Theorem~\ref{thm:anytime}(a) & full & \texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt} (bound on $P$ for rows valid for far-separating clusterings, $\le$ the cost of every clustering); \texttt{cost\_eq\_supp} \\
+Theorem~\ref{thm:anytime}(b,c), Theorem~\ref{thm:gap}, Corollary~\ref{cor:local} & -- & \\
+Theorem~\ref{thm:certiflip} & (a) reduction, (b) full, (c) -- & (a) as Theorem~\ref{thm:pxmem}; (b) is Theorem~\ref{thm:anytime}(a) \\
+Proposition~\ref{prop:checker} & partial & the inequality evaluated by the checker: \texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt}; the checker code itself is not verified \\
+Lemma~\ref{lem:twins} & full & \texttt{twins\_split\_improvable}, \texttt{optimal\_keeps\_twins} \\
+Pivot keeps twins together & partial & one round: \texttt{pivot\_round\_twins} \\
+contraction~\eqref{eq:wcost} & partial & cost identity: \texttt{cost\_contract} \\
+move and swap formulas~\eqref{eq:move} & full & \texttt{cost\_move}, \texttt{costW\_move}, \texttt{costW\_swap}, \texttt{cost\_update} \\
+Theorem~\ref{thm:px} & full & any pairwise-additive cost: \texttt{crossoverP\_le}; unweighted: \texttt{crossover\_le}; weighted: \texttt{crossoverW\_le}; relabelling: \texttt{cost\_comp\_injective}, \texttt{costW\_comp\_injective} \\
+Theorem~\ref{thm:pxmem} & reduction & \texttt{reach\_le}, \texttt{output\_le}, \texttt{search\_guarantee}: non-worsening replacements keep a member no worse than the seed; the Pivot guarantee~\citep{AilonCN08} is a hypothesis \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The formal statements connect to the code in two places.  The bounds we
+report are values of the expression that \texttt{far\_dual\_bound} bounds,
+evaluated by the checker of Section~\ref{sec:cert}.  The move, swap and
+contraction formulas are tested against recomputation: exact costs of random
+clusterings on contracted instances, and the tracked cost against a full
+recomputation at the end of annealing runs with many moves, swaps and
+rollbacks.  These tests check final states, not every step.
+
+\section{Development log}\label{app:devlog}
+
+This appendix records which data informed which decision, so that the
+reader can judge which results are out of sample.
+
+\begin{itemize}
+\item \emph{Development data.}  The fifteen SNAP graphs of
+Table~\ref{tab:instances} marked ``dev'' and the 200 PACE~2021 exact-track
+instances.  All parameters of the bound (block size $2500$, $|H|\le8$ for local
+subgraph rows, ruin regions of about $12$ vertices, half of the budget for the
+bound), of the LNS ($|B|\le60$) and of PXMem (population $4$, regions of at
+most $30$ nodes, bandit settings, the degree bias of the region centres)
+were chosen by looking at runs on these instances.  Several PXMem components
+were added after inspecting where KaPoCE's solutions were better than ours on
+development graphs (Section~\ref{sec:primal}).
+\item \emph{Earlier comparisons.}  A head-to-head comparison with KaPoCE on
+the development graphs and on the PACE heuristic track was carried out before
+the held-out set was fixed.  Its raw results remain in the repository; it is
+not the basis of any claim in this paper, because the same graphs were used
+for tuning and because it measured the two solvers asymmetrically (KaPoCE's
+time included reading the input, PXMem's did not, and the order was fixed).
+\item \emph{Held-out data.}  The twelve SNAP graphs marked ``held-out'' in
+Table~\ref{tab:instances} and the analysis plan of
+Section~\ref{sec:exp-setup} were fixed and committed to the repository
+(\texttt{experiments/heldout.md}) before any run of either solver on them.
+No parameter was changed afterwards.  The PACE heuristic-track instances with
+the same vertex count as a development graph (ten instances) are excluded
+from the held-out PACE summary.
+\end{itemize}

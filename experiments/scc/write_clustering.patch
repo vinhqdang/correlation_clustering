@@ -1,0 +1,26 @@
+diff --git a/app/signed_graph_clustering_evolutionary.cpp b/app/signed_graph_clustering_evolutionary.cpp
+index 1a25617..624490c 100644
+--- a/app/signed_graph_clustering_evolutionary.cpp
++++ b/app/signed_graph_clustering_evolutionary.cpp
+@@ -174,17 +174,10 @@ int main(int argn, char **argv) {
+ 		//std::cout << "balance \t"       << qm.balance(G)                  << std::endl;
+ 		//std::cout << "max_comm_vol \t"  << qm.max_communication_volume(G) << std::endl;
+ 
+-		//if(partition_config.output_partition) {
+-			//// write the partition to the disc
+-			//std::stringstream filename;
+-			//if(!partition_config.filename_output.compare("")) {
+-				//filename << "clustering_evolutionary" << partition_config.k;
+-			//} else {
+-				//filename << partition_config.filename_output;
+-			//}
+-
+-			//graph_io::writePartition(G, filename.str());
+-		//} 
++		{
++			// write the clustering (patched in: the release only prints its cost)
++			if (rank == ROOT) graph_io::writePartition(G, partition_config.filename_output);
++		}
+ 	}
+ 
+ 	//MPI_Info_free(&info_win);

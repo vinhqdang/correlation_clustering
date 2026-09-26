@@ -1,0 +1,85 @@
+\section{Preliminaries and related work}\label{sec:prelim}
+
+Let $G^+=(V,\Ep)$ with $n=|V|$ and $m=|\Ep|$; every pair not in $\Ep$ is
+negative.  For a clustering $\mathcal{C}$ let $x^{\mathcal C}_{uv}=1$ if $u,v$
+are in different clusters and $0$ otherwise.  Then
+\[
+\cost(\mathcal C)=\sum_{uv\in\Ep}x^{\mathcal C}_{uv}+\sum_{uv\notin\Ep}(1-x^{\mathcal C}_{uv}).
+\]
+$N(v)$ denotes the positive neighbourhood of $v$ and $d(u,v)$ the distance in
+$G^+$.  The \emph{metric LP}~\cite{CharikarGW05,AilonCN08} relaxes $x$ to
+$[0,1]^{\binom V2}$ subject to the triangle inequalities
+$x_{uv}\le x_{uw}+x_{wv}$ for all triples.  A \emph{bad triangle} is a triple
+$u,w,v$ with $uw,wv\in\Ep$ and $uv\notin\Ep$; every clustering makes at least
+one mistake on it.  An \emph{induced star} with centre $v$ and $k\ge2$ leaves
+is a set of $k$ pairwise non-adjacent neighbours of $v$; every clustering makes
+at least $k-1$ mistakes on its $k+\binom k2$ pairs.
+
+\paragraph{Approximation.}  Pivot repeatedly picks a uniformly random
+unclustered vertex and clusters it with its unclustered positive neighbours;
+its expected cost is at most three times the fractional packing LP of bad
+triangles~\cite{AilonCN08}.  LP-based pivoting joins $v$ to the pivot $u$ with
+probability $1-f(x_{uv})$; $f(x)=x$ gives $2.5$~\cite{AilonCN08}, and the
+rounding functions of \citet{ChawlaMSY15} give $2.06$.  Both guarantees hold
+against the value of \emph{any} feasible metric $x$, a fact we use below.
+Further improvements use Sherali--Adams
+hierarchies~\cite{CohenAddadLN22}, preclustering~\cite{CohenAddadLLN23} and
+the cluster LP~\cite{CaoCLLNV24,CaoCLLLNTVYZ25,GarciaSorianoS26}; the best
+combinatorial ratio, $2-2/13$, comes from a local search with
+flips~\cite{CohenAddadLPTYZ24}.  For parallel, streaming, dynamic and weighted
+variants see~\cite{cohenaddad2021constant,behnezhad2022almost3,DemaineEFI06}.
+
+\paragraph{Lower bounds.}  The classical scalable bounds are packings of bad
+triangles, greedy or fractional; the latter approximates the covering LP over
+bad triangles and can be computed by the multiplicative-weights scheme of
+Garg and K\"onemann~\cite{GargK07,Fleischer00}.  \citet{veldt2022stc} derives
+LP relaxations from strong triadic closure that are supported on the open
+wedges of $G^+$, like our relaxation, and yield fast $2$-approximations and
+bounds within a factor of about two; our relaxation keeps the full metric LP
+on these pairs and adds stronger rows.  The metric LP itself has been solved
+on graphs with about $10^4$ vertices by projection
+methods~\cite{veldt2019metric,ruggles2020parallel} and by the Project and
+Forget scheme~\cite{SonthaliaG22project}, which also keeps only active
+triangle rows.  Exact branch-and-bound for cluster
+editing~\cite{BockerBK11exact,BlasiusEtAl22sea} uses packings of stars and of
+induced paths on three vertices as lower bounds; \citet{BlasiusEtAl22sea} mark
+the pairs at distance at least three as forbidden, and \citet{BastosOPSMP16}
+observe that they are separated in every optimal solution.  For the clique
+partitioning problem, the weighted maximisation form, facets and cutting
+planes go back to Gr\"otschel and Wakabayashi~\cite{GrotschelW89,
+GrotschelW90facets}; later work removes redundant triangle
+rows~\cite{MiyauchiS15redundant,miyauchi2018exact,koshimura2022concise}, adds
+chorded-cycle facets~\cite{irmai2024chorded}, uses Lagrangian relaxation with
+pegging tests~\cite{SukegawaYZ13lagrangian}, and tightens bounds with
+constraints on subnetworks~\cite{belyi2023subnetwork}.  Exact approaches via
+weighted MaxSAT~\cite{BergJ17maxsat} and kernelisation~\cite{Guo09kernel,
+CaoC12kernel} solve smaller instances to optimality.
+
+For the multicut problem on sparse graphs, where missing pairs carry no cost,
+dual decomposition and message passing give fast lower
+bounds~\cite{SwobodaA17multicut,AbbasS22rama,abbas2023clusterfug}, and
+persistency criteria fix variables that take the same value in every optimal
+solution~\cite{lange2018partial,LangeAS19persistency}.  Our block-dual ascent
+is closest in spirit to block-coordinate ascent for dense graphical
+models~\cite{TouraniSRS18mplp}: each block is solved to optimality with the
+other multipliers fixed.  These multicut methods do not apply directly to
+correlation clustering on complete graphs, where the $\binom n2-m$ negative
+pairs all carry cost; the distance-two support is what reduces the complete
+instance to a sparse one without changing the optimum.
+
+\paragraph{Heuristics.}  Local search with vertex
+moves~\cite{elsner2009bounding}, Louvain and Leiden with the constant Potts
+model at resolution $1/2$, which optimise the same
+objective~\cite{veldt2018lambdacc,BlondelGLL08,TraagWvE19}, heuristics for
+clique partitioning~\cite{BruscoK09clique,ZhouHG16threephase,LuZH22hybrid},
+local search for multicut~\cite{levinkov2017comparative} and fusion
+moves~\cite{BeierHK15fusion} are the common primal methods.  KaPoCE combines
+reductions, local search and an evolutionary
+phase~\cite{BlasiusEtAl21kapoceHeur}.  SCC~\cite{hausberger2025scc} is a
+multilevel memetic solver for correlation clustering on sparse signed graphs,
+in which pairs without an edge carry no cost; its objective therefore differs
+from the complete-graph objective studied here (Section~\ref{sec:exp-setup}).
+Twin (critical-clique) reductions and their weighted variants are standard in
+parameterised algorithms and practical tools~\cite{Guo09kernel,
+ProttiDS09modular,BockerBBT09weighted,Bocker12golden,ChenM12kernel,
+WittkopBLR07force,WittkopEtAl10transclust}.

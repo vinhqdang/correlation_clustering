@@ -1,0 +1,115 @@
+\section{Computational study}\label{sec:exp}
+
+\subsection{Setup}\label{sec:exp-setup}
+
+\paragraph{Implementation and machines.}  All methods are implemented in
+Python with Numba-compiled kernels (package \texttt{ccbench}).  LPs and MIPs
+are solved with HiGHS~1.15~\cite{HuangfuH18} and graph partitions are
+computed with METIS~\cite{KarypisK98}.  All runs of this section were made on
+Google Colab virtual machines with two logical cores and \SI{12.7}{GB} of
+memory, one run per machine at a time, with the CPU model recorded in every
+result file (\numCpuModels).  Every run uses one thread.  Budgets are
+wall-clock times; CPU times are recorded as well.
+
+\paragraph{Instances.}  Table~\ref{tab:instances} lists the SNAP
+graphs~\cite{LeskovecK14snap}, used as complete instances with $\Ep$ given by
+the edges (for signed networks, by the positive
+edges~\cite{leskovec2010signedchi,kumar2016bitcoin}).  Fifteen of them were
+used during development; the twelve held-out graphs were chosen afterwards to
+span $10^3$ to $10^6$ vertices and several graph classes, and were fixed
+before any run on them (Appendix~\ref{app:devlog}).  We also use the 200
+instances of each track of PACE~2021~\cite{KellerhalsKNZ21pace}: the exact
+track ($n\le620$; 173 instances with known optimum and 27 open) and the
+heuristic track (up to $2\cdot10^6$ vertices).  Ten heuristic-track instances
+coincide with development graphs and seven with held-out graphs
+(Table~\ref{tab:instances}).
+
+\begin{table}[!tbp]
+\centering
+\caption{SNAP instances: vertices, edges, size of the distance-two support
+$P$ and role.  ``--'': the support exceeds $3\cdot10^7$ pairs and does not fit
+into memory together with the block LPs; no bound is computed.  PACE: the
+heuristic-track instance with the same graph.}
+\label{tab:instances}
+\small
+\input{tables/instances}
+\end{table}
+
+\paragraph{Lower bounds compared.}  All bounds are rounded up to integers.
+Bounds marked \emph{checked} are values returned by the checker of
+Section~\ref{sec:cert} from an archived certificate.
+\begin{itemize}
+\item \emph{Triangle packings}: a maximal pair-disjoint packing of bad
+triangles (the bound of MatchFlipPivot~\cite{veldt2022stc}) and a
+fractional packing by the Garg--K\"onemann scheme with
+$\varepsilon=0.05$~\cite{GargK07,Fleischer00}, scaled by its maximum load.
+\item \emph{Sparse star packing} (checked): the greedy star packing on $P$
+improved by ruin and recreate for the whole budget, installed as a dual
+solution without any LP.  This is the scalable form of the root star-packing
+bound of the KaPoCE branch-and-bound.
+\item \emph{Metric LP on $P$}: $\mathrm{LP}_P$ with triangle
+rows~\eqref{eq:t1}--\eqref{eq:t2} only, solved by cutting planes with HiGHS
+until no row is violated or the budget ends; and the same with star rows.
+These are LP values in floating point, reported to separate the strength of
+the relaxation from the dual method.
+\item \emph{CertiFlip bound} (checked): Theorem~\ref{thm:anytime}, as
+computed within CertiFlip (half of the budget), and, on a subset of PACE
+instances, with a long budget and one block covering the graph.
+\item \emph{KaPoCE root bounds}: the star-packing and $P_3$-packing bounds of
+the KaPoCE branch-and-bound as published by its authors~\cite{BlasiusEtAl22sea}.
+Their dense-matrix implementation does not run on the SNAP graphs beyond
+about $10^4$ vertices.
+\end{itemize}
+
+\paragraph{Solvers compared.}  Pivot~\cite{AilonCN08}, the best of 50
+Pivot runs, MatchFlipPivot~\cite{veldt2022stc}, vertex-move local
+search~\cite{elsner2009bounding}, our multilevel Louvain-type local search,
+Leiden with the constant Potts model at resolution
+$1/2$~\cite{TraagWvE19,veldt2018lambdacc}, our iterated flipping local search,
+CertiFlip, PXMem, and KaPoCE~\cite{BlasiusEtAl21kapoceHeur}, the winner of both
+PACE~2021 tracks (heuristic version, commit \texttt{\numKapoceCommit}).  SCC~\cite{hausberger2025scc}
+optimises the objective of sparse signed graphs, in which a pair without an
+edge costs nothing, whereas here every non-edge is a negative pair.  We run it
+(commit \texttt{05d0849}, memetic version with one process) on the complete
+encoding, in which every non-adjacent pair is an explicit edge of weight
+$-1$.  This needs $\binom n2$ edges and is feasible on the PACE exact track
+(Section~\ref{sec:exp-bounds}) but not on the SNAP graphs.
+
+\paragraph{Head-to-head protocol.}  PXMem and KaPoCE are compared under a
+protocol that was fixed before the runs
+(\texttt{experiments/heldout.md}).  On one machine, the two solvers run one
+after the other in an order drawn from a hash of (graph, seed), each on the
+same logical core while the machine is otherwise idle.  Both read the same
+PACE-format text file inside their measured time.  KaPoCE's only changes are
+a seed and its two internal time limits, set to $\tfrac{590}{600}T$ and
+$\tfrac{90}{600}T$ (the ratio of its PACE configuration); it is stopped with
+SIGTERM at $T$ and its output is validated.  PXMem is scored at KaPoCE's
+elapsed wall-clock time, read from its complete improvement history, so the
+comparison is at equal elapsed time; its value at $T$ is also recorded.
+Invalid KaPoCE output counts as a PXMem win, as in PACE, and is reported
+separately.  Budgets are $T=\SI{600}{s}$ (primary), \SI{150}{s} and
+\SI{60}{s}, with ten seeds on each held-out SNAP graph and one run on each
+PACE heuristic instance at \SI{600}{s}.
+
+\paragraph{Statistics.}  The unit of inference is the graph.  For each graph
+we take the median over seeds of the relative difference
+$(\cost_{\mathrm{PXMem}}-\cost_{\mathrm{KaPoCE}})/\cost_{\mathrm{KaPoCE}}$ and
+apply the two-sided Wilcoxon signed-rank test~\cite{Wilcoxon45} and the sign
+test to the twelve medians.  Per graph we report the exact sign test over
+seeds with Holm's correction~\cite{Holm79} over graphs, noting that with ten
+seeds only a 10:0 split can be significant, and the Hodges--Lehmann
+estimate~\cite{HodgesL63} of the paired difference with its exact confidence
+interval.  We do not claim equivalence from non-significance.  Performance
+profiles~\cite{DolanM02profiles} summarise the PACE heuristic track.
+
+\subsection{Lower bounds on the PACE exact track}\label{sec:exp-bounds}
+
+\input{exp_pace}
+
+\subsection{Certified gaps on SNAP graphs}\label{sec:exp-cert}
+
+\input{exp_snap}
+
+\subsection{PXMem against KaPoCE}\label{sec:exp-h2h}
+
+\input{exp_h2h}

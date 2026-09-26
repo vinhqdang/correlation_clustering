@@ -1,0 +1,138 @@
+\section{Introduction}\label{sec:intro}
+
+In \emph{correlation clustering}~\cite{BansalBC04} the input is a complete
+graph whose pairs are labelled \emph{similar} ($+$) or \emph{dissimilar}
+($-$), and the task is to partition the vertices so that the number of
+disagreements, $+$ pairs between clusters plus $-$ pairs inside clusters, is
+minimum.  The number of clusters is free.  Equivalently, given the positive
+graph $G^+=(V,\Ep)$, one adds or deletes the fewest edges that turn $G^+$ into
+a disjoint union of cliques (\emph{cluster editing}).  The problem is
+APX-hard~\cite{CharikarGW05}.  It arises in entity resolution, community
+detection and the consolidation of inconsistent pairwise information.
+
+Two lines of work have progressed separately.  Approximation ratios for
+complete graphs have fallen from $3$ for Pivot~\cite{AilonCN08} through
+$2.06$ by rounding the metric LP~\cite{ChawlaMSY15} to $1.485$ with the
+cluster LP~\cite{CaoCLLNV24} and below~\cite{GarciaSorianoS26}.  In practice,
+engineered heuristics such as KaPoCE~\cite{BlasiusEtAl21kapoceHeur}, the
+winner of the PACE~2021 challenge~\cite{KellerhalsKNZ21pace}, and multilevel
+memetic solvers~\cite{hausberger2025scc} find very good solutions on graphs
+with millions of vertices.  What is missing on such graphs is a
+\emph{certificate}: a lower bound on the optimum, checkable independently of
+the solver, that tells how far a given clustering can be from optimal.  Exact
+branch-and-bound solves instances with a few hundred
+vertices~\cite{BlasiusEtAl22sea}, and its strong packing bounds are
+implemented on a dense $n\times n$ matrix.  Solvers for the metric LP reach
+about $10^4$ vertices~\cite{veldt2019metric,ruggles2020parallel,
+SonthaliaG22project}.  The combinatorial bounds that do scale, packings of
+bad triangles and the LP relaxations based on strong triadic
+closure~\cite{veldt2022stc}, certify solutions only within a factor of about
+two.
+
+This paper is about the lower-bound side.  We compute lower bounds for
+correlation clustering on sparse graphs with up to
+$\numMaxCertN{}$ vertices and $\numMaxCertM{}$ edges, export them as
+certificates that an independent program checks in exact arithmetic against
+the raw instance file, and use them to certify the solutions of our own and of
+other solvers.  The primal methods are secondary; they are included because a
+bound is only as useful as the solutions it is compared with, and because the
+certificate yields a decomposition of the optimality gap that guides a local
+search.
+
+\begin{figure}[!tbp]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/overview}}
+\caption{Overview.  The dual side (orange) builds the distance-two support
+and a lower bound by block dual ascent from a sparse star packing; the
+certificate is re-checked by an independent program in exact arithmetic
+against the raw instance.  The primal side (blue) computes clusterings: Pivot
+and iterated flipping give a start, and either the gap-guided LNS of
+CertiFlip or the memetic search PXMem improves it.  The gap decomposition
+splits $\cost(\mathcal C)-\LB$ into non-negative local terms and tells the LNS
+where to search.}
+\label{fig:overview}
+\end{figure}
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item \textbf{Distance-two relaxation} (Section~\ref{sec:relax}).  Optimal
+clusters have diameter at most two in $G^+$, so every pair at distance at
+least three is separated in every optimal clustering.  We show that the
+metric LP restricted to the pairs at distance at most two, with the triangle
+inequalities through distance-three pairs kept as covering rows, is a
+relaxation, and that each of its feasible points extends to a feasible point
+of the full metric LP with the same cost (Theorem~\ref{thm:sparse}).  The
+relaxation has $O(\sum_v\deg(v)^2)$ variables instead of $\binom n2$, and LP
+rounding keeps its guarantees.  We add star and local subgraph inequalities,
+which are valid for every clustering that separates the distance-three pairs.
+This observation is simple; its value is that it makes the metric LP and its
+strengthenings usable on graphs with $10^5$ to $10^6$ vertices.
+
+\item \textbf{Anytime block-dual bound} (Section~\ref{sec:dual}).  We compute
+a lower bound by dual block-coordinate ascent: each step solves the LP of one
+vertex block exactly by cutting planes, with costs equal to the current
+reduced costs.  The bound is valid after every step and never decreases, and
+its state is one reduced cost per pair plus the rows with positive
+multipliers (Theorem~\ref{thm:anytime}).  Any packing of induced stars or bad
+triangles is a feasible start.  We compute one on the sparse support by a
+ruin-and-recreate local search.  This sparse star packing is the scalable
+counterpart of the root bound of the KaPoCE branch-and-bound, and on large
+graphs it contributes most of the bound; the block LPs add the rest
+(Section~\ref{sec:exp-bounds} quantifies both).
+
+\item \textbf{Exactly checked certificates} (Section~\ref{sec:cert}).  A
+certificate lists the rows with positive multipliers.  A checker of about
+\numCheckerLines{} lines that shares no code with the solver parses the raw
+instance file, verifies that it is the instance the certificate was computed
+for (SHA-256 of the file and of the canonical edge list), checks the validity
+of every row by enumeration or by a closed form, and evaluates the bound in
+integer arithmetic.  The statement that the checker evaluates is proved in
+Lean~4 (Theorem~\ref{thm:anytime}(a)).  We archive every certificate behind
+every reported bound.
+
+\item \textbf{Gap decomposition and CertiFlip} (Section~\ref{sec:gap}).  For
+any clustering, the difference between its cost and the dual bound splits
+exactly into non-negative terms on pairs and rows (Theorem~\ref{thm:gap}).
+Re-optimising a vertex set can gain at most the gap mass that touches it,
+which certifies local optimality and selects neighbourhoods for a
+large-neighbourhood search with exact sub-MIPs.  CertiFlip combines this with
+a flipping local search after \citet{CohenAddadLPTYZ24} and returns a checked
+bound with every solution.
+
+\item \textbf{Computational study} (Section~\ref{sec:exp}).  On the 173
+solved instances of the PACE~2021 exact track, the checked bound proves
+optimality on \numPaceOptOurs{} and the root star packing of the KaPoCE
+branch-and-bound on 79; averaged over instances the latter is stronger
+(\numPaceMeanStar{} against \numPaceMeanOurs{} of the optimum), and the
+comparison depends on density.  Our bound improves the published lower
+bounds of two open instances.  On \numSnapCert{} SNAP graphs, \numSnapCertHeld{} of them from a
+held-out set fixed in advance, it certifies the best known solutions
+within \numSnapGapLo{} to \numSnapGapHi{}, where scalable baselines certify
+factors of \numBaseFacLo{} to \numBaseFacHi{}.  We compare with the sparse
+star packing alone, the metric LP on the support with triangle or star rows,
+and a cold-started LP, so that the contribution of each part is visible.
+\end{enumerate}
+
+A second primal solver, PXMem (Section~\ref{sec:primal}), recombines two
+clusterings exactly block by block of their overlap.  We use it to measure how
+tight the certificates are against strong solutions, and compare it with
+KaPoCE under a protocol fixed in advance (Section~\ref{sec:exp-h2h}).  The
+approximation guarantees we state for CertiFlip and PXMem, expected cost at
+most $3\,\OPT$, are inherited from the Pivot start and serve only as a
+safeguard; the quality of a solution is measured by its certificate.
+
+\paragraph{Relation to certified computation.}  Certifying
+algorithms~\cite{McConnellMNS11} return a witness with every output.  Safe
+bounds from floating-point LP solutions~\cite{NeumaierS04safe,SteffyW13valid},
+checkable certificates for mixed-integer programming~\cite{CheungGS17vipr}
+and proof logging in SAT and pseudo-Boolean solving~\cite{WetzlerHH14drat,
+GochtN21veripb} pursue the same goal.  Our certificates are simpler than
+general MIP certificates because every row is local: its validity is decided
+by enumerating the partitions of at most nine vertices or by a closed form.
+
+\paragraph{Development and evaluation data.}  The methods were developed on
+fifteen SNAP graphs and the PACE~2021 exact track.  Before the final
+experiments we fixed a held-out set of twelve further SNAP graphs and the
+analysis plan (Section~\ref{sec:exp-setup}); the PACE heuristic-track
+instances that coincide with development graphs are reported separately.
+Appendix~\ref{app:devlog} records which data informed which design decision.

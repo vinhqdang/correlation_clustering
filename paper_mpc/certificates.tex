@@ -1,0 +1,97 @@
+\section{Certificates and their independent check}\label{sec:cert}
+
+Every lower bound reported in Section~\ref{sec:exp} is the output of a
+separate checker, not of the solver.  This section specifies what a
+certificate contains, what the checker verifies, and what has to be trusted.
+
+\paragraph{Contents.}  A certificate is a compressed NumPy archive with
+\begin{itemize}
+\item the rows with positive multiplier, in compressed sparse row form: for
+row $i$ the pairs $p=\{u,v\}$ of its support, integer coefficients $a_{ip}$
+and an integer right-hand side $b_i$, in the $x$-form $a_i^\top x\ge b_i$;
+\item the multipliers $y_i\ge0$ as double-precision numbers;
+\item the identity of the instance: the name and relative path of the raw file
+as distributed by PACE or SNAP, its SHA-256, its format, the number of
+vertices $n$ and edges $m$, and the SHA-256 of the canonical edge list, that
+is, of $n$ followed by the lexicographically sorted pairs $(u,v)$ with $u<v$
+as 64-bit integers.
+\end{itemize}
+The vertex numbering is fixed by the instance definition: a PACE file numbers
+the vertices $1,\dots,n$; in a SNAP edge list the vertices are the identifiers
+that occur in a kept edge, numbered in increasing order, a signed list keeps
+only its positive rows, and self-loops and duplicate edges are dropped.  The
+clustering whose cost is reported is archived next to the certificate, one
+label per vertex in the same numbering.
+
+\paragraph{The check.}  The checker (\texttt{experiments/check\_certificate.py},
+\numCheckerLines{} lines of Python with Numba kernels) imports nothing from
+the solver package.  Given the raw file and the certificate it
+\begin{enumerate}
+\item parses the raw file with its own reader and rejects the certificate
+unless $n$, $m$, the file hash and the edge-list hash agree with the recorded
+ones;
+\item checks that every pair of every row is in $P$, i.e.\ is an edge or has a
+common neighbour, by intersecting sorted adjacency lists;
+\item checks that every row is valid for every clustering that separates the
+far pairs.  A row on at most nine vertices is checked by enumerating all
+partitions of its vertex set (at most $21{,}147$, as restricted growth
+strings) that separate its far pairs and taking the minimum of the integer
+left-hand side.  A larger row is accepted only if it is a star row: its
+positive entries are the pairs $vt$, $t\in T$, of one centre $v$, and its
+negative entries are pairs $R$ inside $T$.  Its minimum over far-separating
+clusterings is at least $|T|-|R|-M$ with $M=1$ if $R$ contains every non-far
+pair inside $T$ (then a far-free subset of $T$ is a clique of $R$) and $M$
+the independence number of $(T,R)$ otherwise, computed exactly;
+\item rounds each $y_i$ down to a multiple of $2^{-30}$ and evaluates
+\begin{equation}\label{eq:checked}
+\LB=\sum_i b_iy_i+\sum_{p\in P}\Bigl(\min\bigl\{0,\,c_p-\textstyle\sum_i a_{ip}y_i\bigr\}-\min\{0,c_p\}\Bigr)
+\end{equation}
+in integer arithmetic (64-bit accumulation under a checked overflow bound,
+then arbitrary-precision integers), and returns $\lceil\LB\rceil$;
+\item optionally evaluates the cost of the archived clustering on the parsed
+instance, also in integers.
+\end{enumerate}
+Rounding down keeps $y\ge0$, so the rounded multipliers are again a dual
+certificate; nothing else in~\eqref{eq:checked} is inexact.  The sum runs
+over the pairs that occur in some row, since the other terms vanish.
+Expression~\eqref{eq:checked} is~\eqref{eq:lb} with $K=|\Nt|=
+-\sum_{p\in P}\min\{0,c_p\}$ absorbed.
+
+\begin{proposition}\label{prop:checker}
+If the checker accepts a certificate for an instance, then the value it
+returns is at most $\OPT$ of that instance.
+\end{proposition}
+\begin{proof}
+By steps 2 and 3, every row is supported on $P$ and satisfied by the cut
+vector of every clustering that separates far pairs.  By
+Lemma~\ref{lem:half} this includes every optimal clustering, and
+Theorem~\ref{thm:anytime}(a) with the rounded multipliers gives $\LB\le\OPT$.
+$\OPT$ is an integer.
+\end{proof}
+
+The inequality behind the proof, that~\eqref{eq:checked} is at most the cost
+of every far-separating clustering for any rows valid for such clusterings,
+is proved in Lean~4 (\texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt};
+Appendix~\ref{app:lean}), as is the fact that optimal clusterings separate far
+pairs.  What remains to be trusted is the checker's reader, the enumeration
+and the star formula of step~3, the integer evaluation, and the Python and
+NumPy runtime.  The tests of the repository check the reader against the
+solver's loader (same $n$, $m$ and edge hash on all instances we use), the
+star formula against the enumeration on random star rows with at most nine
+vertices, the integer cost of a clustering against the solver's, and the
+rejection of certificates with a perturbed right-hand side, a negative
+multiplier, a pair outside $P$, or a different instance.
+
+\paragraph{Cost of checking.}  Checking is much cheaper than computing the
+bound: the largest certificate we report, on \texttt{\numCheckMaxGraph}, has
+\numCheckMaxRows{} rows and is checked in \numCheckMaxTime\,s
+(Section~\ref{sec:exp-cert}).  One command re-checks every archived
+certificate against freshly downloaded instance files and writes one line per
+certificate.
+
+\paragraph{What is not certified.}  The certificate proves a lower bound, and
+the archived clustering an upper bound; together they bound the gap of the
+reported solution.  The approximation guarantees of Theorems~\ref{thm:sparse}
+and~\ref{thm:certiflip} are statements about the algorithms, not about a
+particular run, and are not checked.  Running times are measured, not
+certified.

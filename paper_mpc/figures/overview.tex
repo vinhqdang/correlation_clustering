@@ -1,0 +1,42 @@
+% Overview of the two solvers and how their parts exchange information.
+\begin{tikzpicture}[
+  font=\footnotesize, >=Stealth,
+  box/.style={draw=black!55, rounded corners=2pt, align=center, inner sep=2.5pt,
+              minimum height=9mm, text width=30mm, fill=white},
+  primal/.style={box, draw=pxblue, fill=pxblue!7},
+  dual/.style={box, draw=pxorange, fill=pxorange!7},
+  check/.style={box, draw=pxaqua, fill=pxaqua!9},
+  outp/.style={box, text width=22mm},
+  lab/.style={font=\scriptsize, text=black!70, align=center, fill=white, inner sep=1pt},
+  arr/.style={->, draw=black!60, line width=0.6pt},
+]
+\node[box, text width=16mm] (in) at (-0.2,0) {input graph\\$G^+$};
+\node[primal] (pivot) at (3.0,0) {Pivot, then\\iterated flipping};
+\node[primal] (lns)   at (6.9,0) {gap-guided LNS\\\scriptsize exact MIPs on small blocks};
+\node[primal] (px)    at (6.9,1.75) {PXMem\\\scriptsize contraction, crossover};
+\node[outp]    (C)     at (10.9,0.88) {clustering $\mathcal C$\\\scriptsize$\mathbb E[\cost]\le3\,\OPT$};
+\node[box, text width=34mm]    (gap)   at (6.9,-1.8) {gap decomposition\\\scriptsize$\cost(\mathcal C)-\LB=\sum g\ge0$};
+\node[dual]   (sup)   at (3.2,-3.6) {distance-two\\support $P$};
+\node[dual]   (bd)    at (6.9,-3.6) {block dual ascent\\\scriptsize anytime bound $\LB(y)$};
+\node[check]  (chk)   at (10.9,-3.6) {independent checker\\\scriptsize parses the raw file};
+\node[outp]    (lb)    at (14.0,-3.6) {certified\\$\lceil\LB\rceil\le\OPT$};
+\node[outp]    (ratio) at (14.0,-1.8) {ratio bound\\$\cost(\mathcal C)/\lceil\LB\rceil$};
+
+\draw[arr] (in) -- (pivot);
+\draw[arr] (in.south) |- (sup.west);
+\draw[arr] (pivot) -- (lns);
+\draw[arr] (pivot.north) |- (px.west);
+\draw[arr] (lns.east) -- ++(0.35,0) |- ([yshift=-1.5mm]C.west);
+\draw[arr] (px.east) -- ++(0.35,0) |- ([yshift=1.5mm]C.west);
+\draw[arr] (sup) -- (bd);
+\draw[arr] (bd) -- node[lab, right] {rows, $y$} (gap);
+\draw[arr] ([xshift=-5mm]lns.south) -- node[lab, left] {$\mathcal C$} ([xshift=-5mm]gap.north);
+\draw[arr] ([xshift=5mm]gap.north) -- node[lab, right] {where to search} ([xshift=5mm]lns.south);
+\draw[arr] (bd) -- node[lab, above] {certificate} (chk);
+\draw[arr] (chk) -- (lb);
+\draw[arr] (lb) -- (ratio);
+\draw[arr] (C.east) -| (ratio.north);
+
+\node[font=\scriptsize\bfseries, text=pxblue, anchor=east] at (3.0,1.75) {primal side};
+\node[font=\scriptsize\bfseries, text=pxorange, anchor=west] at (1.9,-4.65) {dual side};
+\end{tikzpicture}

@@ -1,0 +1,94 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\definecolor{pxblue}{HTML}{2A78D6}
+\definecolor{pxorange}{HTML}{EB6834}
+\definecolor{pxaqua}{HTML}{1BAF7A}
+\sisetup{group-separator={,},group-minimum-digits=4}
+
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{thmstylethree}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{thmstyletwo}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\cost}{\mathrm{cost}}
+\newcommand{\LB}{\mathrm{LB}}
+\newcommand{\Ep}{E^{+}}
+\newcommand{\Nt}{N_{2}}
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\pending}{\textbf{[pending]}}
+\input{numbers}
+
+\raggedbottom
+
+\begin{document}
+
+\title[Certified lower bounds for correlation clustering]{Certified lower
+bounds for correlation clustering on large sparse graphs}
+
+\author*[1]{\fnm{Quang-Vinh} \sur{Dang}}\email{vinh.dq4@buv.edu.vn}
+\affil*[1]{\orgname{British University Vietnam}, \orgaddress{\city{Hung Yen},
+\country{Vietnam}}}
+
+\abstract{\input{abstract}}
+
+\keywords{correlation clustering, cluster editing, lower bounds, linear
+programming, dual ascent, certificates, verified computation}
+
+\pacs[MSC Classification]{90C27, 90C05, 90C57, 05C85, 68W25}
+
+\maketitle
+
+\input{intro}
+\input{prelim}
+\input{bounds}
+\input{certificates}
+\input{gap}
+\input{primal}
+\input{experiments}
+\input{conclusion}
+
+\backmatter
+
+\bmhead{Supplementary information}  The code, the instance lists, the raw
+results of every run and the archived certificates are available at
+\url{https://github.com/vinhqdang/correlation_clustering}; the file
+\texttt{REPRODUCE.md} lists one command per table and figure.
+
+\section*{Declarations}
+
+\begin{itemize}
+\item Funding: not applicable.
+\item Competing interests: the author declares no competing interests.
+\item Data availability: all instances are public (PACE~2021 and SNAP); the
+repository contains scripts that download them and check their SHA-256
+hashes.
+\item Code availability: see the supplementary information.
+\end{itemize}
+
+\begin{appendices}
+\input{appendix}
+\end{appendices}
+
+\bibliography{refs}
+
+\end{document}

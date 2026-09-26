@@ -30,7 +30,7 @@ REAL = {
     "com-DBLP": ("com-dblp.ungraph.txt.gz", "bigdata/communities/com-dblp.ungraph.txt.gz", {}),
     "com-Youtube": ("com-youtube.ungraph.txt.gz", "bigdata/communities/com-youtube.ungraph.txt.gz",
                     {}),
-    # held-out graphs for the head-to-head (fixed before any run, see experiments/heldout.txt)
+    # held-out graphs for the head-to-head (fixed before any run, see experiments/heldout.md)
     "email-Eu-core": ("email-Eu-core.txt.gz", "email-Eu-core.txt.gz", {}),
     "facebook": ("facebook_combined.txt.gz", "facebook_combined.txt.gz", {}),
     "wiki-Vote": ("wiki-Vote.txt.gz", "wiki-Vote.txt.gz", {}),
