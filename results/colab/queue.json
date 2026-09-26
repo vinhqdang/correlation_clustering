@@ -12145,7 +12145,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790395082.1380942
  },
@@ -12475,8 +12475,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790398140.2423022
  },
  {
   "id": "s2h_roadNet-PA_2",
@@ -12484,8 +12485,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790398140.2423034
  },
  {
   "id": "s2h_email-Eu-core_3",
@@ -12493,8 +12495,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790398140.2423043
  },
  {
   "id": "s2h_facebook_3",
@@ -12502,8 +12505,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790398140.2423046
  },
  {
   "id": "s2h_wiki-Vote_3",
