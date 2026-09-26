@@ -14215,9 +14215,9 @@
   "T": 150.0,
   "seed": 5,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null,
-  "started": 1790418597.3575816
+  "status": "running",
+  "machine": "w4",
+  "started": 1790419590.7214203
  },
  {
   "id": "s2h150_amazon0302_5",
@@ -14225,9 +14225,9 @@
   "T": 150.0,
   "seed": 5,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null,
-  "started": 1790418597.3575835
+  "status": "running",
+  "machine": "w4",
+  "started": 1790419590.721423
  },
  {
   "id": "s2h150_web-NotreDame_5",
@@ -14235,9 +14235,9 @@
   "T": 150.0,
   "seed": 5,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null,
-  "started": 1790418597.3575845
+  "status": "running",
+  "machine": "w4",
+  "started": 1790419590.7214239
  },
  {
   "id": "s2h150_roadNet-PA_5",
@@ -14245,9 +14245,9 @@
   "T": 150.0,
   "seed": 5,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null,
-  "started": 1790418597.357585
+  "status": "running",
+  "machine": "w4",
+  "started": 1790419590.7214246
  },
  {
   "id": "s2h150_email-Eu-core_6",
