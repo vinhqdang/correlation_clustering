@@ -9899,7 +9899,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790386140.3892255
  },
@@ -9939,7 +9939,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790386154.7794228
  },
