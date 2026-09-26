@@ -15875,7 +15875,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790429264.4666584
  },
@@ -15935,7 +15935,7 @@
   "T": 60.0,
   "seed": 8,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790429274.2216744
  },
