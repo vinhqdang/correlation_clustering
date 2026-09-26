@@ -1,0 +1,1 @@
+{"graph": "ca-HepTh", "n": 9877, "m": 25973, "pairs": 205421, "mode": "star", "T": 3600.0, "seed": 0, "support_time": 0.5678610801696777, "value": 14448.991374310048, "converged": false, "rounds": 139, "rows": 10819877, "time": 3620.9066383838654, "tag": "lstar", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
