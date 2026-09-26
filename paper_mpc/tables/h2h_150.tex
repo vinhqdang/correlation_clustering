@@ -1,1 +1,20 @@
-\pending{}
+\begin{tabular}{lrcrlrr}
+\toprule
+graph & runs & W/T/L & median (\%) & HL (\%) [95\% CI] & $p$ & $p_{\mathrm{Holm}}$ \\
+\midrule
+\texttt{email-Eu-core} & 6 & 0/5/1 & $+0.000$ & $+0.000$ [$+0.000$, $+0.008$] & 1.000 & 1.000 \\
+\texttt{facebook} & 6 & 0/6/0 & $+0.000$ & $+0.000$ [$+0.000$, $+0.000$] & 1.000 & 1.000 \\
+\texttt{wiki-Vote} & 6 & 5/0/1 & $-0.008$ & $-0.007$ [$-0.016$, $+0.026$] & 0.219 & 1.000 \\
+\texttt{cit-HepTh} & 5 & 4/0/1 & $-0.009$ & -- & 0.375 & 1.000 \\
+\texttt{cit-HepPh} & 6 & 3/0/3 & $-0.000$ & $-0.000$ [$-0.021$, $+0.039$] & 1.000 & 1.000 \\
+\texttt{p2p-Gnutella31} & 6 & 0/4/2 & $+0.000$ & $+0.000$ [$+0.000$, $+0.001$] & 0.500 & 1.000 \\
+\texttt{soc-Slashdot0902} & 6 & 0/0/6 & $+0.006$ & $+0.007$ [$+0.004$, $+0.010$] & 0.031 & 0.375 \\
+\texttt{loc-Gowalla} & 5 & 0/0/5 & $+0.008$ & -- & 0.062 & 0.688 \\
+\texttt{email-EuAll} & 5 & 5/0/0 & $-0.011$ & -- & 0.062 & 0.688 \\
+\texttt{amazon0302} & 5 & 0/0/5 & $+0.008$ & -- & 0.062 & 0.688 \\
+\texttt{web-NotreDame} & 5 & 0/0/5 & $+0.022$ & -- & 0.062 & 0.688 \\
+\texttt{roadNet-PA} & 4 & 0/0/4 & $+0.507$ & -- & 0.125 & 0.875 \\
+\midrule
+\multicolumn{7}{l}{graph medians: 4 better, 3 equal, 5 worse; Wilcoxon $p=0.652$, sign test $p=1.000$} \\
+\bottomrule
+\end{tabular}
