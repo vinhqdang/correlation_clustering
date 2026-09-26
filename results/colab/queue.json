@@ -9879,7 +9879,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790386140.3892229
  },
@@ -9919,7 +9919,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790386154.7794194
  },
