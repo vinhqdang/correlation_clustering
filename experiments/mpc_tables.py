@@ -93,6 +93,98 @@ def instances():
     return cache
 
 
+def runs(tag, directory=COLAB):
+    """All result records of one tag, keyed by (graph, seed)."""
+    out = {}
+    for f in glob.glob(os.path.join(directory, f"{tag}_*.json")):
+        d = json.load(open(f))
+        if d.get("tag", tag) == tag or directory != COLAB:
+            out[(d["graph"], d["seed"])] = d
+    return out
+
+
+def checked(rec):
+    """Checked bound of a record, or None."""
+    if rec and rec.get("check") == "ok":
+        return rec["certified"]
+    return None
+
+
+def fmt_pct(x, nd=2):
+    return "--" if x is None or not np.isfinite(x) else f"{x:.{nd}f}"
+
+
+def pace_exact():
+    import pandas as pd
+    ref = pd.read_csv(os.path.join(ROOT, "data", "pace2021_exact_kapoce_bounds.csv"))
+    ref["inst"] = ref["instance"]
+    ref = ref.set_index("inst")
+    ref["density"] = ref["m"] / (ref["n"] * (ref["n"] - 1) / 2)
+    ref["opt"] = np.where(ref["solved_1h"] == 1, ref["opt_or_empty"], np.nan)
+    key = lambda i: f"pace-exact/{i}"
+    # bounds per instance
+    B = {}
+    old = pd.read_csv(os.path.join(RES, "pace_exact.csv"))
+    old["inst"] = old["instance"].str.split("/").str[-1]
+    for a, nm in [("lb:greedy", "greedy triangle packing"), ("lb:tri-mwu", "fractional triangle packing")]:
+        B[nm] = np.ceil(old[old.algo == a].set_index("inst")["lb"] - 1e-6)
+    for tag, seed, nm in [("lpack", 1, "sparse star packing"), ("c2x", 0, "CertiFlip bound"),
+                          ("ltri", 0, "metric LP on $P$ (triangle rows)"),
+                          ("lwarm", 0, "CertiFlip bound, 1800 s")]:
+        R = runs(tag)
+        vals = {}
+        for i in ref.index:
+            r = R.get((key(i), seed))
+            if r is None:
+                continue
+            if tag == "ltri":
+                vals[i] = np.ceil(r["value"] - 1e-6) if r.get("converged") else np.nan
+            else:
+                v = checked(r)
+                vals[i] = np.nan if v is None else v
+        B[nm] = pd.Series(vals, dtype=float)
+    B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"] = ref["low_star"].astype(float)
+    B["B\\&B $P_3$ packing~\\cite{BlasiusEtAl22sea}"] = ref["low_p3"].astype(float)
+    solved = ref[ref["solved_1h"] == 1]
+    rows = []
+    for nm, v in B.items():
+        v = v.reindex(solved.index)
+        ok = v.notna()
+        if not ok.any():
+            rows.append(f"{nm} & \\pending{{}} & & & \\\\")
+            continue
+        r = v[ok] / solved["opt"][ok].clip(lower=1)
+        rows.append(f"{nm} & {int(ok.sum())} & {r.mean():.4f} & {r.min():.3f} & "
+                    f"{int((v[ok] >= solved['opt'][ok]).sum())} \\\\")
+    write("pace_bounds", "\\begin{tabular}{lrrrr}\n\\toprule\nbound & instances & mean LB/OPT & "
+          "min LB/OPT & LB $=$ OPT \\\\\n\\midrule\n" + "\n".join(rows) +
+          "\n\\bottomrule\n\\end{tabular}\n")
+    ours = B["CertiFlip bound"].reindex(solved.index)
+    star = B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"].reindex(solved.index)
+    if ours.notna().sum() == len(solved):
+        NUM["numPaceOptOurs"] = str(int((ours >= solved["opt"]).sum()))
+        NUM["numPaceMeanOurs"] = f"{(ours / solved['opt'].clip(lower=1)).mean():.4f}"
+        NUM["numPaceMeanStar"] = f"{(star / solved['opt'].clip(lower=1)).mean():.4f}"
+        NUM["numPaceOursAbove"] = str(int((ours > star).sum()))
+        NUM["numPaceOursBelow"] = str(int((ours < star).sum()))
+        NUM["numPaceOursEqual"] = str(int((ours == star).sum()))
+    # density bands
+    bands = [(0, 0.1), (0.1, 0.3), (0.3, 0.5), (0.5, 1.01)]
+    brow = []
+    pk = B["sparse star packing"].reindex(solved.index)
+    for lo, hi in bands:
+        sel = solved[(solved.density >= lo) & (solved.density < hi)]
+        cells = [f"$[{lo:g},{min(hi, 1):g})$", str(len(sel))]
+        for v in (ours, pk, star):
+            v = v.reindex(sel.index)
+            cells.append("--" if v.isna().all() else f"{(v / sel['opt'].clip(lower=1)).mean():.4f}")
+        brow.append(" & ".join(cells) + " \\\\")
+    write("pace_density", "\\begin{tabular}{lrrrr}\n\\toprule\nedge density & instances & CertiFlip "
+          "& sparse star packing & B\\&B star packing \\\\\n\\midrule\n" + "\n".join(brow) +
+          "\n\\bottomrule\n\\end{tabular}\n")
+    return ref, B
+
+
 def static_numbers():
     with open(os.path.join(ROOT, "experiments", "check_certificate.py")) as fh:
         NUM["numCheckerLines"] = str(sum(1 for _ in fh))
@@ -115,5 +207,6 @@ def write_numbers():
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "all"
     instances()
+    pace_exact()
     static_numbers()
     write_numbers()
