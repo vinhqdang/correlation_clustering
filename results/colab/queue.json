@@ -14635,7 +14635,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790422965.2518306
  },
@@ -14805,7 +14805,7 @@
   "T": 60.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790422965.251831
  },
@@ -14935,7 +14935,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790423870.268715
  },
@@ -14975,7 +14975,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790423876.1005442
  },
@@ -15175,8 +15175,9 @@
   "T": 60.0,
   "seed": 3,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424021.0359209
  },
  {
   "id": "s2h60_amazon0302_3",
@@ -15184,8 +15185,9 @@
   "T": 60.0,
   "seed": 3,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424021.0359235
  },
  {
   "id": "s2h60_web-NotreDame_3",
@@ -15193,8 +15195,9 @@
   "T": 60.0,
   "seed": 3,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424021.0359244
  },
  {
   "id": "s2h60_roadNet-PA_3",
@@ -15202,8 +15205,9 @@
   "T": 60.0,
   "seed": 3,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424021.035925
  },
  {
   "id": "s2h60_email-Eu-core_4",
