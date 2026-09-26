@@ -20,6 +20,24 @@ OUT = os.environ.get('RESULTS_DIR', '/content/results')
 import numpy as np
 
 
+def ensure_pace():
+    """PACE 2021 instances on this machine (the certificate jobs may run on a
+    machine that never ran a head-to-head job)."""
+    d = os.path.join(CC, 'data', 'raw', 'pace')
+    if all(os.path.isdir(os.path.join(d, t)) and len(os.listdir(os.path.join(d, t))) >= 200
+           for t in ('exact', 'heur')):
+        return
+    sh = lambda c: subprocess.run(c, shell=True, capture_output=True, text=True)
+    sh('cd /tmp && rm -rf pace21 && git clone -q --depth 1 '
+       'https://github.com/PACE-challenge/Cluster-Editing-PACE-2021-instances pace21')
+    for track in ('exact', 'heur'):
+        t = os.path.join(d, track)
+        os.makedirs(t, exist_ok=True)
+        sh(f"cd /tmp/pace21 && for f in $(find . -name '{track}*.gr*'); do cp $f {t}/; done; "
+           f"cd {t} && for f in *.gz; do [ -e \"$f\" ] && gunzip -f \"$f\"; done; "
+           f"for f in *.xz; do [ -e \"$f\" ] && unxz -f \"$f\"; done")
+
+
 def cpu_model():
     try:
         for line in subprocess.run(['lscpu'], capture_output=True, text=True).stdout.splitlines():
@@ -95,6 +113,8 @@ def main(graphs, T, seed, tag):
         commit = open(os.path.join(CC, 'COMMIT')).read().strip()
     except OSError:
         commit = 'unknown'
+    if any(n.startswith('pace-') for n in graphs):
+        ensure_pace()
     for name in graphs:
         out = run(name, mode, T, seed)
         out.update({'tag': tag, 'commit': commit, 'cpu': cpu_model(),
