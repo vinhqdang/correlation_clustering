@@ -275,6 +275,163 @@ def snap():
         NUM["numLpShareHi"] = f"{100 * max(pk_share):.0f}\\%"
 
 
+def signed_rank_cdf(n):
+    """Exact null distribution of the Wilcoxon signed-rank statistic W+ for n
+    untied, non-zero differences: P(W+ <= w) for w = 0..n(n+1)/2."""
+    counts = np.zeros(n * (n + 1) // 2 + 1)
+    counts[0] = 1
+    for r in range(1, n + 1):
+        counts[r:] = counts[r:] + counts[:-r].copy()
+    return np.cumsum(counts) / 2.0 ** n
+
+
+def hodges_lehmann(d, alpha=0.05):
+    """Hodges-Lehmann estimate of the location of the paired differences d and
+    its exact (1 - alpha) confidence interval from the Walsh averages."""
+    d = np.asarray(d, dtype=float)
+    n = len(d)
+    w = np.sort([(d[i] + d[j]) / 2 for i in range(n) for j in range(i, n)])
+    cdf = signed_rank_cdf(n)
+    k = int(np.searchsorted(cdf, alpha / 2, side="right"))  # P(W+ <= k-1) <= alpha/2
+    lo, hi = (w[k - 1], w[len(w) - k]) if k >= 1 else (-np.inf, np.inf)
+    return float(np.median(w)), float(lo), float(hi)
+
+
+def holm(p):
+    p = np.asarray(p, dtype=float)
+    order = np.argsort(p)
+    adj = np.empty_like(p)
+    run = 0.0
+    for i, j in enumerate(order):
+        run = max(run, min(1.0, (len(p) - i) * p[j]))
+        adj[j] = run
+    return adj
+
+
+BIG = 1.0  # relative difference used for a run that one solver lost by forfeit
+
+
+def paired(tag):
+    """Per graph: list of relative differences (PXMem - KaPoCE)/KaPoCE in %,
+    with forfeits (invalid KaPoCE output: PXMem wins; no PXMem solution at the
+    cut: PXMem loses) coded as -+100%."""
+    out, forfeits = {}, {}
+    for (g, sd), r in runs(tag).items():
+        k, o = r.get("kapoce"), r.get("ours")
+        if not r.get("kapoce_valid", False):
+            d = -100.0 * BIG
+            forfeits.setdefault(g, []).append("kapoce")
+        elif o is None:
+            d = 100.0 * BIG
+            forfeits.setdefault(g, []).append("pxmem")
+        else:
+            d = 100.0 * (o - k) / max(1, k)
+        out.setdefault(g, {})[sd] = d
+    return out, forfeits
+
+
+def h2h(tag, label):
+    from scipy.stats import binomtest, wilcoxon
+    P, forfeits = paired(tag)
+    graphs = [g for g in HELD if g in P]
+    rows, meds, ps = [], [], []
+    for g in graphs:
+        d = np.array([P[g][s] for s in sorted(P[g])])
+        pos, neg = int((d > 0).sum()), int((d < 0).sum())
+        p = binomtest(neg, pos + neg).pvalue if pos + neg else 1.0
+        ps.append(p)
+        meds.append(float(np.median(d)))
+        hl = hodges_lehmann(d) if len(d) >= 6 else (np.nan, np.nan, np.nan)
+        rows.append([g, len(d), neg, int((d == 0).sum()), pos, float(np.median(d)), p, hl,
+                     len(forfeits.get(g, []))])
+    if not rows:
+        write(f"h2h_{label}", "\\pending{}\n")
+        return None
+    adj = holm(ps)
+    lines = []
+    for r, a in zip(rows, adj):
+        g, n, w, t, l, med, p, hl, ff = r
+        ci = "--" if not np.isfinite(hl[0]) else f"${hl[0]:+.3f}$ [${hl[1]:+.3f}$, ${hl[2]:+.3f}$]"
+        mark = r"$^\dagger$" if ff else ""
+        lines.append(f"{tt(g)} & {n} & {w}/{t}/{l} & ${med:+.3f}$ & {ci} & {p:.3f} & {a:.3f}"
+                     f"{mark} \\\\")
+    body = ("\\begin{tabular}{lrcrlrr}\n\\toprule\ngraph & runs & W/T/L & median (\\%) & "
+            "HL (\\%) [95\\% CI] & $p$ & $p_{\\mathrm{Holm}}$ \\\\\n\\midrule\n" + "\n".join(lines))
+    m = np.array(meds)
+    nz = m[m != 0]
+    wp = wilcoxon(nz).pvalue if len(nz) >= 1 else 1.0
+    sp = binomtest(int((m < 0).sum()), int((m != 0).sum())).pvalue if (m != 0).any() else 1.0
+    body += (f"\n\\midrule\n\\multicolumn{{7}}{{l}}{{graph medians: {int((m < 0).sum())} better, "
+             f"{int((m == 0).sum())} equal, {int((m > 0).sum())} worse; Wilcoxon $p={wp:.3f}$, "
+             f"sign test $p={sp:.3f}$}} \\\\\n\\bottomrule\n\\end{{tabular}}\n")
+    write(f"h2h_{label}", body)
+    key = {"600": "Six", "150": "OneFifty", "60": "Sixty"}[label]
+    NUM[f"numHH{key}Better"] = str(int((m < 0).sum()))
+    NUM[f"numHH{key}Equal"] = str(int((m == 0).sum()))
+    NUM[f"numHH{key}Worse"] = str(int((m > 0).sum()))
+    NUM[f"numHH{key}Wilcoxon"] = f"{wp:.3f}"
+    NUM[f"numHH{key}Sign"] = f"{sp:.3f}"
+    NUM[f"numHH{key}Graphs"] = str(len(m))
+    return rows
+
+
+PACE_DEV = {167, 173, 175, 176, 178, 179, 180, 191, 193, 198}
+
+
+def pace_heur():
+    """Protocol v2 on the PACE heuristic track, one run per instance at 600 s;
+    the instance is the unit.  Development twins are reported separately."""
+    from scipy.stats import binomtest, wilcoxon
+    R = runs("s2p")
+    held, dev = [], []
+    for (g, sd), r in R.items():
+        i = int(g.split("heur")[-1].split(".")[0])
+        k, o = r.get("kapoce"), r.get("ours")
+        if not r.get("kapoce_valid", False):
+            d, ratio = -100.0, (1.0, np.inf)
+        elif o is None:
+            d, ratio = 100.0, (np.inf, 1.0)
+        else:
+            d = 100.0 * (o - k) / max(1, k)
+            best = max(1, min(o, k))
+            ratio = (o / best, k / best)
+        (dev if i in PACE_DEV else held).append((i, d, ratio, r))
+    if not held:
+        return
+    d = np.array([x[1] for x in held])
+    nz = d[d != 0]
+    wp = wilcoxon(nz).pvalue if len(nz) else 1.0
+    sp = binomtest(int((d < 0).sum()), int((d != 0).sum())).pvalue if (d != 0).any() else 1.0
+    NUM.update({"numPHn": str(len(d)), "numPHBetter": str(int((d < 0).sum())),
+                "numPHEqual": str(int((d == 0).sum())), "numPHWorse": str(int((d > 0).sum())),
+                "numPHWilcoxon": f"{wp:.3g}", "numPHSign": f"{sp:.3g}",
+                "numPHKapoceInvalid": str(sum(1 for x in held if not x[3].get("kapoce_valid", False))),
+                "numPHNoSolution": str(sum(1 for x in held if x[3].get("ours") is None
+                                           and x[3].get("kapoce_valid", False)))})
+    # performance profile: fraction of instances within factor tau of the better solver
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    taus = np.logspace(0, np.log10(1.02), 200)
+    fig, ax = plt.subplots(figsize=(4.2, 2.8))
+    for j, (nm, col) in enumerate((("PXMem", "#2A78D6"), ("KaPoCE", "#EB6834"))):
+        r = np.array([x[2][j] for x in held])
+        ax.step(taus, [(r <= t).mean() for t in taus], where="post", label=nm, color=col)
+    ax.set_xscale("log")
+    ax.set_xlabel(r"$\tau$ (cost / best of the two)")
+    ax.set_ylabel("fraction of instances")
+    ax.set_ylim(0, 1.02)
+    ax.legend(loc="lower right", frameon=False)
+    fig.tight_layout()
+    os.makedirs(os.path.join(ROOT, "paper_mpc", "figures"), exist_ok=True)
+    fig.savefig(os.path.join(ROOT, "paper_mpc", "figures", "profile_pace_heur.pdf"))
+    plt.close(fig)
+    dd = np.array([x[1] for x in dev])
+    if len(dd):
+        NUM.update({"numPDn": str(len(dd)), "numPDBetter": str(int((dd < 0).sum())),
+                    "numPDEqual": str(int((dd == 0).sum())), "numPDWorse": str(int((dd > 0).sum()))})
+
+
 def static_numbers():
     with open(os.path.join(ROOT, "experiments", "check_certificate.py")) as fh:
         NUM["numCheckerLines"] = str(sum(1 for _ in fh))
@@ -299,5 +456,8 @@ if __name__ == "__main__":
     instances()
     pace_exact()
     snap()
+    for tag, label in (("s2h", "600"), ("s2h150", "150"), ("s2h60", "60")):
+        h2h(tag, label)
+    pace_heur()
     static_numbers()
     write_numbers()
