@@ -12535,7 +12535,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790399904.3025198
  },
@@ -12575,7 +12575,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790399994.8991604
  },
@@ -12615,7 +12615,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790400087.668783
  },
@@ -12655,7 +12655,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790400092.1578813
  },
@@ -12765,7 +12765,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790401351.319931
  },
@@ -12805,7 +12805,7 @@
   "T": 600.0,
   "seed": 5,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790401354.1500928
  },
