@@ -1,17 +1,78 @@
 \begin{table}[!tbp]
 \centering
 \caption{SNAP graphs whose support fits into memory: checked lower bounds
-and certified gaps (CertiFlip, \SI{600}{s}, seeds 0--2).  UB: the best
-archived clustering (re-checked from its file); LB: the best checked bound
-over the three runs; spread: $(\max-\min)/\LB$ over the runs; gap:
-$(\mathrm{UB}-\LB)/\LB$; gap$^*$: the same with the best value of any run of
-any solver (reported, not archived); star: gap$^*$ of the sparse star packing
-alone after \SI{600}{s}; tri.\ factor: best known value divided by the better
-of the two triangle packings.}
+and certified gaps.  UB: the best archived clustering (re-checked from its
+file).  CertiFlip: the best checked bound of three CertiFlip runs of
+\SI{600}{s} (seeds 0--2), of which the bound takes at most half; packing: the
+checked bound of one run of the sparse star packing alone (seed~0); the
+larger of the two is in bold.  gap: $(\mathrm{UB}-\LB)/\LB$ with the larger
+checked bound; gap$^*$: the same with the best value of any run of any solver
+(reported, not archived); tri.\ LP: the same with the metric LP on $P$ with
+triangle rows, where cutting planes converged within \SI{1800}{s} (``--''
+otherwise); tri.\ factor: best known value divided by the better of the two
+triangle packings.  Upper block: development graphs; lower block: held-out
+graphs.}
 \label{tab:snap-bounds}
 \footnotesize
-\setlength{\tabcolsep}{4pt}
+\setlength{\tabcolsep}{3.5pt}
 \input{tables/snap_bounds}
 \end{table}
 
-\pending{} Discussion of Table~\ref{tab:snap-bounds}.
+\begin{table}[!tbp]
+\centering
+\caption{The metric LP restricted to $P$, solved by cutting planes with HiGHS
+on one core, against the best checked bound of Table~\ref{tab:snap-bounds}.
+LP values are in floating point and not certified; a value in parentheses did
+not converge within the budget and is not a bound.}
+\label{tab:snap-lp}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/snap_lp}
+\end{table}
+
+\paragraph{Certified gaps.}  On the \numSnapCert{} graphs whose support fits
+into memory, the larger of the two checked bounds certifies the archived
+clusterings within \numSnapGapLo{} to \numSnapGapHi{} (median
+\numSnapGapMedian{}; Table~\ref{tab:snap-bounds}).  The triangle packings,
+the lower bounds that scale without the support, only certify factors of
+\numBaseFacLo{} to \numBaseFacHi{} on the same graphs, which is the regime
+of the MatchFlipPivot guarantee.  Across the three CertiFlip seeds the bound
+varies by at most \numSnapSpreadMax{}.  The largest gaps are on the held-out
+social and citation graphs \texttt{facebook}, \texttt{email-Eu-core},
+\texttt{wiki-Vote} and \texttt{cit-HepPh}; the column gap$^*$ shows that no
+solver we ran closes them from above, so they are due to the lower bound, the
+upper bound, or both, and we cannot tell which.  The median gap is
+\numSnapGapMedDev{} on the development graphs and \numSnapGapMedHeld{} on the
+held-out graphs.  We attribute the difference mainly to the composition of the
+held-out set, which contains the denser social and citation networks, but
+with seven held-out graphs we cannot exclude that the method is tuned to the
+development graphs.
+
+\paragraph{Star packing against the block LPs.}  The sparse star packing
+alone gives a larger checked bound than the CertiFlip bound on
+\numPackBetter{} of the \numSnapCert{} graphs, although the packing run took a
+median of \numPackTimeMedian{}\,s (\numPackTimeLo{} to \numPackTimeHi{}\,s;
+its number of ruin-and-recreate iterations is fixed in advance from a
+measured iteration rate) and the CertiFlip bound a median of
+\numCfLbTimeMedian{}\,s.  The CertiFlip bound is larger only on
+\numCfBetterList{}, which are small or dense enough for the block LPs to
+converge.  Within CertiFlip the packing phase is short, and on large sparse
+graphs the block LPs, started from a weaker packing, do not make up the
+difference in the remaining time.  On these graphs the certified gap is
+therefore due to the packing; the LP part of the method matters on the dense
+graphs and on the PACE instances (Section~\ref{sec:exp-bounds}).  Running a
+long packing first and the block LPs afterwards is the obvious combination.
+We did not tune or evaluate it before fixing the held-out protocol and do not
+report it.  The gaps of Table~\ref{tab:snap-bounds} use the better of the two
+certificates, which were computed in two separate runs.
+
+\paragraph{Strength of the relaxation.}  Table~\ref{tab:snap-lp} separates
+the strength of the relaxation from the way it is solved.  On
+\texttt{ca-GrQc} the metric LP on $P$ with triangle rows converges in
+\numGrqcTriTime{}\,s to \numGrqcTri{}, \numGrqcTriGap{} below the best known
+value.  With star rows the LP reaches \numGrqcStar{}, \numGrqcStarGap{} below
+the best known value and slightly above the best checked bound
+(\numGrqcBest{}), after \numGrqcStarTime{}\,s.  The triangle inequalities,
+which is what the classical metric LP has, are therefore far from sufficient
+on this graph; the star inequalities close almost all of the gap, and the
+anytime dual reaches nearly the same value in a tenth of the time.

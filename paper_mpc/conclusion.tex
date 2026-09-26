@@ -16,9 +16,10 @@ can still improve.
 \item On dense instances the root star-packing bound of the KaPoCE
 branch-and-bound remains stronger than ours on average; there the block LPs
 are too large to converge within the budget.
-\item Most of the bound on large graphs comes from the sparse star packing;
-the LP part adds a smaller, instance-dependent amount
-(Section~\ref{sec:exp-cert}).
+\item On \numPackBetter{} of the \numSnapCert{} SNAP graphs the sparse star
+packing alone gives a larger bound than CertiFlip's combination of a short
+packing and block LPs; there the LP part of the method does not pay for its
+time within the budget (Section~\ref{sec:exp-cert}).
 \item The support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs with strong
 hubs it does not fit into memory and no bound is computed.  Restricting the
 support to centres of bounded degree would keep the bound valid.

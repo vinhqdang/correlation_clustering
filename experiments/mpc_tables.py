@@ -226,12 +226,23 @@ def snap():
     arch, anyrun = best_costs()
     C2 = runs("c2")
     PK = runs("lpack")
+    LT = runs("ltri")
+    LS = runs("lstar")
     tri = pd.concat([pd.read_csv(os.path.join(RES, f)) for f in
                      ("snap.csv", "snap_heldout_bounds.csv")
                      if os.path.exists(os.path.join(RES, f))])
     tri = tri[tri.algo.isin(["lb:greedy", "lb:tri-mwu"]) & tri.lb.notna()]
     tri = tri.groupby("instance")["lb"].max().apply(lambda x: np.ceil(x - 1e-6))
-    rows, gaps, facs, pk_share = [], [], [], []
+    rows, gaps, facs, spreads, cf_better, pk_better, lp_rows = [], [], [], [], [], [], []
+    role_gaps = {}
+
+    def lp_gap(rec, ub):
+        # an LP value is reported only when cutting planes converged: then it
+        # is the optimum of the relaxation (in floating point, not certified)
+        if rec is None or not rec.get("converged"):
+            return None
+        return 100 * (ub - np.ceil(rec["value"] - 1e-6)) / max(1.0, np.ceil(rec["value"] - 1e-6))
+
     for role, names in (("dev", DEV), ("held-out", HELD)):
         for name in names:
             if cache[name]["pairs"] is None:
@@ -242,37 +253,92 @@ def snap():
             if not lbs or ub_a is None:
                 rows.append(f"{tt(name)} & \\multicolumn{{7}}{{c}}{{\\pending{{}}}} \\\\")
                 continue
-            lb = max(lbs)
-            spread = 100 * (max(lbs) - min(lbs)) / lb
+            cf = max(lbs)
+            spreads.append(100 * (max(lbs) - min(lbs)) / cf)
+            pk = checked(PK.get((name, 0)))
+            lb = cf if pk is None else max(cf, pk)
+            if pk is not None:
+                (cf_better if cf > pk else pk_better).append(name)
             gap_a = 100 * (ub_a - lb) / lb
             gaps.append(gap_a)
-            pk = checked(PK.get((name, 0)))
-            pk_gap = "--" if pk is None else f"{100 * (ub - pk) / pk:.2f}"
-            if pk is not None:
-                pk_share.append((lb - pk) / max(1, ub - pk))
+            role_gaps.setdefault(role, []).append(gap_a)
             tb = tri.get(name)
             fac = None if tb is None or not np.isfinite(tb) else ub / tb
             if fac is not None:
                 facs.append(fac)
             t_lb = np.median([C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2])
-            gap_b = 100 * (ub - lb) / lb
             TIMES[name] = t_lb
-            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & \\num{{{lb}}} & {spread:.2f} & "
-                        f"{gap_a:.2f} & {gap_b:.2f} & {pk_gap} & {fmt_pct(fac, 2) if fac else '--'} \\\\")
+            gap_b = 100 * (ub - lb) / lb
+            g_tri = lp_gap(LT.get((name, 0)), ub)
+            g_star = lp_gap(LS.get((name, 0)), ub)
+            if (name, 0) in LT or (name, 0) in LS:
+                lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, cf))
+            b = lambda v, other: (f"\\textbf{{\\num{{{v}}}}}" if other is not None and v > other
+                                  else f"\\num{{{v}}}")
+            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf, pk)} & "
+                        f"{'--' if pk is None else b(pk, cf)} & {gap_a:.2f} & {gap_b:.2f} & "
+                        f"{fmt_pct(g_tri, 2) if g_tri is not None else '--'} & "
+                        f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
     write("snap_bounds", "\\begin{tabular}{lrrrrrrr}\n\\toprule\n"
-          "graph & UB & LB & spread & gap & gap$^*$ & star & tri.\\\\\n"
-          " & & & (\\%) & (\\%) & (\\%) & (\\%) & factor \\\\\n\\midrule\n" + "\n".join(rows[:-1]) +
+          "graph & UB & \\multicolumn{2}{c}{checked LB} & gap & gap$^*$ & tri.\\ LP & tri.\\\\\n"
+          "\\cmidrule(lr){3-4}\n"
+          " & & CertiFlip & packing & (\\%) & (\\%) & gap (\\%) & factor \\\\\n\\midrule\n"
+          + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
+    # metric LP on P against the checked bounds, where it was run
+    lrows = []
+    for name, rt, rs, ub, pk, cf in lp_rows:
+        def cell(r):
+            if r is None:
+                return "--", "--"
+            v = f"\\num{{{np.ceil(r['value'] - 1e-6):.0f}}}"
+            if not r.get("converged"):
+                v = f"({v})"
+            return v, f"{r.get('time', float('nan')):.0f}"
+        (vt, tt_), (vs, ts) = cell(rt), cell(rs)
+        best = max(x for x in (pk, cf) if x is not None)
+        lrows.append(f"{tt(name)} & \\num{{{ub}}} & \\num{{{best}}} & {vt} & {tt_} & {vs} & {ts} \\\\")
+    write("snap_lp", "\\begin{tabular}{lrrrrrr}\n\\toprule\n"
+          "graph & best & best checked & \\multicolumn{2}{c}{LP$_P$, triangle rows} & "
+          "\\multicolumn{2}{c}{LP$_P$, + star rows} \\\\\n"
+          "\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\n"
+          " & known & LB & value & time (s) & value & time (s) \\\\\n\\midrule\n"
+          + ("\n".join(lrows) if lrows else "\\multicolumn{7}{c}{\\pending{}} \\\\") +
           "\n\\bottomrule\n\\end{tabular}\n")
     if gaps:
         NUM["numSnapGapLo"] = f"{min(gaps):.2f}\\%"
         NUM["numSnapGapHi"] = f"{max(gaps):.1f}\\%"
+        NUM["numSnapGapMedian"] = f"{np.median(gaps):.1f}\\%"
+        NUM["numSnapGapMedDev"] = f"{np.median(role_gaps['dev']):.1f}\\%"
+        NUM["numSnapGapMedHeld"] = f"{np.median(role_gaps['held-out']):.1f}\\%"
+        NUM["numSnapSpreadMax"] = f"{max(spreads):.2f}\\%"
     if facs:
         NUM["numBaseFacLo"] = f"{min(facs):.2f}"
         NUM["numBaseFacHi"] = f"{max(facs):.2f}"
-    if pk_share:
-        NUM["numLpShareLo"] = f"{100 * min(pk_share):.0f}\\%"
-        NUM["numLpShareHi"] = f"{100 * max(pk_share):.0f}\\%"
+    pt = [PK[(n, 0)]["time"] for n in DEV + HELD if (n, 0) in PK]
+    ct = [TIMES[n] for n in TIMES]
+    if pt:
+        NUM["numPackTimeLo"] = f"{min(pt):.0f}"
+        NUM["numPackTimeHi"] = f"{max(pt):.0f}"
+        NUM["numPackTimeMedian"] = f"{np.median(pt):.0f}"
+    if ct:
+        NUM["numCfLbTimeMedian"] = f"{np.median(ct):.0f}"
+    for name, rt, rs, ub, pk, cf in lp_rows:
+        if name == "ca-GrQc":
+            if rt is not None and rt.get("converged"):
+                v = np.ceil(rt["value"] - 1e-6)
+                NUM["numGrqcTri"] = f"\\num{{{v:.0f}}}"
+                NUM["numGrqcTriGap"] = f"{100 * (ub - v) / v:.1f}\\%"
+                NUM["numGrqcTriTime"] = f"{rt['time']:.0f}"
+            if rs is not None:
+                v = np.ceil(rs["value"] - 1e-6)
+                NUM["numGrqcStar"] = f"\\num{{{v:.0f}}}"
+                NUM["numGrqcStarGap"] = f"{100 * (ub - v) / v:.2f}\\%"
+                NUM["numGrqcStarTime"] = f"{rs['time']:.0f}"
+                NUM["numGrqcBest"] = f"\\num{{{max(pk, cf)}}}"
+    NUM["numPackBetter"] = str(len(pk_better))
+    NUM["numCfBetter"] = str(len(cf_better))
+    NUM["numCfBetterList"] = ", ".join(tt(x) for x in cf_better)
 
 
 def signed_rank_cdf(n):

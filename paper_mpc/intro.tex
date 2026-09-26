@@ -76,9 +76,10 @@ its state is one reduced cost per pair plus the rows with positive
 multipliers (Theorem~\ref{thm:anytime}).  Any packing of induced stars or bad
 triangles is a feasible start.  We compute one on the sparse support by a
 ruin-and-recreate local search.  This sparse star packing is the scalable
-counterpart of the root bound of the KaPoCE branch-and-bound, and on large
-graphs it contributes most of the bound; the block LPs add the rest
-(Section~\ref{sec:exp-bounds} quantifies both).
+counterpart of the root bound of the KaPoCE branch-and-bound.  On large
+sparse graphs a long packing alone is stronger than a short packing followed
+by block LPs in the same budget; the block LPs pay off on small and dense
+instances (Sections~\ref{sec:exp-bounds} and~\ref{sec:exp-cert}).
 
 \item \textbf{Exactly checked certificates} (Section~\ref{sec:cert}).  A
 certificate lists the rows with positive multipliers.  A checker of about
@@ -106,11 +107,12 @@ branch-and-bound on 79; averaged over instances the latter is stronger
 (\numPaceMeanStar{} against \numPaceMeanOurs{} of the optimum), and the
 comparison depends on density.  Our bound improves the published lower
 bounds of two open instances.  On \numSnapCert{} SNAP graphs, \numSnapCertHeld{} of them from a
-held-out set fixed in advance, it certifies the best known solutions
-within \numSnapGapLo{} to \numSnapGapHi{}, where scalable baselines certify
+held-out set fixed in advance, the better of the block-dual bound and the
+star packing alone certifies the best known solutions within
+\numSnapGapLo{} to \numSnapGapHi{}, where scalable baselines certify
 factors of \numBaseFacLo{} to \numBaseFacHi{}.  We compare with the sparse
-star packing alone, the metric LP on the support with triangle or star rows,
-and a cold-started LP, so that the contribution of each part is visible.
+star packing alone and with the metric LP on the support with triangle or
+star rows, so that the contribution of each part is visible.
 \end{enumerate}
 
 A second primal solver, PXMem (Section~\ref{sec:primal}), recombines two

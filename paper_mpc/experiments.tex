@@ -44,8 +44,10 @@ triangles (the bound of MatchFlipPivot~\cite{veldt2022stc}) and a
 fractional packing by the Garg--K\"onemann scheme with
 $\varepsilon=0.05$~\cite{GargK07,Fleischer00}, scaled by its maximum load.
 \item \emph{Sparse star packing} (checked): the greedy star packing on $P$
-improved by ruin and recreate for the whole budget, installed as a dual
-solution without any LP.  This is the scalable form of the root star-packing
+improved by ruin and recreate, installed as a dual solution without any LP.
+The number of iterations is set before the run from the iteration rate
+measured on the instance, so as to fill the budget; the measured running
+times are reported.  This is the scalable form of the root star-packing
 bound of the KaPoCE branch-and-bound.
 \item \emph{Metric LP on $P$}: $\mathrm{LP}_P$ with triangle
 rows~\eqref{eq:t1}--\eqref{eq:t2} only, solved by cutting planes with HiGHS
