@@ -12935,7 +12935,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790404968.7088664
  },
@@ -13015,7 +13015,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790404984.6679397
  },
@@ -13055,7 +13055,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790404987.4350963
  },
@@ -13145,7 +13145,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790408554.0550478
  },
@@ -13305,8 +13305,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790410416.8967857
  },
  {
   "id": "s2h_web-NotreDame_9",
@@ -13314,8 +13315,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790410416.8967872
  },
  {
   "id": "s2h_roadNet-PA_9",
@@ -13323,8 +13325,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790410416.8967874
  },
  {
   "id": "ltri_ca-GrQc_0",
@@ -13332,8 +13335,9 @@
   "T": 7200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790410416.8967881
  },
  {
   "id": "lstar_ca-GrQc_0",
@@ -13341,8 +13345,9 @@
   "T": 7200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790410429.298572
  },
  {
   "id": "lpack_ca-GrQc_0",
@@ -13350,8 +13355,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790410429.2985737
  },
  {
   "id": "lpack_ca-HepTh_0",
@@ -13359,8 +13365,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790410429.2985744
  },
  {
   "id": "lpack_ca-HepPh_0",
@@ -13368,8 +13375,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790410429.298575
  },
  {
   "id": "lpack_ca-AstroPh_0",
@@ -13377,8 +13385,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790410432.429406
  },
  {
   "id": "lpack_ca-CondMat_0",
@@ -13386,8 +13395,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790410432.4294078
  },
  {
   "id": "lpack_email-Enron_0",
@@ -13395,8 +13405,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790410432.429408
  },
  {
   "id": "lpack_loc-Brightkite_0",
@@ -13404,8 +13415,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790410432.4294083
  },
  {
   "id": "lpack_BitcoinOTC+_0",
