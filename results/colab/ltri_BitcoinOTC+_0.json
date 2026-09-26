@@ -1,0 +1,1 @@
+{"graph": "BitcoinOTC+", "n": 5573, "m": 18591, "pairs": 972669, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 1.2746491432189941, "value": 9262.0, "converged": true, "rounds": 1, "rows": 1243154, "time": 34.179919481277466, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

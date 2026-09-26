@@ -1,0 +1,1 @@
+{"graph": "ca-CondMat", "n": 23133, "m": 93439, "pairs": 1169993, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 0.7325303554534912, "value": 41819.75, "converged": true, "rounds": 3, "rows": 1447736, "time": 797.0938184261322, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
