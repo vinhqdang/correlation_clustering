@@ -12305,7 +12305,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790395182.1764872
  },
@@ -12345,7 +12345,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790395206.9134135
  },
@@ -12675,8 +12675,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790400460.4307892
  },
  {
   "id": "s2h_loc-Gowalla_4",
@@ -12684,8 +12685,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790400460.4307907
  },
  {
   "id": "s2h_email-EuAll_4",
@@ -12693,8 +12695,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790400460.4307911
  },
  {
   "id": "s2h_amazon0302_4",
@@ -12702,8 +12705,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790400460.4307916
  },
  {
   "id": "s2h_web-NotreDame_4",
@@ -12711,8 +12715,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790400465.911215
  },
  {
   "id": "s2h_roadNet-PA_4",
@@ -12720,8 +12725,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790400465.9112165
  },
  {
   "id": "s2h_email-Eu-core_5",
@@ -12729,8 +12735,9 @@
   "T": 600.0,
   "seed": 5,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790400465.911217
  },
  {
   "id": "s2h_facebook_5",
@@ -12738,8 +12745,9 @@
   "T": 600.0,
   "seed": 5,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790400465.9112177
  },
  {
   "id": "s2h_wiki-Vote_5",
