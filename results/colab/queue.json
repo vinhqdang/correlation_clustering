@@ -12565,7 +12565,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790399994.89916
  },
