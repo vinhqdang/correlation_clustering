@@ -12865,7 +12865,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790403295.1760354
  },
@@ -12885,7 +12885,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790404966.4430485
  },
@@ -13065,7 +13065,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790406833.4437673
  },
@@ -13105,7 +13105,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790406837.945484
  },
@@ -13145,8 +13145,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790408554.0550478
  },
  {
   "id": "s2h_soc-Slashdot0902_8",
@@ -13154,8 +13155,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790408554.055049
  },
  {
   "id": "s2h_loc-Gowalla_8",
@@ -13163,8 +13165,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790408554.0550497
  },
  {
   "id": "s2h_email-EuAll_8",
@@ -13172,8 +13175,9 @@
   "T": 600.0,
   "seed": 8,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790408554.0550501
  },
  {
   "id": "s2h_amazon0302_8",
