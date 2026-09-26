@@ -12687,7 +12687,7 @@
   "graph": "loc-Gowalla",
   "status": "running",
   "machine": "w7",
-  "started": 1790400460.4307907
+  "started": 1790404132.570349
  },
  {
   "id": "s2h_email-EuAll_4",
@@ -12697,7 +12697,7 @@
   "graph": "email-EuAll",
   "status": "running",
   "machine": "w7",
-  "started": 1790400460.4307911
+  "started": 1790404132.5703514
  },
  {
   "id": "s2h_amazon0302_4",
@@ -12707,7 +12707,7 @@
   "graph": "amazon0302",
   "status": "running",
   "machine": "w7",
-  "started": 1790400460.4307916
+  "started": 1790404132.5703518
  },
  {
   "id": "s2h_web-NotreDame_4",
@@ -12735,8 +12735,8 @@
   "T": 600.0,
   "seed": 5,
   "graph": "email-Eu-core",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790400465.911217
  },
  {
@@ -12745,8 +12745,8 @@
   "T": 600.0,
   "seed": 5,
   "graph": "facebook",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790400465.9112177
  },
  {
@@ -12875,8 +12875,9 @@
   "T": 600.0,
   "seed": 6,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790404132.5703523
  },
  {
   "id": "s2h_cit-HepTh_6",
