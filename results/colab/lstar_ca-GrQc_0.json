@@ -1,0 +1,1 @@
+{"graph": "ca-GrQc", "n": 5242, "m": 14484, "pairs": 78224, "mode": "star", "T": 7200.0, "seed": 0, "support_time": 3.133932113647461, "value": 6038.974277314737, "converged": true, "rounds": 178, "rows": 115005, "time": 2577.7658081054688, "tag": "lstar", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

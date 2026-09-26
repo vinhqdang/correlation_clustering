@@ -1,0 +1,1 @@
+{"graph": "com-DBLP", "n": 317080, "m": 1049866, "pairs": 13718957, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 5.753880739212036, "value": 589979.0, "stars": 214624, "time": 198.22482228279114, "check": "ok", "certified": 589979, "lb_exact": 589979.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
