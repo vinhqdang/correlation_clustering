@@ -45,6 +45,8 @@ DEFAULTS.update({k: r"\pending{}" for k in (
     "numPHn", "numPHBetter", "numPHEqual", "numPHWorse", "numPHWilcoxon", "numPHSign",
     "numPHKapoceInvalid", "numPHNoSolution", "numPDn", "numPDBetter", "numPDEqual",
     "numPDWorse")})
+DEFAULTS.update({f"numPace{k}{f}": r"\pending{}" for k in ("Pack", "Warm", "Tri")
+                 for f in ("N", "Mean", "Opt", "OursMean", "StarMean", "OursOpt")})
 
 
 def tt(name):
@@ -187,6 +189,44 @@ def pace_exact():
     write("pace_density", "\\begin{tabular}{lrrrr}\n\\toprule\nedge density & instances & CertiFlip "
           "& sparse star packing & B\\&B star packing \\\\\n\\midrule\n" + "\n".join(brow) +
           "\n\\bottomrule\n\\end{tabular}\n")
+    # further bounds on the solved instances, each on the instances where it ran
+    for nm, kk in (("sparse star packing", "Pack"), ("CertiFlip bound, 1800 s", "Warm"),
+                    ("metric LP on $P$, triangle rows", "Tri")):
+        v = B[nm].reindex(solved.index)
+        ok = v.notna()
+        if ok.any():
+            o = solved["opt"][ok].clip(lower=1)
+            NUM[f"numPace{kk}N"] = str(int(ok.sum()))
+            NUM[f"numPace{kk}Mean"] = f"{(v[ok] / o).mean():.4f}"
+            NUM[f"numPace{kk}Opt"] = str(int((v[ok] >= solved["opt"][ok]).sum()))
+            NUM[f"numPace{kk}OursMean"] = f"{(ours[ok] / o).mean():.4f}"
+            NUM[f"numPace{kk}StarMean"] = f"{(star[ok] / o).mean():.4f}"
+            NUM[f"numPace{kk}OursOpt"] = str(int((ours[ok] >= solved["opt"][ok]).sum()))
+    # open instances: best checked bound against the published bounds
+    unsolved = ref[ref["solved_1h"] != 1]
+    C = runs("c2x")
+    orows, improved = [], 0
+    for i in unsolved.index:
+        vals = [B[nm].get(i) for nm in ("CertiFlip bound", "sparse star packing",
+                                        "CertiFlip bound, 1800 s")]
+        vals = [x for x in vals if x is not None and np.isfinite(x)]
+        if not vals:
+            continue
+        lb = int(max(vals))
+        pub = int(max(ref.loc[i, "low_star"], ref.loc[i, "low_p3"]))
+        ub = C.get((key(i), 0), {}).get("cost")
+        if lb > pub:
+            improved += 1
+            ubs = "--" if ub is None else f"\\num{{{int(ub)}}}"
+            orows.append(f"{tt(i.replace('.gr', ''))} & {ref.loc[i, 'n']} & {ref.loc[i, 'm']} & "
+                         f"\\num{{{int(ref.loc[i, 'upper'])}}} & \\num{{{pub}}} & "
+                         f"{ubs} & \\num{{{lb}}} \\\\")
+    write("pace_open", "\\begin{tabular}{lrrrrrr}\n\\toprule\n"
+          "instance & $n$ & $m$ & published UB & published LB & our UB & checked LB \\\\\n"
+          "\\midrule\n" + ("\n".join(orows) if orows else "\\multicolumn{7}{c}{none} \\\\") +
+          "\n\\bottomrule\n\\end{tabular}\n")
+    NUM["numPaceOpenImproved"] = str(improved)
+    NUM["numPaceOpen"] = str(len(unsolved))
     return ref, B
 
 
@@ -546,6 +586,11 @@ def timing():
         NUM[f"numOver{key}Runs"] = str(len(t))
         NUM[f"numOver{key}Max"] = f"{t.max():.0f}"
         NUM[f"numOver{key}Median"] = f"{np.median(t):.0f}"
+        NUM[f"numOver{key}Large"] = str(int((t > 1.2 * T).sum()))
+        if key == "Snap":
+            e = [r["lb_time"] for (g, sd), r in R.items() if g == "email-Enron"]
+            if e:
+                NUM["numEnronLbTime"] = f"{max(e):.0f}"
         models |= {r.get("cpu") for r in R.values() if r.get("cpu")}
         ok = [r for r in R.values() if r.get("check") == "ok"]
         rej = [r for r in R.values() if str(r.get("check", "")).startswith("rejected")]

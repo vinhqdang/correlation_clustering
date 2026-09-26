@@ -115,3 +115,30 @@ profiles~\cite{DolanM02profiles} summarise the PACE heuristic track.
 \subsection{PXMem against KaPoCE}\label{sec:exp-h2h}
 
 \input{exp_h2h}
+
+\subsection{Running times and checking}\label{sec:exp-time}
+
+The budgets are not hard limits (Section~\ref{sec:gap}, paragraph Budget).
+Of the \numOverPaceRuns{} CertiFlip runs on the PACE exact track with
+$T=\SI{60}{s}$, \numOverPaceCount{} took more than $1.01\,T$; the median
+wall-clock time was \numOverPaceMedian{}\,s and the maximum
+\numOverPaceMax{}\,s.  Of the \numOverSnapRuns{} runs on SNAP graphs with
+$T=\SI{600}{s}$, \numOverSnapCount{} took more than $1.01\,T$ (median
+\numOverSnapMedian{}\,s, maximum \numOverSnapMax{}\,s).  Of these, \numOverPaceLarge{} PACE
+runs and \numOverSnapLarge{} SNAP runs exceeded $1.2\,T$.  The large
+overruns come from steps that are not interrupted: single block LPs on
+\texttt{email-Enron}, where the bound phase alone took up to
+\numEnronLbTime{}\,s, and the primal local search on three PACE instances with
+620 vertices and $9\cdot10^4$ to $2\cdot10^5$ edges.  The sparse star packing fixes its number of
+iterations in advance and took \numPackTimeLo{} to \numPackTimeHi{}\,s on the
+SNAP graphs.  All times are in the archived result files.  The comparisons of
+bounds in Sections~\ref{sec:exp-bounds} and~\ref{sec:exp-cert} are therefore
+at comparable, not equal, running times; the head-to-head comparison of
+Section~\ref{sec:exp-h2h} is at equal elapsed time by construction.
+
+The checker accepted all \numCertPaceOk{} certificates of the PACE runs and
+all \numCertSnapOk{} of the SNAP runs, and rejected none.  Re-checking every
+archived certificate against freshly downloaded instance files takes at most
+\numCheckTimeMax{}\,s per certificate; the largest, on
+\texttt{\numCheckMaxGraph}, has \numCheckMaxRows{} rows and is checked in
+\numCheckMaxTime{}\,s.

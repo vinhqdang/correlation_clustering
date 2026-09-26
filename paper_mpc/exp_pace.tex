@@ -21,7 +21,52 @@ $m/\binom n2$.}
 \input{tables/pace_density}
 \end{table}
 
-\pending{} Discussion of Tables~\ref{tab:pace-bounds} and~\ref{tab:pace-density}.
+\paragraph{Strength of the bounds.}  With at most \SI{30}{s} for the bound,
+the checked CertiFlip bound proves optimality on \numPaceOptOurs{} of the 173
+solved instances (Table~\ref{tab:pace-bounds}); the root star packing of the
+KaPoCE branch-and-bound does so on 79 and its $P_3$ packing on 59.  On
+average, however, the B\&B star packing is stronger (mean LB/OPT
+\numPaceMeanStar{} against \numPaceMeanOurs{}); our bound is larger on
+\numPaceOursAbove{} instances, smaller on \numPaceOursBelow{} and equal on
+\numPaceOursEqual{}.  The two bounds are complementary: ours is tight on many
+instances and loose on some, the B\&B star packing is tight less often and
+is never far off.  Table~\ref{tab:pace-density} shows that the comparison
+depends on density.  Below density $0.1$ our bound is the stronger one; on
+denser instances the support contains most pairs, the block LPs are large and
+do not converge within the budget, and the star packing of the
+branch-and-bound wins.  The sparse star packing alone reaches a mean of
+\numPacePackMean{} and proves optimality on \numPacePackOpt{} of
+\numPacePackN{} instances; the comparison with the CertiFlip bound shows what
+the block LPs add on these small instances, in contrast to the large SNAP
+graphs (Section~\ref{sec:exp-cert}).
+
+On every fourth instance we also ran the bound with \SI{1800}{s} and one
+block covering the graph, and the metric LP on $P$ with triangle rows only.
+With the longer budget the mean LB/OPT on these \numPaceWarmN{} instances is
+\numPaceWarmMean{}, against \numPaceWarmOursMean{} with the \SI{60}{s} runs
+and \numPaceWarmStarMean{} for the B\&B star packing, and the bound is
+optimal on \numPaceWarmOpt{} of them (\numPaceWarmOursOpt{} at \SI{60}{s}).
+The triangle LP converged within \SI{900}{s} on \numPaceTriN{} of these
+instances, with a mean LB/OPT of \numPaceTriMean{} (\numPaceTriOursMean{}
+for our bound on the same instances).
+
+\paragraph{Open instances.}  Of the \numPaceOpen{} instances of the exact
+track without a known optimum, our checked bound exceeds the published lower
+bound~\cite{BlasiusEtAl22sea} on \numPaceOpenImproved{}
+(Table~\ref{tab:pace-open}).  On \texttt{exact179} it leaves a gap of one to
+the best known solution.
+
+\begin{table}[!tbp]
+\centering
+\caption{Open instances of the PACE~2021 exact track on which the checked
+lower bound improves the published one.  Published bounds: the best upper
+bound and the larger of the two root bounds of~\cite{BlasiusEtAl22sea}; our
+UB: the CertiFlip run of Table~\ref{tab:pace-bounds}; checked LB: the largest
+checked bound of our runs.}
+\label{tab:pace-open}
+\footnotesize
+\input{tables/pace_open}
+\end{table}
 
 \begin{table}[!tbp]
 \centering
@@ -35,3 +80,10 @@ runs on the same 4-core machine with four runs in parallel.}
 \footnotesize
 \input{tables/pace_primal}
 \end{table}
+
+\paragraph{Primal quality.}  On the exact track the primal side is not the
+bottleneck (Table~\ref{tab:pace-primal}).  CertiFlip finds the best known
+value on \numCfHit{} of the 200 instances although it spends up to half of
+its \SI{60}{s} on the bound; SCC on the complete encoding and KaPoCE find it
+on all of them.  The certified gaps on this track are therefore determined by
+the bound.
