@@ -91,7 +91,7 @@ Lower-bound certificates and their independent check:
 # PACE exact track: CertiFlip writes one certificate per instance, then check all of them
 CERT_DIR=results/certificates/pace-exact python experiments/run_bench.py --suite pace-exact \
     --algos certiflip --budget 60 --out results/pace_exact_cert.csv
-python experiments/check_certificate.py --dir results/certificates/pace-exact results/pace_exact_cert_check.csv
+python experiments/check_certificate.py --dir data/raw results/certificates/pace-exact results/pace_exact_cert_check.csv
 # a single graph (SNAP certificates, Colab tag c1): run, write and check
 python experiments/colab_run_cert.py 600 0 c1 ca-GrQc
 ```

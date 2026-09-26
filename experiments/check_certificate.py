@@ -439,14 +439,32 @@ def check_file(raw, cert_path, fmt=None, sign_col=None):
     return check(read_instance(raw, fmt, sign_col), cert)
 
 
-def check_dir(data_dir, cert_dir, out_csv):
+def check_dir(data_dir, cert_dir, out_csv, resume=False):
     """Check every certificate in cert_dir against the raw file named in it
     (key ``instance_file``, relative to data_dir) and write one CSV row each."""
     import csv
     import glob
     import os
+    keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
+            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "raw_sha256",
+            "edge_sha256"]
+
+    def save():
+        with open(out_csv + ".tmp", "w", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=keys, extrasaction="ignore")
+            w.writeheader()
+            w.writerows(rows)
+        os.replace(out_csv + ".tmp", out_csv)
+
+    # resumable: rows already in out_csv are kept and not checked again
     rows = []
+    if resume and os.path.exists(out_csv):
+        with open(out_csv, newline="") as fh:
+            rows = list(csv.DictReader(fh))
+    done = {r["certificate"] for r in rows}
     for path in sorted(glob.glob(os.path.join(cert_dir, "**", "*.npz"), recursive=True)):
+        if os.path.relpath(path, cert_dir) in done:
+            continue
         cert = dict(np.load(path, allow_pickle=False))
         if path.endswith(".labels.npz"):
             # a clustering without certificate (primal runs): check its cost only
@@ -469,6 +487,7 @@ def check_dir(data_dir, cert_dir, out_csv):
             except (ValueError, OSError) as exc:
                 row["status"] = f"rejected: {exc}"
             rows.append(row)
+            save()
             continue
         row = {"certificate": os.path.relpath(path, cert_dir)}
         try:
@@ -487,14 +506,9 @@ def check_dir(data_dir, cert_dir, out_csv):
         except (ValueError, OSError) as exc:
             row["status"] = f"rejected: {exc}"
         rows.append(row)
+        save()
         print({k: row.get(k) for k in ("certificate", "status", "certified")}, flush=True)
-    keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
-            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "raw_sha256",
-            "edge_sha256"]
-    with open(out_csv, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=keys, extrasaction="ignore")
-        w.writeheader()
-        w.writerows(rows)
+    save()
     bad = [r for r in rows if r["status"] != "ok"]
     print(f"{len(rows) - len(bad)} of {len(rows)} certificates accepted", flush=True)
     return not bad
@@ -505,8 +519,8 @@ def main(argv):
         g = read_instance(argv[1], argv[2])
         print(argv[3], clustering_cost(g, np.load(argv[3])["labels"]), flush=True)
         return
-    if argv and argv[0] == "--dir":
-        sys.exit(0 if check_dir(argv[1], argv[2], argv[3]) else 1)
+    if argv and argv[0] in ("--dir", "--resume"):
+        sys.exit(0 if check_dir(argv[1], argv[2], argv[3], argv[0] == "--resume") else 1)
     for raw, path in zip(argv[0::2], argv[1::2]):
         print(raw, check_file(raw, path), flush=True)
 
