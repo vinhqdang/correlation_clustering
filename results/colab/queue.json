@@ -17891,7 +17891,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact175.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790448167.9540136
  },
