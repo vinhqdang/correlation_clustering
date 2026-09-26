@@ -9889,7 +9889,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790386140.389225
  },
@@ -9929,7 +9929,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790386154.7794218
  },
