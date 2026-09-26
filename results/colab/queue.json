@@ -95,8 +95,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w6",
+  "status": "failed",
+  "machine": null,
   "started": 1790447240.1187649
  },
  {
@@ -105,8 +105,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
-  "machine": "w6",
+  "status": "failed",
+  "machine": null,
   "started": 1790447240.118766
  },
  {
@@ -135,8 +135,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
-  "machine": "w9",
+  "status": "failed",
+  "machine": null,
   "started": 1790447257.2299542
  },
  {
@@ -145,8 +145,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
-  "machine": "w9",
+  "status": "failed",
+  "machine": null,
   "started": 1790447257.2299564
  },
  {
@@ -175,8 +175,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
-  "machine": "w9",
+  "status": "failed",
+  "machine": null,
   "started": 1790447257.229957
  },
  {
@@ -185,8 +185,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
-  "machine": "w9",
+  "status": "failed",
+  "machine": null,
   "started": 1790447257.2299578
  },
  {
@@ -17741,7 +17741,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact160.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790447232.893475
  },
