@@ -2,8 +2,15 @@
 
 A certificate is a list of rows  sum_p a_rp x_p >= b_r  over vertex pairs p
 with multipliers y_r >= 0 (written by BlockDualBound.certificate).  The check
-uses only the graph and the certificate, not the solver code:
+uses only the raw instance file and the certificate.  It imports nothing from
+the solver package (ccbench) or its data loader: the instance is parsed here,
+from the file as distributed by SNAP or PACE.
 
+0. the raw file is parsed by the reader below (SNAP edge list, optionally
+   signed, or PACE .gr); its SHA-256, n, m and a hash of the canonical edge
+   list are compared with the values recorded in the certificate, so a
+   certificate cannot silently refer to a different graph or a different
+   vertex numbering;
 1. every pair of a row is at distance at most two (an edge or a pair with a
    common neighbour), so it belongs to the relaxation P;
 2. every row is valid for every clustering that separates the far pairs:
@@ -21,9 +28,17 @@ For every clustering C that separates far pairs, cost(C) = |N2| + sum_P c_p x_p
 >= LB by weak duality; optimal clusterings separate far pairs, so LB <= OPT
 and ceil(LB) is a certified lower bound.
 
-usage: check_certificate.py GRAPH CERT.npz [GRAPH CERT.npz ...]
-       check_certificate.py --dir CERT_DIR OUT.csv
+Instance semantics (Section 2 of the paper): the vertices of a SNAP instance
+are the node ids that occur in a kept edge, numbered 0..n-1 in increasing id
+order; in a signed file only rows with a positive value in the sign column are
+kept; edges are undirected, self-loops and duplicates are dropped.  PACE .gr
+files are 1-indexed with a ``p cep n m`` header.
+
+usage: check_certificate.py RAW_FILE CERT.npz [RAW_FILE CERT.npz ...]
+       check_certificate.py --dir DATA_DIR CERT_DIR OUT.csv
 """
+import gzip
+import hashlib
 import sys
 from fractions import Fraction
 from math import ceil
@@ -34,6 +49,85 @@ import numpy as np
 SCALE = 30
 MAX_BRUTE = 9
 
+
+# --------------------------------------------------------------------------
+# instance reader (deliberately independent of ccbench.graph)
+
+class Instance:
+    def __init__(self, n, u, v, raw_sha256):
+        self.n = n
+        self.m = len(u)
+        self.raw_sha256 = raw_sha256
+        # CSR with sorted neighbour lists
+        src = np.concatenate([u, v])
+        dst = np.concatenate([v, u])
+        order = np.lexsort((dst, src))
+        src, dst = src[order], dst[order]
+        self.indptr = np.zeros(n + 1, dtype=np.int64)
+        self.indptr[1:] = np.cumsum(np.bincount(src, minlength=n))
+        self.indices = dst.astype(np.int64)
+        self.edge_sha256 = edge_hash(n, u, v)
+
+
+def edge_hash(n, u, v):
+    """SHA-256 of n and the lexicographically sorted edge list (u < v, int64)."""
+    order = np.lexsort((v, u))
+    h = hashlib.sha256()
+    h.update(np.int64(n).tobytes())
+    h.update(np.ascontiguousarray(np.stack([u[order], v[order]], 1), dtype="<i8").tobytes())
+    return h.hexdigest()
+
+
+def _canonical(n, a, b):
+    lo, hi = np.minimum(a, b), np.maximum(a, b)
+    keep = lo != hi
+    key = np.unique(lo[keep] * n + hi[keep])
+    return key // n, key % n
+
+
+def read_instance(path, fmt, sign_col=-1):
+    raw = open(path, "rb").read()
+    sha = hashlib.sha256(raw).hexdigest()
+    text = gzip.decompress(raw).decode() if path.endswith(".gz") else raw.decode()
+    if fmt == "pace":
+        n = None
+        a, b = [], []
+        for line in text.splitlines():
+            if not line.strip() or line.startswith("c"):
+                continue
+            parts = line.split()
+            if parts[0] == "p":
+                n = int(parts[2])
+                continue
+            a.append(int(parts[0]) - 1)
+            b.append(int(parts[1]) - 1)
+        if n is None:
+            raise ValueError("missing 'p cep' header")
+        a, b = np.array(a, dtype=np.int64), np.array(b, dtype=np.int64)
+        if len(a) and (min(a.min(), b.min()) < 0 or max(a.max(), b.max()) >= n):
+            raise ValueError("vertex id out of range")
+        u, v = _canonical(n, a, b)
+        return Instance(n, u, v, sha)
+    if fmt != "snap":
+        raise ValueError(f"unknown format {fmt}")
+    a, b = [], []
+    for line in text.splitlines():
+        if not line.strip() or line[0] in "#%":
+            continue
+        parts = line.replace(",", " ").split()
+        if sign_col >= 0 and float(parts[sign_col]) <= 0:
+            continue
+        a.append(int(parts[0]))
+        b.append(int(parts[1]))
+    a, b = np.array(a, dtype=np.int64), np.array(b, dtype=np.int64)
+    ids = np.unique(np.concatenate([a, b]))
+    n = len(ids)
+    u, v = _canonical(n, np.searchsorted(ids, a), np.searchsorted(ids, b))
+    return Instance(n, u, v, sha)
+
+
+# --------------------------------------------------------------------------
+# pair and row checks
 
 @nb.njit(cache=True)
 def _adjacent(indptr, indices, u, v):
@@ -86,10 +180,10 @@ def _check_pairs(indptr, indices, u, v, out_sign):
 def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
     """For each row in ``rows`` (at most max_brute vertices): minimum of the
     left-hand side over all partitions of its vertex set that separate its far
-    pairs; returns a flag per row (1 valid, 0 invalid, -1 too large)."""
+    pairs; returns a flag per row (1 valid, 0 invalid, -1 too large).  Row data
+    are integers, so the sums are exact."""
     ok = np.zeros(rows.shape[0], dtype=np.int64)
     U = np.empty(max_brute, dtype=np.int64)
-    li = np.empty(0, dtype=np.int64)
     far = np.zeros((max_brute, max_brute), dtype=np.bool_)
     rgs = np.zeros(max_brute, dtype=np.int64)
     mx = np.zeros(max_brute, dtype=np.int64)
@@ -129,7 +223,7 @@ def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
                 far[a, c] = f
                 far[c, a] = f
         # enumerate restricted growth strings
-        best = 1e18
+        best = np.int64(1) << 60
         for t in range(k):
             rgs[t] = 0
             mx[t] = 0
@@ -143,7 +237,7 @@ def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
                 if not feasible:
                     break
             if feasible:
-                lhs = 0.0
+                lhs = np.int64(0)
                 for p in range(s, e):
                     if rgs[li[2 * (p - s)]] != rgs[li[2 * (p - s) + 1]]:
                         lhs += val[p]
@@ -161,7 +255,7 @@ def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
             for z in range(t + 1, k):
                 rgs[z] = 0
                 mx[z] = m
-        ok[q] = 1 if best >= b[r] - 1e-9 else 0
+        ok[q] = 1 if best >= b[r] else 0
     return ok
 
 
@@ -185,14 +279,14 @@ def _max_independent(adj):
     return best
 
 
-def _star_valid(g, rows_u, rows_v, rows_val, b, close):
+def _star_valid(rows_u, rows_v, rows_val, b, close):
     """Row  sum_t x_vt - sum_{tt' in R} x_tt' >= b  with centre v and leaves T.
     Minimum over far-separating clusterings: |T| - |R| - M with
     M = max over S (S + v far-free) of |S| - e_R(S).  If R contains every
     non-far pair of T, a far-free S is a clique of R and M <= 1; otherwise
     M <= alpha(R[T]) (a component of R[S] with s vertices has >= s - 1 edges)."""
-    plus = [(a, c) for a, c, x in zip(rows_u, rows_v, rows_val) if x == 1.0]
-    minus = [(a, c) for a, c, x in zip(rows_u, rows_v, rows_val) if x == -1.0]
+    plus = [(a, c) for a, c, x in zip(rows_u, rows_v, rows_val) if x == 1]
+    minus = [(a, c) for a, c, x in zip(rows_u, rows_v, rows_val) if x == -1]
     if len(plus) + len(minus) != len(rows_val) or not plus:
         return False
     common = set(plus[0])
@@ -223,24 +317,50 @@ def _star_valid(g, rows_u, rows_v, rows_val, b, close):
             adj[a].add(c)
             adj[c].add(a)
         M = _max_independent(adj)
-    return b <= len(T) - len(R) - M + 1e-9
+    return b <= len(T) - len(R) - M
+
+
+def _meta(cert, key, default=None):
+    if key not in cert:
+        return default
+    x = cert[key]
+    return x.item() if hasattr(x, "item") else x
 
 
 def check(g, cert):
-    ptr, u, v = cert["ptr"].astype(np.int64), cert["u"].astype(np.int64), cert["v"].astype(np.int64)
-    val, b, y = cert["val"].astype(np.float64), cert["b"].astype(np.float64), cert["y"].astype(np.float64)
-    nrows = len(b)
-    report = {"rows": nrows, "nnz": len(u)}
-    lo, hi = np.minimum(u, v), np.maximum(u, v)
-    if (y < 0).any() or not np.all(np.isfinite(y)):
+    """g: Instance read by read_instance; cert: mapping of arrays."""
+    report = {"n": g.n, "m": g.m, "raw_sha256": g.raw_sha256, "edge_sha256": g.edge_sha256}
+    # 0. identity of the instance
+    if int(_meta(cert, "n", g.n)) != g.n:
+        raise ValueError(f"certificate is for n={_meta(cert, 'n')}, file has n={g.n}")
+    for key, have in (("instance_m", g.m), ("edge_sha256", g.edge_sha256),
+                      ("raw_sha256", g.raw_sha256)):
+        want = _meta(cert, key)
+        if want is not None and str(want) != str(have):
+            raise ValueError(f"{key} mismatch: certificate {want}, file {have}")
+    report["identity"] = "hash" if _meta(cert, "edge_sha256") is not None else "n only"
+    ptr = np.asarray(cert["ptr"]).astype(np.int64)
+    u, v = np.asarray(cert["u"]).astype(np.int64), np.asarray(cert["v"]).astype(np.int64)
+    fval, fb = np.asarray(cert["val"], dtype=np.float64), np.asarray(cert["b"], dtype=np.float64)
+    y = np.asarray(cert["y"], dtype=np.float64)
+    nrows = len(fb)
+    report.update({"rows": nrows, "nnz": len(u)})
+    if len(ptr) != nrows + 1 or ptr[0] != 0 or ptr[-1] != len(u) or (np.diff(ptr) < 0).any():
+        raise ValueError("malformed row pointer")
+    if len(y) != nrows or (y < 0).any() or not np.all(np.isfinite(y)):
         raise ValueError("negative or non-finite multiplier")
-    if not (np.all(val == np.round(val)) and np.all(b == np.round(b))):
+    if not (np.all(fval == np.round(fval)) and np.all(fb == np.round(fb))):
         raise ValueError("non-integral row data")
+    if len(u) and (min(u.min(), v.min()) < 0 or max(u.max(), v.max()) >= g.n):
+        raise ValueError("vertex id out of range")
+    val, b = fval.astype(np.int64), fb.astype(np.int64)
+    lo, hi = np.minimum(u, v), np.maximum(u, v)
+    # 1. pairs of P
     sign = np.zeros(len(u), dtype=np.int64)
     bad = _check_pairs(g.indptr, g.indices, lo, hi, sign)
     if bad:
         raise ValueError(f"{bad} row entries are not pairs of P")
-    # validity of every row
+    # 2. validity of every row
     flags = _brute_rows(g.indptr, g.indices, ptr, lo, hi, val, b,
                         np.arange(nrows, dtype=np.int64), MAX_BRUTE)
     if (flags == 0).any():
@@ -252,72 +372,84 @@ def check(g, cert):
 
     for r in big:
         s, e = ptr[r], ptr[r + 1]
-        if not _star_valid(g, lo[s:e].tolist(), hi[s:e].tolist(), val[s:e].tolist(), b[r], close):
+        if not _star_valid(lo[s:e].tolist(), hi[s:e].tolist(), val[s:e].tolist(), int(b[r]),
+                           close):
             raise ValueError(f"row {r} ({e - s} entries) could not be verified")
     report["brute_rows"] = int((flags == 1).sum())
     report["star_rows"] = len(big)
-    # exact evaluation
+    # 3. exact evaluation, in Python integers
     yi = np.floor(y * 2.0 ** SCALE).astype(np.int64)
     key = lo * g.n + hi
     uniq, inv = np.unique(key, return_inverse=True)
     rowof = np.repeat(np.arange(nrows), np.diff(ptr))
+    # int64 accumulation is exact if no partial sum can exceed 2^62; this is
+    # checked with an upper bound in floating point (with a generous margin)
+    absbound = np.zeros(len(uniq))
+    np.add.at(absbound, inv, np.abs(val) * yi[rowof].astype(np.float64))
+    one = 1 << SCALE
+    if len(absbound) and absbound.max() * 1.01 + one >= 2.0 ** 62:
+        raise ValueError("coefficients too large for exact int64 accumulation")
     a = np.zeros(len(uniq), dtype=np.int64)
-    np.add.at(a, inv, val.astype(np.int64) * yi[rowof])
+    np.add.at(a, inv, val * yi[rowof])
     c = np.zeros(len(uniq), dtype=np.int64)
     c[inv] = sign
-    one = 1 << SCALE
     terms = np.minimum(0, c * one - a) - np.minimum(0, c * one)
-    total = sum(int(x) for x in b.astype(np.int64).astype(object) * yi.astype(object))
-    total += sum(int(x) for x in terms.astype(object))
+    total = sum(int(bi) * int(yj) for bi, yj in zip(b.tolist(), yi.tolist()))
+    total += sum(terms.tolist())
     lb = Fraction(total, one)
     report["lb_exact"] = float(lb)
     report["certified"] = ceil(lb)
-    report["solver_bound"] = float(cert["bound"])
+    report["solver_bound"] = float(_meta(cert, "bound", float("nan")))
     return report
 
 
-def check_dir(cert_dir, out_csv):
-    """Check every certificate in cert_dir (files named as by run_bench.py:
-    <instance with '/' replaced by '_'>_s<seed>.npz) and write one CSV row each."""
+# --------------------------------------------------------------------------
+
+def check_file(raw, cert_path, fmt=None, sign_col=None):
+    cert = dict(np.load(cert_path, allow_pickle=False))
+    fmt = fmt or str(_meta(cert, "instance_format", "pace" if raw.endswith(".gr") else "snap"))
+    sign_col = int(_meta(cert, "sign_col", -1)) if sign_col is None else sign_col
+    return check(read_instance(raw, fmt, sign_col), cert)
+
+
+def check_dir(data_dir, cert_dir, out_csv):
+    """Check every certificate in cert_dir against the raw file named in it
+    (key ``instance_file``, relative to data_dir) and write one CSV row each."""
     import csv
     import glob
     import os
-    import datasets as D
     rows = []
-    for path in sorted(glob.glob(os.path.join(cert_dir, "*.npz"))):
-        base = os.path.basename(path)[:-4]
-        inst, seed = base.rsplit("_s", 1)
-        for pre in ("pace-exact", "pace-heur"):
-            if inst.startswith(pre + "_"):
-                inst = pre + "/" + inst[len(pre) + 1:]
-        row = {"instance": inst, "seed": seed}
+    for path in sorted(glob.glob(os.path.join(cert_dir, "**", "*.npz"), recursive=True)):
+        cert = dict(np.load(path, allow_pickle=False))
+        row = {"certificate": os.path.relpath(path, cert_dir)}
         try:
-            rep = check(D.load(inst), np.load(path))
-            row.update(rep)
+            f = _meta(cert, "instance_file")
+            if f is None:
+                raise ValueError("certificate names no instance file")
+            row["instance"] = f
+            row.update(check_file(os.path.join(data_dir, f), path))
             row["status"] = "ok"
-        except ValueError as exc:
+        except (ValueError, OSError) as exc:
             row["status"] = f"rejected: {exc}"
         rows.append(row)
-        print(row, flush=True)
-    keys = ["instance", "seed", "status", "rows", "nnz", "brute_rows", "star_rows",
-            "lb_exact", "certified", "solver_bound"]
+        print({k: row.get(k) for k in ("certificate", "status", "certified")}, flush=True)
+    keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
+            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "raw_sha256",
+            "edge_sha256"]
     with open(out_csv, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=keys, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
+    bad = [r for r in rows if r["status"] != "ok"]
+    print(f"{len(rows) - len(bad)} of {len(rows)} certificates accepted", flush=True)
+    return not bad
 
 
 def main(argv):
-    sys.path.insert(0, ".")
-    sys.path.insert(0, "experiments")
     if argv and argv[0] == "--dir":
-        check_dir(argv[1], argv[2])
-        return
-    import datasets as D
-    for name, path in zip(argv[0::2], argv[1::2]):
-        g = D.load(name)
-        rep = check(g, np.load(path))
-        print(name, rep, flush=True)
+        sys.exit(0 if check_dir(argv[1], argv[2], argv[3]) else 1)
+    for raw, path in zip(argv[0::2], argv[1::2]):
+        print(raw, check_file(raw, path), flush=True)
 
 
 if __name__ == "__main__":

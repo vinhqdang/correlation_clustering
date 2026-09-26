@@ -30,6 +30,19 @@ REAL = {
     "com-DBLP": ("com-dblp.ungraph.txt.gz", "bigdata/communities/com-dblp.ungraph.txt.gz", {}),
     "com-Youtube": ("com-youtube.ungraph.txt.gz", "bigdata/communities/com-youtube.ungraph.txt.gz",
                     {}),
+    # held-out graphs for the head-to-head (fixed before any run, see experiments/heldout.txt)
+    "email-Eu-core": ("email-Eu-core.txt.gz", "email-Eu-core.txt.gz", {}),
+    "facebook": ("facebook_combined.txt.gz", "facebook_combined.txt.gz", {}),
+    "wiki-Vote": ("wiki-Vote.txt.gz", "wiki-Vote.txt.gz", {}),
+    "cit-HepTh": ("cit-HepTh.txt.gz", "cit-HepTh.txt.gz", {}),
+    "cit-HepPh": ("cit-HepPh.txt.gz", "cit-HepPh.txt.gz", {}),
+    "p2p-Gnutella31": ("p2p-Gnutella31.txt.gz", "p2p-Gnutella31.txt.gz", {}),
+    "soc-Slashdot0902": ("soc-Slashdot0902.txt.gz", "soc-Slashdot0902.txt.gz", {}),
+    "loc-Gowalla": ("loc-gowalla_edges.txt.gz", "loc-gowalla_edges.txt.gz", {}),
+    "email-EuAll": ("email-EuAll.txt.gz", "email-EuAll.txt.gz", {}),
+    "amazon0302": ("amazon0302.txt.gz", "amazon0302.txt.gz", {}),
+    "web-NotreDame": ("web-NotreDame.txt.gz", "web-NotreDame.txt.gz", {}),
+    "roadNet-PA": ("roadNet-PA.txt.gz", "roadNet-PA.txt.gz", {}),
 }
 
 

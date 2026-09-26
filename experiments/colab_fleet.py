@@ -26,6 +26,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(ROOT, "results", "colab")
 QUEUE = os.path.join(OUT, "queue.json")
 STATE = os.path.join(OUT, "fleet_state.json")
+CERTS = os.path.join(ROOT, "results", "certificates", "colab")
 INBOX = os.path.join(OUT, "inbox")  # job batches added while the fleet runs
 LOG = os.path.join(OUT, "fleet.log")
 COLAB = os.path.expanduser("/root/.local/bin/colab")
@@ -66,8 +67,9 @@ if (not os.path.exists("/content/SETUP_OK") and os.path.exists("/content/kapoce/
     open("/content/SETUP_OK", "w").close()
 out = {"setup": os.path.exists("/content/SETUP_OK"),
        "results": sorted(os.path.basename(p) for p in glob.glob("/content/results/*.json")),
+       "certs": sorted(os.path.basename(p) for p in glob.glob("/content/results/certs/*.npz")),
        "running": [l for l in subprocess.run(["ps", "-eo", "args"], capture_output=True,
-                   text=True).stdout.splitlines() if ("run_pair.py" in l or "run_seq.py" in l or "run_cert.py" in l) and "python3" in l]}
+                   text=True).stdout.splitlines() if ("run_pair.py" in l or "run_seq.py" in l or "run_cert.py" in l or "run_lp.py" in l) and "python3" in l]}
 print("PROBE" + json.dumps(out))
 '''
 
@@ -134,7 +136,8 @@ def setup(s):
     if "READY" not in out:
         log(f"{s}: new failed: {out[-200:]}")
         return False
-    for f in ["cc.tgz", "kapoce_src.tgz", "setup_full.sh", "run_pair.py", "run_seq.py", "run_cert.py"]:
+    for f in ["cc.tgz", "kapoce_src.tgz", "setup_full.sh", "run_pair.py", "run_seq.py", "run_cert.py",
+              "run_lp.py"]:
         colab(s, ["upload", "-s", s, os.path.join(STAGE, f), f"/content/{f}"], timeout=900)
     launch = ('import subprocess\nsubprocess.Popen("nohup bash /content/setup_full.sh > '
               '/content/setup.log 2>&1 && touch /content/SETUP_OK &", shell=True)\nprint("ok")\n')
@@ -143,7 +146,7 @@ def setup(s):
     return True
 
 
-CODE_FILES = ["cc.tgz", "run_pair.py", "run_seq.py", "run_cert.py"]
+CODE_FILES = ["cc.tgz", "run_pair.py", "run_seq.py", "run_cert.py", "run_lp.py"]
 
 
 def refresh_code(s, st):
@@ -163,7 +166,7 @@ def refresh_code(s, st):
     return False
 
 
-SCRIPT = {"s": "run_seq", "c": "run_cert"}
+SCRIPT = {"s": "run_seq", "c": "run_cert", "l": "run_lp"}
 
 
 def launch(s, jobs):
@@ -179,9 +182,10 @@ def launch(s, jobs):
 
 
 def git_push():
-    subprocess.run(["git", "-C", ROOT, "add", "results/colab"], capture_output=True, timeout=300)
+    paths = ["results/colab"] + (["results/certificates/colab"] if os.path.isdir(CERTS) else [])
+    subprocess.run(["git", "-C", ROOT, "add"] + paths, capture_output=True, timeout=300)
     r = subprocess.run(["git", "-C", ROOT, "commit", "-q", "-m",
-                        "Colab benchmark results (automatic sync)", "--", "results/colab"],
+                        "Colab benchmark results (automatic sync)", "--"] + paths,
                        capture_output=True, timeout=300)
     if r.returncode == 0:
         for d in (2, 4, 8, 16):
@@ -272,6 +276,14 @@ def step(state):
                     log(f"{s}: got {f}")
             if jid in by_id and by_id[jid]["status"] != "done":
                 by_id[jid]["status"] = "done"
+        # certificates and clusterings (written before the job's JSON file)
+        for f in pr.get("certs", []):
+            local = os.path.join(CERTS, f)
+            if not os.path.exists(local):
+                os.makedirs(CERTS, exist_ok=True)
+                colab(s, ["download", "-s", s, f"/content/results/certs/{f}", local], timeout=600)
+                if os.path.exists(local):
+                    new_files = True
         if not pr["setup"]:
             # a machine that never started its setup (fresh session) gets one
             if time.time() - st.get("setup_started", 0) > 1800:
