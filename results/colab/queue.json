@@ -13505,8 +13505,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
-  "machine": "w1",
+  "status": "pending",
+  "machine": null,
   "started": 1790416626.8604214
  },
  {
@@ -14225,7 +14225,7 @@
   "T": 150.0,
   "seed": 5,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790419590.721423
  },
