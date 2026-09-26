@@ -200,7 +200,7 @@ successive sweeps cut different pairs.  Each part is solved with the dual
 simplex method of HiGHS~\citep{HuangfuH18}, with lazily separated triangle,
 star and local subgraph rows.  After the sweeps stall we switch to
 \emph{gap-guided blocks}, grown around the vertices with the largest share of
-the gap defined next.  Because~\eqref{eq:lb} is valid for any $y\ge0$, the
+the gap of Section~\ref{sec:gap}.  Because~\eqref{eq:lb} is valid for any $y\ge0$, the
 bound remains correct even when a block LP hits its time limit.  We only
 clamp the dual values to be non-negative, and reject a block step that would
 lower the bound.

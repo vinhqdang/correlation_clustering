@@ -432,6 +432,39 @@ def pace_heur():
                     "numPDEqual": str(int((dd == 0).sum())), "numPDWorse": str(int((dd > 0).sum()))})
 
 
+def timing():
+    """Budget overruns, CPU models and the cost of checking."""
+    models = set()
+    for tag, key in (("c2", "Snap"), ("c2x", "Pace")):
+        R = runs(tag)
+        if not R:
+            continue
+        T = next(iter(R.values()))["T"]
+        t = np.array([r["time"] for r in R.values()])
+        NUM[f"numOver{key}Count"] = str(int((t > 1.01 * T).sum()))
+        NUM[f"numOver{key}Runs"] = str(len(t))
+        NUM[f"numOver{key}Max"] = f"{t.max():.0f}"
+        NUM[f"numOver{key}Median"] = f"{np.median(t):.0f}"
+        models |= {r.get("cpu") for r in R.values() if r.get("cpu")}
+        ok = [r for r in R.values() if r.get("check") == "ok"]
+        rej = [r for r in R.values() if str(r.get("check", "")).startswith("rejected")]
+        NUM[f"numCert{key}Ok"] = str(len(ok))
+        NUM[f"numCert{key}Rejected"] = str(len(rej))
+        if ok and key == "Snap":
+            big = max(ok, key=lambda r: r["rows"])
+            NUM["numCheckMaxGraph"] = big["graph"]
+            NUM["numCheckMaxRows"] = r"\num{%d}" % big["rows"]
+            NUM["numCheckMaxTime"] = f"{big['check_time']:.0f}"
+            NUM["numCheckTimeMax"] = f"{max(r['check_time'] for r in ok):.0f}"
+    for tag in ("s2h", "s2p"):
+        for r in runs(tag).values():
+            m = r.get("machine", {}).get("Model name")
+            if m:
+                models.add(m)
+    if models:
+        NUM["numCpuModels"] = "; ".join(sorted(models)).replace("(R)", r"\textsuperscript{\textregistered}")
+
+
 def static_numbers():
     with open(os.path.join(ROOT, "experiments", "check_certificate.py")) as fh:
         NUM["numCheckerLines"] = str(sum(1 for _ in fh))
@@ -459,5 +492,6 @@ if __name__ == "__main__":
     for tag, label in (("s2h", "600"), ("s2h150", "150"), ("s2h60", "60")):
         h2h(tag, label)
     pace_heur()
+    timing()
     static_numbers()
     write_numbers()
