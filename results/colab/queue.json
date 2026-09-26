@@ -9699,7 +9699,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790386040.5085726
  },
@@ -9739,7 +9739,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790386049.380047
  },
@@ -9779,7 +9779,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790386058.0238044
  },
@@ -9819,7 +9819,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790386090.2266042
  },
@@ -9859,7 +9859,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790386124.4563067
  },
