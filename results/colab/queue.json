@@ -15735,7 +15735,7 @@
   "T": 60.0,
   "seed": 6,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790428403.8976312
  },
@@ -15815,7 +15815,7 @@
   "T": 60.0,
   "seed": 7,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790428427.4021137
  },
