@@ -12925,7 +12925,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790404968.7088664
  },
@@ -12965,7 +12965,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790404973.4653227
  },
@@ -13045,7 +13045,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790404987.4350953
  },
