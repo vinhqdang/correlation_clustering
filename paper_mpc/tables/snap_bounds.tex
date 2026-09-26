@@ -1,21 +1,26 @@
-\begin{tabular}{lrrrrr}
+\begin{tabular}{lrrrrrrr}
 \toprule
-Graph & best UB & greedy packing & triangle packing & CertiFlip LB & certified gap (\%)\\
+graph & UB & LB & spread & gap & gap$^*$ & star & tri.\\
+ & & & (\%) & (\%) & (\%) & (\%) & factor \\
 \midrule
-\texttt{ca-GrQc} & 6050 & 4479 & 4725 & 6035 & 0.25\\
-\texttt{ca-HepTh} & 15813 & 10835 & 10887 & 15699 & 0.73\\
-\texttt{ca-HepPh} & 46133 & 35012 & 39495 & 43314 & 6.51\\
-\texttt{ca-AstroPh} & 125541 & 85348 & 86009 & 117966 & 6.42\\
-\texttt{ca-CondMat} & 56834 & 39380 & 39704 & 55158 & 3.04\\
-\texttt{email-Enron} & 150419 & 85082 & 83057 & 140551 & 7.02\\
-\texttt{loc-Brightkite} & 174695 & 102317 & 100659 & 163166 & 7.07\\
-\texttt{soc-Epinions} & 365137 & -- & -- & -- & --\\
-\texttt{Slashdot+} & 351856 & -- & -- & -- & --\\
-\texttt{Epinions+} & 521786 & -- & -- & -- & --\\
-\texttt{BitcoinOTC+} & 16462 & 9137 & 8774 & 15583 & 5.64\\
-\texttt{BitcoinAlpha+} & 11437 & 6335 & 6134 & 10722 & 6.67\\
-\texttt{com-Amazon} & 612307 & 412040 & 426755 & 556146 & 10.10\\
-\texttt{com-DBLP} & 606723 & 399183 & 426206 & 581805 & 4.28\\
-\texttt{com-Youtube} & 2649253 & -- & -- & -- & --\\
+\texttt{ca-GrQc} & \num{6053} & \num{6032} & 0.00 & 0.35 & 0.30 & -- & 1.28 \\
+\texttt{ca-HepTh} & \num{15861} & \num{15682} & 0.00 & 1.14 & 0.84 & -- & 1.45 \\
+\texttt{ca-HepPh} & \num{46199} & \num{43199} & 0.00 & 6.94 & 6.79 & -- & 1.17 \\
+\texttt{ca-AstroPh} & \num{125682} & \num{118224} & 0.00 & 6.31 & 6.19 & -- & 1.46 \\
+\texttt{ca-CondMat} & \num{56974} & \num{55135} & 0.00 & 3.34 & 3.08 & -- & 1.43 \\
+\texttt{email-Enron} & \multicolumn{7}{c}{\pending{}} \\
+\texttt{loc-Brightkite} & \num{175117} & \num{163172} & 0.00 & 7.32 & 7.06 & -- & 1.71 \\
+\texttt{BitcoinOTC+} & \num{16502} & \num{15561} & 0.00 & 6.05 & 5.79 & -- & 1.80 \\
+\texttt{BitcoinAlpha+} & \num{11461} & \num{10721} & 0.00 & 6.90 & 6.68 & -- & 1.81 \\
+\texttt{com-Amazon} & \num{615075} & \num{558305} & 0.00 & 10.17 & 9.67 & -- & 1.43 \\
+\texttt{com-DBLP} & \num{608201} & \num{581288} & 0.00 & 4.63 & 4.38 & -- & 1.42 \\
+\midrule
+\texttt{email-Eu-core} & \num{12743} & \num{11632} & 0.00 & 9.55 & 9.55 & -- & 1.59 \\
+\texttt{facebook} & \num{53584} & \num{43344} & 0.00 & 23.62 & 23.62 & -- & 1.37 \\
+\texttt{wiki-Vote} & \num{95522} & \num{85487} & 0.00 & 11.74 & 11.74 & -- & 1.90 \\
+\texttt{cit-HepPh} & \num{358733} & \num{322464} & 0.00 & 11.25 & 11.25 & -- & 1.73 \\
+\texttt{p2p-Gnutella31} & \num{131453} & \num{130272} & 0.00 & 0.91 & 0.91 & -- & 1.79 \\
+\texttt{amazon0302} & \num{543316} & \num{498060} & 0.00 & 9.09 & 9.09 & -- & 1.33 \\
+\texttt{roadNet-PA} & \num{956986} & \num{865131} & 0.00 & 10.62 & 10.62 & -- & 1.31 \\
 \bottomrule
 \end{tabular}

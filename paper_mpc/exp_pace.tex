@@ -1,1 +1,24 @@
-\pending{} (results of the runs described in Section~\ref{sec:exp-setup}).
+\begin{table}[!tbp]
+\centering
+\caption{PACE~2021 exact track, the 173 instances with known optimum: lower
+bounds.  Checked bounds are values returned by the checker from archived
+certificates (budget \SI{60}{s}, of which CertiFlip spends at most half on
+the bound).  The metric LP on $P$ is reported only where cutting planes
+converged within \SI{900}{s} (every fourth instance was run).  The last two
+rows are the root bounds of the KaPoCE branch-and-bound as published by its
+authors.}
+\label{tab:pace-bounds}
+\footnotesize
+\input{tables/pace_bounds}
+\end{table}
+
+\begin{table}[!tbp]
+\centering
+\caption{Mean LB/OPT on the solved PACE exact instances by edge density
+$m/\binom n2$.}
+\label{tab:pace-density}
+\small
+\input{tables/pace_density}
+\end{table}
+
+\pending{} Discussion of Tables~\ref{tab:pace-bounds} and~\ref{tab:pace-density}.

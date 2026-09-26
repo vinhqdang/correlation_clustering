@@ -34,6 +34,7 @@ PACE_TWIN = {"ca-GrQc": 167, "ca-HepTh": 173, "ca-HepPh": 175, "ca-AstroPh": 176
 MAX_PAIRS = 3e7
 
 NUM = {}
+TIMES = {}
 # every number used in the text; results not yet available stay \pending
 DEFAULTS = {k: r"\pending{}" for k in (
     "numPaceOptOurs", "numPaceMeanStar", "numPaceMeanOurs", "numSnapGapLo", "numSnapGapHi",
@@ -129,7 +130,7 @@ def pace_exact():
     for a, nm in [("lb:greedy", "greedy triangle packing"), ("lb:tri-mwu", "fractional triangle packing")]:
         B[nm] = np.ceil(old[old.algo == a].set_index("inst")["lb"] - 1e-6)
     for tag, seed, nm in [("lpack", 1, "sparse star packing"), ("c2x", 0, "CertiFlip bound"),
-                          ("ltri", 0, "metric LP on $P$ (triangle rows)"),
+                          ("ltri", 0, "metric LP on $P$, triangle rows"),
                           ("lwarm", 0, "CertiFlip bound, 1800 s")]:
         R = runs(tag)
         vals = {}
@@ -185,6 +186,95 @@ def pace_exact():
     return ref, B
 
 
+def best_costs():
+    """Best cost per SNAP graph: (archived, i.e. with a re-checkable clustering;
+    any run)."""
+    import pandas as pd
+    arch, anyrun = {}, {}
+
+    def upd(dct, g, c):
+        if c is not None and np.isfinite(c):
+            dct[g] = min(dct.get(g, np.inf), int(c))
+    for (g, sd), r in runs("c2").items():
+        upd(arch, g, r.get("cost"))
+    for tag in ("s2h", "s2h150", "s2h60"):
+        for (g, sd), r in runs(tag).items():
+            if tag == "s2h" and sd == 0:
+                upd(arch, g, r.get("ours_final"))
+                if r.get("kapoce_valid"):
+                    upd(arch, g, r.get("kapoce"))
+            upd(anyrun, g, r.get("ours_final"))
+            if r.get("kapoce_valid"):
+                upd(anyrun, g, r.get("kapoce"))
+    for tag in ("s1", "m3", "c1"):
+        for (g, sd), r in runs(tag).items():
+            for k in ("ours", "kapoce", "cost"):
+                if k == "kapoce" and r.get("kapoce_valid") is False:
+                    continue
+                upd(anyrun, g, r.get(k))
+    old = pd.read_csv(os.path.join(RES, "snap.csv"))
+    for _, r in old[old.cost.notna()].iterrows():
+        upd(anyrun, r["instance"], r["cost"])
+    for g, c in arch.items():
+        upd(anyrun, g, c)
+    return arch, anyrun
+
+
+def snap():
+    import pandas as pd
+    cache = json.load(open(os.path.join(RES, "mpc", "instances.json")))
+    arch, anyrun = best_costs()
+    C2 = runs("c2")
+    PK = runs("lpack")
+    tri = pd.concat([pd.read_csv(os.path.join(RES, f)) for f in
+                     ("snap.csv", "snap_heldout_bounds.csv")
+                     if os.path.exists(os.path.join(RES, f))])
+    tri = tri[tri.algo.isin(["lb:greedy", "lb:tri-mwu"]) & tri.lb.notna()]
+    tri = tri.groupby("instance")["lb"].max().apply(lambda x: np.ceil(x - 1e-6))
+    rows, gaps, facs, pk_share = [], [], [], []
+    for role, names in (("dev", DEV), ("held-out", HELD)):
+        for name in names:
+            if cache[name]["pairs"] is None:
+                continue
+            lbs = [checked(C2.get((name, sd))) for sd in range(3)]
+            lbs = [x for x in lbs if x is not None]
+            ub_a, ub = arch.get(name), anyrun.get(name)
+            if not lbs or ub_a is None:
+                rows.append(f"{tt(name)} & \\multicolumn{{7}}{{c}}{{\\pending{{}}}} \\\\")
+                continue
+            lb = max(lbs)
+            spread = 100 * (max(lbs) - min(lbs)) / lb
+            gap_a = 100 * (ub_a - lb) / lb
+            gaps.append(gap_a)
+            pk = checked(PK.get((name, 0)))
+            pk_gap = "--" if pk is None else f"{100 * (ub - pk) / pk:.2f}"
+            if pk is not None:
+                pk_share.append((lb - pk) / max(1, ub - pk))
+            tb = tri.get(name)
+            fac = None if tb is None or not np.isfinite(tb) else ub / tb
+            if fac is not None:
+                facs.append(fac)
+            t_lb = np.median([C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2])
+            gap_b = 100 * (ub - lb) / lb
+            TIMES[name] = t_lb
+            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & \\num{{{lb}}} & {spread:.2f} & "
+                        f"{gap_a:.2f} & {gap_b:.2f} & {pk_gap} & {fmt_pct(fac, 2) if fac else '--'} \\\\")
+        rows.append("\\midrule")
+    write("snap_bounds", "\\begin{tabular}{lrrrrrrr}\n\\toprule\n"
+          "graph & UB & LB & spread & gap & gap$^*$ & star & tri.\\\\\n"
+          " & & & (\\%) & (\\%) & (\\%) & (\\%) & factor \\\\\n\\midrule\n" + "\n".join(rows[:-1]) +
+          "\n\\bottomrule\n\\end{tabular}\n")
+    if gaps:
+        NUM["numSnapGapLo"] = f"{min(gaps):.2f}\\%"
+        NUM["numSnapGapHi"] = f"{max(gaps):.1f}\\%"
+    if facs:
+        NUM["numBaseFacLo"] = f"{min(facs):.2f}"
+        NUM["numBaseFacHi"] = f"{max(facs):.2f}"
+    if pk_share:
+        NUM["numLpShareLo"] = f"{100 * min(pk_share):.0f}\\%"
+        NUM["numLpShareHi"] = f"{100 * max(pk_share):.0f}\\%"
+
+
 def static_numbers():
     with open(os.path.join(ROOT, "experiments", "check_certificate.py")) as fh:
         NUM["numCheckerLines"] = str(sum(1 for _ in fh))
@@ -208,5 +298,6 @@ if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "all"
     instances()
     pace_exact()
+    snap()
     static_numbers()
     write_numbers()

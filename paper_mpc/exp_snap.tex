@@ -1,1 +1,17 @@
-\pending{} (results of the runs described in Section~\ref{sec:exp-setup}).
+\begin{table}[!tbp]
+\centering
+\caption{SNAP graphs whose support fits into memory: checked lower bounds
+and certified gaps (CertiFlip, \SI{600}{s}, seeds 0--2).  UB: the best
+archived clustering (re-checked from its file); LB: the best checked bound
+over the three runs; spread: $(\max-\min)/\LB$ over the runs; gap:
+$(\mathrm{UB}-\LB)/\LB$; gap$^*$: the same with the best value of any run of
+any solver (reported, not archived); star: gap$^*$ of the sparse star packing
+alone after \SI{600}{s}; tri.\ factor: best known value divided by the better
+of the two triangle packings.}
+\label{tab:snap-bounds}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/snap_bounds}
+\end{table}
+
+\pending{} Discussion of Table~\ref{tab:snap-bounds}.
