@@ -36,9 +36,12 @@ denser instances the support contains most pairs, the block LPs are large and
 do not converge within the budget, and the star packing of the
 branch-and-bound wins.  The sparse star packing alone reaches a mean of
 \numPacePackMean{} and proves optimality on \numPacePackOpt{} of
-\numPacePackN{} instances; the comparison with the CertiFlip bound shows what
-the block LPs add on these small instances, in contrast to the large SNAP
-graphs (Section~\ref{sec:exp-cert}).
+\numPacePackN{} instances.  It is weakest on the dense instances
+(Table~\ref{tab:pace-density}), where its local search over the support is
+much weaker than the packings of the branch-and-bound, which work on the full
+matrix; there the block LPs supply almost all of the CertiFlip bound.  This is
+the opposite of what we observe on the large sparse SNAP graphs
+(Section~\ref{sec:exp-cert}).
 
 On every fourth instance we also ran the bound with \SI{1800}{s} and one
 block covering the graph, and the metric LP on $P$ with triangle rows only.
