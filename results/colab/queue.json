@@ -14755,7 +14755,7 @@
   "T": 60.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790422313.480003
  },
@@ -14895,8 +14895,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790423065.4620416
  },
  {
   "id": "s2h60_p2p-Gnutella31_1",
@@ -14904,8 +14905,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790423065.462043
  },
  {
   "id": "s2h60_soc-Slashdot0902_1",
@@ -14913,8 +14915,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790423065.4620438
  },
  {
   "id": "s2h60_loc-Gowalla_1",
@@ -14922,8 +14925,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790423065.4620442
  },
  {
   "id": "s2h60_email-EuAll_1",
