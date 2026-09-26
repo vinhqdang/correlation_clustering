@@ -96,8 +96,8 @@
   "seed": 0,
   "graph": "email-Enron",
   "status": "running",
-  "machine": "w6",
-  "started": 1790426552.2770457
+  "machine": "w5",
+  "started": 1790427745.2645278
  },
  {
   "id": "ltri_loc-Brightkite_0",
@@ -106,8 +106,8 @@
   "seed": 0,
   "graph": "loc-Brightkite",
   "status": "running",
-  "machine": "w6",
-  "started": 1790426552.2770476
+  "machine": "w5",
+  "started": 1790427745.2645292
  },
  {
   "id": "ltri_BitcoinOTC+_0",
@@ -15575,7 +15575,7 @@
   "T": 60.0,
   "seed": 5,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790427527.6905031
  },
@@ -15596,8 +15596,8 @@
   "seed": 5,
   "graph": "cit-HepPh",
   "status": "running",
-  "machine": "w6",
-  "started": 1790426552.277048
+  "machine": "w5",
+  "started": 1790427745.26453
  },
  {
   "id": "s2h60_p2p-Gnutella31_5",
@@ -15606,8 +15606,8 @@
   "seed": 5,
   "graph": "p2p-Gnutella31",
   "status": "running",
-  "machine": "w6",
-  "started": 1790426552.2770488
+  "machine": "w5",
+  "started": 1790427745.2645316
  },
  {
   "id": "s2h60_soc-Slashdot0902_5",
@@ -15675,8 +15675,9 @@
   "T": 60.0,
   "seed": 6,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790427746.9474647
  },
  {
   "id": "s2h60_facebook_6",
@@ -15684,8 +15685,9 @@
   "T": 60.0,
   "seed": 6,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790427746.9474666
  },
  {
   "id": "s2h60_wiki-Vote_6",
@@ -15693,8 +15695,9 @@
   "T": 60.0,
   "seed": 6,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790427746.947467
  },
  {
   "id": "s2h60_cit-HepTh_6",
@@ -15702,8 +15705,9 @@
   "T": 60.0,
   "seed": 6,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790427746.9474673
  },
  {
   "id": "s2h60_cit-HepPh_6",
