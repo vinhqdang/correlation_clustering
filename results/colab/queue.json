@@ -95,8 +95,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790435580.588772
  },
  {
@@ -105,8 +105,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790435580.5887737
  },
  {
@@ -16595,8 +16595,8 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact045.gr",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790435565.2859352
  },
  {
@@ -16605,8 +16605,8 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact046.gr",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790435565.2859356
  },
  {
@@ -16615,8 +16615,8 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact047.gr",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790435580.588774
  },
  {
@@ -16625,8 +16625,8 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact048.gr",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790435580.5887744
  },
  {
@@ -16735,7 +16735,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact059.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790436433.5742536
  },
@@ -16815,7 +16815,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact067.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790436461.1248257
  },
