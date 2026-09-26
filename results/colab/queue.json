@@ -14275,7 +14275,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790419344.5601761
  },
@@ -14315,7 +14315,7 @@
   "T": 150.0,
   "seed": 6,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790419380.7066061
  },
@@ -14455,8 +14455,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790420358.2791398
  },
  {
   "id": "s2h150_amazon0302_7",
@@ -14464,8 +14465,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790420358.279142
  },
  {
   "id": "s2h150_web-NotreDame_7",
@@ -14473,8 +14475,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790420358.2791426
  },
  {
   "id": "s2h150_roadNet-PA_7",
@@ -14482,8 +14485,9 @@
   "T": 150.0,
   "seed": 7,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790420358.2791433
  },
  {
   "id": "s2h150_email-Eu-core_8",
