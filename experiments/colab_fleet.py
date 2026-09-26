@@ -209,6 +209,11 @@ def merge_inbox(queue):
         batch = load(path, None)
         if batch is None:
             continue
+        for jid in batch.get("fail", []):
+            for j in queue:
+                if j["id"] == jid and j["status"] != "done":
+                    j["status"], j["machine"] = "failed", None
+                    log(f"marked {jid} failed")
         for pre in batch.get("cancel", []):
             n0 = len(queue)
             queue[:] = [j for j in queue if not (j["status"] == "pending" and
@@ -296,8 +301,15 @@ def step(state):
         if busy and not pr["running"]:
             for j in busy:
                 if j["id"] + ".json" not in pr["results"]:
-                    log(f"{s}: job {j['id']} vanished, re-queued")
-                    j["status"], j["machine"] = "pending", None
+                    # a job that keeps killing its machine (e.g. out of memory)
+                    # is given up after three attempts
+                    j["tries"] = j.get("tries", 0) + 1
+                    if j["tries"] >= 3:
+                        log(f"{s}: job {j['id']} vanished {j['tries']} times, marked failed")
+                        j["status"], j["machine"] = "failed", None
+                    else:
+                        log(f"{s}: job {j['id']} vanished, re-queued")
+                        j["status"], j["machine"] = "pending", None
             busy = []
         if len(busy) < SLOTS and not pr["running"]:
             nxt = [j for j in queue if j["status"] == "pending"][:BATCH]
@@ -335,7 +347,11 @@ def add(tag, T, seeds, graphs, front=False):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "cancel":
+    if len(sys.argv) > 1 and sys.argv[1] == "fail":
+        # fail JOB_ID...   (give up on jobs, running or pending)
+        os.makedirs(INBOX, exist_ok=True)
+        save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"fail": sys.argv[2:]})
+    elif len(sys.argv) > 1 and sys.argv[1] == "cancel":
         # cancel PREFIX...   (pending jobs whose id starts with a prefix)
         os.makedirs(INBOX, exist_ok=True)
         save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"cancel": sys.argv[2:]})
