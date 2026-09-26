@@ -1,1 +1,96 @@
-\pending{} (results of the runs described in Section~\ref{sec:exp-setup}).
+\begin{table}[!tbp]
+\centering
+\caption{PXMem against KaPoCE on the twelve held-out SNAP graphs,
+$T=\SI{600}{s}$ (primary budget), ten seeds per graph.  W/T/L: runs in
+which PXMem is better, equal, worse.  median, HL: median and Hodges--Lehmann
+estimate of $(\cost_{\mathrm{PXMem}}-\cost_{\mathrm{KaPoCE}})/
+\cost_{\mathrm{KaPoCE}}$ in percent, negative when PXMem is better, with the
+exact $95\%$ confidence interval; $p$: exact sign test over the seeds;
+$p_{\mathrm{Holm}}$: Holm-adjusted over the twelve graphs.  Last row: the
+pre-registered tests over the twelve graph medians.}
+\label{tab:h2h-600}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/h2h_600}
+\end{table}
+
+\begin{table}[!tbp]
+\centering
+\caption{As Table~\ref{tab:h2h-600}, $T=\SI{150}{s}$.}
+\label{tab:h2h-150}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/h2h_150}
+\end{table}
+
+\begin{table}[!tbp]
+\centering
+\caption{As Table~\ref{tab:h2h-600}, $T=\SI{60}{s}$.}
+\label{tab:h2h-60}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/h2h_60}
+\end{table}
+
+\paragraph{Primary budget.}  At \SI{600}{s} (Table~\ref{tab:h2h-600},
+\numHHSixRuns{} paired runs) the graph medians favour PXMem on
+\numHHSixBetter{} graphs and KaPoCE on \numHHSixWorse{}, with
+\numHHSixEqual{} ties.  Neither pre-registered test rejects equality of the
+two solvers (Wilcoxon $p=\numHHSixWilcoxon$, sign test
+$p=\numHHSixSign$).  After Holm's correction PXMem is better on
+\texttt{loc-Gowalla} and KaPoCE on \texttt{amazon0302} and
+\texttt{roadNet-PA}; PXMem wins nine of ten seeds on \texttt{wiki-Vote},
+\texttt{cit-HepTh} and \texttt{cit-HepPh}, which is not significant after the
+correction.  All differences are small: the largest graph median is
+\numHHSixMaxAbs{}, and on the held-out graphs with a certificate the
+certified gap of the best solution is at least \numSnapGapMinHeld{}
+(Table~\ref{tab:snap-bounds}).  The certificates therefore cannot separate
+the two solvers, and neither solver is shown to be near-optimal on these
+graphs beyond what Table~\ref{tab:snap-bounds} certifies.  KaPoCE returned a
+valid solution in every run (\numHHSixForfeitK{} forfeits).  Scoring PXMem at
+$T$ instead of at KaPoCE's elapsed time changes the graph medians to
+\numHHSixAtTBetter{} better and \numHHSixAtTWorse{} worse (Wilcoxon
+$p=\numHHSixAtTWilcoxon$).  We do not claim that the two solvers are
+equivalent: the study was not designed as an equivalence test.
+
+\paragraph{Shorter budgets.}  At \SI{150}{s} (Table~\ref{tab:h2h-150}) the
+picture is similar (\numHHOneFiftyBetter{} better, \numHHOneFiftyEqual{}
+equal, \numHHOneFiftyWorse{} worse; Wilcoxon $p=\numHHOneFiftyWilcoxon$),
+with larger losses of PXMem on the largest graphs, up to
+\numHHOneFiftyMaxAbs{} on \texttt{roadNet-PA}.  At \SI{60}{s}
+(Table~\ref{tab:h2h-60}) KaPoCE is better on \numHHSixtyWorse{} of the
+\numHHSixtyGraphs{} graph medians (Wilcoxon $p=\numHHSixtyWilcoxon$).  PXMem is
+a population method, and a short budget leaves few recombinations on graphs
+with $10^5$ vertices or more; we did not analyse this further.  PXMem is thus
+not a replacement for KaPoCE at short budgets, and at the primary budget the
+two are not distinguishable by our tests.
+
+\paragraph{PACE heuristic track.}  On the 200 instances of the PACE~2021
+heuristic track, one run per instance at \SI{600}{s} under the same protocol,
+the instance is the unit.  The \numPDn{} instances that coincide with
+development graphs are reported separately (Table~\ref{tab:pace-heur}).  On
+the other \numPHn{} instances PXMem is better on \numPHBetter{}, equal on
+\numPHEqual{} and worse on \numPHWorse{} (Wilcoxon $p=\numPHWilcoxon$, sign
+test $p=\numPHSign$); KaPoCE returned no valid solution on
+\numPHKapoceInvalid{} instances, which count as PXMem wins as in PACE.
+Figure~\ref{fig:profile} shows the performance profile.
+
+\begin{table}[!tbp]
+\centering
+\caption{PACE~2021 heuristic track, $T=\SI{600}{s}$, one run per instance:
+PXMem against KaPoCE by instance size.  W/T/L: instances on which PXMem is
+better, equal, worse; $\sum$: total difference of the costs; median: of the
+relative differences in percent.}
+\label{tab:pace-heur}
+\footnotesize
+\input{tables/pace_heur2}
+\end{table}
+
+\begin{figure}[!tbp]
+\centering
+\IfFileExists{figures/profile_pace_heur.pdf}{\includegraphics[width=0.6\textwidth]{figures/profile_pace_heur.pdf}}{\pending{}}
+\caption{Performance profile~\cite{DolanM02profiles} on the PACE heuristic
+track without the development twins: fraction of instances on which a
+solver's cost is within a factor $\tau$ of the better of the two.}
+\label{fig:profile}
+\end{figure}

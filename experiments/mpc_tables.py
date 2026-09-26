@@ -41,6 +41,10 @@ DEFAULTS = {k: r"\pending{}" for k in (
     "numBaseFacLo", "numBaseFacHi", "numCheckMaxGraph", "numCheckMaxRows", "numCheckMaxTime",
     "numCpuModels")}
 DEFAULTS["numKapoceCommit"] = "64e2101"
+DEFAULTS.update({k: r"\pending{}" for k in (
+    "numPHn", "numPHBetter", "numPHEqual", "numPHWorse", "numPHWilcoxon", "numPHSign",
+    "numPHKapoceInvalid", "numPHNoSolution", "numPDn", "numPDBetter", "numPDEqual",
+    "numPDWorse")})
 
 
 def tt(name):
@@ -311,6 +315,7 @@ def snap():
         NUM["numSnapGapMedian"] = f"{np.median(gaps):.1f}\\%"
         NUM["numSnapGapMedDev"] = f"{np.median(role_gaps['dev']):.1f}\\%"
         NUM["numSnapGapMedHeld"] = f"{np.median(role_gaps['held-out']):.1f}\\%"
+        NUM["numSnapGapMinHeld"] = f"{min(role_gaps['held-out']):.2f}\\%"
         NUM["numSnapSpreadMax"] = f"{max(spreads):.2f}\\%"
     if facs:
         NUM["numBaseFacLo"] = f"{min(facs):.2f}"
@@ -377,13 +382,13 @@ def holm(p):
 BIG = 1.0  # relative difference used for a run that one solver lost by forfeit
 
 
-def paired(tag):
+def paired(tag, field="ours"):
     """Per graph: list of relative differences (PXMem - KaPoCE)/KaPoCE in %,
     with forfeits (invalid KaPoCE output: PXMem wins; no PXMem solution at the
     cut: PXMem loses) coded as -+100%."""
     out, forfeits = {}, {}
     for (g, sd), r in runs(tag).items():
-        k, o = r.get("kapoce"), r.get("ours")
+        k, o = r.get("kapoce"), r.get(field)
         if not r.get("kapoce_valid", False):
             d = -100.0 * BIG
             forfeits.setdefault(g, []).append("kapoce")
@@ -438,6 +443,17 @@ def h2h(tag, label):
     NUM[f"numHH{key}Wilcoxon"] = f"{wp:.3f}"
     NUM[f"numHH{key}Sign"] = f"{sp:.3f}"
     NUM[f"numHH{key}Graphs"] = str(len(m))
+    NUM[f"numHH{key}Runs"] = str(sum(r[1] for r in rows))
+    NUM[f"numHH{key}ForfeitK"] = str(sum(v.count("kapoce") for v in forfeits.values()))
+    NUM[f"numHH{key}ForfeitP"] = str(sum(v.count("pxmem") for v in forfeits.values()))
+    NUM[f"numHH{key}MaxAbs"] = f"{max(abs(x) for x in meds):.2f}\\%"
+    # sensitivity: PXMem scored at T instead of at KaPoCE's elapsed time
+    PT, _ = paired(tag, "ours_at_T")
+    mt = np.array([float(np.median([PT[g][s] for s in PT[g]])) for g in graphs])
+    NUM[f"numHH{key}AtTBetter"] = str(int((mt < 0).sum()))
+    NUM[f"numHH{key}AtTWorse"] = str(int((mt > 0).sum()))
+    nzt = mt[mt != 0]
+    NUM[f"numHH{key}AtTWilcoxon"] = f"{wilcoxon(nzt).pvalue:.3f}" if len(nzt) else "1.000"
     return rows
 
 
@@ -463,6 +479,7 @@ def pace_heur():
             ratio = (o / best, k / best)
         (dev if i in PACE_DEV else held).append((i, d, ratio, r))
     if not held:
+        write("pace_heur2", "\\begin{tabular}{l}\n\\pending{}\n\\end{tabular}\n")
         return
     d = np.array([x[1] for x in held])
     nz = d[d != 0]
@@ -492,6 +509,24 @@ def pace_heur():
     os.makedirs(os.path.join(ROOT, "paper_mpc", "figures"), exist_ok=True)
     fig.savefig(os.path.join(ROOT, "paper_mpc", "figures", "profile_pace_heur.pdf"))
     plt.close(fig)
+    # W/T/L by instance size; development twins in a separate row
+    def row(label, xs):
+        dx = np.array([x[1] for x in xs])
+        diff = sum(x[3]["ours"] - x[3]["kapoce"] for x in xs
+                   if x[3].get("ours") is not None and x[3].get("kapoce_valid", False))
+        return (f"{label} & {len(xs)} & {int((dx < 0).sum())}/{int((dx == 0).sum())}/"
+                f"{int((dx > 0).sum())} & ${diff:+d}$ & ${np.median(dx):+.4f}$ \\\\")
+    bins = [(0, 1e3, "$<10^3$"), (1e3, 1e4, "$10^3$--$10^4$"), (1e4, 1e5, "$10^4$--$10^5$"),
+            (1e5, np.inf, "$\\ge 10^5$")]
+    lines = [row(lab, [x for x in held if lo <= x[3]["n"] < hi]) for lo, hi, lab in bins
+             if any(lo <= x[3]["n"] < hi for x in held)]
+    lines.append("\\midrule")
+    lines.append(row("without dev.\\ twins", held))
+    if dev:
+        lines.append(row("development twins", dev))
+    write("pace_heur2", "\\begin{tabular}{lrcrr}\n\\toprule\n"
+          "vertices & instances & W/T/L & $\\sum$ PXMem$-$KaPoCE & median (\\%) \\\\\n"
+          "\\midrule\n" + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n")
     dd = np.array([x[1] for x in dev])
     if len(dd):
         NUM.update({"numPDn": str(len(dd)), "numPDBetter": str(int((dd < 0).sum())),
