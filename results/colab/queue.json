@@ -13085,7 +13085,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790406833.4437697
  },
@@ -13125,7 +13125,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790406837.9454865
  },
