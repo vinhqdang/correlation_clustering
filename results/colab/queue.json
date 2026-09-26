@@ -15015,7 +15015,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790423886.4395823
  },
@@ -15055,7 +15055,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790423907.39425
  },
@@ -15095,7 +15095,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790423911.1606538
  },
@@ -15135,7 +15135,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790423914.9657311
  },
