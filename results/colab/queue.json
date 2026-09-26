@@ -13165,7 +13165,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790408554.0550497
  },
@@ -13235,9 +13235,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null,
-  "started": 1790409601.4290369
+  "status": "running",
+  "machine": "w4",
+  "started": 1790412292.4622545
  },
  {
   "id": "s2h_cit-HepTh_9",
@@ -13245,9 +13245,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null,
-  "started": 1790409601.4290378
+  "status": "running",
+  "machine": "w4",
+  "started": 1790412292.4622567
  },
  {
   "id": "s2h_cit-HepPh_9",
@@ -13255,9 +13255,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null,
-  "started": 1790409601.4290383
+  "status": "running",
+  "machine": "w4",
+  "started": 1790412292.4622571
  },
  {
   "id": "s2h_p2p-Gnutella31_9",
@@ -13405,8 +13405,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790410432.429408
  },
  {
@@ -13415,8 +13415,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "started": 1790410432.4294083
  },
  {
@@ -13505,8 +13505,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790412292.4622579
  },
  {
   "id": "lpack_amazon0302_0",
