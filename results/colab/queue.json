@@ -13625,7 +13625,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790414130.5828514
  },
@@ -13665,7 +13665,7 @@
   "T": 150.0,
   "seed": 1,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790414133.5029926
  },
@@ -13695,8 +13695,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790414215.7343469
  },
  {
@@ -13705,8 +13705,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790414215.7343476
  },
  {
@@ -13715,8 +13715,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "soc-Slashdot0902",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790414215.734348
  },
  {
