@@ -1,0 +1,1 @@
+{"graph": "amazon0302", "n": 262111, "m": 899792, "pairs": 6588959, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 2.465496778488159, "value": 511221.0, "stars": 257220, "time": 143.67526960372925, "check": "ok", "certified": 511221, "lb_exact": 511221.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
