@@ -15555,8 +15555,8 @@
   "T": 60.0,
   "seed": 5,
   "graph": "email-Eu-core",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790426546.8525627
  },
  {
@@ -15565,8 +15565,8 @@
   "T": 60.0,
   "seed": 5,
   "graph": "facebook",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790426546.852565
  },
  {
@@ -15575,8 +15575,8 @@
   "T": 60.0,
   "seed": 5,
   "graph": "wiki-Vote",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790426546.8525655
  },
  {
@@ -15585,8 +15585,8 @@
   "T": 60.0,
   "seed": 5,
   "graph": "cit-HepTh",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "started": 1790426546.8525658
  },
  {
