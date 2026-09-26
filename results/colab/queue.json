@@ -15995,7 +15995,7 @@
   "T": 60.0,
   "seed": 8,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790431064.4859474
  },
@@ -16075,7 +16075,7 @@
   "T": 60.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790431091.6212118
  },
