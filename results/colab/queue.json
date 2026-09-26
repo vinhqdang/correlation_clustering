@@ -18081,7 +18081,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact194.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790449941.333257
  },
@@ -18121,7 +18121,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact198.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790449948.6353018
  },
