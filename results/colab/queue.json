@@ -13405,9 +13405,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null,
-  "started": 1790410432.429408
+  "status": "running",
+  "machine": "w9",
+  "started": 1790412399.2774382
  },
  {
   "id": "lpack_loc-Brightkite_0",
@@ -13415,9 +13415,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null,
-  "started": 1790410432.4294083
+  "status": "running",
+  "machine": "w9",
+  "started": 1790412399.2774408
  },
  {
   "id": "lpack_BitcoinOTC+_0",
@@ -13425,7 +13425,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790412139.725362
  },
@@ -13515,8 +13515,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790412399.2774415
  },
  {
   "id": "lpack_roadNet-PA_0",
@@ -13524,8 +13525,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790412399.2774425
  },
  {
   "id": "s2h150_email-Eu-core_0",

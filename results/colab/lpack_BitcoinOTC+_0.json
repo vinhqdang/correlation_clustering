@@ -1,0 +1,1 @@
+{"graph": "BitcoinOTC+", "n": 5573, "m": 18591, "pairs": 972669, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 0.8050799369812012, "value": 15642.0, "stars": 2458, "time": 219.8726155757904, "check": "ok", "certified": 15642, "lb_exact": 15642.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
