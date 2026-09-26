@@ -1,0 +1,1 @@
+{"graph": "amazon0302", "n": 262111, "m": 899792, "pairs": 6588959, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 2.6756699085235596, "value": 429904.98333333805, "converged": false, "rounds": 24, "rows": 7025889, "time": 1824.8447020053864, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
