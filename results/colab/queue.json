@@ -9619,7 +9619,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790386010.6212509
  },
