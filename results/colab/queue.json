@@ -65,7 +65,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur007.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790458999.922563
  },
