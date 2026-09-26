@@ -1,0 +1,1 @@
+{"graph": "ca-AstroPh", "n": 18772, "m": 198050, "pairs": 4639091, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 3.6046252250671387, "value": 117865.0, "stars": 39911, "time": 175.50779962539673, "check": "ok", "certified": 117865, "lb_exact": 117865.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

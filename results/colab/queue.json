@@ -13155,7 +13155,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790408554.055049
  },
@@ -13185,7 +13185,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790409445.4622242
  },
@@ -13225,7 +13225,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790409601.4290352
  },
@@ -13265,7 +13265,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790409605.809307
  },
@@ -13385,7 +13385,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790410432.429406
  },
@@ -13395,7 +13395,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790410432.4294078
  },
