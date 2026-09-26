@@ -1,0 +1,1 @@
+{"graph": "BitcoinAlpha+", "n": 3683, "m": 12972, "pairs": 493107, "mode": "star", "T": 3600.0, "seed": 0, "support_time": 0.6857664585113525, "value": 8433.4357556568, "converged": false, "rounds": 8, "rows": 2065844, "time": 3604.0882256031036, "tag": "lstar", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
