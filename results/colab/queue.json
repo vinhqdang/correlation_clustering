@@ -13095,7 +13095,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790406833.4437702
  },
@@ -13135,7 +13135,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790406837.9455
  },
@@ -13195,7 +13195,7 @@
   "T": 600.0,
   "seed": 8,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790409445.4622252
  },
@@ -13235,8 +13235,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790409601.4290369
  },
  {
@@ -13245,8 +13245,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepTh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790409601.4290378
  },
  {
@@ -13255,8 +13255,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790409601.4290383
  },
  {
@@ -13275,7 +13275,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790409605.8093085
  },
@@ -13305,7 +13305,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790410416.8967857
  },
@@ -13425,8 +13425,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790412139.725362
  },
  {
   "id": "lpack_BitcoinAlpha+_0",
@@ -13434,8 +13435,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790412139.725365
  },
  {
   "id": "lpack_com-Amazon_0",
@@ -13443,8 +13445,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790412139.7253659
  },
  {
   "id": "lpack_com-DBLP_0",
@@ -13452,8 +13455,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790412139.7253664
  },
  {
   "id": "lpack_email-Eu-core_0",
@@ -13461,8 +13465,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790412152.7617505
  },
  {
   "id": "lpack_facebook_0",
@@ -13470,8 +13475,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790412152.7617521
  },
  {
   "id": "lpack_wiki-Vote_0",
@@ -13479,8 +13485,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790412152.7617528
  },
  {
   "id": "lpack_cit-HepPh_0",
@@ -13488,8 +13495,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790412152.7617533
  },
  {
   "id": "lpack_p2p-Gnutella31_0",
