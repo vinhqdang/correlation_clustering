@@ -13215,7 +13215,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790409445.4622257
  },
@@ -13325,7 +13325,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790410416.8967874
  },
@@ -13335,7 +13335,7 @@
   "T": 7200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790410416.8967881
  },
@@ -13555,7 +13555,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790413109.1463535
  },
@@ -13605,8 +13605,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790414130.582849
  },
  {
   "id": "s2h150_email-EuAll_0",
@@ -13614,8 +13615,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790414130.5828505
  },
  {
   "id": "s2h150_amazon0302_0",
@@ -13623,8 +13625,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790414130.5828514
  },
  {
   "id": "s2h150_web-NotreDame_0",
@@ -13632,8 +13635,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790414130.582852
  },
  {
   "id": "s2h150_roadNet-PA_0",
@@ -13641,8 +13645,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790414133.5029902
  },
  {
   "id": "s2h150_email-Eu-core_1",
@@ -13650,8 +13655,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790414133.502992
  },
  {
   "id": "s2h150_facebook_1",
@@ -13659,8 +13665,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790414133.5029926
  },
  {
   "id": "s2h150_wiki-Vote_1",
@@ -13668,8 +13675,9 @@
   "T": 150.0,
   "seed": 1,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790414133.5029933
  },
  {
   "id": "s2h150_cit-HepTh_1",

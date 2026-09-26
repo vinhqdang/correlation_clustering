@@ -1,0 +1,1 @@
+{"graph": "ca-GrQc", "n": 5242, "m": 14484, "pairs": 78224, "mode": "tri", "T": 7200.0, "seed": 0, "support_time": 0.6060445308685303, "value": 4931.0, "converged": true, "rounds": 2, "rows": 85097, "time": 1.9055149555206299, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
