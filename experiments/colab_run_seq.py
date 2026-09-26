@@ -248,7 +248,8 @@ def run_kapoce2(g, inp, T, seed):
     lab = B.apply_edits(g, rows)
     c = int(cc.cost(g, lab))
     n_edits = len({(min(u, v), max(u, v)) for u, v in rows})
-    return {'kapoce': c, 'kapoce_time': elapsed, 'kapoce_cpu': ru.ru_utime + ru.ru_stime,
+    return {'_labels_kapoce': lab,
+            'kapoce': c, 'kapoce_time': elapsed, 'kapoce_cpu': ru.ru_utime + ru.ru_stime,
             'kapoce_sigterm': stopped, 'kapoce_valid': bool(n_edits == c),
             'kapoce_edits': n_edits, 'kapoce_rss_mb': ru.ru_maxrss / 1024,
             'kapoce_exit': status}
@@ -267,13 +268,16 @@ hist = []
 lab, c = pxmem(g, max(1.0, a['T'] - off), rng=a['seed'], history=hist, **a['opts'])
 t = time.time() - t_start
 assert int(cc.cost(g, lab)) == c
+if a.get('save'):
+    import numpy as np
+    np.savez_compressed(a['save'], labels=np.asarray(lab, dtype=np.int32))
 print('RESULT' + json.dumps({'ours_final': int(c), 'ours_time': t, 'ours_load': off,
       'hist': [(off + h[0], int(h[1])) for h in hist]}))
 """
 
 
-def run_ours2(inp, T, seed, opts):
-    arg = json.dumps({'input': inp, 'T': T, 'seed': seed, 'opts': opts})
+def run_ours2(inp, T, seed, opts, save=None):
+    arg = json.dumps({'input': inp, 'T': T, 'seed': seed, 'opts': opts, 'save': save})
     t0 = time.time()
     p = subprocess.Popen(['taskset', '-c', CPU, sys.executable, '-c', PX_CHILD2, arg, CC,
                           repr(t0)], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -330,12 +334,27 @@ def main2(graphs, T, seed, tag, opts):
                'opts': opts, 'protocol': 'v2: sequential, pinned to one CPU, same text input, '
                'KaPoCE limits from T, random order, PXMem scored at KaPoCE time',
                'kapoce_first': kfirst, 'commit': commit, 'machine': machine()}
+        # the final clusterings of the primary runs (seed 0 at 600 s on the SNAP
+        # graphs) are archived so that their costs can be re-checked
+        keep = seed == 0 and tag == 's2h'
+        save = f'/tmp/px_{safe}.npz' if keep else None
         if kfirst:
             res.update(run_kapoce2(g, inp, T, seed))
-            res.update(run_ours2(inp, T, seed, opts))
+            res.update(run_ours2(inp, T, seed, opts, save))
         else:
-            res.update(run_ours2(inp, T, seed, opts))
+            res.update(run_ours2(inp, T, seed, opts, save))
             res.update(run_kapoce2(g, inp, T, seed))
+        lab_k = res.pop('_labels_kapoce')
+        if keep:
+            import instance_meta as M
+            import numpy as np
+            meta = {k: np.array(v) for k, v in M.meta(name, g).items()}
+            os.makedirs(os.path.join(OUT, 'certs'), exist_ok=True)
+            np.savez_compressed(os.path.join(OUT, 'certs', f'{tag}_{safe}_{seed}.kapoce.labels.npz'),
+                                labels=np.asarray(lab_k, dtype=np.int32), **meta)
+            np.savez_compressed(os.path.join(OUT, 'certs', f'{tag}_{safe}_{seed}.pxmem.labels.npz'),
+                                labels=np.load(save)['labels'], **meta)
+            os.remove(save)
         cut = min(T, res['kapoce_time'])
         res['cut'] = cut
         res['ours'] = at(res['hist'], cut)          # the reported comparison

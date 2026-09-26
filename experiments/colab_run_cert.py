@@ -87,8 +87,9 @@ def main(graphs, T, seed, tag):
         else:
             out['check'] = 'no bound (support too large)'
         # the clustering itself, so that the upper bound can be re-checked
+        meta = {k: np.array(v) for k, v in M.meta(name, g).items()}
         np.savez_compressed(os.path.join(OUT, 'certs', f'{tag}_{safe}_{seed}.labels.npz'),
-                            labels=np.asarray(res.labels, dtype=np.int32))
+                            labels=np.asarray(res.labels, dtype=np.int32), **meta)
         with open(os.path.join(OUT, f'{tag}_{safe}_{seed}.json'), 'w') as fh:
             json.dump(out, fh)
         print(name, {k: out[k] for k in ('cost', 'lb', 'time', 'check')}, flush=True)

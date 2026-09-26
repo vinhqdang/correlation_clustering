@@ -439,6 +439,26 @@ def check_dir(data_dir, cert_dir, out_csv):
     for path in sorted(glob.glob(os.path.join(cert_dir, "**", "*.npz"), recursive=True)):
         cert = dict(np.load(path, allow_pickle=False))
         if path.endswith(".labels.npz"):
+            # a clustering without certificate (primal runs): check its cost only
+            cert_path = path[:-len(".labels.npz")] + ".npz"
+            if os.path.exists(cert_path):
+                continue
+            lab = dict(np.load(path, allow_pickle=False))
+            row = {"certificate": os.path.relpath(path, cert_dir)}
+            try:
+                f = _meta(lab, "instance_file")
+                if f is None:
+                    raise ValueError("clustering names no instance file")
+                g = read_instance(os.path.join(data_dir, f), str(_meta(lab, "instance_format")),
+                                  int(_meta(lab, "sign_col", -1)))
+                if str(_meta(lab, "edge_sha256")) != g.edge_sha256:
+                    raise ValueError("edge_sha256 mismatch")
+                row.update({"instance": f, "n": g.n, "m": g.m, "identity": "hash",
+                            "cost": clustering_cost(g, lab["labels"]), "status": "ok",
+                            "raw_sha256": g.raw_sha256, "edge_sha256": g.edge_sha256})
+            except (ValueError, OSError) as exc:
+                row["status"] = f"rejected: {exc}"
+            rows.append(row)
             continue
         row = {"certificate": os.path.relpath(path, cert_dir)}
         try:
