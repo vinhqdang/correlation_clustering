@@ -265,7 +265,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur027.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790464372.9933102
  },
@@ -295,7 +295,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur030.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790465252.2556632
  },
