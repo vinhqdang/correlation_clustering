@@ -5,8 +5,9 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790424460.511829
  },
  {
   "id": "lstar_email-Eu-core_0",
@@ -14,8 +15,9 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790424460.5118306
  },
  {
   "id": "lstar_BitcoinAlpha+_0",
@@ -23,8 +25,9 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790424460.5118318
  },
  {
   "id": "lstar_BitcoinOTC+_0",
@@ -32,8 +35,9 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790424460.5118332
  },
  {
   "id": "lstar_facebook_0",
@@ -41,8 +45,9 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790424463.0130224
  },
  {
   "id": "ltri_ca-HepTh_0",
@@ -50,8 +55,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790424463.0130243
  },
  {
   "id": "ltri_ca-HepPh_0",
@@ -59,8 +65,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790424463.013025
  },
  {
   "id": "ltri_ca-AstroPh_0",
@@ -68,8 +75,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790424463.0130258
  },
  {
   "id": "ltri_ca-CondMat_0",
@@ -77,8 +85,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790424468.569745
  },
  {
   "id": "ltri_email-Enron_0",
@@ -86,8 +95,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790424468.5697467
  },
  {
   "id": "ltri_loc-Brightkite_0",
@@ -95,8 +105,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790424468.5697472
  },
  {
   "id": "ltri_BitcoinOTC+_0",
@@ -104,8 +115,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790424468.5697482
  },
  {
   "id": "ltri_BitcoinAlpha+_0",
@@ -113,8 +125,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790424471.6724231
  },
  {
   "id": "ltri_com-Amazon_0",
@@ -122,8 +135,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790424471.6724248
  },
  {
   "id": "ltri_com-DBLP_0",
@@ -131,8 +145,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790424471.6724255
  },
  {
   "id": "ltri_email-Eu-core_0",
@@ -140,8 +155,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790424471.672426
  },
  {
   "id": "ltri_facebook_0",
@@ -149,8 +165,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790424474.1097374
  },
  {
   "id": "ltri_wiki-Vote_0",
@@ -158,8 +175,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790424474.1097386
  },
  {
   "id": "ltri_cit-HepPh_0",
@@ -167,8 +185,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790424474.1097393
  },
  {
   "id": "ltri_p2p-Gnutella31_0",
@@ -176,8 +195,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790424474.1097398
  },
  {
   "id": "ltri_amazon0302_0",
@@ -185,8 +205,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790424476.7033722
  },
  {
   "id": "ltri_roadNet-PA_0",
@@ -194,8 +215,9 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790424476.7033737
  },
  {
   "id": "c1_ca-GrQc_0",
@@ -15163,7 +15185,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790423870.2687283
  },
@@ -15203,7 +15225,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790423876.1005464
  },
@@ -15243,7 +15265,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790423886.4395845
  },
@@ -15283,7 +15305,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790423907.3942525
  },
@@ -15323,7 +15345,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790423911.160658
  },
@@ -15363,7 +15385,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790423914.965734
  },
@@ -15393,7 +15415,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424021.0359244
  },
@@ -15413,8 +15435,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790424476.7033744
  },
  {
   "id": "s2h60_facebook_4",
@@ -15422,8 +15445,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790424476.703375
  },
  {
   "id": "s2h60_wiki-Vote_4",
