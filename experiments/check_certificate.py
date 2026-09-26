@@ -195,6 +195,10 @@ def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
     for q in range(rows.shape[0]):
         r = rows[q]
         s, e = ptr[r], ptr[r + 1]
+        if e == s:
+            # an empty row reads 0 >= b
+            ok[q] = 1 if b[r] <= 0 else 0
+            continue
         k = 0
         too_big = False
         for p in range(s, e):
@@ -280,7 +284,13 @@ def _max_independent(adj):
         if adj[v] & cand:
             rec(cand - {v}, size)
 
-    rec(set(adj), 0)
+    # the recursion is at most |V| deep
+    limit = sys.getrecursionlimit()
+    sys.setrecursionlimit(max(limit, 4 * len(adj) + 1000))
+    try:
+        rec(set(adj), 0)
+    finally:
+        sys.setrecursionlimit(limit)
     return best
 
 
@@ -335,15 +345,15 @@ def _meta(cert, key, default=None):
 def check(g, cert):
     """g: Instance read by read_instance; cert: mapping of arrays."""
     report = {"n": g.n, "m": g.m, "raw_sha256": g.raw_sha256, "edge_sha256": g.edge_sha256}
-    # 0. identity of the instance
-    if int(_meta(cert, "n", g.n)) != g.n:
-        raise ValueError(f"certificate is for n={_meta(cert, 'n')}, file has n={g.n}")
-    for key, have in (("instance_m", g.m), ("edge_sha256", g.edge_sha256),
+    # 0. identity of the instance: every field is mandatory
+    for key, have in (("n", g.n), ("instance_m", g.m), ("edge_sha256", g.edge_sha256),
                       ("raw_sha256", g.raw_sha256)):
         want = _meta(cert, key)
-        if want is not None and str(want) != str(have):
+        if want is None:
+            raise ValueError(f"certificate does not record {key}")
+        if str(want) != str(have):
             raise ValueError(f"{key} mismatch: certificate {want}, file {have}")
-    report["identity"] = "hash" if _meta(cert, "edge_sha256") is not None else "n only"
+    report["identity"] = "hash"
     ptr = np.asarray(cert["ptr"]).astype(np.int64)
     u, v = np.asarray(cert["u"]).astype(np.int64), np.asarray(cert["v"]).astype(np.int64)
     fval, fb = np.asarray(cert["val"], dtype=np.float64), np.asarray(cert["b"], dtype=np.float64)
@@ -458,6 +468,27 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
         os.replace(out_csv + ".tmp", out_csv)
 
     # resumable: rows already in out_csv are kept and not checked again
+    # the instance files are looked up in the committed manifest, so a
+    # certificate cannot point the checker to a file of its own choosing
+    manifest = None
+    for mf in (os.path.join(data_dir, "MANIFEST.sha256"),
+               os.path.join(data_dir, "..", "MANIFEST.sha256")):
+        if os.path.exists(mf):
+            with open(mf) as fh:
+                manifest = dict(reversed(line.split(None, 1)) for line in fh if line.strip())
+            manifest = {k.strip(): v for k, v in manifest.items()}
+            break
+
+    def trusted(f):
+        if manifest is not None:
+            if f not in manifest:
+                raise ValueError(f"{f} is not in the instance manifest")
+            with open(os.path.join(data_dir, f), "rb") as fh:
+                import hashlib
+                if hashlib.sha256(fh.read()).hexdigest() != manifest[f]:
+                    raise ValueError(f"{f} differs from the instance manifest")
+        return os.path.join(data_dir, f)
+
     rows = []
     if resume and os.path.exists(out_csv):
         with open(out_csv, newline="") as fh:
@@ -478,7 +509,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
                 f = _meta(lab, "instance_file")
                 if f is None:
                     raise ValueError("clustering names no instance file")
-                g = read_instance(os.path.join(data_dir, f), str(_meta(lab, "instance_format")),
+                g = read_instance(trusted(f), str(_meta(lab, "instance_format")),
                                   int(_meta(lab, "sign_col", -1)))
                 if str(_meta(lab, "edge_sha256")) != g.edge_sha256:
                     raise ValueError("edge_sha256 mismatch")
@@ -497,7 +528,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
             if f is None:
                 raise ValueError("certificate names no instance file")
             row["instance"] = f
-            row.update(check_file(os.path.join(data_dir, f), path))
+            row.update(check_file(trusted(f), path))
             lab = path[:-4] + ".labels.npz"
             if os.path.exists(lab):
                 g = read_instance(os.path.join(data_dir, f),

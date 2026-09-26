@@ -28,7 +28,12 @@ def _cert(tmp_path, seed=0):
     res = certiflip(g, time_limit=8, rng=seed, cert_path=path)
     gr = str(tmp_path / "g.gr")
     _write_pace(g, gr)
-    return C.read_instance(gr, "pace"), res, dict(np.load(path)), g
+    inst = C.read_instance(gr, "pace")
+    cert = dict(np.load(path))
+    cert.update({"n": np.array(inst.n), "instance_m": np.array(inst.m),
+                 "edge_sha256": np.array(inst.edge_sha256),
+                 "raw_sha256": np.array(inst.raw_sha256)})
+    return inst, res, cert, g
 
 
 def test_reader_matches_solver_graph(tmp_path):
@@ -50,10 +55,34 @@ def test_certificate_rejects_other_instance(tmp_path):
     cert["edge_sha256"] = np.array("0" * 64)
     with pytest.raises(ValueError):
         C.check(inst, cert)
-    cert.pop("edge_sha256")
+    cert["edge_sha256"] = np.array(inst.edge_sha256)
     cert["n"] = np.array(inst.n + 1)
     with pytest.raises(ValueError):
         C.check(inst, cert)
+    # a certificate without the instance hash is rejected
+    cert["n"] = np.array(inst.n)
+    cert.pop("edge_sha256")
+    with pytest.raises(ValueError):
+        C.check(inst, cert)
+
+
+def test_empty_row_and_large_star(tmp_path):
+    """An empty row is decided without looping; a star row with many leaves
+    does not exhaust the recursion limit."""
+    inst, _, cert, _ = _cert(tmp_path, seed=1)
+    for key in ("ptr", "b", "y"):
+        cert[key] = cert[key].copy()
+    cert["ptr"] = np.concatenate([cert["ptr"], cert["ptr"][-1:]])
+    cert["b"] = np.concatenate([cert["b"], [0.0]])
+    cert["y"] = np.concatenate([cert["y"], [1.0]])
+    C.check(inst, cert)
+    cert["b"][-1] = 1.0
+    with pytest.raises(ValueError):
+        C.check(inst, cert)
+    adj = {t: set() for t in range(1500)}
+    adj[0].add(1)
+    adj[1].add(0)
+    assert C._max_independent(adj) == 1499
 
 
 def test_certificate_rejects_invalid_row(tmp_path):
