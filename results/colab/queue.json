@@ -12175,7 +12175,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790395099.235617
  },
@@ -12255,7 +12255,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790395143.5846603
  },
@@ -12375,7 +12375,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790395229.1934757
  },
