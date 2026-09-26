@@ -12215,7 +12215,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790395112.0402327
  },
@@ -12295,7 +12295,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790395182.1764872
  },
