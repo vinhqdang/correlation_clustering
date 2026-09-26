@@ -205,9 +205,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur021.gr",
-  "status": "pending",
-  "machine": null,
-  "started": 1790463680.4802928
+  "status": "running",
+  "machine": "w4",
+  "started": 1790464840.834633
  },
  {
   "id": "s2p_pace-heur_heur022.gr_0",
@@ -215,9 +215,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur022.gr",
-  "status": "pending",
-  "machine": null,
-  "started": 1790463680.4802952
+  "status": "running",
+  "machine": "w4",
+  "started": 1790464840.8346355
  },
  {
   "id": "s2p_pace-heur_heur023.gr_0",
@@ -225,9 +225,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur023.gr",
-  "status": "pending",
-  "machine": null,
-  "started": 1790463680.4802964
+  "status": "running",
+  "machine": "w4",
+  "started": 1790464840.8346364
  },
  {
   "id": "s2p_pace-heur_heur024.gr_0",
@@ -235,9 +235,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur024.gr",
-  "status": "pending",
-  "machine": null,
-  "started": 1790463680.4802973
+  "status": "running",
+  "machine": "w4",
+  "started": 1790464840.8346372
  },
  {
   "id": "s2p_pace-heur_heur025.gr_0",
@@ -285,8 +285,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur029.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790465252.255661
  },
  {
   "id": "s2p_pace-heur_heur030.gr_0",
@@ -294,8 +295,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur030.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790465252.2556632
  },
  {
   "id": "s2p_pace-heur_heur031.gr_0",
@@ -303,8 +305,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur031.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790465252.2556643
  },
  {
   "id": "s2p_pace-heur_heur032.gr_0",
@@ -312,8 +315,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur032.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790465252.2556653
  },
  {
   "id": "s2p_pace-heur_heur033.gr_0",
