@@ -13315,7 +13315,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790410416.8967872
  },
@@ -13435,7 +13435,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790412139.725365
  },
@@ -13445,7 +13445,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790412139.7253659
  },
@@ -13465,7 +13465,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790412152.7617505
  },
@@ -13475,7 +13475,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790412152.7617521
  },

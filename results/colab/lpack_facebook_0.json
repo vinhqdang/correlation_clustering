@@ -1,0 +1,1 @@
+{"graph": "facebook", "n": 4039, "m": 88234, "pairs": 1446301, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 0.728621244430542, "value": 42953.0, "stars": 17853, "time": 212.76816630363464, "check": "ok", "certified": 42953, "lb_exact": 42953.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
