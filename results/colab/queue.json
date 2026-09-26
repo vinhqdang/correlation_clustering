@@ -13875,7 +13875,7 @@
   "T": 150.0,
   "seed": 2,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790415763.470682
  },
@@ -13915,7 +13915,7 @@
   "T": 150.0,
   "seed": 3,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790415769.4421024
  },
