@@ -445,9 +445,10 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
     import csv
     import glob
     import os
+    import time
     keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
-            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "raw_sha256",
-            "edge_sha256"]
+            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "seconds",
+            "raw_sha256", "edge_sha256"]
 
     def save():
         with open(out_csv + ".tmp", "w", newline="") as fh:
@@ -490,6 +491,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
             save()
             continue
         row = {"certificate": os.path.relpath(path, cert_dir)}
+        t0 = time.time()
         try:
             f = _meta(cert, "instance_file")
             if f is None:
@@ -505,6 +507,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
             row["status"] = "ok"
         except (ValueError, OSError) as exc:
             row["status"] = f"rejected: {exc}"
+        row["seconds"] = round(time.time() - t0, 2)
         rows.append(row)
         save()
         print({k: row.get(k) for k in ("certificate", "status", "certified")}, flush=True)
