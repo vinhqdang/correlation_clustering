@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact114.gr", "n": 211, "m": 1139, "pairs": 1549, "mode": "pack", "T": 60.0, "seed": 1, "support_time": 0.9943251609802246, "value": 118.0, "stars": 100, "time": 113.65204095840454, "check": "ok", "certified": 118, "lb_exact": 118.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "AMD EPYC 7B12", "python": "3.13.15"}
