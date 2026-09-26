@@ -13176,8 +13176,8 @@
   "seed": 8,
   "graph": "email-EuAll",
   "status": "running",
-  "machine": "w3",
-  "started": 1790408554.0550501
+  "machine": "w8",
+  "started": 1790414015.7756553
  },
  {
   "id": "s2h_amazon0302_8",
@@ -13235,9 +13235,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null,
-  "started": 1790412292.4622545
+  "status": "running",
+  "machine": "w2",
+  "started": 1790413992.0600305
  },
  {
   "id": "s2h_cit-HepTh_9",
@@ -13245,9 +13245,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null,
-  "started": 1790412292.4622567
+  "status": "running",
+  "machine": "w2",
+  "started": 1790413992.0600328
  },
  {
   "id": "s2h_cit-HepPh_9",
@@ -13255,9 +13255,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null,
-  "started": 1790412292.4622571
+  "status": "running",
+  "machine": "w2",
+  "started": 1790413992.0600336
  },
  {
   "id": "s2h_p2p-Gnutella31_9",
@@ -13285,7 +13285,7 @@
   "T": 600.0,
   "seed": 9,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790409605.809309
  },
@@ -13365,7 +13365,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790410429.2985744
  },
@@ -13375,7 +13375,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790410429.298575
  },
@@ -13405,7 +13405,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790412399.2774382
  },
@@ -13485,7 +13485,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790412152.7617528
  },
@@ -13495,7 +13495,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790412152.7617533
  },
@@ -13505,9 +13505,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null,
-  "started": 1790412292.4622579
+  "status": "running",
+  "machine": "w2",
+  "started": 1790413992.060034
  },
  {
   "id": "lpack_amazon0302_0",
@@ -13535,7 +13535,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790413109.1463506
  },
@@ -13545,7 +13545,7 @@
   "T": 150.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790413109.1463525
  },
@@ -13575,8 +13575,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790414015.7756572
  },
  {
   "id": "s2h150_p2p-Gnutella31_0",
@@ -13584,8 +13585,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790414015.7756577
  },
  {
   "id": "s2h150_soc-Slashdot0902_0",
@@ -13593,8 +13595,9 @@
   "T": 150.0,
   "seed": 0,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790414015.7756588
  },
  {
   "id": "s2h150_loc-Gowalla_0",
