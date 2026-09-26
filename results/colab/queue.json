@@ -7,7 +7,7 @@
   "graph": "ca-HepTh",
   "status": "running",
   "machine": "w3",
-  "started": 1790424460.511829
+  "started": 1790439136.1450698
  },
  {
   "id": "lstar_email-Eu-core_0",
@@ -35,7 +35,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790424460.5118332
  },
@@ -97,7 +97,7 @@
   "graph": "email-Enron",
   "status": "running",
   "machine": "w6",
-  "started": 1790438227.41068
+  "started": 1790439145.1179912
  },
  {
   "id": "ltri_loc-Brightkite_0",
@@ -107,7 +107,7 @@
   "graph": "loc-Brightkite",
   "status": "running",
   "machine": "w6",
-  "started": 1790438227.4106812
+  "started": 1790439145.1179926
  },
  {
   "id": "ltri_BitcoinOTC+_0",
@@ -177,7 +177,7 @@
   "graph": "wiki-Vote",
   "status": "running",
   "machine": "w8",
-  "started": 1790438240.0417392
+  "started": 1790439150.391193
  },
  {
   "id": "ltri_cit-HepPh_0",
@@ -187,7 +187,7 @@
   "graph": "cit-HepPh",
   "status": "running",
   "machine": "w8",
-  "started": 1790438240.0417407
+  "started": 1790439150.3911943
  },
  {
   "id": "ltri_p2p-Gnutella31_0",
@@ -16905,7 +16905,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact076.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790438227.410683
  },
@@ -16935,7 +16935,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact079.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790438240.0417411
  },
@@ -16945,7 +16945,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact080.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790438240.0417418
  },
@@ -16975,7 +16975,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact083.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790438255.1027968
  },
@@ -16985,7 +16985,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact084.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790438255.102797
  },
@@ -16995,8 +16995,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact085.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790439136.1450708
  },
  {
   "id": "lpack_pace-exact_exact086.gr_1",
@@ -17004,8 +17005,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact086.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790439136.145072
  },
  {
   "id": "lpack_pace-exact_exact087.gr_1",
@@ -17013,8 +17015,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact087.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790439136.1450727
  },
  {
   "id": "lpack_pace-exact_exact088.gr_1",
@@ -17022,8 +17025,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact088.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790439145.117993
  },
  {
   "id": "lpack_pace-exact_exact089.gr_1",
@@ -17031,8 +17035,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact089.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790439145.1179943
  },
  {
   "id": "lpack_pace-exact_exact090.gr_1",
@@ -17040,8 +17045,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact090.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790439150.3911946
  },
  {
   "id": "lpack_pace-exact_exact091.gr_1",
@@ -17049,8 +17055,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact091.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790439150.3911955
  },
  {
   "id": "lpack_pace-exact_exact092.gr_1",
@@ -17058,8 +17065,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact092.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790439155.6957207
  },
  {
   "id": "lpack_pace-exact_exact093.gr_1",
@@ -17067,8 +17075,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact093.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790439155.695722
  },
  {
   "id": "lpack_pace-exact_exact094.gr_1",
@@ -17076,8 +17085,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact094.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790439155.6957226
  },
  {
   "id": "lpack_pace-exact_exact095.gr_1",
@@ -17085,8 +17095,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact095.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790439155.695723
  },
  {
   "id": "lpack_pace-exact_exact096.gr_1",
