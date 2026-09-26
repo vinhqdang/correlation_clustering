@@ -12895,7 +12895,7 @@
   "T": 600.0,
   "seed": 6,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790404966.4430494
  },
@@ -12975,7 +12975,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790404973.4653232
  },
@@ -13225,8 +13225,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790409601.4290352
  },
  {
   "id": "s2h_wiki-Vote_9",
@@ -13234,8 +13235,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790409601.4290369
  },
  {
   "id": "s2h_cit-HepTh_9",
@@ -13243,8 +13245,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790409601.4290378
  },
  {
   "id": "s2h_cit-HepPh_9",
@@ -13252,8 +13255,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790409601.4290383
  },
  {
   "id": "s2h_p2p-Gnutella31_9",
@@ -13261,8 +13265,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790409605.809307
  },
  {
   "id": "s2h_soc-Slashdot0902_9",
@@ -13270,8 +13275,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790409605.8093085
  },
  {
   "id": "s2h_loc-Gowalla_9",
@@ -13279,8 +13285,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790409605.809309
  },
  {
   "id": "s2h_email-EuAll_9",
@@ -13288,8 +13295,9 @@
   "T": 600.0,
   "seed": 9,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790409605.8093097
  },
  {
   "id": "s2h_amazon0302_9",
