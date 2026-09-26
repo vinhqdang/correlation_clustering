@@ -13695,8 +13695,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790415760.813977
  },
  {
@@ -13705,8 +13705,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790415760.8139796
  },
  {
@@ -13715,8 +13715,8 @@
   "T": 150.0,
   "seed": 1,
   "graph": "soc-Slashdot0902",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790415760.81398
  },
  {
@@ -13845,8 +13845,8 @@
   "T": 150.0,
   "seed": 2,
   "graph": "loc-Gowalla",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790415760.8139806
  },
  {
