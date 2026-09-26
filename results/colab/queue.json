@@ -14695,7 +14695,7 @@
   "T": 150.0,
   "seed": 9,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790422309.7347994
  },
@@ -14815,7 +14815,7 @@
   "T": 60.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790422976.6365638
  },
@@ -14855,7 +14855,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790422980.0284913
  },
