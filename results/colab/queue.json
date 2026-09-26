@@ -97,7 +97,7 @@
   "graph": "email-Enron",
   "status": "running",
   "machine": "w6",
-  "started": 1790445471.9842951
+  "started": 1790446351.898831
  },
  {
   "id": "ltri_loc-Brightkite_0",
@@ -107,7 +107,7 @@
   "graph": "loc-Brightkite",
   "status": "running",
   "machine": "w6",
-  "started": 1790445471.9842978
+  "started": 1790446351.8988323
  },
  {
   "id": "ltri_BitcoinOTC+_0",
@@ -17651,7 +17651,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact151.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790445452.8883808
  },
@@ -17671,7 +17671,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact153.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790445471.9842992
  },
@@ -17681,8 +17681,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact154.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790446348.413786
  },
  {
   "id": "lpack_pace-exact_exact155.gr_1",
@@ -17690,8 +17691,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact155.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790446348.4137874
  },
  {
   "id": "lpack_pace-exact_exact156.gr_1",
@@ -17699,8 +17701,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact156.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790446348.4137878
  },
  {
   "id": "lpack_pace-exact_exact157.gr_1",
@@ -17708,8 +17711,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact157.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790446348.4137883
  },
  {
   "id": "lpack_pace-exact_exact158.gr_1",
@@ -17717,8 +17721,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact158.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790446351.8988328
  },
  {
   "id": "lpack_pace-exact_exact159.gr_1",
@@ -17726,8 +17731,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact159.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790446351.8988335
  },
  {
   "id": "lpack_pace-exact_exact160.gr_1",
