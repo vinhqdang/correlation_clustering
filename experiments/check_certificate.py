@@ -356,6 +356,14 @@ def check(g, cert):
         raise ValueError("negative or non-finite multiplier")
     if not (np.all(fval == np.round(fval)) and np.all(fb == np.round(fb))):
         raise ValueError("non-integral row data")
+    # every value must fit into int64 before any cast, or the cast wraps
+    # around (a huge multiplier would become negative); 2^52 keeps the floats
+    # exact integers, and y 2^SCALE < 2^62 bounds the scaled multipliers
+    if (len(fval) and np.abs(fval).max() >= 2.0 ** 52) or \
+            (nrows and np.abs(fb).max() >= 2.0 ** 52):
+        raise ValueError("row data out of range")
+    if nrows and y.max() * 2.0 ** SCALE >= 2.0 ** 62:
+        raise ValueError("multiplier out of range")
     if len(u) and (min(u.min(), v.min()) < 0 or max(u.max(), v.max()) >= g.n):
         raise ValueError("vertex id out of range")
     val, b = fval.astype(np.int64), fb.astype(np.int64)
@@ -384,6 +392,8 @@ def check(g, cert):
     report["star_rows"] = len(big)
     # 3. exact evaluation, in Python integers
     yi = np.floor(y * 2.0 ** SCALE).astype(np.int64)
+    if (yi < 0).any():
+        raise ValueError("negative scaled multiplier")
     key = lo * g.n + hi
     uniq, inv = np.unique(key, return_inverse=True)
     rowof = np.repeat(np.arange(nrows), np.diff(ptr))

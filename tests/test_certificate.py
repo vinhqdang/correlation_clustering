@@ -116,6 +116,21 @@ def test_certificate_rejects_negative_multiplier(tmp_path):
         C.check(g, cert)
 
 
+def test_certificate_rejects_huge_multiplier(tmp_path):
+    """A multiplier too large for int64 must be rejected, not wrap around to
+    a negative value (a zero row with b = -1 would then add to the bound)."""
+    g, _, cert, _ = _cert(tmp_path, seed=1)
+    for key in ("y", "b"):
+        cert[key] = cert[key].copy()
+    cert["y"][0] = 1e10
+    with pytest.raises(ValueError):
+        C.check(g, cert)
+    cert["y"][0] = 0.0
+    cert["b"][0] = -2.0 ** 60
+    with pytest.raises(ValueError):
+        C.check(g, cert)
+
+
 def test_star_formula_is_implied_by_enumeration(tmp_path):
     """Every star row the closed form accepts is valid by exhaustive
     enumeration, and with R complete the two agree exactly."""
