@@ -12185,7 +12185,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790395099.2356176
  },
@@ -12225,7 +12225,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790395112.0402331
  },
@@ -12595,8 +12595,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790400087.6687806
  },
  {
   "id": "s2h_roadNet-PA_3",
@@ -12604,8 +12605,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790400087.6687822
  },
  {
   "id": "s2h_email-Eu-core_4",
@@ -12613,8 +12615,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790400087.668783
  },
  {
   "id": "s2h_facebook_4",
@@ -12622,8 +12625,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790400087.6687837
  },
  {
   "id": "s2h_wiki-Vote_4",
@@ -12631,8 +12635,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790400092.157879
  },
  {
   "id": "s2h_cit-HepTh_4",
@@ -12640,8 +12645,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790400092.1578805
  },
  {
   "id": "s2h_cit-HepPh_4",
@@ -12649,8 +12655,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790400092.1578813
  },
  {
   "id": "s2h_p2p-Gnutella31_4",
@@ -12658,8 +12665,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790400092.157882
  },
  {
   "id": "s2h_soc-Slashdot0902_4",
