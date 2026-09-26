@@ -1,5 +1,203 @@
 [
  {
+  "id": "lstar_ca-HepTh_0",
+  "tag": "lstar",
+  "T": 3600.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lstar_email-Eu-core_0",
+  "tag": "lstar",
+  "T": 3600.0,
+  "seed": 0,
+  "graph": "email-Eu-core",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lstar_BitcoinAlpha+_0",
+  "tag": "lstar",
+  "T": 3600.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lstar_BitcoinOTC+_0",
+  "tag": "lstar",
+  "T": 3600.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lstar_facebook_0",
+  "tag": "lstar",
+  "T": 3600.0,
+  "seed": 0,
+  "graph": "facebook",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_ca-HepTh_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_ca-HepPh_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_ca-AstroPh_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_ca-CondMat_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_email-Enron_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_loc-Brightkite_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_BitcoinOTC+_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_BitcoinAlpha+_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_com-Amazon_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_com-DBLP_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_email-Eu-core_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "email-Eu-core",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_facebook_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "facebook",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_wiki-Vote_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "wiki-Vote",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_cit-HepPh_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "cit-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_p2p-Gnutella31_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "p2p-Gnutella31",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_amazon0302_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "amazon0302",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "ltri_roadNet-PA_0",
+  "tag": "ltri",
+  "T": 1800.0,
+  "seed": 0,
+  "graph": "roadNet-PA",
+  "status": "pending",
+  "machine": null
+ },
+ {
   "id": "c1_ca-GrQc_0",
   "tag": "c1",
   "T": 600.0,
@@ -14945,7 +15143,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790423870.2687266
  },
@@ -14985,7 +15183,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790423876.100546
  },
@@ -15025,7 +15223,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790423886.4395838
  },
@@ -15065,7 +15263,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790423907.3942513
  },
@@ -15105,7 +15303,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790423911.160656
  },
@@ -15145,7 +15343,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790423914.9657328
  },
@@ -15175,7 +15373,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424021.0359209
  },
