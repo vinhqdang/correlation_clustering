@@ -13235,8 +13235,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "wiki-Vote",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790412292.4622545
  },
  {
@@ -13245,8 +13245,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepTh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790412292.4622567
  },
  {
@@ -13255,8 +13255,8 @@
   "T": 600.0,
   "seed": 9,
   "graph": "cit-HepPh",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790412292.4622571
  },
  {
@@ -13505,8 +13505,8 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
-  "machine": "w4",
+  "status": "pending",
+  "machine": null,
   "started": 1790412292.4622579
  },
  {
