@@ -1,0 +1,1 @@
+{"graph": "email-Eu-core", "n": 1005, "m": 16064, "pairs": 223665, "mode": "star", "T": 3600.0, "seed": 0, "support_time": 0.8710105419158936, "value": 8522.153588162473, "converged": false, "rounds": 27, "rows": 6067558, "time": 3618.123993396759, "tag": "lstar", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

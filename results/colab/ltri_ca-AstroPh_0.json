@@ -1,0 +1,1 @@
+{"graph": "ca-AstroPh", "n": 18772, "m": 198050, "pairs": 4639091, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 1.9854021072387695, "value": 73160.25, "converged": false, "rounds": 1, "rows": 8695057, "time": 1821.082453250885, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
