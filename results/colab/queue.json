@@ -15153,7 +15153,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790423870.2687278
  },
@@ -15193,7 +15193,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790423876.1005461
  },
@@ -15233,7 +15233,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790423886.4395843
  },
@@ -15383,7 +15383,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424021.0359235
  },
