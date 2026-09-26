@@ -13005,7 +13005,7 @@
   "T": 600.0,
   "seed": 7,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790404984.6679392
  },
