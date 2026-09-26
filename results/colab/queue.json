@@ -12705,7 +12705,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790404132.5703518
  },
