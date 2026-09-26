@@ -125,7 +125,7 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790424471.6724231
  },
@@ -15425,7 +15425,7 @@
   "T": 60.0,
   "seed": 3,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790424021.035925
  },
@@ -15455,8 +15455,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424565.8990471
  },
  {
   "id": "s2h60_cit-HepTh_4",
@@ -15464,8 +15465,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424565.899048
  },
  {
   "id": "s2h60_cit-HepPh_4",
@@ -15473,8 +15475,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424565.8990498
  },
  {
   "id": "s2h60_p2p-Gnutella31_4",
@@ -15482,8 +15485,9 @@
   "T": 60.0,
   "seed": 4,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790424565.89905
  },
  {
   "id": "s2h60_soc-Slashdot0902_4",

@@ -1,0 +1,1 @@
+{"graph": "BitcoinAlpha+", "n": 3683, "m": 12972, "pairs": 493107, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 2.9630815982818604, "value": 6475.0, "converged": true, "rounds": 1, "rows": 664551, "time": 18.589423894882202, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
