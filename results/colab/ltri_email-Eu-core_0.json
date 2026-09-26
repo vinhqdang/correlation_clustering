@@ -1,0 +1,1 @@
+{"graph": "email-Eu-core", "n": 1005, "m": 16064, "pairs": 223665, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 0.788825273513794, "value": 8031.5, "converged": true, "rounds": 1, "rows": 866833, "time": 206.7224884033203, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

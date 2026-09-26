@@ -1,0 +1,1 @@
+{"graph": "facebook", "n": 4039, "m": 88234, "pairs": 1446301, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 0.7556619644165039, "value": 21638.195702249184, "converged": false, "rounds": 1, "rows": 4478819, "time": 1804.934574842453, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

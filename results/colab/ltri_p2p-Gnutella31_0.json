@@ -1,0 +1,1 @@
+{"graph": "p2p-Gnutella31", "n": 62586, "m": 147892, "pairs": 1663263, "mode": "tri", "T": 1800.0, "seed": 0, "support_time": 1.7065765857696533, "value": 73940.5, "converged": true, "rounds": 1, "rows": 1562102, "time": 67.33941721916199, "tag": "ltri", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
