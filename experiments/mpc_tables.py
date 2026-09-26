@@ -465,6 +465,44 @@ def timing():
         NUM["numCpuModels"] = "; ".join(sorted(models)).replace("(R)", r"\textsuperscript{\textregistered}")
 
 
+def pace_primal(ref):
+    """Primal quality on the PACE exact track: CertiFlip (checked runs), SCC on
+    the complete encoding, and the earlier local runs of the other methods."""
+    import pandas as pd
+    costs = {}
+    for (g, sd), r in runs("c2x").items():
+        costs.setdefault("CertiFlip (60 s)", {})[g.split("/")[-1]] = r["cost"]
+    for (g, sd), r in runs("sccevo", os.path.join(RES, "scc")).items():
+        costs.setdefault("SCC~\\cite{hausberger2025scc} (60 s)", {})[g.split("/")[-1]] = r["cost"]
+    old = pd.read_csv(os.path.join(RES, "pace_exact.csv"))
+    old["inst"] = old["instance"].str.split("/").str[-1]
+    for a, nm in (("kapoce", "KaPoCE (60 s)$^a$"), ("flip", "IteratedFlip$^a$"),
+                  ("leiden", "Leiden-CPM$^a$"), ("pivot", "Pivot$^a$")):
+        s_ = old[(old.algo == a) & old.cost.notna()].groupby("inst")["cost"].min()
+        costs[nm] = s_.to_dict()
+    best = ref["upper"].astype(float).copy()
+    for nm, c in costs.items():
+        for i, v in c.items():
+            best[i] = min(best[i], v)
+    rows = []
+    for nm, c in costs.items():
+        if not c:
+            continue
+        v = pd.Series(c)
+        b = best.reindex(v.index)
+        gap = 100 * (v - b) / b.clip(lower=1)
+        rows.append(f"{nm} & {int((v <= b).sum())}/{len(v)} & {gap.mean():.3f} & {gap.max():.2f} \\\\")
+    write("pace_primal", "\\begin{tabular}{lrrr}\n\\toprule\nmethod & best known & mean gap (\\%) & "
+          "max gap (\\%) \\\\\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n")
+    sc = costs.get("SCC~\\cite{hausberger2025scc} (60 s)", {})
+    if sc:
+        NUM["numSccHit"] = str(int(sum(sc[i] <= best[i] for i in sc)))
+        NUM["numSccRuns"] = str(len(sc))
+    cf = costs.get("CertiFlip (60 s)", {})
+    if cf:
+        NUM["numCfHit"] = str(int(sum(cf[i] <= best[i] for i in cf)))
+
+
 def static_numbers():
     with open(os.path.join(ROOT, "experiments", "check_certificate.py")) as fh:
         NUM["numCheckerLines"] = str(sum(1 for _ in fh))
@@ -487,7 +525,8 @@ def write_numbers():
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else "all"
     instances()
-    pace_exact()
+    ref_, _ = pace_exact()
+    pace_primal(ref_)
     snap()
     for tag, label in (("s2h", "600"), ("s2h150", "150"), ("s2h60", "60")):
         h2h(tag, label)
