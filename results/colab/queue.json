@@ -9599,7 +9599,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790386010.6212482
  },
@@ -9639,7 +9639,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790386030.4537375
  },
@@ -9679,7 +9679,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790386040.5085707
  },
@@ -9719,7 +9719,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790386049.3800447
  },
@@ -9759,7 +9759,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790386058.0238023
  },
@@ -9799,7 +9799,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790386090.226602
  },
@@ -9839,7 +9839,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790386124.4563046
  },
