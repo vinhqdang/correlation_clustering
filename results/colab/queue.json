@@ -1,5 +1,252 @@
 [
  {
+  "id": "lplp_ca-GrQc_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "ca-GrQc",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790472751.29917
+ },
+ {
+  "id": "lplp_ca-HepTh_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790472751.2991736
+ },
+ {
+  "id": "lplp_email-Eu-core_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "email-Eu-core",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790472751.2991745
+ },
+ {
+  "id": "lplp_BitcoinAlpha+_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "BitcoinAlpha+",
+  "status": "running",
+  "machine": "w2",
+  "started": 1790472751.2991757
+ },
+ {
+  "id": "lplp_BitcoinOTC+_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_ca-CondMat_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_facebook_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "facebook",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_ca-HepPh_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_p2p-Gnutella31_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "p2p-Gnutella31",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_wiki-Vote_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "wiki-Vote",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_roadNet-PA_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "roadNet-PA",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_ca-AstroPh_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_amazon0302_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "amazon0302",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_com-Amazon_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "com-Amazon",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_loc-Brightkite_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "loc-Brightkite",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_cit-HepPh_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "cit-HepPh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_com-DBLP_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "com-DBLP",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lplp_email-Enron_0",
+  "tag": "lplp",
+  "T": 1200.0,
+  "seed": 0,
+  "graph": "email-Enron",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_cit-HepTh_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "cit-HepTh",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_Slashdot+_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "Slashdot+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_soc-Epinions_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "soc-Epinions",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_soc-Slashdot0902_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "soc-Slashdot0902",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_Epinions+_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "Epinions+",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_email-EuAll_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "email-EuAll",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_loc-Gowalla_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "loc-Gowalla",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_web-NotreDame_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "web-NotreDame",
+  "status": "pending",
+  "machine": null
+ },
+ {
+  "id": "lpack_com-Youtube_0",
+  "tag": "lpack",
+  "T": 600.0,
+  "seed": 0,
+  "graph": "com-Youtube",
+  "status": "pending",
+  "machine": null
+ },
+ {
   "id": "s2p_pace-heur_heur001.gr_0",
   "tag": "s2p",
   "T": 600.0,
@@ -595,7 +842,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur060.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790468885.6019855
  },
@@ -711,7 +958,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur071.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790469955.9715433,
   "tries": 1
@@ -753,7 +1000,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur075.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790469860.7679808
  },
