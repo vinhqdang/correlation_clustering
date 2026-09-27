@@ -354,6 +354,9 @@ def check(g, cert):
         if str(want) != str(have):
             raise ValueError(f"{key} mismatch: certificate {want}, file {have}")
     report["identity"] = "hash"
+    for key in ("ptr", "u", "v"):  # vertex ids and offsets must be integers, not truncated
+        if not np.issubdtype(np.asarray(cert[key]).dtype, np.integer):
+            raise ValueError(f"certificate array {key} is not of an integer type")
     ptr = np.asarray(cert["ptr"]).astype(np.int64)
     u, v = np.asarray(cert["u"]).astype(np.int64), np.asarray(cert["v"]).astype(np.int64)
     fval, fb = np.asarray(cert["val"], dtype=np.float64), np.asarray(cert["b"], dtype=np.float64)
@@ -543,8 +546,8 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
                 row.update({"instance": f, "n": g.n, "m": g.m, "identity": "hash",
                             "cost": clustering_cost(g, lab["labels"]), "status": "ok",
                             "raw_sha256": g.raw_sha256, "edge_sha256": g.edge_sha256})
-            except (ValueError, OSError) as exc:
-                row["status"] = f"rejected: {exc}"
+            except Exception as exc:  # any failure rejects this certificate only
+                row["status"] = f"rejected: {type(exc).__name__}: {exc}"
             rows.append(row)
             save()
             continue
@@ -562,8 +565,8 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
                 g = read_instance(raw, fmt, sc)
                 row["cost"] = clustering_cost(g, np.load(lab)["labels"])
             row["status"] = "ok"
-        except (ValueError, OSError) as exc:
-            row["status"] = f"rejected: {exc}"
+        except Exception as exc:  # any failure rejects this certificate only
+            row["status"] = f"rejected: {type(exc).__name__}: {exc}"
         row["seconds"] = round(time.time() - t0, 2)
         rows.append(row)
         save()
