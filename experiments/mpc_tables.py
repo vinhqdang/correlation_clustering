@@ -348,6 +348,8 @@ def snap():
             root[r.graph] = (int(r.lb), float(r.time))
     # the same program as a fleet job (colab_run_lp.py, mode kroot)
     for (g, sd), r in runs("lkroot").items():
+        if g not in DEV + HELD:
+            continue
         if r.get("star") is not None:
             root[g] = (int(r["star"]), float(r["star_time"]))
         elif r.get("status") == "timeout":
@@ -659,7 +661,8 @@ def snap():
     NUM["numRootNoCert"] = str(len(root_nocert))
     NUM["numRootNoCertList"] = ", ".join(tt(x) for x in root_nocert) or "none"
     NUM["numRootMemList"] = ", ".join(tt(x) for x in DEV + HELD
-                                      if qstat_root.get(f"lkstar_{x}_0") == "failed") or "none"
+                                      if qstat_root.get(f"lkstar_{x}_0") == "failed"
+                                      and x not in root_to) or "none"
     # graphs above the support threshold: the packing alone
     NUM["numPackOnlyN"] = str(len(pack_only))
     NUM["numPackOnlyHeld"] = str(sum(1 for x in pack_only if x[1] == "held-out"))
