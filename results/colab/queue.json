@@ -125,8 +125,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790473421.9059303
  },
  {
   "id": "lplp_com-Amazon_0",
@@ -134,8 +135,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790473421.905932
  },
  {
   "id": "lplp_loc-Brightkite_0",
@@ -143,8 +145,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790473421.905933
  },
  {
   "id": "lplp_cit-HepPh_0",
@@ -152,8 +155,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790473421.9059336
  },
  {
   "id": "lplp_com-DBLP_0",
@@ -977,7 +981,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur072.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790469955.9715438,
   "tries": 1
