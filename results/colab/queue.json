@@ -6,9 +6,9 @@
   "seed": 0,
   "graph": "ca-CondMat",
   "status": "running",
-  "machine": "w4",
+  "machine": "w6",
   "solo": true,
-  "started": 1790493502.316163
+  "started": 1790508501.7606604
  },
  {
   "id": "lkroot_ca-AstroPh_0",
@@ -49,7 +49,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "solo": true,
   "started": 1790493571.6993237
