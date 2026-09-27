@@ -1,0 +1,1 @@
+{"graph": "ca-CondMat", "n": 23133, "m": 93439, "pairs": 1169993, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 6.546106815338135, "value": 55636.0, "stars": 22220, "time": 126.63424587249756, "check": "ok", "certified": 55636, "lb_exact": 55636.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
