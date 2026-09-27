@@ -242,6 +242,7 @@ paper_mpc/*.log
 paper_mpc/*.out
 results/mpc/recheck_work.csv*
 kapoce_lb/
+kapoce_lb.lock
 results/kapoce_root_snap_user.csv.part*
 results/mpc/recheck.done
 rama_build/
