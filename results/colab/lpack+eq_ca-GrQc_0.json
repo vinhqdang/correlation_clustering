@@ -1,0 +1,1 @@
+{"graph": "ca-GrQc", "n": 5242, "m": 14484, "pairs": 78224, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 3.811643123626709, "value": 6006.0, "stars": 2835, "time": 82.32888579368591, "check": "ok", "certified": 6006, "lb_exact": 6006.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
