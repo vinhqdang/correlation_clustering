@@ -61,7 +61,7 @@ say "all parts finished (exit status $st; see logs_local/ for failures)"
 [ -z "${NO_COMMIT:-}" ] || exit "$st"
 git add results/kapoce_root_snap_user.csv results/rama_snap_user.csv results/local 2> /dev/null
 if git commit -q -m "Local runs: KaPoCE root bounds, RAMA bounds, PACE bound jobs"; then
-    git pull -q --rebase origin main && git push -q origin main \
+    git pull -q --rebase --autostash origin main && git push -q origin main \
         && say "results committed and pushed" \
         || say "committed; push failed, run: git pull --rebase && git push"
 else
