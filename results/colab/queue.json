@@ -60,9 +60,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w3",
+  "solo": true,
+  "started": 1790493792.80927
  },
  {
   "id": "lkroot_facebook_0",
@@ -2242,7 +2243,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur189.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790488662.9391553
  },
