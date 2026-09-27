@@ -241,7 +241,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "solo": true,
   "started": 1790516645.2552617
@@ -252,9 +252,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w5",
+  "solo": true,
+  "started": 1790518380.5017033
  },
  {
   "id": "lkstar_ca-HepTh_0",
