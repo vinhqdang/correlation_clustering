@@ -44,6 +44,7 @@ def main():
     ap.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) // 2),
                     help="parallel runs (default: half of the logical cores)")
     ap.add_argument("--only", choices=[t for t, _ in JOBS])
+    ap.add_argument("--limit", type=int, default=0, help="run at most this many jobs (a test)")
     a = ap.parse_args()
     os.makedirs(os.path.join(OUT, "logs"), exist_ok=True)
     graphs = [f"pace-exact/exact{i:03d}.gr" for i in range(4, 201, 4)]
@@ -56,6 +57,8 @@ def main():
                    for d in (OUT, os.path.join(ROOT, "results", "colab"))):
                 continue
             todo.append((tag, T, g))
+    if a.limit:
+        todo = todo[:a.limit]
     # the PACE instances are fetched once, before the parallel runs
     sys.path[:0] = [ROOT, os.path.join(ROOT, "experiments")]
     os.environ["CC_ROOT"] = ROOT

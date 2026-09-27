@@ -25,8 +25,8 @@ if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_PREFIX:-}" ]; then
 fi
 say() { echo "[$(date +%H:%M:%S)] $*"; }
 say "1/3 installing the Python package of the repository"
-python3 -m pip install -q --upgrade pip
-python3 -m pip install -q -e .
+[ -n "${SKIP_PIP:-}" ] || python3 -m pip install -q --upgrade pip
+[ -n "${SKIP_PIP:-}" ] || python3 -m pip install -q -e .
 say "2/3 building KaPoCE lbounds (about a minute)"
 BIN="$(bash experiments/kapoce/build_lbounds.sh "$PWD/kapoce_lb" | tail -n1)"
 export KAPOCE_LB_BIN="$BIN"

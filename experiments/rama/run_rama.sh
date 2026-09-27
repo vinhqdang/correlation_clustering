@@ -24,7 +24,7 @@ if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_PREFIX:-}" ]; then
 fi
 say() { echo "[$(date +%H:%M:%S)] $*"; }
 say "1/4 installing the Python package of the repository"
-python3 -m pip install -q -e .
+[ -n "${SKIP_PIP:-}" ] || python3 -m pip install -q -e .
 
 if [ -n "${RAMA_CPU:-}" ]; then
     CUDA=OFF; TARGET=rama_text_input_cpu
