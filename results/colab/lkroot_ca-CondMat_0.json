@@ -1,0 +1,1 @@
+{"graph": "ca-CondMat", "n": 23133, "m": 93439, "mode": "kroot", "T": 14400.0, "kapoce": "63079a9", "status": "exit -9", "time": 13761.406517982483, "p3": 41769, "p3_time": 13730.6, "value": null, "tag": "lkroot", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
