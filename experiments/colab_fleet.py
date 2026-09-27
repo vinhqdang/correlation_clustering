@@ -312,7 +312,12 @@ def step(state):
                         j["status"], j["machine"] = "pending", None
             busy = []
         if len(busy) < SLOTS and not pr["running"]:
-            nxt = [j for j in queue if j["status"] == "pending"][:BATCH]
+            pend = [j for j in queue if j["status"] == "pending"]
+            # a long job (``"solo": true``, e.g. hours) runs alone on its machine
+            if pend and pend[0].get("solo"):
+                nxt = pend[:1]
+            else:
+                nxt = [j for j in pend if not j.get("solo")][:BATCH]
             if nxt and refresh_code(s, st) and launch(s, nxt):
                 for j in nxt:
                     j["status"], j["machine"], j["started"] = "running", s, time.time()
@@ -338,9 +343,12 @@ def main():
         time.sleep(POLL)
 
 
-def add(tag, T, seeds, graphs, front=False):
+def add(tag, T, seeds, graphs, front=False, solo=False):
     jobs = [dict(id=f"{tag}_{gname.replace('/', '_')}_{seed}", tag=tag, T=T, seed=seed, graph=gname,
                  status="pending", machine=None) for seed in seeds for gname in graphs]
+    for j in jobs:
+        if solo:
+            j["solo"] = True
     os.makedirs(INBOX, exist_ok=True)
     save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"front": front, "jobs": jobs})
     print(len(jobs), "jobs submitted")
@@ -355,9 +363,9 @@ if __name__ == "__main__":
         # cancel PREFIX...   (pending jobs whose id starts with a prefix)
         os.makedirs(INBOX, exist_ok=True)
         save(os.path.join(INBOX, f"{time.time():.6f}.json"), {"cancel": sys.argv[2:]})
-    elif len(sys.argv) > 1 and sys.argv[1] in ("add", "add-front"):
-        # add[-front] TAG T SEEDS(comma) GRAPH...
+    elif len(sys.argv) > 1 and sys.argv[1] in ("add", "add-front", "add-solo"):
+        # add[-front|-solo] TAG T SEEDS(comma) GRAPH...   (add-solo: one job per machine)
         add(sys.argv[2], float(sys.argv[3]), [int(x) for x in sys.argv[4].split(",")],
-            sys.argv[5:], front=sys.argv[1] == "add-front")
+            sys.argv[5:], front=sys.argv[1] != "add", solo=sys.argv[1] == "add-solo")
     else:
         main()

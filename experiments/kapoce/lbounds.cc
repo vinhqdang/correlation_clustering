@@ -9,8 +9,8 @@ int main() {
   auto t0 = std::chrono::steady_clock::now();
   int p3 = packing_local_search_bound(inst, INF);
   auto t1 = std::chrono::steady_clock::now();
+  std::cout << "p3 " << p3 << " " << std::chrono::duration<double>(t1 - t0).count() << std::endl;
   int st = star_bound(inst, INF);
   auto t2 = std::chrono::steady_clock::now();
-  std::cout << "p3 " << p3 << " " << std::chrono::duration<double>(t1 - t0).count() << "\n";
   std::cout << "star " << st << " " << std::chrono::duration<double>(t2 - t1).count() << "\n";
 }

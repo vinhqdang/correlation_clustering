@@ -14,7 +14,11 @@ Modes (the tag's second character onward, e.g. tag "ltri"):
   plp   a long packing followed by block LPs, as one procedure: the packing of
         mode pack with T/2 seconds of iterations, then METIS block sweeps from
         it for T/2 seconds (Theorem 5(b): never below the packing); the value
-        after the packing is recorded as well; certificate checked.
+        after the packing is recorded as well; certificate checked;
+  kroot the root star-packing and P3-packing bounds of the KaPoCE
+        branch-and-bound (its `lbounds` program, branch `experiments`, built
+        by experiments/kapoce/build_lbounds.sh), limit T seconds; integers
+        computed by KaPoCE, not certified here.
 
 usage: colab_run_lp.py T SEED TAG GRAPH..."""
 import json, os, platform, shutil, subprocess, sys, time
@@ -52,6 +56,48 @@ def cpu_model():
     return 'unknown'
 
 
+def kapoce_lb():
+    """The lbounds program, built once per machine (the build is incremental)."""
+    import fcntl
+    d = os.environ.get('KAPOCE_LB_DIR', '/content/kapoce_lb')
+    with open(d.rstrip('/') + '.lock', 'w') as lock:  # one build at a time
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        r = subprocess.run(['bash', os.path.join(CC, 'experiments', 'kapoce', 'build_lbounds.sh'),
+                            d], capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError('lbounds build failed: ' + r.stderr[-500:])
+    return r.stdout.strip().splitlines()[-1]
+
+
+def kroot(g, name, T):
+    import tempfile
+    from baselines import write_pace
+    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'kroot', 'T': T, 'kapoce': '63079a9'}
+    binary = kapoce_lb()
+    with tempfile.TemporaryDirectory() as d:
+        f = os.path.join(d, 'g.gr')
+        write_pace(g, f)
+        t0 = time.time()
+        with open(f) as fin:
+            try:
+                p = subprocess.run([binary], stdin=fin, capture_output=True, text=True,
+                                   timeout=T)
+                text = p.stdout
+                out['status'] = 'ok' if p.returncode == 0 else f'exit {p.returncode}'
+            except subprocess.TimeoutExpired as exc:
+                text = exc.stdout or ''
+                text = text.decode() if isinstance(text, bytes) else text
+                out['status'] = 'timeout'
+    out['time'] = time.time() - t0
+    # "p3 LB SECONDS" then "star LB SECONDS"; the P3 line survives a timeout
+    for line in text.splitlines():
+        p = line.split()
+        if len(p) == 3 and p[0] in ('p3', 'star'):
+            out[p[0]], out[p[0] + '_time'] = int(p[1]), float(p[2])
+    out['value'] = out.get('star')
+    return out
+
+
 def run(name, mode, T, seed):
     import datasets as D
     from ccbench.support import build_support
@@ -60,6 +106,8 @@ def run(name, mode, T, seed):
     from ccbench.dual import star_packing_ls
     from ccbench.lp import SparseLP
     g = D.load(name)
+    if mode == 'kroot':
+        return kroot(g, name, T)
     t0 = time.time()
     sup = build_support(g)
     out = {'graph': name, 'n': g.n, 'm': g.m, 'pairs': int(sup.npairs), 'mode': mode, 'T': T,
