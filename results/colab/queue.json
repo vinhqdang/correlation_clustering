@@ -115,7 +115,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790512667.7626565
  },
@@ -155,7 +155,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790512683.4510381
  },
@@ -165,7 +165,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790514056.6833825
  },
@@ -175,7 +175,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790514056.6833851
  },
@@ -185,9 +185,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w4",
+  "solo": true,
+  "started": 1790514798.9490497
  },
  {
   "id": "lkstar_ca-AstroPh_0",
@@ -195,9 +196,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w7",
+  "solo": true,
+  "started": 1790514804.0917423
  },
  {
   "id": "lkstar_ca-HepPh_0",
@@ -205,9 +207,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w9",
+  "solo": true,
+  "started": 1790514811.718237
  },
  {
   "id": "lkstar_BitcoinOTC+_0",
@@ -21151,7 +21154,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact037.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790514056.683386
  },
@@ -21161,7 +21164,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact038.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790514056.6833873
  },

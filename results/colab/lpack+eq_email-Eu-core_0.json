@@ -1,0 +1,1 @@
+{"graph": "email-Eu-core", "n": 1005, "m": 16064, "pairs": 223665, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 0.7524347305297852, "value": 11455.0, "stars": 3495, "time": 636.1914439201355, "check": "ok", "certified": 11455, "lb_exact": 11455.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
