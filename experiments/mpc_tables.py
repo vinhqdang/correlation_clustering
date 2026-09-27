@@ -261,6 +261,12 @@ def pace_exact():
         NUM["numKrootPaceN"] = str(len(K))
         NUM["numKrootPaceStarN"] = str(len(st))
         NUM["numKrootPaceTimeout"] = str(len(K) - len(st))
+        NUM["numKrootPaceTimeoutList"] = ", ".join(
+            tt(i.replace(".gr", "")) for i in sorted(K) if K[i].get("star") is None) or "none"
+        if os.path.exists(os.path.join(COLAB, "queue.json")):
+            NUM["numKrootPaceColab"] = str(sum(
+                1 for j in json.load(open(os.path.join(COLAB, "queue.json")))
+                if j["id"].startswith("lkroot_pace") and j["status"] == "done"))
         NUM["numKrootPacePthreeEqual"] = str(sum(K[i]["p3"] == int(ref.loc[i, "low_p3"]) for i in p3))
         NUM["numKrootPacePthreeN"] = str(len(p3))
         NUM["numKrootPaceStarEqual"] = str(sum(d == 0 for d in ds))

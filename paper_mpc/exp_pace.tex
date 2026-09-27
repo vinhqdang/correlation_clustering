@@ -51,8 +51,11 @@ root bounds come from the heuristic of the branch-and-bound.  The published
 data state neither the time spent on them nor whether they were computed
 after its data reductions, so we reran its lower-bound program on the input
 graphs, without reductions (the program of Section~\ref{sec:exp-cert},
-\SI{900}{s} limit, on a 4-core cloud machine with a \SI{2.2}{GHz} Xeon, at most three runs at a time).  On all \numKrootPaceN{}
-instances it finished; its $P_3$ packing equals the published value on
+\SI{900}{s} limit, one run per instance; \numKrootPaceColab{} on the Colab
+machines, one at a time, the others on a 4-core cloud machine with a
+\SI{2.2}{GHz} Xeon, at most three at a time).  The star packing finished
+within the limit on \numKrootPaceStarN{} of the \numKrootPaceN{} instances
+(\numKrootPaceTimeoutList{} stopped after the $P_3$ packing); its $P_3$ packing equals the published value on
 \numKrootPacePthreeEqual{} of \numKrootPacePthreeN{}, its star packing on
 \numKrootPaceStarEqual{}, and on the others the star packing differs by at
 most \numKrootPaceStarDiffMax{} (\numKrootPaceStarAbove{} larger,
