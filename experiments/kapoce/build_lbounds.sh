@@ -36,11 +36,19 @@ fi
 # the forced includes are needed with recent compilers only
 FLAGS="-include cstdint -include limits -include string -include memory -include algorithm \
 -include functional -include stdexcept -include optional -include numeric -include cassert"
-EXTRA=()
-# Boost (program_options) from a conda environment, if it has one
-[ -n "${CONDA_PREFIX:-}" ] && EXTRA=(-DCMAKE_PREFIX_PATH="$CONDA_PREFIX")
 mkdir -p build_lb && cd build_lb
-cmake .. -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_FLAGS="$FLAGS" "${EXTRA[@]}" > cmake.log 2>&1 || {
+configure() {  # extra cmake arguments; a fresh cache each time, Boost is cached
+    rm -f CMakeCache.txt
+    cmake .. -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_FLAGS="$FLAGS" "$@" > cmake.log 2>&1
+}
+# the system Boost first: an active conda environment is on PATH, and cmake
+# would otherwise take its Boost, which often lacks program_options
+if [ -n "${CONDA_PREFIX:-}" ]; then
+    configure -DCMAKE_IGNORE_PREFIX_PATH="$CONDA_PREFIX" -DBoost_NO_BOOST_CMAKE=ON \
+        || configure -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
+else
+    configure
+fi || {
     tail -n 30 cmake.log >&2
     if grep -qi boost cmake.log; then
         echo "Boost not found: sudo apt install -y libboost-program-options-dev" >&2
