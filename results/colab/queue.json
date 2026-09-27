@@ -263,7 +263,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "solo": true,
   "started": 1790519283.6097407
@@ -274,7 +274,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "solo": true,
   "started": 1790519459.4819438
@@ -285,10 +285,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null,
+  "status": "running",
+  "machine": "w5",
   "solo": true,
-  "started": 1790508501.7606604
+  "started": 1790520158.4362953
  },
  {
   "id": "lkroot_ca-AstroPh_0",
@@ -21181,8 +21181,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact039.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790520172.630178
  },
  {
   "id": "lkroot_pace-exact_exact040.gr_0",
@@ -21190,8 +21191,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact040.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790520172.6301804
  },
  {
   "id": "lkroot_pace-exact_exact041.gr_0",
@@ -21199,8 +21201,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact041.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790520172.6301808
  },
  {
   "id": "lkroot_pace-exact_exact042.gr_0",
@@ -21208,8 +21211,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact042.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790520172.6301813
  },
  {
   "id": "lkroot_pace-exact_exact043.gr_0",
