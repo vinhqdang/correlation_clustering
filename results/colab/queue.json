@@ -252,7 +252,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "solo": true,
   "started": 1790518380.5017033
@@ -263,9 +263,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w5",
+  "solo": true,
+  "started": 1790519283.6097407
  },
  {
   "id": "lkstar_ca-GrQc_0",
