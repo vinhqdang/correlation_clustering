@@ -11,9 +11,4 @@ if [ ! -f results/mpc/recheck.done ]; then
     run recheck_work.csv python3 experiments/check_certificate.py --resume data/raw \
         results/certificates/colab results/mpc/recheck_work.csv
 fi
-run kapoce_root_snap_a.csv python3 experiments/kapoce_root_snap.py results/kapoce_root_snap_a.csv \
-    email-Eu-core ca-GrQc BitcoinAlpha+ wiki-Vote
-run kapoce_root_snap_b.csv python3 experiments/kapoce_root_snap.py results/kapoce_root_snap_b.csv \
-    BitcoinOTC+ ca-HepTh facebook
-run kapoce_root_snap_c.csv python3 experiments/kapoce_root_snap.py results/kapoce_root_snap_c.csv \
-    ca-HepPh ca-AstroPh ca-CondMat
+# the KaPoCE root bounds now run on a local workstation (experiments/run_all_local.sh)
