@@ -8,7 +8,8 @@ bound with \SI{1800}{s} (every fourth instance).  Not certified: the triangle
 packings, computed earlier on a 4-core workstation; the metric LP on $P$, a
 floating-point LP value reported only where cutting planes converged within
 \SI{900}{s} (every fourth instance); the two B\&B rows, the root bounds of the
-KaPoCE branch-and-bound as published by its authors; and the last row, which
+KaPoCE branch-and-bound as published by its authors (reproduced by a rerun
+without data reductions, see the text); and the last row, which
 takes the larger of a checked and a published value.}
 \label{tab:pace-bounds}
 \footnotesize
@@ -45,10 +46,25 @@ sparse star packing alone reaches a mean of \numPacePackMean{} and proves
 optimality on \numPacePackOpt{} of \numPacePackN{} instances, far below the
 B\&B star packing, although both pack the same induced stars and every
 induced star uses only pairs of the support.  The difference therefore lies
-in the packing heuristic: ours is a generic ruin-and-recreate search; the
-published root bounds come from the heuristic of the branch-and-bound, and the
-published data state neither the time spent on them nor whether they were
-computed after its data reductions.  The gap is largest on the dense instances
+in the packing heuristic: ours is a generic ruin-and-recreate search, the
+root bounds come from the heuristic of the branch-and-bound.  The published
+data state neither the time spent on them nor whether they were computed
+after its data reductions, so we reran its lower-bound program on the input
+graphs, without reductions (the program of Section~\ref{sec:exp-cert},
+\SI{900}{s} limit, on a 4-core cloud machine with a \SI{2.2}{GHz} Xeon, at most three runs at a time).  On all \numKrootPaceN{}
+instances it finished; its $P_3$ packing equals the published value on
+\numKrootPacePthreeEqual{} of \numKrootPacePthreeN{}, its star packing on
+\numKrootPaceStarEqual{}, and on the others the star packing differs by at
+most \numKrootPaceStarDiffMax{} (\numKrootPaceStarAbove{} larger,
+\numKrootPaceStarBelow{} smaller, at most \numKrootPaceStarRelMax{}; the
+packing heuristic uses a random generator, which we ran with its default
+seed, and the published values may come from another version).  The
+star bound took a median of \numKrootPaceTimeMedian{}\,s and at most
+\numKrootPaceTimeMax{}\,s.  The published root bounds are therefore bounds
+of the input graphs, and they are reached in a fraction of our time; on the
+\numKrootPaceBothN{} solved instances where both ran, the rerun star packing
+has a mean LB/OPT of \numKrootPaceStarMean{} against
+\numKrootPacePackMean{} for our sparse star packing.  The gap is largest on the dense instances
 (Table~\ref{tab:pace-density}), where the fractional triangle packing,
 which CertiFlip also tries as a start (Section~\ref{sec:dual}), is far
 stronger than the star packing, and the block LPs add the rest of the

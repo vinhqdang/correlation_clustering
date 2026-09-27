@@ -250,6 +250,35 @@ def pace_exact():
     NUM["numPaceOpenBelow"] = str(len(below))
     NUM["numPaceOpenMaxBelow"] = f"{max(below):.1f}\\%" if below else "0"
     NUM["numPaceOpen"] = str(len(unsolved))
+    # the root bound program of KaPoCE rerun on the input graphs, without its
+    # data reductions (tag lkroot), against the published root bounds
+    K = {i: runs("lkroot").get((key(i), 0)) for i in ref.index}
+    K = {i: r for i, r in K.items() if r is not None}
+    if K:
+        p3 = [i for i, r in K.items() if r.get("p3") is not None]
+        st = [i for i, r in K.items() if r.get("star") is not None]
+        ds = [K[i]["star"] - int(ref.loc[i, "low_star"]) for i in st]
+        NUM["numKrootPaceN"] = str(len(K))
+        NUM["numKrootPaceStarN"] = str(len(st))
+        NUM["numKrootPaceTimeout"] = str(len(K) - len(st))
+        NUM["numKrootPacePthreeEqual"] = str(sum(K[i]["p3"] == int(ref.loc[i, "low_p3"]) for i in p3))
+        NUM["numKrootPacePthreeN"] = str(len(p3))
+        NUM["numKrootPaceStarEqual"] = str(sum(d == 0 for d in ds))
+        NUM["numKrootPaceStarAbove"] = str(sum(d > 0 for d in ds))
+        NUM["numKrootPaceStarBelow"] = str(sum(d < 0 for d in ds))
+        NUM["numKrootPaceStarDiffMax"] = str(max(map(abs, ds))) if ds else "0"
+        NUM["numKrootPaceStarRelMax"] = f"{max(abs(d) / max(1, int(ref.loc[i, 'low_star'])) for d, i in zip(ds, st)) * 100:.2f}\\%"
+        ts = [K[i]["star_time"] for i in st]
+        NUM["numKrootPaceTimeMedian"] = f"{np.median(ts):.1f}"
+        NUM["numKrootPaceTimeMax"] = f"{max(ts):.0f}"
+        # the rerun star packing against our sparse star packing, same instances
+        pk = B["sparse star packing"]
+        both = [i for i in st if i in solved.index and np.isfinite(pk.get(i, np.nan))]
+        if both:
+            o = solved["opt"].reindex(both).clip(lower=1)
+            NUM["numKrootPaceStarMean"] = f"{np.mean([K[i]['star'] for i in both] / o):.4f}"
+            NUM["numKrootPacePackMean"] = f"{np.mean(pk.reindex(both) / o):.4f}"
+            NUM["numKrootPaceBothN"] = str(len(both))
     return ref, B
 
 
@@ -296,6 +325,8 @@ def snap():
     PL = runs("lplp")
     LT = runs("ltri")
     LS = runs("lstar")
+    EQ = runs("lpack+eq")   # the packing alone with the budget of pack.+LP
+    LK = runs("lkstar")     # the root star packing of KaPoCE, exported and checked
     tri = pd.concat([pd.read_csv(os.path.join(RES, f)) for f in
                      ("snap.csv", "snap_heldout_bounds.csv")
                      if os.path.exists(os.path.join(RES, f))])
@@ -319,6 +350,7 @@ def snap():
     role_gaps, gaps_cf, gaps_pk, longer, seed_below, root_better, root_n = {}, [], [], [], [], [], 0
     plp_better, plp_below, plp_gain, pack_only, no_bound = [], [], [], [], []
     root_cmp = []  # (graph, B&B root star bound, our best checked bound, its time)
+    root_cert, root_nocert, eq_rows = [], [], []
 
     def lp_gap(rec, ub):
         # an LP value is reported only when cutting planes converged: then it
@@ -361,6 +393,12 @@ def snap():
             plp = checked(PL.get((name, 0)))
             prev = cf if pk is None else max(cf, pk)
             lb = prev if plp is None else max(prev, plp)
+            eq = checked(EQ.get((name, 0)))
+            lb_ours = lb  # the largest checked bound of the columns shown
+            if eq is not None and eq > lb:
+                lb = eq
+            if eq is not None:
+                eq_rows.append((name, role, eq, EQ[(name, 0)]["time"], plp, lb))
             if pk is not None:
                 (cf_better if cf > pk else pk_better).append(name)
             if plp is not None:
@@ -388,24 +426,31 @@ def snap():
             if t_pk is not None and pk is not None and pk > cf and t_pk > max(t_lbs):
                 longer.append(name)
             rt = root.get(name)
+            kc = checked(LK.get((name, 0)))
             if rt is not None:
                 root_n += 1
                 root_cmp.append((name, rt[0], lb, rt[1]))
                 if rt[0] > lb:
                     root_better.append(name)
+                (root_cert if kc == rt[0] else root_nocert).append(name)
             gap_b = 100 * (ub - lb) / lb
             g_tri = lp_gap(LT.get((name, 0)), ub)
             g_star = lp_gap(LS.get((name, 0)), ub)
             lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, lb))
             b = lambda v: (f"\\textbf{{\\num{{{v}}}}}" if v == lb else f"\\num{{{v}}}")
             running = qstat_root.get(f"lkroot_{name}_0") in ("pending", "running")
-            rcell = ("t.o." if name in root_to else "\\pending{}" if running else "--") if rt is None else (
-                f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else ""))
+            # out of memory: the export job died with its machine three times
+            oom = qstat_root.get(f"lkstar_{name}_0") == "failed"
+            rcell = ("t.o." if name in root_to else "\\pending{}" if running else
+                     "mem." if oom else "--") if rt is None else (
+                f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else "") +
+                ("" if kc == rt[0] else "$^\\circ$"))
+            smark = "$^\\S$" if lb > lb_ours else ""
             rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf)} & {t_lb:.0f} & "
                         f"{'--' if pk is None else b(pk)} & "
                         f"{'--' if t_pk is None else f'{t_pk:.0f}'} & "
                         f"{'--' if plp is None else b(plp)} & {rcell} & "
-                        f"{gap_a:.2f} & {gap_b:.2f} & "
+                        f"{gap_a:.2f}{smark} & {gap_b:.2f} & "
                         f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
     write("snap_bounds", "\\begin{tabular}{lrrrrrrrrrr}\n\\toprule\n"
@@ -527,6 +572,10 @@ def snap():
         NUM["numRootBelowMax"] = f"{max(down):.2f}\\%" if down else "--"
         NUM["numRootBelowList"] = ", ".join(tt(x) for x, r, b, _ in root_cmp if r <= b) or "none"
         ts = [t for *_, t in root_cmp]
+        for x, r, b_, _ in root_cmp:
+            if arch.get(x):
+                key_ = "".join(c for c in x if c.isalpha())
+                NUM[f"numRootGap{key_}"] = f"{100 * (arch[x] - r) / r:.1f}\\%"
         NUM["numRootTimeLo"] = f"{min(ts):.0f}"
         NUM["numRootTimeHi"] = f"{max(ts) / 3600:.1f}"
         # the closest certified-looking gap the B&B root would give
@@ -562,6 +611,49 @@ def snap():
         NUM["numPlpPackTimeMedian"] = f"{np.median([PL[(x, 0)]['pack_time'] for x, _ in plp_gain]):.0f}"
         NUM["numPlpTimeMax"] = f"{max(pt_):.0f}"
         NUM["numPlpTimeOver"] = str(sum(t > 1.05 * PL[(x, 0)]["T"] for (x, _), t in zip(plp_gain, pt_)))
+    # the packing alone with the nominal budget of pack.+LP (tag lpack+eq)
+    if eq_rows:
+        erows = []
+        for role in ("dev", "held-out"):
+            for name, r_, eq, t_eq, plp, lb in eq_rows:
+                if r_ != role:
+                    continue
+                pl = PL.get((name, 0))
+                d = "--" if plp is None else f"${100 * (eq - plp) / plp:+.2f}$"
+                vp = "--" if plp is None else "\\num{%d}" % plp
+                tp = "--" if pl is None else "%.0f" % pl["time"]
+                top = "yes" if eq == lb and (plp is None or eq > plp) else ""
+                erows.append(f"{tt(name)} & {cache[name]['m'] / cache[name]['n']:.1f} & "
+                             f"{vp} & {tp} & \\num{{{eq}}} & {t_eq:.0f} & {d} & {top} \\\\")
+            erows.append("\\midrule")
+        write("snap_eqtime", "\\begin{tabular}{lrrrrrrc}\n\\toprule\n"
+              "graph & $m/n$ & \\multicolumn{2}{c}{pack.+LP} & \\multicolumn{2}{c}{packing, "
+              "\\SI{1200}{s}} & difference & largest \\\\\n"
+              "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\n"
+              " & & LB & $t$ (s) & LB & $t$ (s) & (\\%) & checked \\\\\n\\midrule\n"
+              + "\n".join(erows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
+        both = [(n_, eq, plp) for n_, _, eq, _, plp, _ in eq_rows if plp is not None]
+        pw = [x for x in both if x[2] > x[1]]
+        ew = [x for x in both if x[1] > x[2]]
+        NUM["numEqN"] = str(len(both))
+        NUM["numEqPlpBetter"] = str(len(pw))
+        NUM["numEqPackBetter"] = str(len(ew))
+        NUM["numEqPackBetterList"] = ", ".join(tt(x[0]) for x in ew) or "none"
+        NUM["numEqPlpBetterMax"] = f"{max(100 * (p_ - e) / e for _, e, p_ in pw):.1f}\\%" if pw else "--"
+        NUM["numEqPackBetterMax"] = f"{max(100 * (e - p_) / p_ for _, e, p_ in ew):.1f}\\%" if ew else "--"
+        new_ = [n_ for n_, _, eq, _, _, lb in eq_rows if eq == lb and all(
+            eq > (v or 0) for v in (checked(PL.get((n_, 0))), checked(PK.get((n_, 0)))))]
+        NUM["numEqNew"] = str(len(new_))
+        NUM["numEqNewList"] = ", ".join(tt(x) for x in new_) or "none"
+        te = [t for *_, t, _, _ in eq_rows]
+        NUM["numEqTimeMedian"] = f"{np.median(te):.0f}"
+        NUM["numEqTimeMax"] = f"{max(te):.0f}"
+        NUM["numEqTimeOver"] = str(sum(t > 1200 for t in te))
+    NUM["numRootCert"] = str(len(root_cert))
+    NUM["numRootNoCert"] = str(len(root_nocert))
+    NUM["numRootNoCertList"] = ", ".join(tt(x) for x in root_nocert) or "none"
+    NUM["numRootMemList"] = ", ".join(tt(x) for x in DEV + HELD
+                                      if qstat_root.get(f"lkstar_{x}_0") == "failed") or "none"
     # graphs above the support threshold: the packing alone
     NUM["numPackOnlyN"] = str(len(pack_only))
     NUM["numPackOnlyHeld"] = str(sum(1 for x in pack_only if x[1] == "held-out"))

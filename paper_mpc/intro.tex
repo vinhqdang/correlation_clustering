@@ -85,7 +85,9 @@ support; where both run, it is usually weaker than the original.  On the
 graphs with more than $2\cdot10^4$ vertices a long packing alone gave larger
 bounds than CertiFlip's short packing followed by block LPs, at comparable
 but not equal running times, and block LPs started from the long packing
-raised the bound further on every graph (Sections~\ref{sec:exp-bounds}
+raised the bound further on every graph; with the same nominal budget, the
+packing alone and the packing followed by block LPs each win on part of
+the graphs (Sections~\ref{sec:exp-bounds}
 and~\ref{sec:exp-cert}).
 
 \item \textbf{Exactly checked certificates} (Section~\ref{sec:cert}).  A
@@ -123,7 +125,8 @@ to \numBaseGapHi{}.  The star packing supplies at least 97\% of this bound,
 and block LPs started from it add a median of \numPlpGainMedian{}.  Where the
 dense root bound of the KaPoCE branch-and-bound finishes (at most
 $2.5\cdot10^4$ vertices), it is larger than our checked bounds on
-\numRootBetter{} of \numRootN{} graphs, by up to \numRootBetterHi{}.  We compare
+\numRootBetter{} of \numRootN{} graphs, by up to \numRootBetterHi{}; we
+exported its packings, and our checker accepted all of them.  We compare
 with the sparse star packing alone, with that root bound, and with the
 metric LP on the support with triangle or star rows, so that the
 contribution of each part is visible.

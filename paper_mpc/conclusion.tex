@@ -28,8 +28,10 @@ packing alone gives a larger bound than CertiFlip's combination of a short
 packing and block LPs: within its budget CertiFlip gives the packing too
 little time.  A long packing followed by block LPs gives the largest bound
 on \numPlpBetter{} of the \numPlpN{} graphs; on the others its packing phase
-ended lower than in a separate run, and we did not study how to split the
-budget between the two phases (Section~\ref{sec:exp-cert}).
+ended lower than in a separate run.  With the same nominal budget the
+packing alone is larger on \numEqPackBetter{} of \numEqN{} graphs, and we
+did not optimise how to split the budget between the two phases
+(Section~\ref{sec:exp-cert}).
 \item The support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs with strong
 hubs it exceeds the threshold we fixed in advance for CertiFlip, on
 \numSnapNoBound{} of our \numSnapTotal{} SNAP graphs.  The packing alone

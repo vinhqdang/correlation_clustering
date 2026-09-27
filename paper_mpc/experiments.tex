@@ -10,8 +10,9 @@ sparse star packing, of the metric LP on $P$ and of the head-to-head
 comparison were made on Google Colab virtual machines with two logical cores
 and \SI{12.7}{GB} of memory, one run per machine at a time, with the CPU model
 recorded in every result file (\numCpuModels; the AMD model on
-\numCpuAmd{}, the Intel model on all others).  The triangle packings, the
-KaPoCE root bounds on SNAP graphs, SCC and the rows marked $^a$ in
+\numCpuAmd{}, the Intel model on all others).  The triangle packings, three of the
+KaPoCE root bounds on SNAP graphs, the rerun of its root bounds on the PACE
+exact track, SCC and the rows marked $^a$ in
 Table~\ref{tab:pace-primal} were run on 4-core workstations with several runs
 in parallel; these are marked where they appear.  The \SI{1800}{s} bound
 runs and the triangle LPs on every fourth PACE exact instance
@@ -87,13 +88,15 @@ run on a laptop GPU (NVIDIA RTX A2000).  RAMA prints its bound with six
 significant digits, and the values are not certified.
 \item \emph{KaPoCE root bounds}: the star-packing and $P_3$-packing bounds of
 the KaPoCE branch-and-bound~\cite{BlasiusEtAl22sea}.  On the PACE exact track
-we use the values published by its authors.  On the SNAP graphs with at most
+we use the values published by its authors, and check them against a rerun
+without data reductions (Section~\ref{sec:exp-bounds}); these are not
+certified.  On the SNAP graphs with at most
 $2.5\cdot10^4$ vertices we ran its lower-bound program (branch \texttt{experiments}, commit
 \texttt{63079a9}, four-hour limit, one run per graph; three graphs on a
 4-core workstation, the others on the 2-core Colab machines) ourselves; its
-dense matrix does
-not fit into memory on the larger graphs.  These values are not
-certified.
+dense matrices do not fit into memory on the larger graphs.  On these graphs
+we also exported its final star packing and checked it as a certificate
+(Section~\ref{sec:exp-cert}).
 \end{itemize}
 
 \paragraph{Solvers compared.}  Pivot~\cite{AilonCN08}, the best of 50

@@ -9,9 +9,12 @@ running time; pack.+LP: one run of the long packing followed by block LPs
 (\SI{1200}{s}, seed~0); the largest is in bold.  Rows with -- for CertiFlip:
 support above the threshold of Table~\ref{tab:instances}, packing only.  B\&B
 root: the root star-packing bound of the KaPoCE branch-and-bound, run on
-graphs with at most $2.5\cdot10^4$ vertices, not certified, $^\dagger$ where
-it exceeds all checked bounds.  gap: $(\mathrm{UB}-\LB)/\LB$ with the largest
-checked bound; gap$^*$: the same with the best value of any run of any solver
+graphs with at most $2.5\cdot10^4$ vertices; its packing was exported and
+accepted by our checker ($^\circ$ where not), $^\dagger$ where it exceeds all
+our checked bounds; t.o.: no bound within four hours; mem.: out of memory.
+gap: $(\mathrm{UB}-\LB)/\LB$ with the largest checked bound of our runs,
+$^\S$ where it is the packing run with the budget of pack.+LP
+(Table~\ref{tab:snap-eqtime}); gap$^*$: the same with the best value of any run of any solver
 (reported, not archived); tri.\ factor: best known value divided by the
 better of the two triangle packings.  Upper block: development graphs; lower
 block: held-out graphs.}
@@ -52,10 +55,11 @@ same graphs, and the new bound is larger on every graph.  Across the three Certi
 at most \numSnapSpreadMax{}.  The largest gaps are on the held-out social and
 citation graphs \texttt{facebook}, \texttt{email-Eu-core}, \texttt{wiki-Vote}
 and \texttt{cit-HepPh}; the column gap$^*$ shows that no solver we ran closes
-them from above.  On \texttt{email-Eu-core}, the only one of them where the
-root bound of the branch-and-bound finished, that bound leaves 4.1\%, so
-there most of our gap is due to our lower bound; on the other three we cannot
-tell how it divides between the two bounds.  The median gap is \numSnapGapMedDev{} on the
+them from above.  On \texttt{facebook} and \texttt{email-Eu-core}, where the
+root bound of the branch-and-bound finished, its checked packing leaves
+\numRootGapfacebook{} and \numRootGapemailEucore{}, so there most of our gap
+is due to our lower bound; on \texttt{wiki-Vote} and \texttt{cit-HepPh} we
+cannot tell how it divides between the two bounds.  The median gap is \numSnapGapMedDev{} on the
 development graphs and \numSnapGapMedHeld{} on the held-out graphs.  We
 attribute the difference mainly to the composition of the held-out set, which
 contains the denser social and citation networks, but with seven held-out
@@ -105,8 +109,7 @@ by a median of \numPlpGainMedian{} and by up to \numPlpGainMax{} on
 bound on \numPlpBetter{} of the \numPlpN{} graphs, \numPlpSmallWins{} of them by less than
 0.2\%.  This is one seed against the best of three CertiFlip seeds, and the
 procedure ran longer: a median of \numPlpTimeMedian{}\,s against
-\numCfLbTimeMedian{}\,s for the bound phase of CertiFlip, so it is not an
-equal-time comparison.  On the other
+\numCfLbTimeMedian{}\,s for the bound phase of CertiFlip.  On the other
 \numPlpBelow{} it is below the best of the other runs by at most
 \numPlpBelowMax{}: on \texttt{ca-GrQc} and \texttt{email-Eu-core} below
 CertiFlip by 2 and 6, and on \texttt{com-DBLP}, \texttt{p2p-Gnutella31} and
@@ -118,9 +121,39 @@ strong packing as the start, the block LPs therefore add to the bound on
 every graph; on the large sparse graphs what the CertiFlip bound lacks is
 time for the packing, not the LP part.
 
+\paragraph{The packing with the same budget.}  Whether the LP phase is worth
+its time is a different question: the other half of the budget could also go
+to the packing.  We therefore ran the packing alone with the whole
+\SI{1200}{s} budget (seed~0, Table~\ref{tab:snap-eqtime}).  Its iteration
+count is fixed from the measured rate as before, and the run took a median
+of \numEqTimeMedian{}\,s, at most \numEqTimeMax{}\,s, so the budgets are
+equal only nominally, in favour of the packing when it overruns and of the
+block LPs otherwise.  The combination gives the larger bound on
+\numEqPlpBetter{} of the \numEqN{} graphs, by up to \numEqPlpBetterMax{},
+among them five of the six graphs with $m/n>9$ and \texttt{roadNet-PA}; the longer packing is larger on
+\numEqPackBetter{} (\numEqPackBetterList{}), by up to \numEqPackBetterMax{},
+and on all of them it is the largest checked bound of our runs (marked
+$^\S$ in Table~\ref{tab:snap-bounds}).  Neither use of the time dominates,
+and the split between the two phases remains a tuning choice that we did not
+optimise; the certified gaps of Table~\ref{tab:snap-bounds} use the larger of
+the two.
+
+\begin{table}[!tbp]
+\centering
+\caption{The packing followed by block LPs against the packing alone with the
+same nominal budget of \SI{1200}{s}, one run each (seed~0), on the SNAP
+graphs with a support.  $m/n$: average degree divided by two; $t$: measured
+running time; difference: of the packing alone relative to pack.+LP;
+largest checked: the packing alone gives the largest checked bound of our
+runs.  Upper block: development graphs; lower block: held-out graphs.}
+\label{tab:snap-eqtime}
+\footnotesize
+\input{tables/snap_eqtime}
+\end{table}
+
 \paragraph{The root bound of the branch-and-bound.}  On the graphs with at
 most $2.5\cdot10^4$ vertices, the root star-packing bound of the KaPoCE
-branch-and-bound finished within four hours on \numRootN{} graphs so far
+branch-and-bound finished within four hours on \numRootN{} graphs
 (Table~\ref{tab:snap-bounds}).  It exceeds all of our checked bounds on
 \numRootBetter{} of them (\numRootBetterList{}), by \numRootBetterLo{} to
 \numRootBetterHi{}, and is below them on \numRootBelowList{}, by at most
@@ -136,8 +169,14 @@ above $2.5\cdot10^4$ vertices.  Where it runs, the packing heuristic of the
 branch-and-bound is the stronger one, as on the PACE instances.  What the
 support adds is a packing, and a checked certificate for it, on graphs where
 the dense implementation does not fit into memory or does not finish.  Its
-packings use the same rows as ours and could be exported as certificates; we
-did not do this, so its values are not certified.
+packings use the same rows as ours, so we exported them from its code (a
+function of 13 lines that writes the stars of its final packing, centre
+first; \texttt{experiments/kapoce/}), converted each into a dual solution on
+$P$ and ran our checker on it.  The checker accepted all \numRootCert{}, each
+with the value KaPoCE reports, so these bounds and the gaps they leave are
+certified as well.  On \numRootMemList{} the program needed about
+\SI{11.6}{GB} and was killed three times on the machines with
+\SI{12.7}{GB}.
 
 \paragraph{Strength of the relaxation.}  Table~\ref{tab:snap-lp} separates
 the strength of the relaxation from the way it is solved.  On
