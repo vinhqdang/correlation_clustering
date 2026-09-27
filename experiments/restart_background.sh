@@ -18,3 +18,8 @@ recheck() {  # certificate directory, name
 recheck results/certificates/colab recheck
 recheck results/local/certs recheck_local
 # the KaPoCE root bounds run as fleet jobs (tag lkroot)
+# KaPoCE root bounds on the PACE exact instances (local, resumable)
+if [ ! -f results/colab/lkroot_pace.done ]; then
+    ps -eo args | grep -q "[r]un_local_kroot.sh" || \
+        (nohup setsid bash experiments/run_local_kroot.sh > /tmp/run_local_kroot.out 2>&1 < /dev/null &)
+fi

@@ -249,3 +249,4 @@ results/mpc/recheck_local.done
 results/mpc/recheck_local_work.csv*
 rama_build/
 logs_local/
+results/colab/lkroot_pace.done
