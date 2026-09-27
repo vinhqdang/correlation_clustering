@@ -17,9 +17,9 @@
   "seed": 0,
   "graph": "ca-AstroPh",
   "status": "running",
-  "machine": "w5",
+  "machine": "w2",
   "solo": true,
-  "started": 1790493513.6003652
+  "started": 1790508772.778745
  },
  {
   "id": "lkroot_ca-HepPh_0",
