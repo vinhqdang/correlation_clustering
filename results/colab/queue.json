@@ -165,8 +165,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790473546.8758016
  },
  {
   "id": "lplp_email-Enron_0",
@@ -174,8 +175,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790473546.8758042
  },
  {
   "id": "lpack_cit-HepTh_0",
@@ -183,8 +185,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790473546.8758051
  },
  {
   "id": "lpack_Slashdot+_0",
@@ -192,8 +195,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790473546.8758059
  },
  {
   "id": "lpack_soc-Epinions_0",
@@ -1022,7 +1026,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur076.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790469860.7679813
  },
