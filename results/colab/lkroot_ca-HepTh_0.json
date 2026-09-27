@@ -1,0 +1,1 @@
+{"graph": "ca-HepTh", "n": 9877, "m": 25973, "mode": "kroot", "T": 14400.0, "kapoce": "63079a9", "status": "ok", "time": 1149.142540216446, "p3": 11448, "p3_time": 676.143, "star": 15670, "star_time": 470.423, "value": 15670, "tag": "lkroot", "commit": "088f7fe", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

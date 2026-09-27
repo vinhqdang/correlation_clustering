@@ -38,7 +38,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "solo": true,
   "started": 1790493554.3733003
@@ -71,9 +71,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w7",
+  "solo": true,
+  "started": 1790494930.0245547
  },
  {
   "id": "lplp_ca-GrQc_0",
@@ -2273,7 +2274,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur192.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790490422.4831853
  },
@@ -2313,7 +2314,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur196.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790490610.5220354
  },
