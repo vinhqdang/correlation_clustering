@@ -37,7 +37,7 @@ FLAGS="-include cstdint -include limits -include string -include memory -include
 -include functional -include stdexcept -include optional -include numeric -include cassert"
 mkdir -p build_lb && cd build_lb
 cmake .. -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_CXX_FLAGS="$FLAGS" > cmake.log 2>&1
-make -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)" lbounds > make.log 2>&1
+make -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)" lbounds > make.log 2>&1 || { tail -n 30 make.log >&2; echo "build failed, see $PWD/make.log" >&2; exit 1; }
 BIN="$(find "$PWD" -type f -name lbounds -perm -u+x | head -n1)"
 [ -n "$BIN" ] || { echo "build failed, see $PWD/make.log" >&2; exit 1; }
 echo "$BIN"
