@@ -126,7 +126,9 @@ def main(graphs, T, seed, tag):
     try:
         commit = open(os.path.join(CC, 'COMMIT')).read().strip()
     except OSError:
-        commit = 'unknown'
+        r = subprocess.run(['git', '-C', CC, 'rev-parse', '--short', 'HEAD'],
+                           capture_output=True, text=True)
+        commit = r.stdout.strip() or 'unknown'
     if any(n.startswith('pace-') for n in graphs):
         ensure_pace()
     for name in graphs:

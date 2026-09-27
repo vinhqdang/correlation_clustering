@@ -100,10 +100,15 @@ def instances():
     return cache
 
 
+LOCAL = os.path.join(RES, "local")
+
+
 def runs(tag, directory=COLAB):
-    """All result records of one tag, keyed by (graph, seed)."""
+    """All result records of one tag, keyed by (graph, seed); for the Colab
+    tags also the runs of the same jobs on a local machine (results/local)."""
     out = {}
-    for f in glob.glob(os.path.join(directory, f"{tag}_*.json")):
+    dirs = [directory] + ([LOCAL] if directory == COLAB else [])
+    for f in (f for d in dirs for f in glob.glob(os.path.join(d, f"{tag}_*.json"))):
         d = json.load(open(f))
         if d.get("tag", tag) == tag or directory != COLAB:
             out[(d["graph"], d["seed"])] = d
