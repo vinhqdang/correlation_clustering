@@ -1,5 +1,80 @@
 [
  {
+  "id": "lkroot_ca-CondMat_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "ca-CondMat",
+  "status": "running",
+  "machine": "w4",
+  "solo": true,
+  "started": 1790493502.316163
+ },
+ {
+  "id": "lkroot_ca-AstroPh_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "ca-AstroPh",
+  "status": "running",
+  "machine": "w5",
+  "solo": true,
+  "started": 1790493513.6003652
+ },
+ {
+  "id": "lkroot_ca-HepPh_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "ca-HepPh",
+  "status": "running",
+  "machine": "w6",
+  "solo": true,
+  "started": 1790493544.15473
+ },
+ {
+  "id": "lkroot_ca-HepTh_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "ca-HepTh",
+  "status": "running",
+  "machine": "w7",
+  "solo": true,
+  "started": 1790493554.3733003
+ },
+ {
+  "id": "lkroot_wiki-Vote_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "wiki-Vote",
+  "status": "running",
+  "machine": "w9",
+  "solo": true,
+  "started": 1790493571.6993237
+ },
+ {
+  "id": "lkroot_BitcoinOTC+_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "BitcoinOTC+",
+  "status": "pending",
+  "machine": null,
+  "solo": true
+ },
+ {
+  "id": "lkroot_facebook_0",
+  "tag": "lkroot",
+  "T": 14400.0,
+  "seed": 0,
+  "graph": "facebook",
+  "status": "pending",
+  "machine": null,
+  "solo": true
+ },
+ {
   "id": "lplp_ca-GrQc_0",
   "tag": "lplp",
   "T": 1200.0,
@@ -2097,7 +2172,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur182.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790487783.1837306
  },
@@ -2187,7 +2262,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur191.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790490422.4831846
  },
@@ -2227,7 +2302,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur195.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790490610.5220344
  },
@@ -2257,7 +2332,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur198.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790491555.6101205
  },
