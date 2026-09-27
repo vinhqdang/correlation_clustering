@@ -25,7 +25,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790472751.2991745
  },
@@ -95,7 +95,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790473096.4542491
  },
@@ -135,7 +135,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790473421.905932
  },
@@ -205,8 +205,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790475296.2009444
  },
  {
   "id": "lpack_soc-Slashdot0902_0",
@@ -214,8 +215,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790475296.2009466
  },
  {
   "id": "lpack_Epinions+_0",
@@ -223,8 +225,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790475296.2009478
  },
  {
   "id": "lpack_email-EuAll_0",
@@ -232,8 +235,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790475296.2009485
  },
  {
   "id": "lpack_loc-Gowalla_0",
@@ -1106,7 +1110,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur084.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790470882.045207
  },
@@ -1176,7 +1180,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur091.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790471744.1845973
  },
