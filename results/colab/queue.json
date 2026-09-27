@@ -35,7 +35,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790472751.2991757
  },
@@ -75,7 +75,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790472876.799609
  },
@@ -105,7 +105,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790473096.4542503
  },
@@ -1073,7 +1073,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur080.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790470871.4145203
  },
@@ -1213,8 +1213,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur094.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790476087.0036597
  },
  {
   "id": "s2p_pace-heur_heur095.gr_0",
@@ -1222,8 +1223,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur095.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790476087.003662
  },
  {
   "id": "s2p_pace-heur_heur096.gr_0",
@@ -1231,8 +1233,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur096.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790476087.0036626
  },
  {
   "id": "s2p_pace-heur_heur097.gr_0",
@@ -1240,8 +1243,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur097.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790476087.0036633
  },
  {
   "id": "s2p_pace-heur_heur098.gr_0",
@@ -1249,8 +1253,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur098.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790476091.8513157
  },
  {
   "id": "s2p_pace-heur_heur099.gr_0",
@@ -1258,8 +1263,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur099.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790476091.8513176
  },
  {
   "id": "s2p_pace-heur_heur100.gr_0",
@@ -1267,8 +1273,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur100.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790476091.8513186
  },
  {
   "id": "s2p_pace-heur_heur101.gr_0",
@@ -1276,8 +1283,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur101.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790476091.8513193
  },
  {
   "id": "s2p_pace-heur_heur102.gr_0",
@@ -1285,8 +1293,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur102.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790476133.513259
  },
  {
   "id": "s2p_pace-heur_heur103.gr_0",
@@ -1294,8 +1303,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur103.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790476133.5132606
  },
  {
   "id": "s2p_pace-heur_heur104.gr_0",
@@ -1303,8 +1313,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur104.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790476133.5132613
  },
  {
   "id": "s2p_pace-heur_heur105.gr_0",
@@ -1312,8 +1323,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur105.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790476133.5132618
  },
  {
   "id": "s2p_pace-heur_heur106.gr_0",
