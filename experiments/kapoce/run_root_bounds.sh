@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Root star-packing and P3-packing bounds of the KaPoCE branch-and-bound on the
 # SNAP graphs with at most 2.5e4 vertices (Table "SNAP bounds", column B&B root).
-# Ubuntu/WSL: sudo apt install -y git cmake g++ make python3-venv python3-pip
+# Ubuntu/WSL: sudo apt install -y git cmake g++ make libboost-program-options-dev python3-venv python3-pip
 # (with conda: activate an environment with Python >= 3.10 first)
 # CPU only; up to about 6 GB of memory per job on the largest graph (ca-CondMat).
 #
@@ -28,7 +28,9 @@ say "1/3 installing the Python package of the repository"
 [ -n "${SKIP_PIP:-}" ] || python3 -m pip install -q --upgrade pip
 [ -n "${SKIP_PIP:-}" ] || python3 -m pip install -q -e .
 say "2/3 building KaPoCE lbounds (about a minute)"
-BIN="$(bash experiments/kapoce/build_lbounds.sh "$PWD/kapoce_lb" | tail -n1)"
+BIN="$(bash experiments/kapoce/build_lbounds.sh "$PWD/kapoce_lb" | tail -n1)" || {
+    echo "building lbounds failed (the error is printed above)" >&2; exit 1; }
+[ -x "$BIN" ] || { echo "building lbounds failed: no binary" >&2; exit 1; }
 export KAPOCE_LB_BIN="$BIN"
 say "lbounds: $BIN"
 
