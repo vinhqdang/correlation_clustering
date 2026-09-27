@@ -69,8 +69,8 @@ which are valid for every clustering that separates the distance-three pairs.
 This observation is simple; its value is that the relaxation, its dual
 solutions and their certificates live on $O(\sum_v\deg(v)^2)$ pairs, which
 makes checked bounds possible on graphs with $10^5$ to $10^6$ vertices.  On
-such graphs, in our experiments, the bound comes from the star packing on
-these pairs rather than from the LP (Section~\ref{sec:exp-cert}).
+such graphs, in our experiments, most of the bound comes from the star
+packing on these pairs, and the LP adds to it (Section~\ref{sec:exp-cert}).
 
 \item \textbf{Anytime block-dual bound} (Section~\ref{sec:dual}).  We compute
 a lower bound by dual block-coordinate ascent: each step solves the LP of one
@@ -81,11 +81,12 @@ multipliers (Theorem~\ref{thm:anytime}).  Any packing of induced stars or bad
 triangles is a feasible start.  We compute one on the sparse support by a
 ruin-and-recreate local search.  This sparse star packing uses the rows of
 the root bound of the KaPoCE branch-and-bound but only the pairs of the
-support; where both run, it is weaker than the original.  On the graphs with
-more than $2\cdot10^4$ vertices a long packing alone gave larger bounds than
-CertiFlip's short packing followed by block LPs, at comparable but not equal
-running times; the block LPs pay off on small and dense instances
-(Sections~\ref{sec:exp-bounds} and~\ref{sec:exp-cert}).
+support; where both run, it is usually weaker than the original.  On the
+graphs with more than $2\cdot10^4$ vertices a long packing alone gave larger
+bounds than CertiFlip's short packing followed by block LPs, at comparable
+but not equal running times, and block LPs started from the long packing
+raised the bound further on every graph (Sections~\ref{sec:exp-bounds}
+and~\ref{sec:exp-cert}).
 
 \item \textbf{Exactly checked certificates} (Section~\ref{sec:cert}).  A
 certificate lists the rows with positive multipliers.  A checker of about

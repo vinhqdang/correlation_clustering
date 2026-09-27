@@ -1,14 +1,16 @@
 \begin{table}[!tbp]
 \centering
-\caption{SNAP graphs whose support fits into memory: checked lower bounds
-and certified gaps.  UB: the best archived clustering (re-checked from its
-file).  CertiFlip: the best checked bound of three CertiFlip runs of
-\SI{600}{s} (seeds 0--2), with the median time of their bound phase;
-packing: the checked bound of one run of the sparse star packing alone
-(seed~0), with its running time; the larger of the two is in bold.  B\&B
+\caption{SNAP graphs: checked lower bounds and certified gaps.  UB: the
+best archived clustering (re-checked from its file; -- if none was archived).
+CertiFlip: the best checked bound of three CertiFlip runs of \SI{600}{s}
+(seeds 0--2), with the median time of their bound phase; packing: the
+checked bound of one run of the sparse star packing alone (seed~0), with its
+running time; pack.+LP: one run of the long packing followed by block LPs
+(\SI{1200}{s}, seed~0); the largest is in bold.  Rows with -- for CertiFlip:
+support above the threshold of Table~\ref{tab:instances}, packing only.  B\&B
 root: the root star-packing bound of the KaPoCE branch-and-bound, run on
 graphs with at most $2.5\cdot10^4$ vertices, not certified, $^\dagger$ where
-it exceeds both checked bounds.  gap: $(\mathrm{UB}-\LB)/\LB$ with the larger
+it exceeds all checked bounds.  gap: $(\mathrm{UB}-\LB)/\LB$ with the largest
 checked bound; gap$^*$: the same with the best value of any run of any solver
 (reported, not archived); tri.\ factor: best known value divided by the
 better of the two triangle packings.  Upper block: development graphs; lower
@@ -24,8 +26,10 @@ block: held-out graphs.}
 \caption{The metric LP restricted to $P$, solved by cutting planes with HiGHS
 on one core (budget \SI{1800}{s} with triangle rows and \SI{3600}{s} with
 star rows, \SI{7200}{s} on \texttt{ca-GrQc}), against the best checked bound
-of Table~\ref{tab:snap-bounds}.  LP values are in floating point and not
-certified.  A value in parentheses is that of the last LP when the budget
+of Table~\ref{tab:snap-bounds}, and the multicut dual bound of RAMA on the
+same support plus $|\Nt|$ (Section~\ref{sec:prelim}; on one GPU, failed: the
+solver stopped with a CUDA memory error).  LP and RAMA values are in floating
+point and not certified.  A value in parentheses is that of the last LP when the budget
 ended during its solution; it is not the optimum of any relaxation and not a
 bound.  killed: the job was killed with its machine three times, most likely
 for lack of memory; n.r.: not run.}
@@ -36,10 +40,10 @@ for lack of memory; n.r.: not run.}
 \end{table}
 
 \paragraph{Certified gaps.}  On the \numSnapCert{} of the \numSnapTotal{}
-graphs whose support fits into memory, the larger of the two checked bounds
+graphs whose support fits into memory, the largest checked bound
 certifies the archived clusterings within \numSnapGapLo{} to \numSnapGapHi{}
 (median \numSnapGapMedian{}; Table~\ref{tab:snap-bounds}).  This is the best
-certificate of four runs of two procedures; taken separately, CertiFlip at
+certificate of five runs of three procedures; taken separately, CertiFlip at
 its median seed gives a median gap of \numSnapGapCfMedian{} and the packing
 alone \numSnapGapPkMedian{}.  The triangle packings, the lower bounds used at
 this scale so far, leave gaps of \numBaseGapLo{} to \numBaseGapHi{} on the
@@ -54,11 +58,18 @@ development graphs and \numSnapGapMedHeld{} on the held-out graphs.  We
 attribute the difference mainly to the composition of the held-out set, which
 contains the denser social and citation networks, but with seven held-out
 graphs we cannot exclude that the method is tuned to the development graphs.
-The nine graphs without a bound, five of them held out, are excluded by a
-threshold on the estimated support that was fixed in advance, not by an
-observed failure; neither the star packing nor the checker needs the block
-LPs, but our implementation of the packing materialises the support, and we
-did not run it on these graphs.
+The other nine graphs, five of them held out, are excluded from these
+statistics by a threshold on the estimated support that was fixed in
+advance, not by an observed failure.  Neither the star packing nor the
+checker needs the block LPs, and after the runs above we ran the packing
+alone on these graphs without the threshold, on the Colab machines with
+about \SI{12}{GB} of memory.  It gave checked bounds on \numPackOnlyN{} of
+them (\numPackOnlyList{}; up to \numPackOnlyMaxN{} vertices, at most
+\numPackOnlyTimeMax{}\,s), within \numPackOnlyGapLo{} to \numPackOnlyGapHi{}
+of the best known values; on three of them no clustering was archived, so
+only this gap$^*$ is given.  On the other \numNoBoundN{} (\numNoBoundList{})
+the job was killed with its machine three times, most likely because our
+implementation of the packing materialises the support.
 
 \paragraph{Star packing against the block LPs.}  The sparse star packing
 alone gives a larger checked bound than the CertiFlip bound on
@@ -73,21 +84,31 @@ procedures did not have the same running time
 bound phase of CertiFlip a median of \numCfLbTimeMedian{}\,s.  On
 \numPackLonger{} of the graphs where the packing wins, \numPackLongerList{},
 the packing ran longer than the bound phase of every CertiFlip seed; on the
-others it ran shorter.  Within CertiFlip the packing phase is short, and on
-large sparse graphs the block LPs, started from a weaker packing, do not make
-up the difference in the remaining time.  On these graphs the certified gap
-is therefore due to the packing; the LP part of the method matters on the
-smaller, denser graphs and on the PACE instances
-(Section~\ref{sec:exp-bounds}).  Running a long packing first and the block
-LPs afterwards is the obvious combination; by
-Theorem~\ref{thm:anytime}(b) it can only improve on the packing.  We did not
-evaluate it as one procedure.  On development graphs, earlier runs on a
-4-core workstation with a \SI{300}{s} budget gave larger bounds with block
-LPs after a packing than with a packing alone on all five graphs tried (Appendix~\ref{app:devlog}).
+others it ran shorter.  Within CertiFlip the packing phase is short, and on large sparse graphs the
+block LPs, started from a weaker packing, do not make up the difference in
+the remaining time.
+
+\paragraph{A long packing, then block LPs.}  Running the packing first with
+half of a \SI{1200}{s} budget and the block LPs from it with the other half
+(measured median \numPlpTimeMedian{}\,s, at most \numPlpTimeMax{}\,s; column
+pack.+LP) separates the two effects.  The block LPs raised the bound above
+the packing they started from on all \numPlpGainPos{} of the \numPlpN{} graphs,
+by a median of \numPlpGainMedian{} and by up to \numPlpGainMax{} on
+\numPlpGainMaxGraph{}, and the combined procedure gives the largest checked
+bound on \numPlpBetter{} of the \numPlpN{} graphs.  On the other
+\numPlpBelow{} it is below the best of the other runs by at most
+\numPlpBelowMax{}: on \texttt{ca-GrQc} and \texttt{email-Eu-core} below
+CertiFlip by 2 and 6, and on \texttt{com-DBLP}, \texttt{p2p-Gnutella31} and
+\texttt{amazon0302} below the separate packing run, because its own packing
+phase ended lower (the number of packing iterations is set from a rate
+measured at the start of each run, and the two runs differ in it).  With a
+strong packing as the start, the block LPs therefore add to the bound on
+every graph; on the large sparse graphs what the CertiFlip bound lacks is
+time for the packing, not the LP part.
 
 \paragraph{The root bound of the branch-and-bound.}  Where it runs, on
 \numRootN{} graphs with at most $2.5\cdot10^4$ vertices, the root
-star-packing bound of the KaPoCE branch-and-bound exceeds both of our checked
+star-packing bound of the KaPoCE branch-and-bound exceeds all of our checked
 bounds on \numRootBetterList{} (Table~\ref{tab:snap-bounds}).  As on the PACE
 instances, the packing heuristic of the branch-and-bound is stronger than our
 sparse one where both run; what the support adds is that a packing, and a
@@ -104,3 +125,10 @@ the best known value and slightly above the best checked bound
 which is what the classical metric LP has, are therefore far from sufficient
 on this graph; the star inequalities close almost all of the gap, and the
 anytime dual reaches nearly the same value in a tenth of the time.
+RAMA, a dual method for the multicut LP with cycle inequalities, stays below
+$\mathrm{LP}_P$ with triangle rows on every graph where that converged, as
+the argument of Section~\ref{sec:prelim} predicts.  Its bound is at most
+\numRamaFracMax{} of the best checked bound (on \numRamaFracMaxGraph{}), and on
+the \numRamaNearZero{} graphs where the negative pairs dominate the support
+(\numRamaNearZeroList{}) it is zero up to its printing precision.  It stopped
+with an error on \numRamaFailed{} graphs.

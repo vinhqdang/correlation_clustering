@@ -111,7 +111,7 @@ def runs(tag, directory=COLAB):
     for f in (f for d in dirs for f in glob.glob(os.path.join(d, f"{tag}_*.json"))):
         d = json.load(open(f))
         if d.get("tag", tag) == tag or directory != COLAB:
-            out[(d["graph"], d["seed"])] = d
+            out[(d["graph"], d.get("seed", 0))] = d
     return out
 
 
@@ -288,6 +288,7 @@ def snap():
     arch, anyrun = best_costs()
     C2 = runs("c2")
     PK = runs("lpack")
+    PL = runs("lplp")
     LT = runs("ltri")
     LS = runs("lstar")
     tri = pd.concat([pd.read_csv(os.path.join(RES, f)) for f in
@@ -295,13 +296,20 @@ def snap():
                      if os.path.exists(os.path.join(RES, f))])
     tri = tri[tri.algo.isin(["lb:greedy", "lb:tri-mwu"]) & tri.lb.notna()]
     tri = tri.groupby("instance")["lb"].max().apply(lambda x: np.ceil(x - 1e-6))
-    root = {}
+    root, root_to = {}, set()
     for f in sorted(glob.glob(os.path.join(RES, "kapoce_root_snap_*.csv"))):
         d = pd.read_csv(f)
         for _, r in d[d.bound == "star"].iterrows():
             root[r.graph] = (int(r.lb), float(r.time))
+    # the same program as a fleet job (colab_run_lp.py, mode kroot)
+    for (g, sd), r in runs("lkroot").items():
+        if r.get("star") is not None:
+            root[g] = (int(r["star"]), float(r["star_time"]))
+        elif r.get("status") == "timeout":
+            root_to.add(g)
     rows, gaps, facs, spreads, cf_better, pk_better, lp_rows = [], [], [], [], [], [], []
     role_gaps, gaps_cf, gaps_pk, longer, seed_below, root_better, root_n = {}, [], [], [], [], [], 0
+    plp_better, plp_below, plp_gain, pack_only, no_bound = [], [], [], [], []
 
     def lp_gap(rec, ub):
         # an LP value is reported only when cutting planes converged: then it
@@ -313,19 +321,44 @@ def snap():
     for role, names in (("dev", DEV), ("held-out", HELD)):
         for name in names:
             if cache[name]["pairs"] is None:
+                # above the support threshold: no CertiFlip run; the packing
+                # alone was run without the threshold where memory allowed
+                pk = checked(PK.get((name, 0)))
+                ub_a, ub = arch.get(name), anyrun.get(name)
+                ucell = "--" if ub_a is None else f"\\num{{{ub_a}}}"
+                if pk is None or ub is None:
+                    no_bound.append(name)
+                    rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}"
+                                "{no bound: the packing job was killed (memory)} \\\\")
+                    continue
+                pack_only.append((name, role, pk, ub_a, ub))
+                t_pk = PK[(name, 0)]["time"]
+                tb = tri.get(name)
+                fac = None if tb is None or not np.isfinite(tb) else ub / tb
+                ga = "--" if ub_a is None else f"{100 * (ub_a - pk) / pk:.2f}"
+                rows.append(f"{tt(name)} & {ucell} & -- & -- & "
+                            f"\\num{{{pk}}} & {t_pk:.0f} & -- & -- & {ga} & "
+                            f"{100 * (ub - pk) / pk:.2f} & {fmt_pct(fac, 2) if fac else '--'} \\\\")
                 continue
             lbs = [checked(C2.get((name, sd))) for sd in range(3)]
             lbs = [x for x in lbs if x is not None]
             ub_a, ub = arch.get(name), anyrun.get(name)
             if not lbs or ub_a is None:
-                rows.append(f"{tt(name)} & \\multicolumn{{9}}{{c}}{{\\pending{{}}}} \\\\")
+                rows.append(f"{tt(name)} & \\multicolumn{{10}}{{c}}{{\\pending{{}}}} \\\\")
                 continue
             cf = max(lbs)
             spreads.append(100 * (max(lbs) - min(lbs)) / cf)
             pk = checked(PK.get((name, 0)))
-            lb = cf if pk is None else max(cf, pk)
+            plp = checked(PL.get((name, 0)))
+            prev = cf if pk is None else max(cf, pk)
+            lb = prev if plp is None else max(prev, plp)
             if pk is not None:
                 (cf_better if cf > pk else pk_better).append(name)
+            if plp is not None:
+                (plp_better if plp > prev else plp_below).append((name, plp - prev))
+                # the block LPs against the packing they started from
+                plp_gain.append((name, 100 * (plp - PL[(name, 0)]["pack_value"]) /
+                                 PL[(name, 0)]["pack_value"]))
             gap_a = 100 * (ub_a - lb) / lb
             gaps.append(gap_a)
             # each procedure on its own: CertiFlip at its median seed, the packing alone
@@ -353,20 +386,21 @@ def snap():
             gap_b = 100 * (ub - lb) / lb
             g_tri = lp_gap(LT.get((name, 0)), ub)
             g_star = lp_gap(LS.get((name, 0)), ub)
-            lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, cf))
-            b = lambda v, other: (f"\\textbf{{\\num{{{v}}}}}" if other is not None and v > other
-                                  else f"\\num{{{v}}}")
-            rcell = "--" if rt is None else (f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else ""))
-            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf, pk)} & {t_lb:.0f} & "
-                        f"{'--' if pk is None else b(pk, cf)} & "
-                        f"{'--' if t_pk is None else f'{t_pk:.0f}'} & {rcell} & "
+            lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, lb))
+            b = lambda v: (f"\\textbf{{\\num{{{v}}}}}" if v == lb else f"\\num{{{v}}}")
+            rcell = ("t.o." if name in root_to else "--") if rt is None else (
+                f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else ""))
+            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf)} & {t_lb:.0f} & "
+                        f"{'--' if pk is None else b(pk)} & "
+                        f"{'--' if t_pk is None else f'{t_pk:.0f}'} & "
+                        f"{'--' if plp is None else b(plp)} & {rcell} & "
                         f"{gap_a:.2f} & {gap_b:.2f} & "
                         f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
-    write("snap_bounds", "\\begin{tabular}{lrrrrrrrrr}\n\\toprule\n"
-          "graph & UB & \\multicolumn{4}{c}{checked LB} & B\\&B & gap & gap$^*$ & tri.\\\\\n"
-          "\\cmidrule(lr){3-6}\n"
-          " & & CertiFlip & $t$ (s) & packing & $t$ (s) & root & (\\%) & (\\%) & factor \\\\\n"
+    write("snap_bounds", "\\begin{tabular}{lrrrrrrrrrr}\n\\toprule\n"
+          "graph & UB & \\multicolumn{5}{c}{checked LB} & B\\&B & gap & gap$^*$ & tri.\\\\\n"
+          "\\cmidrule(lr){3-7}\n"
+          " & & CertiFlip & $t$ (s) & packing & $t$ (s) & pack.+LP & root & (\\%) & (\\%) & factor \\\\\n"
           "\\midrule\n"
           + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
     # metric LP on P against the checked bounds, where it was run
@@ -378,6 +412,12 @@ def snap():
     if os.path.exists(qf):
         for j in json.load(open(qf)):
             qstat[j["id"]] = j["status"]
+    rama = {}
+    rf = os.path.join(RES, "rama_snap_user.csv")
+    if os.path.exists(rf):
+        for _, r in pd.read_csv(rf).iterrows():
+            rama[r.graph] = r
+    rama_ok, rama_fail = [], []
     for name, rt, rs, ub, pk, cf in lp_rows:
         def cell(r, tag=None):
             if r is None:
@@ -389,13 +429,24 @@ def snap():
             return v, f"{r.get('time', float('nan')):.0f}"
         (vt, tt_), (vs, ts) = cell(rt, "ltri"), cell(rs, "lstar")
         best = max(x for x in (pk, cf) if x is not None)
-        lrows.append(f"{tt(name)} & \\num{{{ub}}} & \\num{{{best}}} & {vt} & {tt_} & {vs} & {ts} \\\\")
-    write("snap_lp", "\\begin{tabular}{lrrrrrr}\n\\toprule\n"
+        ra = rama.get(name)
+        if ra is None:
+            vr, tr = "n.r.", ""
+        elif ra.status == "ok":
+            # RAMA prints six significant digits
+            vr, tr = f"\\num{{{ra.cc_lb:.0f}}}", f"{ra.time:.0f}"
+            rama_ok.append((name, ra.cc_lb, best))
+        else:
+            vr, tr = "failed", ""
+            rama_fail.append(name)
+        lrows.append(f"{tt(name)} & \\num{{{ub}}} & \\num{{{best}}} & {vt} & {tt_} & {vs} & {ts} & "
+                     f"{vr} & {tr} \\\\")
+    write("snap_lp", "\\begin{tabular}{lrrrrrrrr}\n\\toprule\n"
           "graph & best & best checked & \\multicolumn{2}{c}{LP$_P$, triangle rows} & "
-          "\\multicolumn{2}{c}{LP$_P$, + star rows} \\\\\n"
-          "\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\n"
-          " & known & LB & value & time (s) & value & time (s) \\\\\n\\midrule\n"
-          + ("\n".join(lrows) if lrows else "\\multicolumn{7}{c}{\\pending{}} \\\\") +
+          "\\multicolumn{2}{c}{LP$_P$, + star rows} & \\multicolumn{2}{c}{RAMA} \\\\\n"
+          "\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(lr){8-9}\n"
+          " & known & LB & value & time (s) & value & time (s) & value & time (s) \\\\\n\\midrule\n"
+          + ("\n".join(lrows) if lrows else "\\multicolumn{9}{c}{\\pending{}} \\\\") +
           "\n\\bottomrule\n\\end{tabular}\n")
     if gaps:
         NUM["numSnapGapLo"] = f"{min(gaps):.2f}\\%"
@@ -459,6 +510,46 @@ def snap():
     NUM["numPackBetter"] = str(len(pk_better))
     NUM["numCfBetter"] = str(len(cf_better))
     NUM["numCfBetterList"] = ", ".join(tt(x) for x in cf_better)
+    # a long packing followed by block LPs (tag lplp)
+    if plp_gain:
+        NUM["numPlpN"] = str(len(plp_gain))
+        NUM["numPlpBetter"] = str(len(plp_better))
+        NUM["numPlpBelow"] = str(len(plp_below))
+        NUM["numPlpBelowList"] = ", ".join(tt(x) for x, _ in plp_below) or "none"
+        NUM["numPlpBelowMax"] = f"\\num{{{-min(d for _, d in plp_below)}}}" if plp_below else "0"
+        gains = [g for _, g in plp_gain]
+        NUM["numPlpGainPos"] = str(sum(g > 0 for g in gains))
+        NUM["numPlpGainMedian"] = f"{np.median(gains):.2f}\\%"
+        top = max(plp_gain, key=lambda x: x[1])
+        NUM["numPlpGainMax"] = f"{top[1]:.1f}\\%"
+        NUM["numPlpGainMaxGraph"] = tt(top[0])
+        pt_ = [PL[(x, 0)]["time"] for x, _ in plp_gain]
+        NUM["numPlpTimeMedian"] = f"{np.median(pt_):.0f}"
+        NUM["numPlpTimeMax"] = f"{max(pt_):.0f}"
+        NUM["numPlpTimeOver"] = str(sum(t > 1.05 * PL[(x, 0)]["T"] for (x, _), t in zip(plp_gain, pt_)))
+    # graphs above the support threshold: the packing alone
+    NUM["numPackOnlyN"] = str(len(pack_only))
+    NUM["numPackOnlyHeld"] = str(sum(1 for x in pack_only if x[1] == "held-out"))
+    NUM["numPackOnlyList"] = ", ".join(tt(x[0]) for x in pack_only) or "none"
+    if pack_only:
+        gs = [100 * (x[4] - x[2]) / x[2] for x in pack_only]
+        NUM["numPackOnlyGapLo"] = f"{min(gs):.1f}\\%"
+        NUM["numPackOnlyGapHi"] = f"{max(gs):.1f}\\%"
+        NUM["numPackOnlyTimeMax"] = f"{max(PK[(x[0], 0)]['time'] for x in pack_only):.0f}"
+        NUM["numPackOnlyMaxN"] = f"\\num{{{max(cache[x[0]]['n'] for x in pack_only)}}}"
+    NUM["numNoBoundN"] = str(len(no_bound))
+    NUM["numNoBoundList"] = ", ".join(tt(x) for x in no_bound) or "none"
+    NUM["numSnapAnyBound"] = str(len(gaps) + len(pack_only))
+    # RAMA (multicut dual on P, not certified)
+    NUM["numRamaOk"] = str(len(rama_ok))
+    NUM["numRamaFailed"] = str(len(rama_fail))
+    NUM["numRamaFailedList"] = ", ".join(tt(x) for x in rama_fail) or "none"
+    if rama_ok:
+        fr = [(x, v / b_) for x, v, b_ in rama_ok]
+        NUM["numRamaFracMax"] = f"{max(f for _, f in fr):.2f}"
+        NUM["numRamaFracMaxGraph"] = tt(max(fr, key=lambda z: z[1])[0])
+        NUM["numRamaNearZero"] = str(sum(1 for _, f in fr if f < 0.01))
+        NUM["numRamaNearZeroList"] = ", ".join(tt(x) for x, f in fr if f < 0.01)
 
 
 def signed_rank_cdf(n):

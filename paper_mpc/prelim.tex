@@ -74,14 +74,16 @@ differs from $\cost(\mathcal C)$ by a constant ($|\Nt|$) plus the number of
 negative pairs outside $P$ inside clusters, which is non-negative.  Hence any
 multicut lower bound on $(V,P)$, plus $|\Nt|$, is a valid lower bound for
 correlation clustering, and dual solvers such as RAMA~\cite{AbbasS22rama}
-could be run on the support.  We did not run them, for the following reason.
+can be run on the support.  We ran RAMA (Table~\ref{tab:snap-lp}); the
+following argument shows why such bounds cannot exceed a weak relaxation.
 Dual methods based on cycle inequalities give at most the value of the
 multicut LP on $(V,P)$ with all cycle inequalities.  Every feasible point of
 $\mathrm{LP}_P$ extends to a metric on $V$ (Theorem~\ref{thm:sparse}(b)) and
 therefore satisfies all cycle inequalities of $(V,P)$, and the two objectives
 agree up to the constant $|\Nt|$.  So these bounds are at most the value of
 $\mathrm{LP}_P$ with triangle rows, which on the SNAP graphs is far below our
-checked bounds wherever it converged (Table~\ref{tab:snap-lp}).
+checked bounds wherever it converged (Table~\ref{tab:snap-lp}); the RAMA
+bounds are below it on every graph where it converged.
 
 \paragraph{Heuristics.}  Local search with vertex
 moves~\cite{elsner2009bounding}, Louvain and Leiden with the constant Potts

@@ -37,7 +37,9 @@ coincide with development graphs and seven with held-out graphs
 \caption{SNAP instances: vertices, edges, size of the distance-two support
 $P$ and role.  ``--'': the estimate $m+\sum_v\binom{\deg v}2$ of the support
 exceeds $3\cdot10^7$ pairs, a threshold fixed in advance from the memory of
-the machines; no bound was computed and nothing was run on these graphs.  PACE: the
+the machines; CertiFlip was not run on these graphs, and the star packing
+alone was run on them afterwards without the threshold
+(Table~\ref{tab:snap-bounds}).  PACE: the
 heuristic-track instance with the same graph.}
 \label{tab:instances}
 \small
@@ -69,12 +71,23 @@ computed within CertiFlip, whose bound phase targets half of the remaining
 budget but does not interrupt a block LP (measured times in
 Section~\ref{sec:exp-time}), and, on a subset of PACE instances, with a long
 budget and one block covering the graph.
+\item \emph{Long packing, then block LPs} (checked): the sparse star
+packing with half of a \SI{1200}{s} budget, followed by METIS block sweeps
+from it for the other half, as one procedure; by
+Theorem~\ref{thm:anytime}(b) the result is never below the packing it starts
+from.  One run per graph (seed~0) on the SNAP graphs with a support.
+\item \emph{RAMA}: the multicut dual of \citet{AbbasS22rama} (commit
+\texttt{ee459d6}, GPU solver, lower bound only) on the support $P$ with weight
+$+1$ on $\Ep$ and $-1$ on $\Nt$, plus $|\Nt|$ (Section~\ref{sec:prelim});
+run on a laptop GPU (NVIDIA RTX A2000).  RAMA prints its bound with six
+significant digits, and the values are not certified.
 \item \emph{KaPoCE root bounds}: the star-packing and $P_3$-packing bounds of
 the KaPoCE branch-and-bound~\cite{BlasiusEtAl22sea}.  On the PACE exact track
 we use the values published by its authors.  On the SNAP graphs with at most
 $2.5\cdot10^4$ vertices we ran its lower-bound program (branch \texttt{experiments}, commit
-\texttt{63079a9}, four-hour limit, one run per graph on a 4-core workstation)
-ourselves; its dense matrix does
+\texttt{63079a9}, four-hour limit, one run per graph; three graphs on a
+4-core workstation, the others on the 2-core Colab machines) ourselves; its
+dense matrix does
 not fit into memory on the larger graphs.  These values are not
 certified.
 \end{itemize}
@@ -160,7 +173,10 @@ fixes its number of iterations in advance from a measured rate; on the SNAP
 graphs (nominal \SI{600}{s}) it took \numPackTimeLo{} to \numPackTimeHi{}\,s,
 and on the PACE exact track (nominal \SI{60}{s}) a median of
 \numPackPaceMedian{}\,s, more than \SI{60}{s} on \numPackPaceOver{} of
-\numPackPaceRuns{} runs and at most \numPackPaceMax{}\,s.  All times are in
+\numPackPaceRuns{} runs and at most \numPackPaceMax{}\,s.  The long packing
+followed by block LPs (nominal \SI{1200}{s}) took a median of
+\numPlpTimeMedian{}\,s and more than \SI{1260}{s} on \numPlpTimeOver{} graphs
+(at most \numPlpTimeMax{}\,s).  All times are in
 the archived result files and per graph in Table~\ref{tab:snap-bounds}.  The
 comparisons of bounds in Sections~\ref{sec:exp-bounds}
 and~\ref{sec:exp-cert} are therefore at comparable, not equal, running times;

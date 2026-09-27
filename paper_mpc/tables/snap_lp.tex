@@ -1,26 +1,26 @@
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{lrrrrrrrr}
 \toprule
-graph & best & best checked & \multicolumn{2}{c}{LP$_P$, triangle rows} & \multicolumn{2}{c}{LP$_P$, + star rows} \\
-\cmidrule(lr){4-5}\cmidrule(lr){6-7}
- & known & LB & value & time (s) & value & time (s) \\
+graph & best & best checked & \multicolumn{2}{c}{LP$_P$, triangle rows} & \multicolumn{2}{c}{LP$_P$, + star rows} & \multicolumn{2}{c}{RAMA} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+ & known & LB & value & time (s) & value & time (s) & value & time (s) \\
 \midrule
-\texttt{ca-GrQc} & \num{6050} & \num{6036} & \num{4931} & 2 & \num{6039} & 2578 \\
-\texttt{ca-HepTh} & \num{15813} & \num{15705} & \num{11477} & 6 & (\num{14449}) & 3621 \\
-\texttt{ca-HepPh} & \num{46133} & \num{43199} & (\num{36932}) & 1808 & n.r. &  \\
-\texttt{ca-AstroPh} & \num{125541} & \num{118224} & (\num{73161}) & 1821 & n.r. &  \\
-\texttt{ca-CondMat} & \num{56834} & \num{55627} & \num{41820} & 797 & n.r. &  \\
-\texttt{email-Enron} & \num{150419} & \num{140854} & killed &  & n.r. &  \\
-\texttt{loc-Brightkite} & \num{174695} & \num{163927} & killed &  & n.r. &  \\
-\texttt{BitcoinOTC+} & \num{16462} & \num{15642} & \num{9262} & 34 & (\num{11312}) & 3605 \\
-\texttt{BitcoinAlpha+} & \num{11437} & \num{10802} & \num{6475} & 19 & (\num{8434}) & 3604 \\
-\texttt{com-Amazon} & \num{612307} & \num{574956} & killed &  & n.r. &  \\
-\texttt{com-DBLP} & \num{606723} & \num{589979} & killed &  & n.r. &  \\
-\texttt{email-Eu-core} & \num{12732} & \num{11657} & \num{8032} & 207 & (\num{8523}) & 3618 \\
-\texttt{facebook} & \num{53547} & \num{43344} & (\num{21639}) & 1805 & (\num{43700}) & 3610 \\
-\texttt{wiki-Vote} & \num{95259} & \num{85522} & killed &  & n.r. &  \\
-\texttt{cit-HepPh} & \num{357413} & \num{324327} & killed &  & n.r. &  \\
-\texttt{p2p-Gnutella31} & \num{131362} & \num{130336} & \num{73941} & 67 & n.r. &  \\
-\texttt{amazon0302} & \num{540839} & \num{511221} & (\num{429905}) & 1825 & n.r. &  \\
-\texttt{roadNet-PA} & \num{944519} & \num{884166} & \num{769127} & 831 & n.r. &  \\
+\texttt{ca-GrQc} & \num{6050} & \num{6036} & \num{4931} & 2 & \num{6039} & 2578 & \num{3944} & 30 \\
+\texttt{ca-HepTh} & \num{15813} & \num{15725} & \num{11477} & 6 & (\num{14449}) & 3621 & \num{8625} & 2 \\
+\texttt{ca-HepPh} & \num{46133} & \num{43740} & (\num{36932}) & 1808 & n.r. &  & \num{-4} & 3 \\
+\texttt{ca-AstroPh} & \num{125541} & \num{119101} & (\num{73161}) & 1821 & n.r. &  & failed &  \\
+\texttt{ca-CondMat} & \num{56834} & \num{55910} & \num{41820} & 797 & n.r. &  & \num{24394} & 319 \\
+\texttt{email-Enron} & \num{150419} & \num{140862} & killed &  & n.r. &  & \num{-30} & 11 \\
+\texttt{loc-Brightkite} & \num{174695} & \num{164106} & killed &  & n.r. &  & failed &  \\
+\texttt{BitcoinOTC+} & \num{16462} & \num{15661} & \num{9262} & 34 & (\num{11312}) & 3605 & \num{0} & 4 \\
+\texttt{BitcoinAlpha+} & \num{11437} & \num{10820} & \num{6475} & 19 & (\num{8434}) & 3604 & \num{2737} & 444 \\
+\texttt{com-Amazon} & \num{612307} & \num{576376} & killed &  & n.r. &  & \num{362915} & 257 \\
+\texttt{com-DBLP} & \num{606723} & \num{589979} & killed &  & n.r. &  & failed &  \\
+\texttt{email-Eu-core} & \num{12732} & \num{11657} & \num{8032} & 207 & (\num{8523}) & 3618 & failed &  \\
+\texttt{facebook} & \num{53547} & \num{44025} & (\num{21639}) & 1805 & (\num{43700}) & 3610 & \num{-3} & 147 \\
+\texttt{wiki-Vote} & \num{95259} & \num{85548} & killed &  & n.r. &  & \num{-4} & 4 \\
+\texttt{cit-HepPh} & \num{357413} & \num{324608} & killed &  & n.r. &  & \num{8} & 747 \\
+\texttt{p2p-Gnutella31} & \num{131362} & \num{130336} & \num{73941} & 67 & n.r. &  & \num{71311} & 3 \\
+\texttt{amazon0302} & \num{540839} & \num{511221} & (\num{429905}) & 1825 & n.r. &  & \num{326517} & 144 \\
+\texttt{roadNet-PA} & \num{944519} & \num{905670} & \num{769127} & 831 & n.r. &  & \num{730910} & 5 \\
 \bottomrule
 \end{tabular}

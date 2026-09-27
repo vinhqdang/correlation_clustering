@@ -21,9 +21,11 @@ average (\numPaceMeanStar{} against \numPaceMeanOurs{} of the optimum) and on
 the denser instances.  Our bound improves the published root bounds of two
 open instances.  On \numSnapCert{} of \numSnapTotal{} SNAP graphs
 (\numSnapCertHeld{} of \numSnapHeldTotal{} held out during development; the
-others exceed a memory limit fixed in advance), our checked bounds certify
+others exceed a support size fixed in advance), our checked bounds certify
 the archived solutions within \numSnapGapLo{} to \numSnapGapHi{} (median
 \numSnapGapMedian{}); triangle packings leave \numBaseGapLo{} to
-\numBaseGapHi{} (median \numBaseGapMedian{}).  On the graphs with more than
-$2\cdot10^4$ vertices this bound comes from the star packing alone; the
-block LPs improve it only on smaller or denser graphs.
+\numBaseGapHi{} (median \numBaseGapMedian{}).  On the large graphs most of
+the bound comes from a long star packing, and block LPs started from it
+raise it on every graph.  On \numPackOnlyN{} of the other nine graphs the
+packing alone gives checked bounds within \numPackOnlyGapHi{} of the best
+known values.
