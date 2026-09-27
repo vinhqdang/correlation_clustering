@@ -1,0 +1,1 @@
+{"graph": "BitcoinAlpha+", "n": 3683, "m": 12972, "pairs": 493107, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 5.403637886047363, "value": 10805.0, "stars": 1859, "time": 317.4321036338806, "check": "ok", "certified": 10805, "lb_exact": 10805.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

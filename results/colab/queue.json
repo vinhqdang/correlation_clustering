@@ -85,7 +85,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790512667.7626536
  },
@@ -125,7 +125,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790512683.4510343
  },
