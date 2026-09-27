@@ -208,7 +208,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "solo": true,
   "started": 1790514811.718237
@@ -285,10 +285,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null,
+  "status": "running",
+  "machine": "w9",
   "solo": true,
-  "started": 1790520158.4362953
+  "started": 1790522030.0501168
  },
  {
   "id": "lkroot_ca-AstroPh_0",
