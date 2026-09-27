@@ -274,9 +274,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w8",
+  "solo": true,
+  "started": 1790519459.4819438
  },
  {
   "id": "lkroot_ca-CondMat_0",
@@ -350,7 +351,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "solo": true,
   "started": 1790509472.79475,

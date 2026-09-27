@@ -1,0 +1,1 @@
+{"graph": "facebook", "n": 4039, "m": 88234, "mode": "kroot", "T": 14400.0, "kapoce": "63079a9", "status": "ok", "time": 9850.75274181366, "p3": 40954, "p3_time": 482.769, "star": 52739, "star_time": 9367.58, "value": 52739, "tag": "lkroot", "commit": "088f7fe", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
