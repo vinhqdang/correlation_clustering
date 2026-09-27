@@ -35,7 +35,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790512635.0145075
  },
@@ -165,8 +165,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790514056.6833825
  },
  {
   "id": "lpack+eq_roadNet-PA_0",
@@ -174,8 +175,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790514056.6833851
  },
  {
   "id": "lkstar_ca-CondMat_0",
@@ -21149,8 +21151,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact037.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790514056.683386
  },
  {
   "id": "lkroot_pace-exact_exact038.gr_0",
@@ -21158,8 +21161,9 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact038.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790514056.6833873
  },
  {
   "id": "lkroot_pace-exact_exact039.gr_0",
