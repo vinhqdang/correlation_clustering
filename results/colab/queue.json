@@ -45,8 +45,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790472876.7996035
  },
  {
   "id": "lplp_ca-CondMat_0",
@@ -54,8 +55,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790472876.7996063
  },
  {
   "id": "lplp_facebook_0",
@@ -63,8 +65,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790472876.7996078
  },
  {
   "id": "lplp_ca-HepPh_0",
@@ -72,8 +75,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790472876.799609
  },
  {
   "id": "lplp_p2p-Gnutella31_0",
@@ -926,7 +930,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur068.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790468948.6634893
  },
@@ -1070,7 +1074,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur082.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790470882.0452063
  },
@@ -1140,7 +1144,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur089.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790471744.1845903
  },
