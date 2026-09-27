@@ -185,11 +185,11 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
-  "machine": "w4",
+  "status": "failed",
+  "machine": null,
   "solo": true,
   "started": 1790515028.5736065,
-  "tries": 2
+  "tries": 3
  },
  {
   "id": "lkstar_ca-AstroPh_0",
@@ -230,9 +230,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w4",
+  "solo": true,
+  "started": 1790515676.7639008
  },
  {
   "id": "lkstar_BitcoinAlpha+_0",
