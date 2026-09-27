@@ -85,7 +85,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790473096.4542472
  },
@@ -1096,7 +1096,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur083.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790470882.0452068
  },
