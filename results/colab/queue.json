@@ -1436,7 +1436,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur116.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790477981.1771374
  },
