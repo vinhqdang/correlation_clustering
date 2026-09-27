@@ -1,0 +1,1 @@
+{"graph": "ca-HepPh", "n": 12008, "m": 118489, "pairs": 1638915, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 0.9318163394927979, "value": 43139.0, "stars": 20142, "time": 184.73007369041443, "check": "ok", "certified": 43139, "lb_exact": 43139.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

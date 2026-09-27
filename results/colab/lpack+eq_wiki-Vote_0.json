@@ -1,0 +1,1 @@
+{"graph": "wiki-Vote", "n": 7115, "m": 100762, "pairs": 3473778, "mode": "pack", "T": 1200.0, "seed": 0, "support_time": 1.8217401504516602, "value": 85533.0, "stars": 14292, "time": 454.7638518810272, "check": "ok", "certified": 85533, "lb_exact": 85533.0, "identity": "hash", "tag": "lpack+eq", "commit": "3605e14", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
