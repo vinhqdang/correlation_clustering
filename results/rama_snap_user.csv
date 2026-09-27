@@ -1,0 +1,19 @@
+graph,n,m,pairs,n2,mc_lb,cc_lb,time,status,solver,gpu
+ca-GrQc,5242,14484,78224,63740,-59795.9,3944.0999999999985,30.1,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+ca-HepTh,9877,25973,205421,179448,-170823.0,8625.0,1.6,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+email-Eu-core,1005,16064,223665,207601,,,9.1,"failed (exit -6): ""terminate called after throwing an instance of 'thrust::THRUST_200803_SM_750_NS::system::system_error'\n  what():  parallel_for: failed to synchronize: cudaErrorIllegalAddress: an illegal memory access was encountered\n""",rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+BitcoinAlpha+,3683,12972,493107,480135,-477398.0,2737.0,444.0,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+BitcoinOTC+,5573,18591,972669,954078,-954078.0,0.0,4.3,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+ca-CondMat,23133,93439,1169993,1076554,-1052160.0,24394.0,318.7,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+facebook,4039,88234,1446301,1358067,-1358070.0,-3.0,146.7,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+ca-HepPh,12008,118489,1638915,1520426,-1520430.0,-4.0,2.6,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+p2p-Gnutella31,62586,147892,1663263,1515371,-1444060.0,71311.0,2.9,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+wiki-Vote,7115,100762,3473778,3373016,-3373020.0,-4.0,3.6,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+roadNet-PA,1088092,1541898,4421718,2879820,-2148910.0,730910.0,4.9,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+ca-AstroPh,18772,198050,4639091,4441041,,,335.7,"failed (exit -6): ""terminate called after throwing an instance of 'thrust::THRUST_200803_SM_750_NS::system::system_error'\n  what():  parallel_for: failed to synchronize: cudaErrorIllegalAddress: an illegal memory access was encountered\n""",rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+amazon0302,262111,899792,6588959,5689167,-5362650.0,326517.0,143.9,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+com-Amazon,334863,925872,6933597,6007725,-5644810.0,362915.0,257.0,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+loc-Brightkite,58228,214078,8576618,8362540,,,193.5,"failed (exit -6): ""terminate called after throwing an instance of 'thrust::THRUST_200803_SM_750_NS::system::system_error'\n  what():  parallel_for: failed to synchronize: cudaErrorIllegalAddress: an illegal memory access was encountered\n""",rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+cit-HepPh,34546,420877,11577385,11156508,-11156500.0,8.0,747.3,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+com-DBLP,317080,1049866,13718957,12669091,,,75.0,"failed (exit -6): ""terminate called after throwing an instance of 'thrust::THRUST_200803_SM_750_NS::system::system_error'\n  what():  parallel_for: failed to synchronize: cudaErrorIllegalAddress: an illegal memory access was encountered\n""",rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU
+email-Enron,36692,183831,15241801,15057970,-15058000.0,-30.0,11.2,ok,rama_text_input_gpu,NVIDIA RTX A2000 8GB Laptop GPU

@@ -1,0 +1,1 @@
+pace-exact/exact088.gr {'graph': 'pace-exact/exact088.gr', 'n': 171, 'm': 936, 'pairs': 1675, 'mode': 'tri', 'T': 900.0, 'seed': 0, 'support_time': 0.5693578720092773, 'value': 197.5, 'converged': True, 'rounds': 1, 'rows': 2646, 'time': 0.1481637954711914, 'tag': 'ltri', 'commit': 'c5a3de2', 'cpu': '12th Gen Intel(R) Core(TM) i9-12900H', 'python': '3.14.7'}

@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact012.gr", "n": 40, "m": 283, "pairs": 728, "mode": "warm", "T": 1800.0, "seed": 0, "support_time": 3.3903300762176514, "value": 137.0, "converged": true, "time": 49.19732332229614, "check": "ok", "certified": 137, "lb_exact": 137.0, "identity": "hash", "tag": "lwarm", "commit": "c5a3de2", "cpu": "12th Gen Intel(R) Core(TM) i9-12900H", "python": "3.14.7"}

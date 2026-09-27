@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact148.gr", "n": 250, "m": 20035, "pairs": 31125, "mode": "tri", "T": 900.0, "seed": 0, "support_time": 0.7446787357330322, "value": 390.52227644622326, "converged": false, "rounds": 1, "rows": 708932, "time": 904.0356438159943, "tag": "ltri", "commit": "c5a3de2", "cpu": "12th Gen Intel(R) Core(TM) i9-12900H", "python": "3.14.7"}
