@@ -10,7 +10,11 @@ Modes (the tag's second character onward, e.g. tag "ltri"):
   full  one block covering the whole graph, triangle + star + local subgraph
         rows, cold start, until convergence or T; certificate checked;
   warm  as full, after the star packing warm start (the CertiFlip bound with no
-        time limit); certificate checked.
+        time limit); certificate checked;
+  plp   a long packing followed by block LPs, as one procedure: the packing of
+        mode pack with T/2 seconds of iterations, then METIS block sweeps from
+        it for T/2 seconds (Theorem 5(b): never below the packing); the value
+        after the packing is recorded as well; certificate checked.
 
 usage: colab_run_lp.py T SEED TAG GRAPH..."""
 import json, os, platform, shutil, subprocess, sys, time
@@ -69,6 +73,16 @@ def run(name, mode, T, seed):
                                             iters=int(max(1000, rate * T)), seed=seed)
         add_star_packing(bd, rp, rpairs, rk)
         out.update({'value': float(bd.bound()), 'stars': int(len(rk))})
+    elif mode == 'plp':
+        bd = BlockDualBound(g, sup)
+        _, rate = _packing_rate(g, bd)
+        v, rp, rpairs, rk = star_packing_ls(g, sup, pgraph=(bd.ptr, bd.idx, bd.pid),
+                                            iters=int(max(1000, rate * T / 2)), seed=seed)
+        add_star_packing(bd, rp, rpairs, rk)
+        out.update({'pack_value': float(bd.bound()), 'pack_time': time.time() - t1,
+                    'stars': int(len(rk))})
+        block_bound(g, sup, time_limit=T / 2, seed=seed, bd=bd, packing_fraction=0.0)
+        out.update({'value': float(bd.bound())})
     elif mode in ('tri', 'star'):
         lp = SparseLP(g, sup)
         if mode == 'tri':
