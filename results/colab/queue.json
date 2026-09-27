@@ -195,7 +195,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790473546.8758059
  },
@@ -1406,7 +1406,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur113.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790476966.739374
  },
@@ -1636,8 +1636,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur136.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790481475.8771667
  },
  {
   "id": "s2p_pace-heur_heur137.gr_0",
@@ -1645,8 +1646,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur137.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790481475.8771684
  },
  {
   "id": "s2p_pace-heur_heur138.gr_0",
@@ -1654,8 +1656,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur138.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790481475.8771694
  },
  {
   "id": "s2p_pace-heur_heur139.gr_0",
@@ -1663,8 +1666,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur139.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790481475.8771696
  },
  {
   "id": "s2p_pace-heur_heur140.gr_0",
@@ -1672,8 +1676,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur140.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790481479.2465203
  },
  {
   "id": "s2p_pace-heur_heur141.gr_0",
@@ -1681,8 +1686,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur141.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790481479.246523
  },
  {
   "id": "s2p_pace-heur_heur142.gr_0",
@@ -1690,8 +1696,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur142.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790481479.2465236
  },
  {
   "id": "s2p_pace-heur_heur143.gr_0",
@@ -1699,8 +1706,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur143.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790481479.2465243
  },
  {
   "id": "s2p_pace-heur_heur144.gr_0",

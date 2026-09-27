@@ -1,0 +1,1 @@
+{"graph": "Slashdot+", "n": 75144, "m": 382882, "pairs": 35019657, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 22.067368030548096, "value": 334298.0, "stars": 35736, "time": 2829.7332565784454, "check": "ok", "certified": 334298, "lb_exact": 334298.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
