@@ -37,9 +37,13 @@ def main(out, graphs):
     if os.path.exists(out):
         with open(out) as fh:
             done = {r["graph"] for r in csv.DictReader(fh)}
+    import time
     for name in graphs:
         if name in done:
+            print(f"[{time.strftime('%H:%M:%S')}] {name}: already done", flush=True)
             continue
+        print(f"[{time.strftime('%H:%M:%S')}] {name}: running (the largest graphs take up to "
+              "an hour or more) ...", flush=True)
         g = D.load(name)
         res = kapoce_root_bounds(g, timeout=TIMEOUT)
         rows = [dict(graph=name, n=g.n, m=g.m, bound=k, lb=v, time=t, cpu=cpu(), limit=TIMEOUT)
@@ -51,7 +55,8 @@ def main(out, graphs):
             if new:
                 w.writeheader()
             w.writerows(rows)
-        print(rows, flush=True)
+        print(f"[{time.strftime('%H:%M:%S')}]     {name}: " +
+              ", ".join(f"{r['bound']} {r['lb']} ({r['time']:.0f} s)" for r in rows), flush=True)
 
 
 if __name__ == "__main__":

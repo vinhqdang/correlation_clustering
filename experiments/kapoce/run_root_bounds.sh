@@ -23,17 +23,21 @@ if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_PREFIX:-}" ]; then
     # shellcheck disable=SC1091
     . .venv/bin/activate
 fi
+say() { echo "[$(date +%H:%M:%S)] $*"; }
+say "1/3 installing the Python package of the repository"
 python3 -m pip install -q --upgrade pip
 python3 -m pip install -q -e .
+say "2/3 building KaPoCE lbounds (about a minute)"
 BIN="$(bash experiments/kapoce/build_lbounds.sh "$PWD/kapoce_lb" | tail -n1)"
 export KAPOCE_LB_BIN="$BIN"
-echo "lbounds: $BIN"
+say "lbounds: $BIN"
 
 # smallest graphs first; each job appends to its own file, merged at the end
 if [ -n "${GRAPHS:-}" ]; then read -r -a GRAPHS <<< "$GRAPHS"; else
 GRAPHS=(email-Eu-core BitcoinAlpha+ facebook ca-GrQc BitcoinOTC+ wiki-Vote ca-HepTh
         ca-HepPh ca-AstroPh ca-CondMat)
 fi
+say "3/3 running ${#GRAPHS[@]} graphs with $JOBS jobs; one line per graph when it starts and when it ends"
 pids=()
 for j in $(seq 0 $((JOBS - 1))); do
     mine=()

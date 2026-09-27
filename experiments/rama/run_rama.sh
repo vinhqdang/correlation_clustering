@@ -22,6 +22,8 @@ if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_PREFIX:-}" ]; then
     # shellcheck disable=SC1091
     . .venv/bin/activate
 fi
+say() { echo "[$(date +%H:%M:%S)] $*"; }
+say "1/4 installing the Python package of the repository"
 python3 -m pip install -q -e .
 
 if [ -n "${RAMA_CPU:-}" ]; then
@@ -33,6 +35,7 @@ else
     nvidia-smi -L || { echo "no GPU visible (nvidia-smi failed)" >&2; exit 1; }
 fi
 
+say "2/4 getting RAMA ($COMMIT)"
 if [ ! -d "$DIR/.git" ]; then
     git clone https://github.com/pawelswoboda/RAMA.git "$DIR"
 fi
@@ -43,13 +46,23 @@ EXTRA=()
 if [ "$CUDA" = ON ] && [ -n "${CONDA_PREFIX:-}" ] && [ -x "$CONDA_PREFIX/bin/nvcc" ]; then
     EXTRA=(-DCMAKE_CUDA_COMPILER="$CONDA_PREFIX/bin/nvcc")
 fi
+say "3/4 cmake: downloads CCCL, Eigen, CLI11 and pybind11 the first time, a few minutes (log: $PWD/cmake.log)"
 cmake .. -DCMAKE_BUILD_TYPE=Release -DWITH_CUDA=$CUDA "${EXTRA[@]}" > cmake.log 2>&1 || {
     tail -n 30 cmake.log >&2; echo "cmake failed, see $PWD/cmake.log" >&2; exit 1; }
-make -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)" "$TARGET" > make.log 2>&1 || {
-    tail -n 30 make.log >&2; echo "build failed, see $PWD/make.log" >&2; exit 1; }
+say "4/4 compiling $TARGET (log: $PWD/make.log)"
+make -j"$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 2)" "$TARGET" > make.log 2>&1 &
+MPID=$!
+while kill -0 "$MPID" 2> /dev/null; do
+    sleep 10
+    pct="$(grep -o '^\[ *[0-9]*%\]' make.log | tail -n1 || true)"
+    printf '\r    compiling %s ' "${pct:-...}"
+done
+echo
+wait "$MPID" || { tail -n 30 make.log >&2; echo "build failed, see $PWD/make.log" >&2; exit 1; }
 BIN="$(find "$PWD" -type f -name "$TARGET" -perm -u+x | head -n1)"
 cd - > /dev/null
-echo "RAMA: $BIN"
+say "RAMA: $BIN"
+say "running the graphs, smallest first; one line per graph when it starts and when it ends"
 
 read -r -a G <<< "${GRAPHS:-}"
 python3 experiments/rama/rama_snap.py "$BIN" "$OUT" "${G[@]}"

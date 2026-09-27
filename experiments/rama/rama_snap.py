@@ -79,9 +79,12 @@ def main(binary, out, graphs):
     done = set()
     if os.path.exists(out):
         done = {r["graph"] for r in csv.DictReader(open(out))}
-    for name in graphs:
+    for k, name in enumerate(graphs, 1):
         if name in done:
+            print(f"[{time.strftime('%H:%M:%S')}] {k}/{len(graphs)} {name}: already done", flush=True)
             continue
+        print(f"[{time.strftime('%H:%M:%S')}] {k}/{len(graphs)} {name}: building the support "
+              "and running RAMA ...", flush=True)
         row = run(binary, name)
         new = not os.path.exists(out)
         with open(out, "a", newline="") as fh:
@@ -89,7 +92,8 @@ def main(binary, out, graphs):
             if new:
                 w.writeheader()
             w.writerow(row)
-        print({k: row.get(k) for k in ("graph", "pairs", "cc_lb", "time", "status")}, flush=True)
+        print(f"[{time.strftime('%H:%M:%S')}]     {name}: {row['status']}, "
+              f"bound {row.get('cc_lb')}, {row['pairs']} pairs, {row.get('time')} s", flush=True)
 
 
 if __name__ == "__main__":
