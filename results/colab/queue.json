@@ -75,7 +75,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790512651.288874
  },
@@ -241,9 +241,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w5",
+  "solo": true,
+  "started": 1790516645.2552617
  },
  {
   "id": "lkstar_email-Eu-core_0",
