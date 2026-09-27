@@ -230,7 +230,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "solo": true,
   "started": 1790521156.6258698
