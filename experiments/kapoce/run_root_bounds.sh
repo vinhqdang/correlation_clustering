@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Root star-packing and P3-packing bounds of the KaPoCE branch-and-bound on the
 # SNAP graphs with at most 2.5e4 vertices (Table "SNAP bounds", column B&B root).
+# Ubuntu/WSL: sudo apt install -y git cmake g++ make python3-venv python3-pip
+# (with conda: activate an environment with Python >= 3.10 first)
 # CPU only; up to about 6 GB of memory per job on the largest graph (ca-CondMat).
 #
 #   bash experiments/kapoce/run_root_bounds.sh            (from the repository root)
@@ -14,6 +16,14 @@ cd "$(dirname "$0")/../.."
 JOBS="${JOBS:-2}"
 OUT=results/kapoce_root_snap_user.csv
 
+# Ubuntu 23.04+ does not allow pip in the system Python: use a virtual environment
+# (a conda environment or an activated virtualenv is used as it is)
+if [ -z "${VIRTUAL_ENV:-}" ] && [ -z "${CONDA_PREFIX:-}" ]; then
+    [ -d .venv ] || python3 -m venv .venv
+    # shellcheck disable=SC1091
+    . .venv/bin/activate
+fi
+python3 -m pip install -q --upgrade pip
 python3 -m pip install -q -e .
 BIN="$(bash experiments/kapoce/build_lbounds.sh "$PWD/kapoce_lb" | tail -n1)"
 export KAPOCE_LB_BIN="$BIN"
