@@ -55,7 +55,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790512651.2888727
  },
@@ -188,7 +188,8 @@
   "status": "running",
   "machine": "w4",
   "solo": true,
-  "started": 1790514798.9490497
+  "started": 1790514905.8833838,
+  "tries": 1
  },
  {
   "id": "lkstar_ca-AstroPh_0",
@@ -278,8 +279,8 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
-  "machine": "w6",
+  "status": "pending",
+  "machine": null,
   "solo": true,
   "started": 1790508501.7606604
  },
