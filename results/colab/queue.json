@@ -235,10 +235,10 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "running",
-  "machine": "w7",
+  "status": "failed",
+  "machine": null,
   "started": 1790487975.6474893,
-  "tries": 2
+  "tries": 3
  },
  {
   "id": "lpack_loc-Gowalla_0",
@@ -2057,7 +2057,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur178.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790486906.8058462
  },
@@ -2087,7 +2087,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur181.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790487783.18373
  },
@@ -2127,7 +2127,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur185.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790487975.6474931
  },
@@ -2177,7 +2177,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur190.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790490422.4831822
  },
@@ -2217,7 +2217,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur194.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790490610.522032
  },
