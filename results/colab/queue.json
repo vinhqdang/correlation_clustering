@@ -197,8 +197,8 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
-  "machine": "w7",
+  "status": "pending",
+  "machine": null,
   "solo": true,
   "started": 1790514804.0917423
  },
@@ -285,8 +285,8 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
-  "machine": "w9",
+  "status": "pending",
+  "machine": null,
   "solo": true,
   "started": 1790522030.0501168
  },
