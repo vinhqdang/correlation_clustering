@@ -5,19 +5,27 @@
 \paragraph{Implementation and machines.}  All methods are implemented in
 Python with Numba-compiled kernels (package \texttt{ccbench}).  LPs and MIPs
 are solved with HiGHS~1.15~\cite{HuangfuH18} and graph partitions are
-computed with METIS~\cite{KarypisK98}.  All runs of this section were made on
-Google Colab virtual machines with two logical cores and \SI{12.7}{GB} of
-memory, one run per machine at a time, with the CPU model recorded in every
-result file (\numCpuModels).  Every run uses one thread.  Budgets are
-wall-clock times; CPU times are recorded as well.
+computed with METIS~\cite{KarypisK98}.  The runs of CertiFlip, of the
+sparse star packing, of the metric LP on $P$ and of the head-to-head
+comparison were made on Google Colab virtual machines with two logical cores
+and \SI{12.7}{GB} of memory, one run per machine at a time, with the CPU model
+recorded in every result file (\numCpuModels; the AMD model on
+\numCpuAmd{}, the Intel model on all others).  The triangle packings, the
+KaPoCE root bounds on SNAP graphs, SCC and the rows marked $^a$ in
+Table~\ref{tab:pace-primal} were run on 4-core workstations with several runs
+in parallel; these are marked where they appear.  Every run uses one thread.
+Budgets are wall-clock times; CPU times are recorded as well.
 
 \paragraph{Instances.}  Table~\ref{tab:instances} lists the SNAP
 graphs~\cite{LeskovecK14snap}, used as complete instances with $\Ep$ given by
 the edges (for signed networks, by the positive
 edges~\cite{leskovec2010signedchi,kumar2016bitcoin}).  Fifteen of them were
 used during development; the twelve held-out graphs were chosen afterwards to
-span $10^3$ to $10^6$ vertices and several graph classes, and were fixed
-before any run on them (Appendix~\ref{app:devlog}).  We also use the 200
+span $10^3$ to $10^6$ vertices and several graph classes.  They were fixed
+before any bound was computed on them and before any run of the protocol
+below; seven of them are also PACE heuristic-track instances and had been run
+once, in an earlier comparison of the two solvers made after the code was
+frozen (Appendix~\ref{app:devlog}).  We also use the 200
 instances of each track of PACE~2021~\cite{KellerhalsKNZ21pace}: the exact
 track ($n\le620$; 173 instances with known optimum and 27 open) and the
 heuristic track (up to $2\cdot10^6$ vertices).  Ten heuristic-track instances
@@ -27,8 +35,9 @@ coincide with development graphs and seven with held-out graphs
 \begin{table}[!tbp]
 \centering
 \caption{SNAP instances: vertices, edges, size of the distance-two support
-$P$ and role.  ``--'': the support exceeds $3\cdot10^7$ pairs and does not fit
-into memory together with the block LPs; no bound is computed.  PACE: the
+$P$ and role.  ``--'': the estimate $m+\sum_v\binom{\deg v}2$ of the support
+exceeds $3\cdot10^7$ pairs, a threshold fixed in advance from the memory of
+the machines; no bound was computed and nothing was run on these graphs.  PACE: the
 heuristic-track instance with the same graph.}
 \label{tab:instances}
 \small
@@ -47,20 +56,26 @@ $\varepsilon=0.05$~\cite{GargK07,Fleischer00}, scaled by its maximum load.
 improved by ruin and recreate, installed as a dual solution without any LP.
 The number of iterations is set before the run from the iteration rate
 measured on the instance, so as to fill the budget; the measured running
-times are reported.  This is the scalable form of the root star-packing
-bound of the KaPoCE branch-and-bound.
+times, which can be well above it, are reported.  It uses the rows of the
+root star-packing bound of the KaPoCE branch-and-bound, restricted to the
+pairs of $P$, and a different local search.
 \item \emph{Metric LP on $P$}: $\mathrm{LP}_P$ with triangle
 rows~\eqref{eq:t1}--\eqref{eq:t2} only, solved by cutting planes with HiGHS
 until no row is violated or the budget ends; and the same with star rows.
 These are LP values in floating point, reported to separate the strength of
 the relaxation from the dual method.
 \item \emph{CertiFlip bound} (checked): Theorem~\ref{thm:anytime}, as
-computed within CertiFlip (half of the budget), and, on a subset of PACE
-instances, with a long budget and one block covering the graph.
+computed within CertiFlip, whose bound phase targets half of the remaining
+budget but does not interrupt a block LP (measured times in
+Section~\ref{sec:exp-time}), and, on a subset of PACE instances, with a long
+budget and one block covering the graph.
 \item \emph{KaPoCE root bounds}: the star-packing and $P_3$-packing bounds of
-the KaPoCE branch-and-bound as published by its authors~\cite{BlasiusEtAl22sea}.
-Their dense-matrix implementation does not run on the SNAP graphs beyond
-about $10^4$ vertices.
+the KaPoCE branch-and-bound~\cite{BlasiusEtAl22sea}.  On the PACE exact track
+we use the values published by its authors.  On the SNAP graphs with at most
+$2.5\cdot10^4$ vertices we ran its lower-bound program (commit
+\texttt{\numKapoceCommit}, one hour limit) ourselves; its dense matrix does
+not fit into memory on the larger graphs.  These values are not
+certified.
 \end{itemize}
 
 \paragraph{Solvers compared.}  Pivot~\cite{AilonCN08}, the best of 50
@@ -86,7 +101,7 @@ PACE-format text file inside their measured time.  KaPoCE's only changes are
 a seed and its two internal time limits, set to $\tfrac{590}{600}T$ and
 $\tfrac{90}{600}T$ (the ratio of its PACE configuration); it is stopped with
 SIGTERM at $T$ and its output is validated.  PXMem is scored at KaPoCE's
-elapsed wall-clock time, read from its complete improvement history, so the
+elapsed wall-clock time, read from its improvement history, so the
 comparison is at equal elapsed time; its value at $T$ is also recorded.
 Invalid KaPoCE output counts as a PXMem win, as in PACE, and is reported
 separately.  Budgets are $T=\SI{600}{s}$ (primary), \SI{150}{s} and
@@ -124,21 +139,40 @@ $T=\SI{60}{s}$, \numOverPaceCount{} took more than $1.01\,T$; the median
 wall-clock time was \numOverPaceMedian{}\,s and the maximum
 \numOverPaceMax{}\,s.  Of the \numOverSnapRuns{} runs on SNAP graphs with
 $T=\SI{600}{s}$, \numOverSnapCount{} took more than $1.01\,T$ (median
-\numOverSnapMedian{}\,s, maximum \numOverSnapMax{}\,s).  Of these, \numOverPaceLarge{} PACE
-runs and \numOverSnapLarge{} SNAP runs exceeded $1.2\,T$.  The large
-overruns come from steps that are not interrupted: single block LPs on
-\texttt{email-Enron}, where the bound phase alone took up to
-\numEnronLbTime{}\,s, and the primal local search on three PACE instances with
-620 vertices and $9\cdot10^4$ to $2\cdot10^5$ edges.  The sparse star packing fixes its number of
-iterations in advance and took \numPackTimeLo{} to \numPackTimeHi{}\,s on the
-SNAP graphs.  All times are in the archived result files.  The comparisons of
-bounds in Sections~\ref{sec:exp-bounds} and~\ref{sec:exp-cert} are therefore
-at comparable, not equal, running times; the head-to-head comparison of
-Section~\ref{sec:exp-h2h} is at equal elapsed time by construction.
+\numOverSnapMedian{}\,s, maximum \numOverSnapMax{}\,s).  Of these,
+\numOverPaceLarge{} PACE runs and \numOverSnapLarge{} SNAP runs exceeded
+$1.2\,T$.  The bound phase of CertiFlip targets half of the remaining budget
+but does not interrupt a block LP.  On the PACE exact track it took a median
+of \numLbPaceMedian{}\,s and more than \SI{30}{s} on \numLbPaceOver{} of the
+\numLbPaceRuns{} runs (maximum \numLbPaceMax{}\,s); on the SNAP graphs a
+median of \numLbSnapMedian{}\,s and more than \SI{300}{s} on \numLbSnapOver{}
+of \numLbSnapRuns{} runs (maximum \numLbSnapMax{}\,s, on
+\texttt{email-Enron}).  The LP-rounding start (line~7 of
+Algorithm~\ref{alg:certiflip}) was executed on \numLpSeedPace{} of the PACE
+runs and improved the clustering on \numLpSeedPaceImproved{} of them; it was
+never executed on the SNAP graphs.  The large overruns come from steps that
+are not interrupted: single block LPs on \texttt{email-Enron}, and on the three
+PACE instances with 620 vertices and $9\cdot10^4$ to $2\cdot10^5$ edges the
+bound phase and, on two of them, the LP-rounding start with the local search
+after it (up to \SI{277}{s} on \texttt{exact199}).  The sparse star packing
+fixes its number of iterations in advance from a measured rate; on the SNAP
+graphs (nominal \SI{600}{s}) it took \numPackTimeLo{} to \numPackTimeHi{}\,s,
+and on the PACE exact track (nominal \SI{60}{s}) a median of
+\numPackPaceMedian{}\,s, more than \SI{60}{s} on \numPackPaceOver{} of
+\numPackPaceRuns{} runs and at most \numPackPaceMax{}\,s.  All times are in
+the archived result files and per graph in Table~\ref{tab:snap-bounds}.  The
+comparisons of bounds in Sections~\ref{sec:exp-bounds}
+and~\ref{sec:exp-cert} are therefore at comparable, not equal, running times;
+the head-to-head comparison of Section~\ref{sec:exp-h2h} is at equal elapsed
+time by construction.
 
-The checker accepted all \numCertPaceOk{} certificates of the PACE runs and
-all \numCertSnapOk{} of the SNAP runs, and rejected none.  Re-checking every
-archived certificate against freshly downloaded instance files takes at most
-\numCheckTimeMax{}\,s per certificate; the largest, on
-\texttt{\numCheckMaxGraph}, has \numCheckMaxRows{} rows and is checked in
-\numCheckMaxTime{}\,s.
+The checker accepted all \numCertPaceOk{} certificates of the PACE runs, all
+\numCertSnapOk{} of the CertiFlip runs on SNAP graphs and all
+\numCertPackOk{} of the star-packing runs when they were written, and
+rejected none.  After the review of the checker (Section~\ref{sec:cert}) we
+re-checked all \numRecheckN{} archived certificates and clusterings with its
+final version against freshly downloaded instance files whose hashes are
+looked up in the committed manifest: \numRecheckOk{} were accepted, the
+slowest took \numRecheckMax{}\,s and all together \numRecheckTotal{}\,h
+(\texttt{results/mpc/recheck.csv}).  The largest certificate, on
+\texttt{\numCheckMaxGraph}, has \numCheckMaxRows{} rows.

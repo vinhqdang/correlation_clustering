@@ -28,8 +28,11 @@ label per vertex in the same numbering.
 the solver package.  Given the raw file and the certificate it
 \begin{enumerate}
 \item parses the raw file with its own reader and rejects the certificate
-unless $n$, $m$, the file hash and the edge-list hash agree with the recorded
-ones;
+unless it records $n$, $m$, the file hash and the edge-list hash and all four
+agree with the file.  When it checks a directory, the instance file named in a
+certificate must be listed with the same hash in the committed manifest of
+instance files, so a certificate cannot choose the instance it is checked
+against;
 \item checks that every pair of every row is in $P$, i.e.\ is an edge or has a
 common neighbour, by intersecting sorted adjacency lists;
 \item checks that every row is valid for every clustering that separates the
@@ -74,18 +77,27 @@ of every far-separating clustering for any rows valid for such clusterings,
 is proved in Lean~4 (\texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt};
 Appendix~\ref{app:lean}), as is the fact that optimal clusterings separate far
 pairs.  What remains to be trusted is the checker's reader, the enumeration
-and the star formula of step~3, the integer evaluation, and the Python and
-NumPy runtime.  The tests of the repository check the reader against the
-solver's loader (same $n$, $m$ and edge hash on all instances we use), the
-star formula against the enumeration on random star rows with at most nine
-vertices, the integer cost of a clustering against the solver's, and the
-rejection of certificates with a perturbed right-hand side, a negative
-multiplier, a pair outside $P$, or a different instance.
+and the star formula of step~3, the integer evaluation, and the Python,
+NumPy and Numba (LLVM) runtime.  Every archived certificate records the edge
+hash computed by the solver's loader, so the acceptance of all of them shows
+that the two readers agree on every instance we use.  The tests of the
+repository check the star formula against the enumeration on random star
+rows with at most nine vertices, the integer cost of a clustering against the
+solver's, and the rejection of certificates with a perturbed right-hand side,
+a negative or out-of-range multiplier, a pair outside $P$, a missing instance
+hash or a different instance.  An earlier version of the checker converted
+the multipliers to 64-bit integers before checking their range, so a
+certificate with a multiplier above $2^{33}$ would have wrapped around to a
+negative value and been accepted with a wrong bound.  This was found in
+review and fixed; the largest multiplier in any archived certificate is 14,
+and all archived certificates were re-checked with the final version
+(Section~\ref{sec:exp-time}).
 
 \paragraph{Cost of checking.}  Checking is much cheaper than computing the
 bound: the largest certificate we report, on \texttt{\numCheckMaxGraph}, has
-\numCheckMaxRows{} rows and is checked in \numCheckMaxTime\,s
-(Section~\ref{sec:exp-cert}).  One command re-checks every archived
+\numCheckMaxRows{} rows, and no archived certificate takes more than
+\numRecheckMax{}\,s to check, including reading the instance
+(Section~\ref{sec:exp-time}).  One command re-checks every archived
 certificate against freshly downloaded instance files and writes one line per
 certificate.
 

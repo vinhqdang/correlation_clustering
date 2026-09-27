@@ -66,3 +66,18 @@ held-out in both sets.)
   Wilcoxon and sign test over the 190 instances.
 * Budget dependence: the same tests at 150 s and 60 s.
 * Equivalence is not claimed from non-significance.
+
+## Erratum (added 2026-09-27, after the protocol runs; the plan above is unchanged)
+
+The statement above that no earlier run of either solver on the held-out
+graphs exists is not correct.  Seven held-out graphs are PACE 2021
+heuristic-track instances (email-Eu-core = heur094, facebook = heur166,
+soc-Slashdot0902 = heur186, loc-Gowalla = heur188, amazon0302 = heur189,
+web-NotreDame = heur192, roadNet-PA = heur197), and all 200 heuristic-track
+instances had been run once with both solvers in the earlier (v1) comparison
+(`results/pace_heur_s1h_runs.csv`, committed 2026-09-25).  That comparison was
+made after the last change to the solver code (`ccbench/`, 2026-09-24), which
+has not changed since.  The 190 PACE instances of the "held-out PACE summary"
+were therefore not used for tuning, but they are not held out in the strict
+sense.  No bound had been computed on the held-out SNAP graphs before this
+plan was committed.

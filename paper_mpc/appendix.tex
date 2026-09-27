@@ -69,8 +69,8 @@ reader can judge which results are out of sample.
 \item \emph{Development data.}  The fifteen SNAP graphs of
 Table~\ref{tab:instances} marked ``dev'' and the 200 PACE~2021 exact-track
 instances.  All parameters of the bound (block size $2500$, $|H|\le8$ for local
-subgraph rows, ruin regions of about $12$ vertices, half of the budget for the
-bound), of the LNS ($|B|\le60$) and of PXMem (population $4$, regions of at
+subgraph rows, ruin regions of about $12$ vertices, a target of half of the
+remaining budget for the bound), of the LNS ($|B|\le60$) and of PXMem (population $4$, regions of at
 most $30$ nodes, bandit settings, the degree bias of the region centres)
 were chosen by looking at runs on these instances.  Several PXMem components
 were added after inspecting where KaPoCE's solutions were better than ours on
@@ -91,8 +91,26 @@ on the same machines and because their certificates are the archived ones.
 \item \emph{Held-out data.}  The twelve SNAP graphs marked ``held-out'' in
 Table~\ref{tab:instances} and the analysis plan of
 Section~\ref{sec:exp-setup} were fixed and committed to the repository
-(\texttt{experiments/heldout.md}) before any run of either solver on them.
-No parameter was changed afterwards.  The PACE heuristic-track instances with
-the same vertex count as a development graph (ten instances) are excluded
-from the held-out PACE summary.
+(\texttt{experiments/heldout.md}) before any bound was computed on them and
+before any run of the protocol.  The plan states that no earlier run of
+either solver on them existed; this is not correct.  Seven of the held-out
+graphs are PACE heuristic-track instances, and all 200 heuristic-track
+instances had been run once with both solvers in the earlier comparison
+above.  That comparison was made after the last change to the solver code
+(the code has not changed since), and it informed no parameter, but its
+results were known when the held-out set was chosen.  The ten
+heuristic-track instances that coincide with development graphs are
+reported separately; the other 190 were not used for tuning, but they are not
+held out in the strict sense.
+\item \emph{Gap-guided search.}  We did not evaluate the gap-guided choice of
+blocks and LNS neighbourhoods separately in the final experiments.  In the
+development runs (\texttt{results/ablation\_lb.csv}, five development graphs,
+4-core workstation, \SI{300}{s}), gap-guided blocks after the METIS sweeps
+changed the bound by $-0.004\%$ to $+0.03\%$; the same runs gave larger
+bounds with block LPs after a packing than with a packing alone on all five
+graphs.
+\item \emph{Headline bound.}  The decision to report the larger of the
+CertiFlip bound and the separate star-packing bound on the SNAP graphs was
+taken after the packing runs were complete; both are valid, and both are
+reported.
 \end{itemize}

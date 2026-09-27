@@ -89,13 +89,20 @@ separating all far pairs, and hence for every optimal clustering.
 Let $\mathcal C$ be a clustering in which no far pair shares a cluster.
 \begin{enumerate}
 \item[(i)] (star inequalities; the case $|S|=1$ of the $2$-partition
-inequalities of \citet{GrotschelW89}) For every $v$ and $T\subseteq V\setminus\{v\}$, with
+inequalities of \citet{GrotschelW89}, with the far pairs dropped from the
+second sum, which makes them stronger and valid only for far-separating
+clusterings) For every $v$ and $T\subseteq V\setminus\{v\}$, with
 $y=1-x^{\mathcal C}$,
 \[\textstyle\sum_{t\in T}y_{vt}-\sum_{\{t,t'\}\subseteq T,\ tt'\in P}y_{tt'}\le 1.\]
 \item[(ii)] (local subgraph inequalities) For every $H\subseteq V$,
 \[\textstyle\sum_{e\in\Ep(H)}x^{\mathcal C}_e+\sum_{e\in\Nt(H)}(1-x^{\mathcal C}_e)\ \ge\ \OPT(H),\]
 where $\OPT(H)$ is the optimum of the instance induced by $H$ and $\Ep(H)$,
-$\Nt(H)$ are the pairs of $\Ep$ and $\Nt$ inside $H$.
+$\Nt(H)$ are the pairs of $\Ep$ and $\Nt$ inside $H$.  More strongly, the
+right-hand side may be the minimum over the clusterings of $H$ that separate
+the far pairs inside $H$, which can exceed $\OPT(H)$; the checker accepts
+every row with this stronger right-hand side (Section~\ref{sec:cert}).  These
+are the subnetwork constraints of \citet{belyi2023subnetwork} in the
+minimisation form.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -111,9 +118,10 @@ on the left-hand side.
 The local subgraph inequalities are local cuts in the sense of
 \citet{ApplegateBCC01localcuts}: valid inequalities obtained by solving a small
 subproblem exactly.  Bad triangles ($\OPT=1$) and induced stars with $k$ independent leaves
-($\OPT=k-1$) are local subgraph inequalities.  So are chordless cycles $C_k$,
-for which $\OPT(C_k)=\lceil k/2\rceil$ while the metric LP only certifies
-$k/2$ (put $x=1/2$ on the cycle edges).  We separate stars greedily around
+($\OPT=k-1$) are local subgraph inequalities.  So are chordless cycles $C_k$
+with odd $k$, for which $\OPT(C_k)=\lceil k/2\rceil$ while $x=1/2$ on the
+cycle edges gives $k/2$; rounding the total bound up recovers one such half
+unit, the row recovers one for every cycle.  We separate stars greedily around
 each vertex.  For (ii) we grow $H$ ($|H|\le 8$) by breadth-first search along
 fractional pairs and compute $\OPT(H)$ by enumerating the at most $4140$
 set partitions of $H$.
@@ -137,8 +145,9 @@ removing the contribution of the current multipliers on $R_B$.  Replace these
 multipliers by an optimal dual solution of
 $\min\{\bar r^\top x_B: A_Bx_B\ge b_B,\ 0\le x_B\le 1\}$.  This does not
 decrease $\LB$.
-\item[(c)] If $B=V$ and $R_B$ contains all rows of $\mathrm{LP}_P$, one block
-step gives $\LB=\mathrm{LP}_P$.
+\item[(c)] If $B=V$ and $R_B$ consists of all rows of $\mathrm{LP}_P$
+together with all rows that carry a positive multiplier, one block step gives
+$\LB\ge\mathrm{LP}_P$, with equality if $R_B$ has no further rows.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
@@ -149,8 +158,13 @@ $\OPT=K+r^\top x^{\mathcal C}+y^\top Ax^{\mathcal C}\ge K+\sum_e\min\{0,r_e\}+y^
 (b) By LP duality the block LP equals
 $\max_{y_B\ge0}\ b_B^\top y_B+\sum_{e\in P_B}\min\{0,(\bar r-A_B^\top
 y_B)_e\}$.  The terms of~\eqref{eq:lb} outside the block do not change, and
-the old multipliers are feasible for this maximisation.  (c) is LP duality
-for $\mathrm{LP}_P$ with the box constraints.
+the old multipliers are feasible for this maximisation.  (c) With $B=V$ and
+every row with a positive multiplier in $R_B$, removing their contribution
+gives $\bar r=c$, so the block LP is $\mathrm{LP}_P$ with the rows of $R_B$
+added, whose value is at least $\mathrm{LP}_P$ and equal to it if no row is
+added; by LP duality with the box constraints, $\LB$ equals this value.  If a
+row with a positive multiplier were left outside $R_B$, $\bar r\ne c$ and the
+bound could be below $\mathrm{LP}_P$.
 \end{proof}
 
 Part~(b) needs an optimal block dual.  When a block LP stops at its time limit,

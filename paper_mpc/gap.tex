@@ -96,7 +96,7 @@ gap is zero, so the clustering is optimal.  Computed by the released code.}
   \State $\mathcal C\gets$ best of $\mathcal C$ and \textsc{IteratedFlip}(\textsc{CMSY-Round}$(x^\star)$) over several roundings
 \EndIf
 \State $\mathcal C\gets\textsc{GapLNS}(\mathcal C,y)$ until time $T$
-\State \Return $\mathcal C$ and $\lceil\LB(y)\rceil$ \Comment{lines 4--5 share half of the budget $T$}
+\State \Return $\mathcal C$ and $\lceil\LB(y)\rceil$ \Comment{lines 4--5 target half of the remaining budget}
 \end{algorithmic}
 \end{algorithm}
 
@@ -133,13 +133,18 @@ and \textsc{GapLNS} accepts only improvements.  (a) then follows from the
 Pivot guarantee~\citep{AilonCN08}.  (b) is Theorem~\ref{thm:anytime}(a) and
 the integrality of $\OPT$.  (c) If one block covered $V$ and separation
 converged, the block LP primal $x^\star$ satisfies all
-rows~\eqref{eq:t1}--\eqref{eq:t2}, so it is feasible for $\mathrm{LP}_P$.  Its
-cost is the value of the block LP.  Every row of the block LP is valid for an
+rows~\eqref{eq:t1}--\eqref{eq:t2}, so it is feasible for $\mathrm{LP}_P$.
+A block covering $V$ contains every row with a positive multiplier (packed
+rows are released into it), so its costs are the original costs $c$
+(Theorem~\ref{thm:anytime}(c)) and the cost of $x^\star$ is the value of the
+block LP.  Every row of the block LP is valid for an
 optimal clustering (Lemma~\ref{lem:half} and Proposition~\ref{prop:subgraph}),
 whose cut vector is therefore feasible for the block LP; hence the block LP
 value is at most $\OPT$.  By Theorem~\ref{thm:sparse}(b,c),
 $\mathbb E[\cost(\textsc{CMSY-Round}(x^\star))]\le 2.06\,\OPT$.  The remaining
-steps are monotone.
+steps are monotone.  (The LP solver returns $x^\star$ in floating point and
+feasible up to its tolerance; part~(c) is a statement about the exact
+optimum, unlike part~(b), which is checked exactly.)
 \end{proof}
 
 \begin{remark}

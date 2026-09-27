@@ -1,37 +1,50 @@
 \section{Conclusion}\label{sec:concl}
 
-Lower bounds that scale to large correlation clustering instances used to
-certify only factors of about two.  Three observations change this on sparse
-graphs: the metric LP and its strengthenings can be restricted to the pairs
-at distance at most two; dual block-coordinate ascent turns the restricted
-relaxation into an anytime bound whose state is linear in the support; and
-star packings on the sparse support are a cheap and strong starting point.
-The resulting bounds are exported as certificates that an independent
-checker verifies against the raw instance in exact arithmetic.  The gap
-decomposition turns the same certificate into a map of where a clustering
-can still improve.
+Lower bounds that scale to large correlation clustering instances, packings
+of bad triangles, certify only factors of about two.  On sparse graphs, three
+observations give much tighter checked bounds: the metric LP and its
+strengthenings can be restricted to the pairs at distance at most two; dual
+block-coordinate ascent turns the restricted relaxation into an anytime
+bound whose state is linear in the support; and star packings on the support
+are feasible dual solutions that can be computed where the dense
+implementations of the branch-and-bound do not fit into memory.  On the
+largest graphs of our study it is this packing that supplies the bound; the
+block LPs improve it on the smaller and denser instances.  The resulting
+bounds are exported as certificates that an independent checker verifies
+against the raw instance in exact arithmetic.  The gap decomposition turns
+the same certificate into a map of where a clustering can still improve.
 
 \paragraph{Limitations.}
 \begin{itemize}
-\item On dense instances the root star-packing bound of the KaPoCE
-branch-and-bound remains stronger than ours on average; there the block LPs
-are too large to converge within the budget.
+\item On the PACE exact track the root star-packing bound of the KaPoCE
+branch-and-bound is stronger than ours on average, on the denser instances
+and on 25 of the 27 open instances; our packing heuristic is weaker than
+its, and on dense instances the block LPs do not converge within the
+budget.  Where the dense implementation runs on SNAP graphs, its root bound
+can also exceed ours (Section~\ref{sec:exp-cert}).
 \item On \numPackBetter{} of the \numSnapCert{} SNAP graphs the sparse star
 packing alone gives a larger bound than CertiFlip's combination of a short
 packing and block LPs; there the LP part of the method does not pay for its
-time within the budget (Section~\ref{sec:exp-cert}).
+time within the budget, and we did not evaluate a long packing followed by
+block LPs as one procedure (Section~\ref{sec:exp-cert}).
 \item The support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs with strong
-hubs it does not fit into memory and no bound is computed.  Restricting the
-support to centres of bounded degree would keep the bound valid.
+hubs it exceeds the threshold we fixed in advance, and no bound is computed
+on \numSnapNoBound{} of our \numSnapTotal{} SNAP graphs.  Packing stars
+without materialising the support, or restricting it to centres of bounded
+degree, would keep the bound valid.
+\item We consider unweighted instances only.  The weighted form enters only
+through the contraction of twins in the primal methods.
 \item The checker is short but not formally verified; the formal development
 covers the inequality it evaluates, not its code (Appendix~\ref{app:lean}).
-\item The a-priori guarantees of our primal methods are inherited from Pivot,
-and the $2.06$ guarantee applies only when one block covers the graph and
-separation converges.
+\item The gap-guided choice of LNS neighbourhoods is not evaluated
+separately.  The a-priori guarantees of our primal methods are inherited
+from Pivot, and the $2.06$ guarantee applies only when one block covers the
+graph and separation converges.
 \end{itemize}
 
-\paragraph{Open directions.}  Parallel block solves; cluster-LP columns
-inside blocks, to which the roundings of \citet{CaoCLLNV24} and
-\citet{GarciaSorianoS26} could be applied; overlapping blocks with Lagrangian
-cost splitting; and a verified checker, for example by extracting it from the
-Lean development.
+\paragraph{Open directions.}  A long packing followed by block LPs; packing
+heuristics as strong as those of the branch-and-bound; parallel block
+solves; cluster-LP columns inside blocks, to which the roundings of
+\citet{CaoCLLNV24} and \citet{GarciaSorianoS26} could be applied; overlapping
+blocks with Lagrangian cost splitting; and a verified checker, for example by
+extracting it from the Lean development.

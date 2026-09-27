@@ -39,7 +39,7 @@ TIMES = {}
 DEFAULTS = {k: r"\pending{}" for k in (
     "numPaceOptOurs", "numPaceMeanStar", "numPaceMeanOurs", "numSnapGapLo", "numSnapGapHi",
     "numBaseFacLo", "numBaseFacHi", "numCheckMaxGraph", "numCheckMaxRows", "numCheckMaxTime",
-    "numCpuModels")}
+    "numCpuModels", "numRecheckN", "numRecheckOk", "numRecheckMax", "numRecheckTotal")}
 DEFAULTS["numKapoceCommit"] = "64e2101"
 DEFAULTS.update({k: r"\pending{}" for k in (
     "numPHn", "numPHBetter", "numPHEqual", "numPHWorse", "numPHWilcoxon", "numPHSign",
@@ -153,6 +153,9 @@ def pace_exact():
     B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"] = ref["low_star"].astype(float)
     B["B\\&B $P_3$ packing~\\cite{BlasiusEtAl22sea}"] = ref["low_p3"].astype(float)
     solved = ref[ref["solved_1h"] == 1]
+    # the larger of two valid bounds is a valid bound
+    B["max of CertiFlip and B\\&B star"] = pd.concat(
+        [B["CertiFlip bound"], ref["low_star"].astype(float)], axis=1).max(axis=1, skipna=False)
     rows = []
     for nm, v in B.items():
         v = v.reindex(solved.index)
@@ -175,6 +178,11 @@ def pace_exact():
         NUM["numPaceOursAbove"] = str(int((ours > star).sum()))
         NUM["numPaceOursBelow"] = str(int((ours < star).sum()))
         NUM["numPaceOursEqual"] = str(int((ours == star).sum()))
+        mx = np.maximum(ours, star)
+        NUM["numPaceMaxOpt"] = str(int((mx >= solved["opt"]).sum()))
+        NUM["numPaceMaxMean"] = f"{(mx / solved['opt'].clip(lower=1)).mean():.4f}"
+    fr = B["fractional triangle packing"].reindex(solved.index)
+    NUM["numPaceFracMean"] = f"{(fr / solved['opt'].clip(lower=1)).mean():.4f}"
     # density bands
     bands = [(0, 0.1), (0.1, 0.3), (0.3, 0.5), (0.5, 1.01)]
     brow = []
@@ -182,12 +190,13 @@ def pace_exact():
     for lo, hi in bands:
         sel = solved[(solved.density >= lo) & (solved.density < hi)]
         cells = [f"$[{lo:g},{min(hi, 1):g})$", str(len(sel))]
-        for v in (ours, pk, star):
+        for v in (ours, pk, fr, star):
             v = v.reindex(sel.index)
             cells.append("--" if v.isna().all() else f"{(v / sel['opt'].clip(lower=1)).mean():.4f}")
         brow.append(" & ".join(cells) + " \\\\")
-    write("pace_density", "\\begin{tabular}{lrrrr}\n\\toprule\nedge density & instances & CertiFlip "
-          "& sparse star packing & B\\&B star packing \\\\\n\\midrule\n" + "\n".join(brow) +
+    write("pace_density", "\\begin{tabular}{lrrrrr}\n\\toprule\nedge density & instances & CertiFlip "
+          "& sparse star & fractional & B\\&B star \\\\\n"
+          " & & bound & packing & triangle packing & packing \\\\\n\\midrule\n" + "\n".join(brow) +
           "\n\\bottomrule\n\\end{tabular}\n")
     # further bounds on the solved instances, each on the instances where it ran
     for nm, kk in (("sparse star packing", "Pack"), ("CertiFlip bound, 1800 s", "Warm"),
@@ -205,7 +214,7 @@ def pace_exact():
     # open instances: best checked bound against the published bounds
     unsolved = ref[ref["solved_1h"] != 1]
     C = runs("c2x")
-    orows, improved = [], 0
+    orows, improved, below = [], 0, []
     for i in unsolved.index:
         vals = [B[nm].get(i) for nm in ("CertiFlip bound", "sparse star packing",
                                         "CertiFlip bound, 1800 s")]
@@ -215,6 +224,8 @@ def pace_exact():
         lb = int(max(vals))
         pub = int(max(ref.loc[i, "low_star"], ref.loc[i, "low_p3"]))
         ub = C.get((key(i), 0), {}).get("cost")
+        if lb < pub:
+            below.append(100 * (pub - lb) / pub)
         if lb > pub:
             improved += 1
             ubs = "--" if ub is None else f"\\num{{{int(ub)}}}"
@@ -226,6 +237,8 @@ def pace_exact():
           "\\midrule\n" + ("\n".join(orows) if orows else "\\multicolumn{7}{c}{none} \\\\") +
           "\n\\bottomrule\n\\end{tabular}\n")
     NUM["numPaceOpenImproved"] = str(improved)
+    NUM["numPaceOpenBelow"] = str(len(below))
+    NUM["numPaceOpenMaxBelow"] = f"{max(below):.1f}\\%" if below else "0"
     NUM["numPaceOpen"] = str(len(unsolved))
     return ref, B
 
@@ -277,8 +290,13 @@ def snap():
                      if os.path.exists(os.path.join(RES, f))])
     tri = tri[tri.algo.isin(["lb:greedy", "lb:tri-mwu"]) & tri.lb.notna()]
     tri = tri.groupby("instance")["lb"].max().apply(lambda x: np.ceil(x - 1e-6))
+    root = {}
+    for f in sorted(glob.glob(os.path.join(RES, "kapoce_root_snap_*.csv"))):
+        d = pd.read_csv(f)
+        for _, r in d[d.bound == "star"].iterrows():
+            root[r.graph] = (int(r.lb), float(r.time))
     rows, gaps, facs, spreads, cf_better, pk_better, lp_rows = [], [], [], [], [], [], []
-    role_gaps = {}
+    role_gaps, gaps_cf, gaps_pk, longer, seed_below, root_better, root_n = {}, [], [], [], [], [], 0
 
     def lp_gap(rec, ub):
         # an LP value is reported only when cutting planes converged: then it
@@ -295,7 +313,7 @@ def snap():
             lbs = [x for x in lbs if x is not None]
             ub_a, ub = arch.get(name), anyrun.get(name)
             if not lbs or ub_a is None:
-                rows.append(f"{tt(name)} & \\multicolumn{{7}}{{c}}{{\\pending{{}}}} \\\\")
+                rows.append(f"{tt(name)} & \\multicolumn{{9}}{{c}}{{\\pending{{}}}} \\\\")
                 continue
             cf = max(lbs)
             spreads.append(100 * (max(lbs) - min(lbs)) / cf)
@@ -305,41 +323,66 @@ def snap():
                 (cf_better if cf > pk else pk_better).append(name)
             gap_a = 100 * (ub_a - lb) / lb
             gaps.append(gap_a)
+            # each procedure on its own: CertiFlip at its median seed, the packing alone
+            gaps_cf.append(100 * (ub_a - np.median(lbs)) / np.median(lbs))
+            if pk is not None:
+                gaps_pk.append(100 * (ub_a - pk) / pk)
+                if min(lbs) < pk < max(lbs):
+                    seed_below.append(name)
             role_gaps.setdefault(role, []).append(gap_a)
             tb = tri.get(name)
             fac = None if tb is None or not np.isfinite(tb) else ub / tb
             if fac is not None:
                 facs.append(fac)
-            t_lb = np.median([C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2])
+            t_lbs = [C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2]
+            t_lb = np.median(t_lbs)
             TIMES[name] = t_lb
+            t_pk = PK[(name, 0)]["time"] if (name, 0) in PK else None
+            if t_pk is not None and pk is not None and pk > cf and t_pk > max(t_lbs):
+                longer.append(name)
+            rt = root.get(name)
+            if rt is not None:
+                root_n += 1
+                if rt[0] > lb:
+                    root_better.append(name)
             gap_b = 100 * (ub - lb) / lb
             g_tri = lp_gap(LT.get((name, 0)), ub)
             g_star = lp_gap(LS.get((name, 0)), ub)
-            if (name, 0) in LT or (name, 0) in LS:
-                lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, cf))
+            lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, cf))
             b = lambda v, other: (f"\\textbf{{\\num{{{v}}}}}" if other is not None and v > other
                                   else f"\\num{{{v}}}")
-            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf, pk)} & "
-                        f"{'--' if pk is None else b(pk, cf)} & {gap_a:.2f} & {gap_b:.2f} & "
-                        f"{fmt_pct(g_tri, 2) if g_tri is not None else '--'} & "
+            rcell = "--" if rt is None else (f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else ""))
+            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf, pk)} & {t_lb:.0f} & "
+                        f"{'--' if pk is None else b(pk, cf)} & "
+                        f"{'--' if t_pk is None else f'{t_pk:.0f}'} & {rcell} & "
+                        f"{gap_a:.2f} & {gap_b:.2f} & "
                         f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
-    write("snap_bounds", "\\begin{tabular}{lrrrrrrr}\n\\toprule\n"
-          "graph & UB & \\multicolumn{2}{c}{checked LB} & gap & gap$^*$ & tri.\\ LP & tri.\\\\\n"
-          "\\cmidrule(lr){3-4}\n"
-          " & & CertiFlip & packing & (\\%) & (\\%) & gap (\\%) & factor \\\\\n\\midrule\n"
+    write("snap_bounds", "\\begin{tabular}{lrrrrrrrrr}\n\\toprule\n"
+          "graph & UB & \\multicolumn{4}{c}{checked LB} & B\\&B & gap & gap$^*$ & tri.\\\\\n"
+          "\\cmidrule(lr){3-6}\n"
+          " & & CertiFlip & $t$ (s) & packing & $t$ (s) & root & (\\%) & (\\%) & factor \\\\\n"
+          "\\midrule\n"
           + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
     # metric LP on P against the checked bounds, where it was run
     lrows = []
+    # jobs that never returned: killed with their machine three times (the
+    # manager then gives up on them), most likely for lack of memory
+    qstat = {}
+    qf = os.path.join(COLAB, "queue.json")
+    if os.path.exists(qf):
+        for j in json.load(open(qf)):
+            qstat[j["id"]] = j["status"]
     for name, rt, rs, ub, pk, cf in lp_rows:
-        def cell(r):
+        def cell(r, tag=None):
             if r is None:
-                return "--", "--"
+                st = qstat.get(f"{tag}_{name}_0")
+                return ("killed", "") if st == "failed" else ("n.r.", "")
             v = f"\\num{{{np.ceil(r['value'] - 1e-6):.0f}}}"
             if not r.get("converged"):
                 v = f"({v})"
             return v, f"{r.get('time', float('nan')):.0f}"
-        (vt, tt_), (vs, ts) = cell(rt), cell(rs)
+        (vt, tt_), (vs, ts) = cell(rt, "ltri"), cell(rs, "lstar")
         best = max(x for x in (pk, cf) if x is not None)
         lrows.append(f"{tt(name)} & \\num{{{ub}}} & \\num{{{best}}} & {vt} & {tt_} & {vs} & {ts} \\\\")
     write("snap_lp", "\\begin{tabular}{lrrrrrr}\n\\toprule\n"
@@ -360,6 +403,23 @@ def snap():
     if facs:
         NUM["numBaseFacLo"] = f"{min(facs):.2f}"
         NUM["numBaseFacHi"] = f"{max(facs):.2f}"
+        NUM["numBaseGapLo"] = f"{100 * (min(facs) - 1):.0f}\\%"
+        NUM["numBaseGapHi"] = f"{100 * (max(facs) - 1):.0f}\\%"
+        NUM["numBaseGapMedian"] = f"{100 * (np.median(facs) - 1):.0f}\\%"
+    # the smallest n above which the packing alone wins on every graph
+    ns = sorted((cache[x]["n"], x) for x in cf_better + pk_better)
+    thr = None
+    for n_, x in reversed(ns):
+        if x in cf_better:
+            break
+        thr = n_
+    if thr is not None:
+        NUM["numPackAllAbove"] = f"\\num{{{thr}}}"
+        NUM["numPackAllAboveCount"] = str(sum(1 for n_, x in ns if n_ >= thr))
+        NUM["numCfBetterMaxN"] = f"\\num{{{max(n_ for n_, x in ns if x in cf_better)}}}"
+    NUM["numSnapTotal"] = str(len(DEV) + len(HELD))
+    NUM["numSnapNoBound"] = str(len(DEV) + len(HELD) - len(gaps))
+    NUM["numSnapHeldTotal"] = str(len(HELD))
     pt = [PK[(n, 0)]["time"] for n in DEV + HELD if (n, 0) in PK]
     ct = [TIMES[n] for n in TIMES]
     if pt:
@@ -374,13 +434,23 @@ def snap():
                 v = np.ceil(rt["value"] - 1e-6)
                 NUM["numGrqcTri"] = f"\\num{{{v:.0f}}}"
                 NUM["numGrqcTriGap"] = f"{100 * (ub - v) / v:.1f}\\%"
+                NUM["numGrqcTriBelow"] = f"{100 * (ub - v) / ub:.1f}\\%"
                 NUM["numGrqcTriTime"] = f"{rt['time']:.0f}"
             if rs is not None:
                 v = np.ceil(rs["value"] - 1e-6)
                 NUM["numGrqcStar"] = f"\\num{{{v:.0f}}}"
-                NUM["numGrqcStarGap"] = f"{100 * (ub - v) / v:.2f}\\%"
+                NUM["numGrqcStarGap"] = f"{100 * (ub - v) / ub:.2f}\\%"
                 NUM["numGrqcStarTime"] = f"{rs['time']:.0f}"
                 NUM["numGrqcBest"] = f"\\num{{{max(pk, cf)}}}"
+    if gaps_cf:
+        NUM["numSnapGapCfMedian"] = f"{np.median(gaps_cf):.1f}\\%"
+        NUM["numSnapGapPkMedian"] = f"{np.median(gaps_pk):.1f}\\%"
+    NUM["numPackLonger"] = str(len(longer))
+    NUM["numPackLongerList"] = ", ".join(tt(x) for x in longer)
+    NUM["numCfSeedBelowPack"] = ", ".join(tt(x) for x in seed_below) or "none"
+    NUM["numRootN"] = str(root_n)
+    NUM["numRootBetter"] = str(len(root_better))
+    NUM["numRootBetterList"] = ", ".join(tt(x) for x in root_better) or "none"
     NUM["numPackBetter"] = str(len(pk_better))
     NUM["numCfBetter"] = str(len(cf_better))
     NUM["numCfBetterList"] = ", ".join(tt(x) for x in cf_better)
@@ -518,8 +588,16 @@ def pace_heur():
             best = max(1, min(o, k))
             ratio = (o / best, k / best)
         (dev if i in PACE_DEV else held).append((i, d, ratio, r))
-    if not held:
-        write("pace_heur2", "\\begin{tabular}{l}\n\\pending{}\n\\end{tabular}\n")
+    if len(R) < 200:
+        # partial results are not reported
+        for k in DEFAULTS:
+            if k.startswith(("numPH", "numPD")):
+                NUM[k] = DEFAULTS[k]
+        write("pace_heur2", "\\begin{tabular}{l}\n\\pending{} "
+              f"({len(R)} of 200 runs done)\n\\end{{tabular}}\n")
+        fig = os.path.join(ROOT, "paper_mpc", "figures", "profile_pace_heur.pdf")
+        if os.path.exists(fig):
+            os.remove(fig)
         return
     d = np.array([x[1] for x in held])
     nz = d[d != 0]
@@ -602,13 +680,73 @@ def timing():
             NUM["numCheckMaxRows"] = r"\num{%d}" % big["rows"]
             NUM["numCheckMaxTime"] = f"{big['check_time']:.0f}"
             NUM["numCheckTimeMax"] = f"{max(r['check_time'] for r in ok):.0f}"
-    for tag in ("s2h", "s2p"):
+    # CPU model of every run reported in this section, by tag
+    per = {}
+    for tag in ("c2", "c2x", "lpack", "ltri", "lstar", "lwarm", "s2h", "s2h150", "s2h60", "s2p"):
         for r in runs(tag).values():
-            m = r.get("machine", {}).get("Model name")
+            m = r.get("cpu") or (r.get("machine") or {}).get("Model name")
             if m:
                 models.add(m)
+                per.setdefault(tag, {}).setdefault(m, 0)
+                per[tag][m] += 1
     if models:
         NUM["numCpuModels"] = "; ".join(sorted(models)).replace("(R)", r"\textsuperscript{\textregistered}")
+    amd = [(tag, c[m], sum(c.values())) for tag, c in per.items() for m in c if "AMD" in m]
+    names = {"lpack": "star-packing runs", "s2h60": "head-to-head runs at \\SI{60}{s}",
+             "s2h150": "head-to-head runs at \\SI{150}{s}", "s2h": "head-to-head runs at \\SI{600}{s}",
+             "s2p": "PACE heuristic-track runs"}
+    NUM["numCpuAmd"] = ", ".join(f"{k} of the {n} {names.get(t, t + ' runs')}" for t, k, n in amd) or "none"
+    # time of the bound phase of CertiFlip (target: half of the remaining budget)
+    for tag, key, thr in (("c2x", "Pace", 30.5), ("c2", "Snap", 301)):
+        R = runs(tag)
+        if not R:
+            continue
+        lt = np.array([r["lb_time"] for r in R.values()])
+        NUM[f"numLb{key}Median"] = f"{np.median(lt):.0f}"
+        NUM[f"numLb{key}Over"] = str(int((lt > thr).sum()))
+        NUM[f"numLb{key}Max"] = f"{lt.max():.0f}"
+        NUM[f"numLb{key}Runs"] = str(len(lt))
+    # packing runs on PACE (T = 60 s): measured times
+    pp = [r for (g, sd), r in runs("lpack").items() if g.startswith("pace")]
+    if pp:
+        t = np.array([r["time"] for r in pp])
+        T = pp[0]["T"]
+        NUM["numPackPaceMedian"] = f"{np.median(t):.0f}"
+        NUM["numPackPaceOver"] = str(int((t > 1.01 * T).sum()))
+        NUM["numPackPaceMax"] = f"{t.max():.0f}"
+        NUM["numPackPaceRuns"] = str(len(t))
+    pk = runs("lpack")
+    NUM["numCertPackOk"] = str(sum(r.get("check") == "ok" for r in pk.values()))
+    NUM["numCertPackRuns"] = str(len(pk))
+    # line 7 of Algorithm 1 (the LP-rounding start)
+    R = runs("c2x")
+    used = imp = 0
+    for r in R.values():
+        h = r.get("history", [])
+        for k, e in enumerate(h):
+            if e[0] == "lp-seed":
+                used += 1
+                prev = [x for x in h[:k] if x[0] != "bound"]
+                if prev and e[2] < prev[-1][2]:
+                    imp += 1
+    NUM["numLpSeedPace"] = str(used)
+    NUM["numLpSeedPaceImproved"] = str(imp)
+    NUM["numLpSeedSnap"] = str(sum(bool(r.get("lp_seed_used")) for r in runs("c2").values()))
+    # KaPoCE stopped by SIGTERM in the head-to-head
+    for tag, key in (("s2h", "Six"), ("s2h150", "OneFifty"), ("s2h60", "Sixty")):
+        R = runs(tag)
+        if R:
+            NUM[f"numHH{key}Sigterm"] = str(sum(bool(r.get("kapoce_sigterm")) for r in R.values()))
+    # the complete recheck against freshly downloaded files
+    rc = os.path.join(RES, "mpc", "recheck.csv")
+    if os.path.exists(rc):
+        import pandas as pd
+        d = pd.read_csv(rc)
+        NUM["numRecheckN"] = str(len(d))
+        NUM["numRecheckOk"] = str(int((d.status == "ok").sum()))
+        if "seconds" in d:
+            NUM["numRecheckMax"] = f"{d.seconds.max():.0f}"
+            NUM["numRecheckTotal"] = f"{d.seconds.sum() / 3600:.1f}"
 
 
 def pace_primal(ref):
