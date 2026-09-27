@@ -125,7 +125,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790473421.9059303
  },
@@ -1056,7 +1056,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur079.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790470871.4145198
  },
