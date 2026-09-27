@@ -277,10 +277,11 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
-  "machine": "w2",
+  "status": "failed",
+  "machine": null,
   "solo": true,
-  "started": 1790523738.9729743
+  "started": 1790538251.6824076,
+  "tries": 1
  },
  {
   "id": "lkstar_ca-HepPh_0",
