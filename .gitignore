@@ -243,3 +243,4 @@ paper_mpc/*.out
 results/mpc/recheck_work.csv*
 kapoce_lb/
 results/kapoce_root_snap_user.csv.part*
+results/mpc/recheck.done
