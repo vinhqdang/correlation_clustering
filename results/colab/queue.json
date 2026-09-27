@@ -45,7 +45,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790472876.7996035
  },
@@ -1126,7 +1126,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur086.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790471742.1801631
  },
@@ -1166,7 +1166,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur090.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790471744.1845963
  },
