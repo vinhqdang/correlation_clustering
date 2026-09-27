@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact088.gr", "n": 171, "m": 936, "mode": "kroot", "T": 900.0, "kapoce": "63079a9", "status": "ok", "time": 0.03528141975402832, "p3": 193, "p3_time": 0.00858126, "star": 197, "star_time": 0.0219425, "value": 197, "tag": "lkroot", "commit": "53bc98a", "cpu": "Intel(R) Xeon(R) Processor @ 2.80GHz", "python": "3.11.15"}
