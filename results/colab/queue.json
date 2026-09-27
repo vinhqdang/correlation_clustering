@@ -21582,8 +21582,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790552427.1778994
  },
  {
   "id": "lsstar_wiki-Vote_0",
@@ -21591,8 +21592,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790552427.1779022
  },
  {
   "id": "lsstar_cit-HepTh_0",
@@ -21600,8 +21602,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790552427.177903
  },
  {
   "id": "lsstar_cit-HepPh_0",
@@ -21609,8 +21612,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790552427.177904
  },
  {
   "id": "lsstar_p2p-Gnutella31_0",
@@ -21618,8 +21622,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790552429.3903804
  },
  {
   "id": "lsstar_soc-Slashdot0902_0",
@@ -21627,8 +21632,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790552429.3903828
  },
  {
   "id": "lsstar_loc-Gowalla_0",
@@ -21636,8 +21642,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790552429.3903832
  },
  {
   "id": "lsstar_email-EuAll_0",
@@ -21645,8 +21652,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790552429.390384
  },
  {
   "id": "lsstar_amazon0302_0",
@@ -21654,8 +21662,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790552431.043485
  },
  {
   "id": "lsstar_web-NotreDame_0",
@@ -21663,8 +21672,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790552431.0434864
  },
  {
   "id": "lsstar_roadNet-PA_0",
@@ -21672,8 +21682,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790552431.0434873
  },
  {
   "id": "lsslp_ca-GrQc_0",
@@ -21681,8 +21692,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790552431.0434875
  },
  {
   "id": "lsslp_ca-HepTh_0",
@@ -21690,8 +21702,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790552432.6961472
  },
  {
   "id": "lsslp_ca-HepPh_0",
@@ -21699,8 +21712,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790552432.696149
  },
  {
   "id": "lsslp_ca-AstroPh_0",
@@ -21708,8 +21722,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790552432.6961496
  },
  {
   "id": "lsslp_ca-CondMat_0",
@@ -21717,8 +21732,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790552432.6961498
  },
  {
   "id": "lsslp_email-Enron_0",
