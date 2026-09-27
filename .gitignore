@@ -240,3 +240,4 @@ paper_mpc/*.bbl
 paper_mpc/*.blg
 paper_mpc/*.log
 paper_mpc/*.out
+results/mpc/recheck_work.csv*
