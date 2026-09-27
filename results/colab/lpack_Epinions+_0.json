@@ -1,0 +1,1 @@
+{"graph": "Epinions+", "n": 114467, "m": 592591, "pairs": 56948607, "mode": "pack", "T": 600.0, "seed": 0, "support_time": 36.728880882263184, "value": 489582.0, "stars": 64855, "time": 3498.082596063614, "check": "ok", "certified": 489582, "lb_exact": 489582.0, "identity": "hash", "tag": "lpack", "commit": "06c1435", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
