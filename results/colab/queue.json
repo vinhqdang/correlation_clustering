@@ -5,7 +5,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790472751.29917
  },
@@ -85,8 +85,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790473096.4542472
  },
  {
   "id": "lplp_wiki-Vote_0",
@@ -94,8 +95,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790473096.4542491
  },
  {
   "id": "lplp_roadNet-PA_0",
@@ -103,8 +105,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790473096.4542503
  },
  {
   "id": "lplp_ca-AstroPh_0",
@@ -112,8 +115,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790473096.454251
  },
  {
   "id": "lplp_amazon0302_0",
@@ -889,7 +893,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur064.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790469039.6908274,
   "tries": 1
@@ -1034,7 +1038,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur078.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790470871.4145193
  },
@@ -1104,7 +1108,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur085.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790471742.1801605
  },
