@@ -3,6 +3,9 @@
 for it; one CSV row per graph and bound, resumable.
 
   python experiments/kapoce_root_snap.py OUT.csv GRAPH...
+
+The program is taken from KAPOCE_LB_BIN (see experiments/kapoce/build_lbounds.sh);
+the time limit per graph is KAPOCE_LB_TIMEOUT seconds (default 14400).
 """
 import csv
 import os
@@ -14,6 +17,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import datasets as D  # noqa: E402
 from ablation import kapoce_root_bounds  # noqa: E402
 
+TIMEOUT = int(os.environ.get("KAPOCE_LB_TIMEOUT", "14400"))
+
 
 def cpu():
     try:
@@ -24,6 +29,10 @@ def cpu():
 
 
 def main(out, graphs):
+    from ablation import KAPOCE_LB
+    if not os.path.exists(KAPOCE_LB):
+        sys.exit(f"{KAPOCE_LB} not found; build it with experiments/kapoce/build_lbounds.sh "
+                 "and set KAPOCE_LB_BIN")
     done = set()
     if os.path.exists(out):
         with open(out) as fh:
@@ -32,12 +41,13 @@ def main(out, graphs):
         if name in done:
             continue
         g = D.load(name)
-        res = kapoce_root_bounds(g, timeout=3600)
-        rows = [dict(graph=name, n=g.n, m=g.m, bound=k, lb=v, time=t, cpu=cpu())
-                for k, (v, t) in (res or {"timeout": (-1, 3600.0)}).items()]
+        res = kapoce_root_bounds(g, timeout=TIMEOUT)
+        rows = [dict(graph=name, n=g.n, m=g.m, bound=k, lb=v, time=t, cpu=cpu(), limit=TIMEOUT)
+                for k, (v, t) in (res or {"timeout": (-1, float(TIMEOUT))}).items()]
         new = not os.path.exists(out)
         with open(out, "a", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=["graph", "n", "m", "bound", "lb", "time", "cpu"])
+            w = csv.DictWriter(fh, fieldnames=["graph", "n", "m", "bound", "lb", "time", "cpu",
+                                               "limit"], extrasaction="ignore")
             if new:
                 w.writeheader()
             w.writerows(rows)

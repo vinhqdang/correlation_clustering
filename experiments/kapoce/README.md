@@ -31,3 +31,12 @@ make lbounds
 
 This solver stores the instance as a dense matrix, so it is only applicable to
 graphs with up to about 10^4 vertices.
+
+One command builds `lbounds` (CPU only, no GPU) and computes the root bounds on
+the ten SNAP graphs with at most 2.5e4 vertices:
+
+```bash
+bash experiments/kapoce/run_root_bounds.sh      # writes results/kapoce_root_snap_user.csv
+```
+
+`build_lbounds.sh` alone only builds the program and prints its path.

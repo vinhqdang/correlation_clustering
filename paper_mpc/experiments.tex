@@ -72,8 +72,9 @@ budget and one block covering the graph.
 \item \emph{KaPoCE root bounds}: the star-packing and $P_3$-packing bounds of
 the KaPoCE branch-and-bound~\cite{BlasiusEtAl22sea}.  On the PACE exact track
 we use the values published by its authors.  On the SNAP graphs with at most
-$2.5\cdot10^4$ vertices we ran its lower-bound program (commit
-\texttt{\numKapoceCommit}, one hour limit) ourselves; its dense matrix does
+$2.5\cdot10^4$ vertices we ran its lower-bound program (branch \texttt{experiments}, commit
+\texttt{63079a9}, four-hour limit, one run per graph on a 4-core workstation)
+ourselves; its dense matrix does
 not fit into memory on the larger graphs.  These values are not
 certified.
 \end{itemize}
