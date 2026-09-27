@@ -185,7 +185,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790473546.8758051
  },
@@ -1226,7 +1226,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur095.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790476087.003662
  },
