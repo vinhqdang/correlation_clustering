@@ -81,9 +81,13 @@ the other \numPHn{} instances PXMem is better on \numPHBetter{}, equal on
 \numPHEqual{} and worse on \numPHWorse{} (Wilcoxon $p=\numPHWilcoxon$, sign
 test $p=\numPHSign$); KaPoCE returned no valid solution on
 \numPHKapoceInvalid{} instances, which count as PXMem wins as in PACE.
+The counts hide the sizes of the differences: summed over the \numPHn{}
+instances the costs favour KaPoCE by 5185, and the eleven instances with
+$10^5$ vertices or more contribute 5344 of this (PXMem better on six of
+them, worse on five).
 PXMem records its first solution only after its initialisation; on
-\numPHNoSolution{} small instances KaPoCE stopped before that, and these
-count as KaPoCE wins under the protocol.
+\numPHNoSolution{} small instance KaPoCE stopped before that, and it
+counts as a KaPoCE win under the protocol.
 Figure~\ref{fig:profile} shows the performance profile.
 
 \begin{table}[!tbp]

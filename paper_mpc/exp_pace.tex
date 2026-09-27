@@ -61,7 +61,12 @@ and \numPaceWarmStarMean{} for the B\&B star packing, and the bound is
 optimal on \numPaceWarmOpt{} of them (\numPaceWarmOursOpt{} at \SI{60}{s}).
 The triangle LP converged within \SI{900}{s} on \numPaceTriN{} of these
 instances, with a mean LB/OPT of \numPaceTriMean{} (\numPaceTriOursMean{}
-for our bound on the same instances).
+for our bound on the same instances).  These runs were made on a laptop
+(12th Gen Intel Core i9-12900H), several at a time.  The limit applies to
+the LP phase; the star-packing warm start before it (sized to about 30\% of
+the limit) and the certificate come on top, and 11 of the 49 bound runs took
+longer than \SI{1800}{s}, the longest about \SI{4000}{s}.  The checker
+accepted all 49 certificates.
 
 \paragraph{Open instances.}  Of the \numPaceOpen{} instances of the exact
 track without a known optimum, our checked bound exceeds the larger published
