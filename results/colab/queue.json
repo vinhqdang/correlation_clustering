@@ -616,7 +616,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur062.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790469039.6908264,
   "tries": 1
@@ -20043,8 +20043,8 @@
   "T": 1800.0,
   "seed": 0,
   "graph": "pace-exact/exact004.gr",
-  "status": "running",
-  "machine": "w6",
+  "status": "pending",
+  "machine": null,
   "started": 1790449948.635304
  },
  {
