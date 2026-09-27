@@ -21,7 +21,13 @@ Modes (the tag's second character onward, e.g. tag "ltri"):
         computed by KaPoCE, not certified here;
   kstar the same star packing of KaPoCE (limit T seconds), with its stars
         written out and installed as a dual solution on P like our own
-        packing; certificate checked.
+        packing; certificate checked;
+  sstar our sparse implementation of that star packing heuristic
+        (experiments/sstar/sstar.cc) for T seconds; the stars are written
+        directly as certificate rows, without building the support, so it also
+        runs where the support does not fit into memory; certificate checked;
+  sslp  sstar for T/2 seconds, then METIS block sweeps from its packing for
+        T/2 seconds (as plp); certificate checked.
 
 usage: colab_run_lp.py T SEED TAG GRAPH..."""
 import json, os, platform, shutil, subprocess, sys, time
@@ -142,6 +148,59 @@ def kapoce_stars(g, sup, T):
             np.array(rk, dtype=np.int64), value, secs, len(stars))
 
 
+def sstar_bin():
+    """experiments/sstar/sstar, compiled once per machine."""
+    import fcntl
+    src = os.path.join(CC, 'experiments', 'sstar', 'sstar.cc')
+    b = os.environ.get('SSTAR_BIN', os.path.join(os.path.dirname(OUT.rstrip('/')) or '.', 'sstar_bin'))
+    with open(b + '.lock', 'w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if not os.path.exists(b) or os.path.getmtime(b) < os.path.getmtime(src):
+            r = subprocess.run(['g++', '-O2', '-std=c++17', '-o', b + '.tmp', src],
+                               capture_output=True, text=True)
+            if r.returncode != 0:
+                raise RuntimeError('sstar build failed: ' + r.stderr[-500:])
+            os.replace(b + '.tmp', b)
+    return b
+
+
+def sstar_stars(g, T, seed, min_time):
+    """Run sstar on g; returns (stars as lists centre-first, value, seconds, init)."""
+    import tempfile
+    from baselines import write_pace
+    binary = sstar_bin()
+    with tempfile.TemporaryDirectory() as d:
+        f, sf = os.path.join(d, 'g.gr'), os.path.join(d, 'stars.txt')
+        write_pace(g, f)
+        with open(f) as fin:
+            p = subprocess.run([binary, sf, str(T), str(seed), str(min_time)], stdin=fin,
+                               capture_output=True, text=True, timeout=T + 3600)
+        res = {l.split()[0]: l.split()[1:] for l in p.stdout.splitlines() if l.strip()}
+        if p.returncode != 0 or 'star' not in res:
+            raise RuntimeError(f'sstar failed (exit {p.returncode}): {p.stderr[-300:]}')
+        stars = [list(map(int, l.split())) for l in open(sf) if l.strip()]
+    return (stars, int(res['star'][0]), float(res['star'][1]), int(res['init'][0]),
+            [int(x) for x in res.get('rounds', [0, 0])])
+
+
+def star_rows(stars):
+    """Rows of a star packing as vertex pairs: centre pairs (+1), then leaf
+    pairs (-1); b = (k - 1) - k(k - 1)/2 and y = 1 (as add_star_packing)."""
+    us, vs, vals, ptr, bs = [], [], [], [0], []
+    for st in stars:
+        c, L = st[0], np.asarray(st[1:], dtype=np.int64)
+        k = len(L)
+        iu, ju = np.triu_indices(k, 1)
+        us.append(np.concatenate([np.full(k, c, dtype=np.int64), L[iu]]))
+        vs.append(np.concatenate([L, L[ju]]))
+        vals.append(np.concatenate([np.ones(k), -np.ones(len(iu))]))
+        ptr.append(ptr[-1] + k + len(iu))
+        bs.append((k - 1) - k * (k - 1) / 2)
+    u, v = np.concatenate(us), np.concatenate(vs)
+    return np.minimum(u, v), np.maximum(u, v), np.concatenate(vals), np.array(ptr, dtype=np.int64), \
+        np.array(bs, dtype=np.float64)
+
+
 def run(name, mode, T, seed, tag=None):
     import datasets as D
     from ccbench.support import build_support
@@ -152,6 +211,8 @@ def run(name, mode, T, seed, tag=None):
     g = D.load(name)
     if mode == 'kroot':
         return kroot(g, name, T)
+    if mode == 'sstar':
+        return run_sstar(g, name, T, seed, tag)
     t0 = time.time()
     sup = build_support(g)
     out = {'graph': name, 'n': g.n, 'm': g.m, 'pairs': int(sup.npairs), 'mode': mode, 'T': T,
@@ -181,6 +242,23 @@ def run(name, mode, T, seed, tag=None):
         add_star_packing(bd, rp, rpairs, rk)
         out.update({'value': float(bd.bound()), 'kapoce_star': value, 'kapoce_time': secs,
                     'stars': ns, 'kapoce': '63079a9'})
+    elif mode == 'sslp':
+        bd = BlockDualBound(g, sup)
+        stars, value, secs, init, rounds = sstar_stars(g, T / 2, seed, T / 2)
+        u, v, vals, ptr, b = star_rows(stars)
+        key = sup.pu.astype(np.int64) * g.n + sup.pv.astype(np.int64)
+        order = np.argsort(key)
+        pos = np.searchsorted(key[order], u * g.n + v)
+        if (pos >= len(key)).any() or (key[order][np.minimum(pos, len(key) - 1)] != u * g.n + v).any():
+            raise ValueError('a pair of a star is not in P')
+        rpairs = order[pos].astype(np.int64)
+        rk = np.array([len(st) - 1 for st in stars], dtype=np.int64)
+        add_star_packing(bd, ptr, rpairs, rk)
+        out.update({'pack_value': float(bd.bound()), 'pack_time': time.time() - t1,
+                    'sstar_value': value, 'sstar_time': secs, 'sstar_init': init,
+                    'rounds': rounds, 'stars': len(stars)})
+        block_bound(g, sup, time_limit=T / 2, seed=seed, bd=bd, packing_fraction=0.0)
+        out.update({'value': float(bd.bound())})
     elif mode in ('tri', 'star'):
         lp = SparseLP(g, sup)
         if mode == 'tri':
@@ -218,6 +296,37 @@ def run(name, mode, T, seed, tag=None):
         except ValueError as exc:
             out['check'] = f'rejected: {exc}'
     return out
+
+
+def write_check(cert_d, name, g, tag, seed, out):
+    import check_certificate as C
+    import instance_meta as M
+    safe = name.replace('/', '_')
+    cert = os.path.join(OUT, 'certs', f'{tag}_{safe}_{seed}.npz')
+    os.makedirs(os.path.dirname(cert), exist_ok=True)
+    np.savez_compressed(cert, **cert_d)
+    M.stamp(cert, name, g)
+    try:
+        rep = C.check_file(M.raw_file(name)[1], cert)
+        out.update({'check': 'ok', 'certified': int(rep['certified']),
+                    'lb_exact': rep['lb_exact'], 'identity': rep['identity']})
+    except ValueError as exc:
+        out['check'] = f'rejected: {exc}'
+    return out
+
+
+def run_sstar(g, name, T, seed, tag):
+    """The sparse star packing alone, its stars written directly as rows: the
+    support is never built."""
+    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed}
+    t1 = time.time()
+    stars, value, secs, init, rounds = sstar_stars(g, T, seed, T)
+    u, v, vals, ptr, b = star_rows(stars)
+    out.update({'value': float(value), 'sstar_time': secs, 'sstar_init': init,
+                'rounds': rounds, 'stars': len(stars), 'time': time.time() - t1})
+    cert_d = {'n': g.n, 'ptr': ptr, 'u': u, 'v': v, 'val': vals, 'b': b,
+              'y': np.ones(len(b)), 'bound': float(value)}
+    return write_check(cert_d, name, g, tag or 'lsstar', seed, out)
 
 
 def main(graphs, T, seed, tag):
