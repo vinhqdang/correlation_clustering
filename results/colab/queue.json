@@ -188,8 +188,8 @@
   "status": "running",
   "machine": "w4",
   "solo": true,
-  "started": 1790514905.8833838,
-  "tries": 1
+  "started": 1790515028.5736065,
+  "tries": 2
  },
  {
   "id": "lkstar_ca-AstroPh_0",
@@ -219,9 +219,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null,
-  "solo": true
+  "status": "running",
+  "machine": "w6",
+  "solo": true,
+  "started": 1790515040.2734742
  },
  {
   "id": "lkstar_facebook_0",
