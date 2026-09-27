@@ -18,7 +18,10 @@ Modes (the tag's second character onward, e.g. tag "ltri"):
   kroot the root star-packing and P3-packing bounds of the KaPoCE
         branch-and-bound (its `lbounds` program, branch `experiments`, built
         by experiments/kapoce/build_lbounds.sh), limit T seconds; integers
-        computed by KaPoCE, not certified here.
+        computed by KaPoCE, not certified here;
+  kstar the same star packing of KaPoCE (limit T seconds), with its stars
+        written out and installed as a dual solution on P like our own
+        packing; certificate checked.
 
 usage: colab_run_lp.py T SEED TAG GRAPH..."""
 import json, os, platform, shutil, subprocess, sys, time
@@ -98,7 +101,48 @@ def kroot(g, name, T):
     return out
 
 
-def run(name, mode, T, seed):
+def kapoce_stars(g, sup, T):
+    """The root star packing of KaPoCE as (rp, rpairs, rk) on the pair ids of
+    the support, as returned by our own packing, and KaPoCE's bound and time."""
+    import tempfile
+    from baselines import write_pace
+    binary = kapoce_lb()
+    with tempfile.TemporaryDirectory() as d:
+        f, sf = os.path.join(d, 'g.gr'), os.path.join(d, 'stars.txt')
+        write_pace(g, f)
+        with open(f) as fin:
+            p = subprocess.run([binary, sf], stdin=fin, capture_output=True, text=True,
+                               timeout=T)
+        line = [l.split() for l in p.stdout.splitlines() if l.startswith('star ')]
+        if p.returncode != 0 or not line:
+            raise RuntimeError(f'lbounds failed (exit {p.returncode}): {p.stderr[-300:]}')
+        value, secs = int(line[-1][1]), float(line[-1][2])
+        stars = [list(map(int, l.split())) for l in open(sf) if l.strip()]
+    n = g.n
+    key = sup.pu.astype(np.int64) * n + sup.pv.astype(np.int64)
+    order = np.argsort(key)
+    skey = key[order]
+
+    def pid(a, b):
+        k = min(a, b) * n + max(a, b)
+        i = np.searchsorted(skey, k)
+        if i == len(skey) or skey[i] != k:
+            raise ValueError(f'pair ({a}, {b}) of a KaPoCE star is not in P')
+        return int(order[i])
+    rp, rpairs, rk = [0], [], []
+    for st in stars:
+        c, leaves = st[0], st[1:]
+        # centre pairs first, then the pairs between leaves (as in our packing)
+        rpairs += [pid(c, l) for l in leaves]
+        rpairs += [pid(leaves[i], leaves[j]) for i in range(len(leaves))
+                   for j in range(i + 1, len(leaves))]
+        rp.append(len(rpairs))
+        rk.append(len(leaves))
+    return (np.array(rp, dtype=np.int64), np.array(rpairs, dtype=np.int64),
+            np.array(rk, dtype=np.int64), value, secs, len(stars))
+
+
+def run(name, mode, T, seed, tag=None):
     import datasets as D
     from ccbench.support import build_support
     from ccbench.blockdual import BlockDualBound, add_star_packing
@@ -131,6 +175,12 @@ def run(name, mode, T, seed):
                     'stars': int(len(rk))})
         block_bound(g, sup, time_limit=T / 2, seed=seed, bd=bd, packing_fraction=0.0)
         out.update({'value': float(bd.bound())})
+    elif mode == 'kstar':
+        bd = BlockDualBound(g, sup)
+        rp, rpairs, rk, value, secs, ns = kapoce_stars(g, sup, T)
+        add_star_packing(bd, rp, rpairs, rk)
+        out.update({'value': float(bd.bound()), 'kapoce_star': value, 'kapoce_time': secs,
+                    'stars': ns, 'kapoce': '63079a9'})
     elif mode in ('tri', 'star'):
         lp = SparseLP(g, sup)
         if mode == 'tri':
@@ -155,7 +205,9 @@ def run(name, mode, T, seed):
         import check_certificate as C
         import instance_meta as M
         safe = name.replace('/', '_')
-        cert = os.path.join(OUT, 'certs', f'l{mode}_{safe}_{seed}.npz')
+        # named after the tag (e.g. lpack+eq), so that variants of a mode do not
+        # overwrite each other's certificates
+        cert = os.path.join(OUT, 'certs', f'{tag or "l" + mode}_{safe}_{seed}.npz')
         os.makedirs(os.path.dirname(cert), exist_ok=True)
         np.savez_compressed(cert, **bd.certificate())
         M.stamp(cert, name, g)
@@ -180,7 +232,7 @@ def main(graphs, T, seed, tag):
     if any(n.startswith('pace-') for n in graphs):
         ensure_pace()
     for name in graphs:
-        out = run(name, mode, T, seed)
+        out = run(name, mode, T, seed, tag)
         out.update({'tag': tag, 'commit': commit, 'cpu': cpu_model(),
                     'python': platform.python_version()})
         safe = name.replace('/', '_')

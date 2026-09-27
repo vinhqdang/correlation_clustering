@@ -21,6 +21,10 @@ git checkout -q "$COMMIT"
 git submodule update -q --init --recursive
 
 cp "$HERE/lbounds.cc" cluster_editing/application/lbounds.cc
+# a function that writes the stars of the root star packing (the algorithm is
+# unchanged; see star_dump.inc)
+SB=cluster_editing/exact/star_bound.cpp
+grep -q "star_bound_dump" "$SB" || cat "$HERE/star_dump.inc" >> "$SB"
 CML=cluster_editing/application/CMakeLists.txt
 if ! grep -q "add_executable(lbounds" "$CML"; then
     cat >> "$CML" <<'EOF'
