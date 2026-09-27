@@ -1,0 +1,1 @@
+{"graph": "ca-GrQc", "n": 5242, "m": 14484, "mode": "sstar", "T": 600.0, "seed": 0, "value": 6029.0, "sstar_time": 600.007, "sstar_init": 5820, "rounds": [7245, 56], "stars": 3271, "time": 604.0394892692566, "check": "ok", "certified": 6029, "lb_exact": 6029.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}

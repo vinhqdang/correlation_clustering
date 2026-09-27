@@ -1,0 +1,1 @@
+{"graph": "com-Amazon", "n": 334863, "m": 925872, "mode": "sstar", "T": 600.0, "seed": 0, "value": 594310.0, "sstar_time": 600.611, "sstar_init": 540842, "rounds": [84, 84], "stars": 262690, "time": 614.0055966377258, "check": "ok", "certified": 594310, "lb_exact": 594310.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "AMD EPYC 7B12", "python": "3.13.15"}

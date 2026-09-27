@@ -21422,7 +21422,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790552165.9269235
  },
@@ -21432,7 +21432,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790552165.9269273
  },
@@ -21462,7 +21462,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790552168.2569711
  },
@@ -21472,7 +21472,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790552168.2569737
  },
@@ -21502,7 +21502,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790552197.800822
  },
@@ -21542,7 +21542,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790552346.100696
  },
@@ -21582,7 +21582,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790552427.1778994
  },
@@ -21622,7 +21622,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790552429.3903804
  },
@@ -21662,7 +21662,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790552431.043485
  },
