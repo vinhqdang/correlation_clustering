@@ -192,3 +192,30 @@ def test_star_formula_is_implied_by_enumeration(tmp_path):
                 assert ok_enum == ok_star
             checked += 1
     assert checked > 100
+
+
+def test_directory_check_uses_the_instance_table(tmp_path):
+    """--dir takes the parser settings from INSTANCES.tsv: a certificate that
+    declares another format or sign column is rejected, and an instance file
+    missing from the manifest or the table is rejected."""
+    import hashlib
+    inst, _, cert, _ = _cert(tmp_path)
+    raw = tmp_path / "raw"
+    (raw / "pace").mkdir(parents=True)
+    os.replace(tmp_path / "g.gr", raw / "pace" / "g.gr")
+    sha = hashlib.sha256((raw / "pace" / "g.gr").read_bytes()).hexdigest()
+    (raw / "MANIFEST.sha256").write_text(f"{sha}  pace/g.gr\n")
+    (raw / "INSTANCES.tsv").write_text("# test\npace/*\tpace\t-1\n")
+    certs = tmp_path / "certs"
+    certs.mkdir()
+    cert["instance_file"] = np.array("pace/g.gr")
+    np.savez_compressed(certs / "a_ok.npz", **cert)
+    np.savez_compressed(certs / "b_sign.npz", **{**cert, "sign_col": np.array(2)})
+    np.savez_compressed(certs / "c_fmt.npz", **{**cert, "instance_format": np.array("snap")})
+    np.savez_compressed(certs / "d_file.npz", **{**cert, "instance_file": np.array("pace/h.gr")})
+    out = str(tmp_path / "out.csv")
+    assert not C.check_dir(str(raw), str(certs), out)
+    import csv
+    status = {r["certificate"]: r["status"] for r in csv.DictReader(open(out))}
+    assert status["a_ok.npz"] == "ok"
+    assert all(status[k].startswith("rejected") for k in ("b_sign.npz", "c_fmt.npz", "d_file.npz"))

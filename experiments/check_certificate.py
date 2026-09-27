@@ -479,15 +479,43 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
             manifest = {k.strip(): v for k, v in manifest.items()}
             break
 
-    def trusted(f):
-        if manifest is not None:
-            if f not in manifest:
-                raise ValueError(f"{f} is not in the instance manifest")
-            with open(os.path.join(data_dir, f), "rb") as fh:
-                import hashlib
-                if hashlib.sha256(fh.read()).hexdigest() != manifest[f]:
-                    raise ValueError(f"{f} differs from the instance manifest")
-        return os.path.join(data_dir, f)
+    if manifest is None:
+        raise ValueError(f"no MANIFEST.sha256 in or above {data_dir}")
+    # format and sign column of each raw file, from the committed instance
+    # table: a certificate cannot change how its instance file is parsed
+    table = []
+    for tf in (os.path.join(data_dir, "INSTANCES.tsv"),
+               os.path.join(data_dir, "..", "INSTANCES.tsv")):
+        if os.path.exists(tf):
+            with open(tf) as fh:
+                for line in fh:
+                    if line.strip() and not line.startswith("#"):
+                        pat, fmt, sc = line.split("\t")
+                        table.append((pat, fmt, int(sc)))
+            break
+    if not table:
+        raise ValueError(f"no INSTANCES.tsv in or above {data_dir}")
+
+    def trusted(f, meta):
+        """Path, format and sign column of instance file f; the file must be in
+        the manifest with the recorded hash, and the certificate's own format
+        and sign column, if present, must agree with the instance table."""
+        import fnmatch
+        import hashlib
+        if f not in manifest:
+            raise ValueError(f"{f} is not in the instance manifest")
+        with open(os.path.join(data_dir, f), "rb") as fh:
+            if hashlib.sha256(fh.read()).hexdigest() != manifest[f]:
+                raise ValueError(f"{f} differs from the instance manifest")
+        spec = next(((fmt, sc) for pat, fmt, sc in table if fnmatch.fnmatch(f, pat)), None)
+        if spec is None:
+            raise ValueError(f"{f} is not in the instance table")
+        cf, cs = _meta(meta, "instance_format"), _meta(meta, "sign_col")
+        if cf is not None and str(cf) != spec[0]:
+            raise ValueError(f"certificate format {cf} differs from the instance table")
+        if cs is not None and int(cs) != spec[1]:
+            raise ValueError(f"certificate sign column {cs} differs from the instance table")
+        return os.path.join(data_dir, f), spec[0], spec[1]
 
     rows = []
     if resume and os.path.exists(out_csv):
@@ -509,8 +537,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
                 f = _meta(lab, "instance_file")
                 if f is None:
                     raise ValueError("clustering names no instance file")
-                g = read_instance(trusted(f), str(_meta(lab, "instance_format")),
-                                  int(_meta(lab, "sign_col", -1)))
+                g = read_instance(*trusted(f, lab))
                 if str(_meta(lab, "edge_sha256")) != g.edge_sha256:
                     raise ValueError("edge_sha256 mismatch")
                 row.update({"instance": f, "n": g.n, "m": g.m, "identity": "hash",
@@ -528,12 +555,11 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
             if f is None:
                 raise ValueError("certificate names no instance file")
             row["instance"] = f
-            row.update(check_file(trusted(f), path))
+            raw, fmt, sc = trusted(f, cert)
+            row.update(check_file(raw, path, fmt=fmt, sign_col=sc))
             lab = path[:-4] + ".labels.npz"
             if os.path.exists(lab):
-                g = read_instance(os.path.join(data_dir, f),
-                                  str(_meta(cert, "instance_format")),
-                                  int(_meta(cert, "sign_col", -1)))
+                g = read_instance(raw, fmt, sc)
                 row["cost"] = clustering_cost(g, np.load(lab)["labels"])
             row["status"] = "ok"
         except (ValueError, OSError) as exc:

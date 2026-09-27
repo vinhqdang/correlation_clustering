@@ -7,8 +7,14 @@ run() {  # name, command...
     ps -C python3 -o args= | grep -qF "$1" && return
     (nohup setsid "${@:2}" > "/tmp/$(basename "$1").out" 2>&1 < /dev/null &)
 }
-if [ ! -f results/mpc/recheck.done ]; then
-    run recheck_work.csv python3 experiments/check_certificate.py --resume data/raw \
-        results/certificates/colab results/mpc/recheck_work.csv
-fi
+# resumable rechecks of the Colab and the local certificates; each result is
+# copied to its committed file when complete
+recheck() {  # certificate directory, name
+    local w="results/mpc/$2_work.csv"
+    [ -f "results/mpc/$2.done" ] && return
+    run "$w" bash -c "python3 experiments/check_certificate.py --resume data/raw $1 $w \
+        && cp $w results/mpc/$2.csv && touch results/mpc/$2.done"
+}
+recheck results/certificates/colab recheck
+recheck results/local/certs recheck_local
 # the KaPoCE root bounds run as fleet jobs (tag lkroot)

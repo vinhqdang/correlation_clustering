@@ -1,0 +1,32 @@
+# Trusted instance table for experiments/check_certificate.py --dir:
+# raw file (relative to data/raw, shell pattern allowed), parser format, sign column
+# (-1: every listed pair is an edge; k >= 0: only lines whose column k is positive).
+# The checker takes the format and sign column from here, never from a certificate.
+pace/*	pace	-1
+amazon0302.txt.gz	snap	-1
+ca-AstroPh.txt.gz	snap	-1
+ca-CondMat.txt.gz	snap	-1
+ca-GrQc.txt.gz	snap	-1
+ca-HepPh.txt.gz	snap	-1
+ca-HepTh.txt.gz	snap	-1
+cit-HepPh.txt.gz	snap	-1
+cit-HepTh.txt.gz	snap	-1
+com-amazon.ungraph.txt.gz	snap	-1
+com-dblp.ungraph.txt.gz	snap	-1
+com-youtube.ungraph.txt.gz	snap	-1
+email-Enron.txt.gz	snap	-1
+email-Eu-core.txt.gz	snap	-1
+email-EuAll.txt.gz	snap	-1
+facebook_combined.txt.gz	snap	-1
+loc-brightkite_edges.txt.gz	snap	-1
+loc-gowalla_edges.txt.gz	snap	-1
+p2p-Gnutella31.txt.gz	snap	-1
+roadNet-PA.txt.gz	snap	-1
+soc-Epinions1.txt.gz	snap	-1
+soc-Slashdot0902.txt.gz	snap	-1
+soc-sign-Slashdot090221.txt.gz	snap	2
+soc-sign-bitcoinalpha.csv.gz	snap	2
+soc-sign-bitcoinotc.csv.gz	snap	2
+soc-sign-epinions.txt.gz	snap	2
+web-NotreDame.txt.gz	snap	-1
+wiki-Vote.txt.gz	snap	-1
