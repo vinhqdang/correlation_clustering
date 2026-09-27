@@ -60,7 +60,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "solo": true,
   "started": 1790501344.3811054

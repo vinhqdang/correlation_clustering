@@ -1,0 +1,1 @@
+{"graph": "BitcoinOTC+", "n": 5573, "m": 18591, "mode": "kroot", "T": 14400.0, "kapoce": "63079a9", "status": "ok", "time": 9662.3444211483, "p3": 9259, "p3_time": 92.1128, "star": 15927, "star_time": 9569.64, "value": 15927, "tag": "lkroot", "commit": "088f7fe", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
