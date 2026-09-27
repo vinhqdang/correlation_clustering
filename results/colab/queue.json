@@ -155,7 +155,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790473421.9059336
  },
@@ -247,7 +247,8 @@
   "graph": "loc-Gowalla",
   "status": "running",
   "machine": "w5",
-  "started": 1790475397.3587096
+  "started": 1790477993.9585416,
+  "tries": 1
  },
  {
   "id": "lpack_web-NotreDame_0",
@@ -257,7 +258,8 @@
   "graph": "web-NotreDame",
   "status": "running",
   "machine": "w5",
-  "started": 1790475397.3587127
+  "started": 1790477993.958544,
+  "tries": 1
  },
  {
   "id": "lpack_com-Youtube_0",
@@ -267,7 +269,8 @@
   "graph": "com-Youtube",
   "status": "running",
   "machine": "w5",
-  "started": 1790475397.3587134
+  "started": 1790477993.958545,
+  "tries": 1
  },
  {
   "id": "s2p_pace-heur_heur001.gr_0",
@@ -1203,7 +1206,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur093.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790475397.3587143
  },
@@ -1333,7 +1336,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur106.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790476240.1205804
  },
@@ -1413,8 +1416,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur114.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790477981.1771338
  },
  {
   "id": "s2p_pace-heur_heur115.gr_0",
@@ -1422,8 +1426,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur115.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790477981.1771364
  },
  {
   "id": "s2p_pace-heur_heur116.gr_0",
@@ -1431,8 +1436,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur116.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790477981.1771374
  },
  {
   "id": "s2p_pace-heur_heur117.gr_0",
@@ -1440,8 +1446,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur117.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790477981.177138
  },
  {
   "id": "s2p_pace-heur_heur118.gr_0",
@@ -1449,8 +1456,9 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur118.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790477993.9585454
  },
  {
   "id": "s2p_pace-heur_heur119.gr_0",
