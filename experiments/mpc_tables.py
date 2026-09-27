@@ -7,6 +7,7 @@ paper_mpc/numbers.tex.  Results that are not yet available are printed as
 usage: python experiments/mpc_tables.py [instances|all]"""
 import glob
 import json
+import subprocess
 import os
 import sys
 
@@ -80,10 +81,14 @@ def instances():
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
         json.dump(cache, open(cache_path, "w"), indent=1)
     rows = []
+    PK = runs("lpack")
     for role, names in (("dev", DEV), ("held-out", HELD)):
         for name in names:
             r = cache[name]
             pairs = r"\num{%d}" % r["pairs"] if r["pairs"] is not None else "--"
+            if r["pairs"] is None and (name, 0) in PK:
+                # measured by the later packing run, which ignored the threshold
+                pairs = r"\num{%d}$^\ast$" % PK[(name, 0)]["pairs"]
             twin = "heur%03d" % PACE_TWIN[name] if name in PACE_TWIN else ""
             rows.append(f"{tt(name)} & \\num{{{r['n']}}} & \\num{{{r['m']}}} & {pairs} & "
                         f"{role} & {twin} \\\\")
@@ -297,6 +302,9 @@ def snap():
     tri = tri[tri.algo.isin(["lb:greedy", "lb:tri-mwu"]) & tri.lb.notna()]
     tri = tri.groupby("instance")["lb"].max().apply(lambda x: np.ceil(x - 1e-6))
     root, root_to = {}, set()
+    qstat_root = {}
+    if os.path.exists(os.path.join(COLAB, "queue.json")):
+        qstat_root = {j["id"]: j["status"] for j in json.load(open(os.path.join(COLAB, "queue.json")))}
     for f in sorted(glob.glob(os.path.join(RES, "kapoce_root_snap_*.csv"))):
         d = pd.read_csv(f)
         for _, r in d[d.bound == "star"].iterrows():
@@ -310,6 +318,7 @@ def snap():
     rows, gaps, facs, spreads, cf_better, pk_better, lp_rows = [], [], [], [], [], [], []
     role_gaps, gaps_cf, gaps_pk, longer, seed_below, root_better, root_n = {}, [], [], [], [], [], 0
     plp_better, plp_below, plp_gain, pack_only, no_bound = [], [], [], [], []
+    root_cmp = []  # (graph, B&B root star bound, our best checked bound, its time)
 
     def lp_gap(rec, ub):
         # an LP value is reported only when cutting planes converged: then it
@@ -329,7 +338,7 @@ def snap():
                 if pk is None or ub is None:
                     no_bound.append(name)
                     rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}"
-                                "{no bound: the packing job was killed (memory)} \\\\")
+                                "{no bound: the packing job died three times (memory)} \\\\")
                     continue
                 pack_only.append((name, role, pk, ub_a, ub))
                 t_pk = PK[(name, 0)]["time"]
@@ -381,6 +390,7 @@ def snap():
             rt = root.get(name)
             if rt is not None:
                 root_n += 1
+                root_cmp.append((name, rt[0], lb, rt[1]))
                 if rt[0] > lb:
                     root_better.append(name)
             gap_b = 100 * (ub - lb) / lb
@@ -388,7 +398,8 @@ def snap():
             g_star = lp_gap(LS.get((name, 0)), ub)
             lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, lb))
             b = lambda v: (f"\\textbf{{\\num{{{v}}}}}" if v == lb else f"\\num{{{v}}}")
-            rcell = ("t.o." if name in root_to else "--") if rt is None else (
+            running = qstat_root.get(f"lkroot_{name}_0") in ("pending", "running")
+            rcell = ("t.o." if name in root_to else "\\pending{}" if running else "--") if rt is None else (
                 f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else ""))
             rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf)} & {t_lb:.0f} & "
                         f"{'--' if pk is None else b(pk)} & "
@@ -476,7 +487,8 @@ def snap():
     NUM["numSnapTotal"] = str(len(DEV) + len(HELD))
     NUM["numSnapNoBound"] = str(len(DEV) + len(HELD) - len(gaps))
     NUM["numSnapHeldTotal"] = str(len(HELD))
-    pt = [PK[(n, 0)]["time"] for n in DEV + HELD if (n, 0) in PK]
+    # over the graphs with a support, the ones compared with CertiFlip
+    pt = [PK[(n, 0)]["time"] for n in DEV + HELD if (n, 0) in PK and cache[n]["pairs"] is not None]
     ct = [TIMES[n] for n in TIMES]
     if pt:
         NUM["numPackTimeLo"] = f"{min(pt):.0f}"
@@ -505,6 +517,25 @@ def snap():
     NUM["numPackLongerList"] = ", ".join(tt(x) for x in longer)
     NUM["numCfSeedBelowPack"] = ", ".join(tt(x) for x in seed_below) or "none"
     NUM["numRootN"] = str(root_n)
+    NUM["numRootTimeout"] = str(len(root_to))
+    NUM["numRootTimeoutList"] = ", ".join(tt(x) for x in sorted(root_to)) or "none"
+    if root_cmp:
+        up = [100 * (r - b) / b for _, r, b, _ in root_cmp if r > b]
+        down = [100 * (b - r) / b for _, r, b, _ in root_cmp if r <= b]
+        NUM["numRootBetterLo"] = f"{min(up):.1f}\\%" if up else "--"
+        NUM["numRootBetterHi"] = f"{max(up):.1f}\\%" if up else "--"
+        NUM["numRootBelowMax"] = f"{max(down):.2f}\\%" if down else "--"
+        NUM["numRootBelowList"] = ", ".join(tt(x) for x, r, b, _ in root_cmp if r <= b) or "none"
+        ts = [t for *_, t in root_cmp]
+        NUM["numRootTimeLo"] = f"{min(ts):.0f}"
+        NUM["numRootTimeHi"] = f"{max(ts) / 3600:.1f}"
+        # the closest certified-looking gap the B&B root would give
+        best = max(root_cmp, key=lambda x: x[1] / x[2])
+        ubb = arch.get(best[0])
+        if ubb:
+            NUM["numRootBestGraph"] = tt(best[0])
+            NUM["numRootBestGap"] = f"{100 * (ubb - best[1]) / best[1]:.2f}\\%"
+            NUM["numRootBestOurGap"] = f"{100 * (ubb - best[2]) / best[2]:.2f}\\%"
     NUM["numRootBetter"] = str(len(root_better))
     NUM["numRootBetterList"] = ", ".join(tt(x) for x in root_better) or "none"
     NUM["numPackBetter"] = str(len(pk_better))
@@ -514,6 +545,9 @@ def snap():
     if plp_gain:
         NUM["numPlpN"] = str(len(plp_gain))
         NUM["numPlpBetter"] = str(len(plp_better))
+        # wins by less than 0.2 % of the previous best bound
+        NUM["numPlpSmallWins"] = str(sum(1 for x, d in plp_better
+                                         if d < 0.002 * (PL[(x, 0)]["certified"] - d)))
         NUM["numPlpBelow"] = str(len(plp_below))
         NUM["numPlpBelowList"] = ", ".join(tt(x) for x, _ in plp_below) or "none"
         NUM["numPlpBelowMax"] = f"\\num{{{-min(d for _, d in plp_below)}}}" if plp_below else "0"
@@ -525,6 +559,7 @@ def snap():
         NUM["numPlpGainMaxGraph"] = tt(top[0])
         pt_ = [PL[(x, 0)]["time"] for x, _ in plp_gain]
         NUM["numPlpTimeMedian"] = f"{np.median(pt_):.0f}"
+        NUM["numPlpPackTimeMedian"] = f"{np.median([PL[(x, 0)]['pack_time'] for x, _ in plp_gain]):.0f}"
         NUM["numPlpTimeMax"] = f"{max(pt_):.0f}"
         NUM["numPlpTimeOver"] = str(sum(t > 1.05 * PL[(x, 0)]["T"] for (x, _), t in zip(plp_gain, pt_)))
     # graphs above the support threshold: the packing alone
@@ -548,6 +583,9 @@ def snap():
         fr = [(x, v / b_) for x, v, b_ in rama_ok]
         NUM["numRamaFracMax"] = f"{max(f for _, f in fr):.2f}"
         NUM["numRamaFracMaxGraph"] = tt(max(fr, key=lambda z: z[1])[0])
+        # below the better triangle packing, a feasible dual of the same cycle LP
+        NUM["numRamaBelowTri"] = str(sum(1 for x, v, _ in rama_ok
+                                        if tri.get(x) is not None and v < tri.get(x)))
         NUM["numRamaNearZero"] = str(sum(1 for _, f in fr if f < 0.01))
         NUM["numRamaNearZeroList"] = ", ".join(tt(x) for x, f in fr if f < 0.01)
 
@@ -714,7 +752,9 @@ def pace_heur():
     for j, (nm, col) in enumerate((("PXMem", "#2A78D6"), ("KaPoCE", "#EB6834"))):
         r = np.array([x[2][j] for x in held])
         ax.step(taus, [(r <= t).mean() for t in taus], where="post", label=nm, color=col)
-    ax.set_xscale("log")
+    ax.set_xlim(1.0, 1.02)
+    ax.set_xticks([1.0, 1.005, 1.01, 1.015, 1.02])
+    ax.set_xticklabels(["1.000", "1.005", "1.010", "1.015", "1.020"])
     ax.set_xlabel(r"$\tau$ (cost / best of the two)")
     ax.set_ylabel("fraction of instances")
     ax.set_ylim(0, 1.02)
@@ -778,22 +818,37 @@ def timing():
             NUM["numCheckTimeMax"] = f"{max(r['check_time'] for r in ok):.0f}"
     # CPU model of every run reported in this section, by tag
     per = {}
-    for tag in ("c2", "c2x", "lpack", "ltri", "lstar", "lwarm", "s2h", "s2h150", "s2h60", "s2p"):
+    local = set()
+    for tag in ("c2", "c2x", "lpack", "lplp", "ltri", "lstar", "lwarm", "s2h", "s2h150", "s2h60", "s2p"):
         for r in runs(tag).values():
             m = r.get("cpu") or (r.get("machine") or {}).get("Model name")
+            if m and "Core(TM)" in m:  # the laptop of results/local, not a Colab machine
+                local.add(m)
+                continue
             if m:
                 models.add(m)
                 per.setdefault(tag, {}).setdefault(m, 0)
                 per[tag][m] += 1
     if models:
         NUM["numCpuModels"] = "; ".join(sorted(models)).replace("(R)", r"\textsuperscript{\textregistered}")
+    NUM["numCpuLocal"] = ("; ".join(sorted(local)).replace("(R)", r"\textsuperscript{\textregistered}")
+                          or "none")
+    # the 1800 s bound runs (lwarm): machine, overruns
+    W = runs("lwarm")
+    if W:
+        wt = [r["time"] for r in W.values()]
+        NUM["numWarmRuns"] = str(len(wt))
+        NUM["numWarmLocal"] = str(sum("Core(TM)" in (r.get("cpu") or "") for r in W.values()))
+        NUM["numWarmOver"] = str(sum(t > r["T"] for t, r in zip(wt, W.values())))
+        NUM["numWarmMax"] = f"{max(wt):.0f}"
     amd = [(tag, c[m], sum(c.values())) for tag, c in per.items() for m in c if "AMD" in m]
     names = {"lpack": "star-packing runs", "s2h60": "head-to-head runs at \\SI{60}{s}",
              "s2h150": "head-to-head runs at \\SI{150}{s}", "s2h": "head-to-head runs at \\SI{600}{s}",
              "s2p": "PACE heuristic-track runs"}
     NUM["numCpuAmd"] = ", ".join(f"{k} of the {n} {names.get(t, t + ' runs')}" for t, k, n in amd) or "none"
     # time of the bound phase of CertiFlip (target: half of the remaining budget)
-    for tag, key, thr in (("c2x", "Pace", 30.5), ("c2", "Snap", 301)):
+    # the thresholds are the ones named in the text ("more than 30 s", "300 s")
+    for tag, key, thr in (("c2x", "Pace", 30), ("c2", "Snap", 300)):
         R = runs(tag)
         if not R:
             continue
@@ -808,7 +863,7 @@ def timing():
         t = np.array([r["time"] for r in pp])
         T = pp[0]["T"]
         NUM["numPackPaceMedian"] = f"{np.median(t):.0f}"
-        NUM["numPackPaceOver"] = str(int((t > 1.01 * T).sum()))
+        NUM["numPackPaceOver"] = str(int((t > T).sum()))
         NUM["numPackPaceMax"] = f"{t.max():.0f}"
         NUM["numPackPaceRuns"] = str(len(t))
     pk = runs("lpack")
@@ -833,16 +888,41 @@ def timing():
         R = runs(tag)
         if R:
             NUM[f"numHH{key}Sigterm"] = str(sum(bool(r.get("kapoce_sigterm")) for r in R.values()))
-    # the complete recheck against freshly downloaded files
-    rc = os.path.join(RES, "mpc", "recheck.csv")
-    if os.path.exists(rc):
-        import pandas as pd
-        d = pd.read_csv(rc)
+    # the complete recheck against freshly downloaded files: the Colab and the
+    # local certificates; every accepted value must equal the in-run check
+    import pandas as pd
+    parts = []
+    for f, d_ in (("recheck.csv", COLAB), ("recheck_local.csv", LOCAL)):
+        fp = os.path.join(RES, "mpc", f)
+        if os.path.exists(fp):
+            x = pd.read_csv(fp)
+            x["resdir"] = d_
+            parts.append(x)
+    if parts:
+        d = pd.concat(parts, ignore_index=True)
+        lab = d.certificate.str.endswith(".labels.npz")
         NUM["numRecheckN"] = str(len(d))
+        NUM["numRecheckCerts"] = str(int((~lab).sum()))
+        NUM["numRecheckLabels"] = str(int(lab.sum()))
         NUM["numRecheckOk"] = str(int((d.status == "ok").sum()))
-        if "seconds" in d:
-            NUM["numRecheckMax"] = f"{d.seconds.max():.0f}"
-            NUM["numRecheckTotal"] = f"{d.seconds.sum() / 3600:.1f}"
+        NUM["numRecheckMax"] = f"{d.seconds.max():.0f}"
+        NUM["numRecheckTotal"] = f"{d.seconds.sum() / 3600:.1f}"
+        mism = []
+        for _, r in d[~lab & (d.status == "ok")].iterrows():
+            stem = os.path.basename(r.certificate)[:-4]
+            jf = os.path.join(r.resdir, stem + ".json")
+            if os.path.exists(jf):
+                rec = json.load(open(jf))
+                if rec.get("check") == "ok" and int(rec["certified"]) != int(r.certified):
+                    mism.append(stem)
+        assert not mism, f"recheck differs from the run records: {mism}"
+        NUM["numRecheckMatched"] = "all"
+        big = d[~lab].sort_values("rows").iloc[-1]
+        NUM["numCheckMaxGraph"] = str(big.instance).split("/")[-1].replace(".txt.gz", "").replace(".gr", "")
+        NUM["numCheckMaxRows"] = r"\num{%d}" % int(big.rows)
+    r = subprocess.run(["git", "-C", ROOT, "log", "-1", "--format=%h", "--",
+                        "experiments/check_certificate.py"], capture_output=True, text=True)
+    NUM["numCheckerCommit"] = r.stdout.strip() or "unknown"
 
 
 def pace_primal(ref):

@@ -2,7 +2,8 @@ Correlation clustering (equivalently, cluster editing) has strong
 approximation algorithms and strong heuristics, but on large graphs nobody
 can say how far a given clustering is from optimal: exact solvers stop at a
 few hundred vertices, and the lower bounds used at scale so far, packings of
-bad triangles, certify only a factor of about two.  We compute certified
+bad triangles, certify only factors of \numBaseFacLo{} to \numBaseFacHi{} on our
+graphs.  We compute certified
 lower bounds on sparse unweighted instances with up to $10^6$ vertices.
 Since optimal clusters have diameter at most two, the metric LP and its
 strengthening by star and local subgraph inequalities can be restricted to
@@ -26,6 +27,8 @@ the archived solutions within \numSnapGapLo{} to \numSnapGapHi{} (median
 \numSnapGapMedian{}); triangle packings leave \numBaseGapLo{} to
 \numBaseGapHi{} (median \numBaseGapMedian{}).  On the large graphs most of
 the bound comes from a long star packing, and block LPs started from it
-raise it on every graph.  On \numPackOnlyN{} of the other nine graphs the
-packing alone gives checked bounds within \numPackOnlyGapHi{} of the best
-known values.
+raise it on every graph, by a median of \numPlpGainMedian{}.  On
+\numPackOnlyN{} of the other nine graphs the packing alone gives checked
+bounds within \numPackOnlyGapHi{} of the best known values.  Where the dense
+root bound of KaPoCE runs (at most $2.5\cdot10^4$ vertices), it is usually
+stronger than ours; our bounds matter where it does not run.

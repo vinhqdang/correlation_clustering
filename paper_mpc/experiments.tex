@@ -13,7 +13,10 @@ recorded in every result file (\numCpuModels; the AMD model on
 \numCpuAmd{}, the Intel model on all others).  The triangle packings, the
 KaPoCE root bounds on SNAP graphs, SCC and the rows marked $^a$ in
 Table~\ref{tab:pace-primal} were run on 4-core workstations with several runs
-in parallel; these are marked where they appear.  Every run uses one thread.
+in parallel; these are marked where they appear.  The \SI{1800}{s} bound
+runs and the triangle LPs on every fourth PACE exact instance
+(Section~\ref{sec:exp-bounds}) were run on a laptop (\numCpuLocal), and RAMA
+on a laptop GPU.  Every run uses one thread.
 Budgets are wall-clock times; CPU times are recorded as well.
 
 \paragraph{Instances.}  Table~\ref{tab:instances} lists the SNAP
@@ -39,7 +42,7 @@ $P$ and role.  ``--'': the estimate $m+\sum_v\binom{\deg v}2$ of the support
 exceeds $3\cdot10^7$ pairs, a threshold fixed in advance from the memory of
 the machines; CertiFlip was not run on these graphs, and the star packing
 alone was run on them afterwards without the threshold
-(Table~\ref{tab:snap-bounds}).  PACE: the
+(Table~\ref{tab:snap-bounds}); $^\ast$: $|P|$ as measured by that run.  PACE: the
 heuristic-track instance with the same graph.}
 \label{tab:instances}
 \small
@@ -59,8 +62,9 @@ improved by ruin and recreate, installed as a dual solution without any LP.
 The number of iterations is set before the run from the iteration rate
 measured on the instance, so as to fill the budget; the measured running
 times, which can be well above it, are reported.  It uses the rows of the
-root star-packing bound of the KaPoCE branch-and-bound, restricted to the
-pairs of $P$, and a different local search.
+root star-packing bound of the KaPoCE branch-and-bound (every induced star
+lies in $P$), with a different packing heuristic and local search that work
+on the sparse support.
 \item \emph{Metric LP on $P$}: $\mathrm{LP}_P$ with triangle
 rows~\eqref{eq:t1}--\eqref{eq:t2} only, solved by cutting planes with HiGHS
 until no row is violated or the budget ends; and the same with star rows.
@@ -187,9 +191,14 @@ The checker accepted all \numCertPaceOk{} certificates of the PACE runs, all
 \numCertSnapOk{} of the CertiFlip runs on SNAP graphs and all
 \numCertPackOk{} of the star-packing runs when they were written, and
 rejected none.  After the review of the checker (Section~\ref{sec:cert}) we
-re-checked all \numRecheckN{} archived certificates and clusterings with its
-final version against freshly downloaded instance files whose hashes are
-looked up in the committed manifest: \numRecheckOk{} were accepted, the
-slowest took \numRecheckMax{}\,s and all together \numRecheckTotal{}\,h
-(\texttt{results/mpc/recheck.csv}).  The largest certificate, on
-\texttt{\numCheckMaxGraph}, has \numCheckMaxRows{} rows.
+re-checked all \numRecheckCerts{} archived certificates, including those of
+the runs made after the review, and \numRecheckLabels{} archived clusterings
+with its final version (commit \texttt{\numCheckerCommit}) against freshly
+downloaded instance files whose hashes are looked up in the committed
+manifest and whose parser settings are taken from the committed instance
+table: \numRecheckOk{} of the \numRecheckN{} were accepted, every accepted
+bound equals the one checked during its run, the slowest took
+\numRecheckMax{}\,s and all together \numRecheckTotal{}\,h
+(\texttt{results/mpc/recheck.csv} and \texttt{recheck\_local.csv}).  The
+largest certificate, on \texttt{\numCheckMaxGraph}, has \numCheckMaxRows{}
+rows.

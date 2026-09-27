@@ -28,7 +28,7 @@ correlation clustering on complete graphs reach about $10^4$
 vertices~\cite{veldt2019metric,ruggles2020parallel}.  The combinatorial
 bounds that do scale, packings of bad triangles and the LP relaxations based
 on strong triadic closure~\cite{veldt2022stc}, certify solutions only within
-a factor of about two.
+factors of \numBaseFacLo{} to \numBaseFacHi{} on the graphs of our study.
 
 This paper is about the lower-bound side.  We compute lower bounds for
 correlation clustering on sparse graphs with up to
@@ -119,10 +119,13 @@ bounds of two of the 27 open instances and is below them on the others.  On
 from a held-out set fixed in advance, the best checked bound of our runs
 certifies the archived solutions within \numSnapGapLo{} to \numSnapGapHi{}
 (median \numSnapGapMedian{}), where triangle packings leave \numBaseGapLo{}
-to \numBaseGapHi{}.  On the \numPackBetter{} graphs where it is larger, this
-bound is a star packing without LP.  We compare with the sparse star packing
-alone, with the root bound of the KaPoCE branch-and-bound where it runs, and
-with the metric LP on the support with triangle or star rows, so that the
+to \numBaseGapHi{}.  The star packing supplies at least 97\% of this bound,
+and block LPs started from it add a median of \numPlpGainMedian{}.  Where the
+dense root bound of the KaPoCE branch-and-bound finishes (at most
+$2.5\cdot10^4$ vertices), it is larger than our checked bounds on
+\numRootBetter{} of \numRootN{} graphs, by up to \numRootBetterHi{}.  We compare
+with the sparse star packing alone, with that root bound, and with the
+metric LP on the support with triangle or star rows, so that the
 contribution of each part is visible.
 \end{enumerate}
 

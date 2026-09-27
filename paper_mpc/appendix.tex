@@ -109,8 +109,13 @@ development runs (\texttt{results/ablation\_lb.csv}, five development graphs,
 changed the bound by $-0.004\%$ to $+0.03\%$; the same runs gave larger
 bounds with block LPs after a packing than with a packing alone on all five
 graphs.
-\item \emph{Headline bound.}  The decision to report the larger of the
-CertiFlip bound and the separate star-packing bound on the SNAP graphs was
-taken after the packing runs were complete; both are valid, and both are
-reported.
+\item \emph{Headline bound.}  The decision to report the largest of the
+CertiFlip bound, the separate star-packing bound and the long packing
+followed by block LPs on the SNAP graphs was taken after the packing runs
+were complete, and the last procedure and the packing runs on the graphs
+above the support threshold were added after the second round of review;
+all three are valid, and all are reported per graph.  The result files of
+the long-packing runs record the commit of the code package they were
+started from, which predates the script mode that ran them; the solver
+code was not changed between the two.
 \end{itemize}

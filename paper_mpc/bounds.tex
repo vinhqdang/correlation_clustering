@@ -188,8 +188,8 @@ scheme~\citep{GargK07,Fleischer00}, are installed in the same way on the
 rows $x_{uw}+x_{wv}-x_{uv}\ge0$.
 Packings are the bounds used inside the KaPoCE branch-and-bound
 algorithm~\citep{BlasiusEtAl22sea}.  Its implementation stores the instance
-as a dense matrix, so it applies only to graphs with at most about $10^4$
-vertices.  We build a greedy packing on the sparse support, processing
+as a dense matrix, so it applies only to graphs with at most about
+$2.5\cdot10^4$ vertices on our machines.  We build a greedy packing on the sparse support, processing
 centres by decreasing degree, and improve it by \emph{ruin and recreate}.
 (On dense instances large stars waste pairs, since a star with $k$ leaves
 uses $k+\binom k2$ pairs for a value of $k-1$.  There we also try a packing

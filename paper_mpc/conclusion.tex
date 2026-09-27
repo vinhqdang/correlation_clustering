@@ -20,8 +20,9 @@ the same certificate into a map of where a clustering can still improve.
 branch-and-bound is stronger than ours on average, on the denser instances
 and on 25 of the 27 open instances; our packing heuristic is weaker than
 its, and on dense instances the block LPs do not converge within the
-budget.  Where the dense implementation runs on SNAP graphs, its root bound
-can also exceed ours (Section~\ref{sec:exp-cert}).
+budget.  Where the dense implementation finishes on SNAP graphs (at most
+$2.5\cdot10^4$ vertices), its root bound exceeds ours on \numRootBetter{} of
+\numRootN{} graphs, by up to \numRootBetterHi{} (Section~\ref{sec:exp-cert}).
 \item On \numPackBetter{} of the \numSnapCert{} SNAP graphs the sparse star
 packing alone gives a larger bound than CertiFlip's combination of a short
 packing and block LPs: within its budget CertiFlip gives the packing too

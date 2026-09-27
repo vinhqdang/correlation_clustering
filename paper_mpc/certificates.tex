@@ -31,8 +31,10 @@ the solver package.  Given the raw file and the certificate it
 unless it records $n$, $m$, the file hash and the edge-list hash and all four
 agree with the file.  When it checks a directory, the instance file named in a
 certificate must be listed with the same hash in the committed manifest of
-instance files, so a certificate cannot choose the instance it is checked
-against;
+instance files, and the parser settings of that file (format and sign column)
+are taken from a committed instance table, never from the certificate, so a
+certificate can neither choose the instance it is checked against nor how
+that instance is read;
 \item checks that every pair of every row is in $P$, i.e.\ is an edge or has a
 common neighbour, by intersecting sorted adjacency lists;
 \item checks that every row is valid for every clustering that separates the

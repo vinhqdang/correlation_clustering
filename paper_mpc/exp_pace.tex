@@ -1,13 +1,15 @@
 \begin{table}[!tbp]
 \centering
 \caption{PACE~2021 exact track, the 173 instances with known optimum: lower
-bounds.  Checked bounds are values returned by the checker from archived
-certificates (budget \SI{60}{s}; measured times in
-Section~\ref{sec:exp-time}).  The triangle packings were computed earlier on
-a 4-core workstation.  The metric LP on $P$ is reported only where cutting planes
-converged within \SI{900}{s} (every fourth instance was run).  The last two
-rows are the root bounds of the KaPoCE branch-and-bound as published by its
-authors.}
+bounds.  Checked (values returned by the checker from archived
+certificates): the sparse star packing and the CertiFlip bound (budget
+\SI{60}{s}; measured times in Section~\ref{sec:exp-time}), and the CertiFlip
+bound with \SI{1800}{s} (every fourth instance).  Not certified: the triangle
+packings, computed earlier on a 4-core workstation; the metric LP on $P$, a
+floating-point LP value reported only where cutting planes converged within
+\SI{900}{s} (every fourth instance); the two B\&B rows, the root bounds of the
+KaPoCE branch-and-bound as published by its authors; and the last row, which
+takes the larger of a checked and a published value.}
 \label{tab:pace-bounds}
 \footnotesize
 \input{tables/pace_bounds}
@@ -61,12 +63,13 @@ and \numPaceWarmStarMean{} for the B\&B star packing, and the bound is
 optimal on \numPaceWarmOpt{} of them (\numPaceWarmOursOpt{} at \SI{60}{s}).
 The triangle LP converged within \SI{900}{s} on \numPaceTriN{} of these
 instances, with a mean LB/OPT of \numPaceTriMean{} (\numPaceTriOursMean{}
-for our bound on the same instances).  These runs were made on a laptop
-(12th Gen Intel Core i9-12900H), several at a time.  The limit applies to
-the LP phase; the star-packing warm start before it (sized to about 30\% of
-the limit) and the certificate come on top, and 11 of the 49 bound runs took
-longer than \SI{1800}{s}, the longest about \SI{4000}{s}.  The checker
-accepted all 49 certificates.
+for our bound on the same instances).  Of the \numWarmRuns{} bound runs,
+\numWarmLocal{} were made on a laptop (\numCpuLocal), several at a time, and one
+on a Colab machine.  The limit applies to the LP phase; the star-packing warm
+start before it (sized to about 30\% of the limit) and the certificate come
+on top, and \numWarmOver{} of the \numWarmRuns{} runs took longer than
+\SI{1800}{s}, the longest \numWarmMax{}\,s.  The checker accepted all their
+certificates.
 
 \paragraph{Open instances.}  Of the \numPaceOpen{} instances of the exact
 track without a known optimum, our checked bound exceeds the larger published
