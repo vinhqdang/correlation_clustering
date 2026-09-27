@@ -197,10 +197,10 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null,
+  "status": "running",
+  "machine": "w2",
   "solo": true,
-  "started": 1790514804.0917423
+  "started": 1790523738.9729743
  },
  {
   "id": "lkstar_ca-HepPh_0",
@@ -296,7 +296,7 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "solo": true,
   "started": 1790508772.778745

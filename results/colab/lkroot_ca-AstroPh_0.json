@@ -1,0 +1,1 @@
+{"graph": "ca-AstroPh", "n": 18772, "m": 198050, "mode": "kroot", "T": 14400.0, "kapoce": "63079a9", "status": "timeout", "time": 14400.312344551086, "value": null, "tag": "lkroot", "commit": "088f7fe", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
