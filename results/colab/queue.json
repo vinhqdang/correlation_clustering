@@ -627,7 +627,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "pace-heur/heur063.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790469039.690827,
   "tries": 1
