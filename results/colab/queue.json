@@ -231,9 +231,9 @@
   "seed": 0,
   "graph": "facebook",
   "status": "running",
-  "machine": "w4",
+  "machine": "w8",
   "solo": true,
-  "started": 1790515676.7639008
+  "started": 1790521156.6258698
  },
  {
   "id": "lkstar_BitcoinAlpha+_0",
@@ -285,8 +285,8 @@
   "T": 14400.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
-  "machine": "w5",
+  "status": "pending",
+  "machine": null,
   "solo": true,
   "started": 1790520158.4362953
  },
@@ -21301,7 +21301,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact051.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790521062.6672418
  },
@@ -21311,7 +21311,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact052.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790521062.6672435
  },
@@ -21321,7 +21321,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact053.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790521062.667244
  },
@@ -21331,7 +21331,7 @@
   "T": 900.0,
   "seed": 0,
   "graph": "pace-exact/exact054.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790521062.6672444
  },
