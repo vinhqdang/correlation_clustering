@@ -21642,7 +21642,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790552429.3903832
  },
@@ -21742,8 +21742,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790554530.923322
  },
  {
   "id": "lsslp_loc-Brightkite_0",
@@ -21751,8 +21752,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790554530.9233243
  },
  {
   "id": "lsslp_BitcoinOTC+_0",
@@ -21760,8 +21762,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790554530.9233253
  },
  {
   "id": "lsslp_BitcoinAlpha+_0",
@@ -21769,8 +21772,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790554530.9233258
  },
  {
   "id": "lsslp_com-Amazon_0",
