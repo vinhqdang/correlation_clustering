@@ -26095,7 +26095,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact002.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790589890.2772663
  },
