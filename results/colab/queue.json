@@ -21452,7 +21452,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790552165.926929
  },
@@ -21682,7 +21682,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790552431.0434873
  },
@@ -21782,8 +21782,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790554621.0144985
  },
  {
   "id": "lsslp_com-DBLP_0",
@@ -21791,8 +21792,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790554621.0145006
  },
  {
   "id": "lsslp_email-Eu-core_0",
@@ -21800,8 +21802,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790554621.0145013
  },
  {
   "id": "lsslp_facebook_0",
@@ -21809,8 +21812,9 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790554621.0145018
  },
  {
   "id": "lsslp_wiki-Vote_0",
