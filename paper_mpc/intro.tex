@@ -99,7 +99,8 @@ equal to the current reduced costs.  The bound is valid after every step and
 never decreases, and its state is one reduced cost per pair plus the rows
 with positive multipliers (Theorem~\ref{thm:anytime}).  Any star or triangle
 packing is a feasible start.  After a strong star packing, and at an
-equal budget, it pays on the SNAP graphs only where short cycles rather than
+equal nominal budget (with nearly equal measured times), it pays on the SNAP
+graphs only where short cycles rather than
 stars carry the bound (\numEqLpWinList{}; Section~\ref{sec:exp-cert}); on
 the PACE exact track it closes \numPaceCfOnlyKept{} instances that the star
 local search does not close with five times the budget or with five seeds.
@@ -124,7 +125,7 @@ with an archived clustering, the largest checked bound certifies it within
 \numSnapGapLo{} to \numSnapGapHi{} (median \numSnapGapMedian{}), where
 triangle packings leave \numBaseGapLo{} to \numBaseGapHi{}.  We report the
 spread of the star local search over five seeds and its progress over time,
-compare it at equal budget with the block LPs, and compare with the triangle
+compare it at equal nominal budget with the block LPs, and compare with the triangle
 packings, the metric LP on the support with triangle or star rows, a
 multicut dual solver, and the root bound of the branch-and-bound where it
 runs.
@@ -139,7 +140,9 @@ recombines two clusterings exactly block by block of their overlap; its
 comparison with KaPoCE under a protocol fixed in advance, which finds no
 significant difference at \SI{600}{s}, is in Appendix~\ref{sec:exp-h2h}.  The
 upper bounds against which the certificates are measured are the best
-clusterings of all solvers, KaPoCE included.
+archived clusterings of all solvers, KaPoCE included: checked lower bounds
+exist for all \numSnapTotal{} SNAP graphs, certified gaps for the
+\numSnapGapN{} with an archived clustering.
 
 \paragraph{Relation to certified computation.}  Certifying
 algorithms~\cite{McConnellMNS11} return a witness with every output.  Safe

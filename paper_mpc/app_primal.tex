@@ -191,7 +191,7 @@ is generated once half of the budget is used.
 Let $\mathcal C$ be the output of Algorithm~\ref{alg:pxmem} and $p_1$ the first
 Pivot clustering.  Then $\cost(\mathcal C)\le\cost(p_1)$ for every outcome of
 the random choices, and hence $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.  Together
-with a lower bound $\LB$ from Section~\ref{sec:dual},
+with a lower bound $\LB$ from Section~\ref{sec:dual} with $\lceil\LB\rceil\ge1$,
 $\cost(\mathcal C)/\lceil\LB\rceil$ bounds the ratio achieved on the instance.
 \end{theorem}
 The guarantee is inherited from the Pivot seed, as for any procedure that

@@ -236,8 +236,10 @@ rounds that improved the packing, but at least for a given time, and at
 most until the time limit.  The stars are written out directly as
 certificate rows, so neither the search nor the certificate needs the
 support.  A star with $k$ leaves occupies $k+\binom k2$ pairs; on graphs with
-very large degrees we therefore cap the number of leaves per star, which
-loses at most one unit of bound per split star.
+very large degrees we therefore cap the number of leaves per star.  Splitting
+a star with $k$ leaves into $q$ stars with at most the cap each changes its
+value from $k-1$ to $k-q$, so the cap costs one unit per additional piece,
+before any effect it has on which stars the search finds.
 
 \emph{Ruin and recreate.}  Our first packing, which CertiFlip uses as its
 warm start, builds a greedy packing on the sparse support, processing

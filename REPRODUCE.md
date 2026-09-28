@@ -87,10 +87,39 @@ analysis plan were fixed in `experiments/heldout.md` before the runs.
 
 ## 5. Tables and figures
 
+Two commands regenerate every table, number and figure of the manuscript.
+They start from the archived result files and certificates in `results/`;
+neither reruns a solver, except `make_figures.py`, which runs the solver code
+on a small neighbourhood of ca-GrQc:
+
 ```bash
-python experiments/mpc_tables.py
+python experiments/mpc_tables.py all     # tables/*.tex, numbers.tex, two figures
+python experiments/make_figures.py       # figures 2, 3 and 5
 cd paper_mpc && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
+
+| output | written by | from | runs behind it (Section 4) |
+|---|---|---|---|
+| Table 1 `tables/instances.tex` | `mpc_tables.py` (`instances`) | `results/mpc/instances.json`, `data/MANIFEST.sha256` | `experiments/instance_meta.py` |
+| Table 2 `tables/pace_bounds.tex` | `mpc_tables.py` (`pace_exact`) | `results/colab`, `results/local`, `results/pace_exact.csv`, `data/pace2021_exact_kapoce_bounds.csv` | `lpack`, `c2x`, `lwarm`, `lsstar`, `lsstar+kr`, `ltri`, `lkroot`; triangle packings from `run_bench.py` |
+| Table 3 `tables/pace_density.tex` | `mpc_tables.py` (`pace_exact`) | as Table 2 | as Table 2 |
+| Table 4 `tables/pace_open.tex` | `mpc_tables.py` (`pace_exact`) | as Table 2 | as Table 2 |
+| Table 5 `tables/pace_primal.tex` | `mpc_tables.py` (`pace_primal`) | `results/colab`, `results/scc`, `results/pace_exact.csv` | `c2x`, `sccevo`, `run_bench.py` |
+| Table 6 `tables/snap_bounds.tex` | `mpc_tables.py` (`snap`) | `results/colab`, `results/snap*.csv`, `results/kapoce_root_snap_*.csv` | `c2`, `lpack`, `lplp`, `lsstar`, `lsstar+k100`, `lsslp`, `lkroot`, `lkstar`, all `lsstar` seeds and long runs |
+| Table 7 `tables/snap_lp.tex` | `mpc_tables.py` (`snap`) | `results/colab`, `results/rama_snap_user.csv` | `ltri`, `lstar`, RAMA |
+| Table 8 `tables/snap_sls.tex` | `mpc_tables.py` (`snap_sls`) | `results/colab` | `lsstar` seeds 0-4, `lsstar+t1200`, `lsslp`, `lsstar+t3600` |
+| Table 9 (Lean coverage) | written in `appendix.tex` | `lean/CCProofs` | `lake build` |
+| Table 10 `tables/snap_eqtime.tex` | `mpc_tables.py` (`snap`) | `results/colab` | `lpack+eq`, `lplp` |
+| Tables 11-13 `tables/h2h_*.tex` | `mpc_tables.py` (`h2h`) | `results/colab` | `s2h`, `s2h150`, `s2h60` |
+| Table 14 `tables/pace_heur2.tex` | `mpc_tables.py` (`pace_heur`) | `results/colab` | `s2p` |
+| Figure 1 (overview) | `figures/overview.tex` (TikZ, static) | -- | -- |
+| Figures 2, 3, 5 `fig_support`, `fig_gapmap`, `fig_crossover` | `make_figures.py` | solver code on a neighbourhood of ca-GrQc | computed when the script runs |
+| Figure 4 `fig_sls_anytime.pdf` | `mpc_tables.py` (`anytime_figure`) | trajectories in `results/colab/lsstar+t3600_*.json` | `lsstar+t3600` |
+| Figure 6 `profile_pace_heur.pdf` | `mpc_tables.py` (`pace_heur`) | `results/colab` | `s2p` |
+| every number in the text | `mpc_tables.py` → `paper_mpc/numbers.tex` | as above, plus `results/mpc/recheck*.csv` | `recheck_all.sh` |
+
+`mpc_tables.py` also asserts that every value accepted by the complete
+re-check (Section 3) equals the value checked during its run.
 
 ## 6. Proofs
 

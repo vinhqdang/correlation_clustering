@@ -38,8 +38,11 @@ class CertiFlipResult:
 
     @property
     def certified_ratio(self) -> float:
-        lb = max(self.lower_bound, 1e-12)
-        return self.cost / np.ceil(lb - 1e-6) if self.cost else 1.0
+        # cost / ceil(LB); undefined (inf) when the certified bound is 0 < cost
+        if not self.cost:
+            return 1.0
+        lb = np.ceil(self.lower_bound - 1e-6)
+        return self.cost / lb if lb >= 1 else float("inf")
 
 
 def block_bound(g: Graph, sup=None, time_limit: float = 600.0, block_size: int = 2500,

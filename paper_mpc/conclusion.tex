@@ -8,8 +8,9 @@ strengthenings, can be restricted to the pairs at distance at most two, the
 star-packing heuristic of the KaPoCE branch-and-bound runs with memory linear
 in the graph and the packing, and a dual block-coordinate ascent turns the
 restricted relaxation into an anytime bound that starts from its packing.
-This gives checked bounds on all SNAP graphs of our study, up to $10^6$
-vertices.  The bounds are exported as certificates that an independent
+This gives checked bounds on all \numSnapTotal{} SNAP graphs of our study,
+up to $10^6$ vertices, and certified gaps on the \numSnapGapN{} with an
+archived clustering.  The bounds are exported as certificates that an independent
 checker verifies against the raw instance in exact arithmetic; the same
 checker accepts the packings of the branch-and-bound.
 
@@ -31,7 +32,7 @@ result; over five seeds its bound varies by up to \numSlsSeedSpreadMax{} on
 the SNAP graphs.  On the largest graphs it completes only a few rounds in
 \SI{600}{s}, and with \SI{3600}{s} the bound rises by up to
 \numSlsLongGainMax{}; the gaps on these graphs are partly a matter of budget.
-\item At an equal budget the block LPs beat the star local search alone on
+\item At an equal nominal budget, with nearly equal measured times, the block LPs beat the star local search alone on
 only \numEqLpWins{} of the \numEqLpN{} SNAP graphs with a support
 (\numEqLpWinList{}); on the PACE exact track they close
 \numPaceCfOnlyKept{} instances that five times the packing time does not.
@@ -54,8 +55,9 @@ covers the inequality it evaluates, not the procedures that decide the
 validity of a row (Appendix~\ref{app:lean}).
 \item The gap-guided choice of LNS neighbourhoods is not evaluated
 separately.  The a-priori guarantees of our primal methods are inherited
-from Pivot, and the $2.06$ guarantee applies only when one block covers the
-graph and separation converged.
+from Pivot, and the $2.06$ guarantee holds only for an exact solution of a block LP
+that covers the graph after separation has converged, which our
+floating-point runs do not certify.
 \end{itemize}
 
 \paragraph{Open directions.}  Using the stronger root bound inside the

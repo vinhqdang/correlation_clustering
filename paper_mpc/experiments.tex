@@ -154,8 +154,10 @@ median of \numLbSnapMedian{}\,s and more than \SI{300}{s} on \numLbSnapOver{}
 of \numLbSnapRuns{} runs (maximum \numLbSnapMax{}\,s, on
 \texttt{email-Enron}).  The LP-rounding start (line~7 of
 Algorithm~\ref{alg:certiflip}) was executed on \numLpSeedPace{} of the PACE
-runs and improved the clustering on \numLpSeedPaceImproved{} of them; it was
-never executed on the SNAP graphs.  The large overruns come from steps that
+runs and improved the clustering on \numLpSeedPaceImproved{} of them, as a
+heuristic seed (the factor of Theorem~\ref{thm:certiflip}(c) assumes an exact
+LP solution and is not claimed for these runs); it was never executed on the
+SNAP graphs.  The large overruns come from steps that
 are not interrupted: single block LPs on \texttt{email-Enron}, and on the three
 PACE instances with 620 vertices and $9\cdot10^4$ to $2\cdot10^5$ edges the
 bound phase and, on two of them, the LP-rounding start with the local search
@@ -176,7 +178,7 @@ the archived result files.  The
 comparisons of different bound procedures in Sections~\ref{sec:exp-bounds}
 and~\ref{sec:exp-cert} are therefore at comparable, not equal, running
 times, except for the controls of the star local search, which compare it
-under the same stopping rule or the same budget; the head-to-head comparison
+under the same stopping rule or the same nominal budget, with measured times reported; the head-to-head comparison
 of Appendix~\ref{sec:exp-h2h} is at equal elapsed time by construction.
 
 The checker accepted all \numCertPaceOk{} certificates of the PACE runs, all

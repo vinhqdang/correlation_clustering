@@ -128,9 +128,13 @@ best candidate under the original objective is returned.
 Let $\mathcal C$ and $\LB$ be the output of Algorithm~\ref{alg:certiflip}.
 \begin{enumerate}
 \item[(a)] $\mathbb E[\cost(\mathcal C)]\le3\,\OPT$.
-\item[(b)] $\LB\le\OPT$, so $\cost(\mathcal C)/\lceil\LB\rceil$ is an upper
-bound on the approximation ratio achieved on the instance.
-\item[(c)] If line~7 is executed, $\mathbb E[\cost(\mathcal C)]\le 2.06\,\OPT$.
+\item[(b)] $\LB\le\OPT$; if $\lceil\LB\rceil\ge1$, then
+$\cost(\mathcal C)/\lceil\LB\rceil$ is an upper bound on the approximation
+ratio achieved on the instance (if $\lceil\LB\rceil=0$, the bound certifies
+only $\OPT\ge0$, and $\cost(\mathcal C)=0$ proves optimality).
+\item[(c)] (Exact arithmetic.)  If line~7 is executed with an exact optimal
+solution $x^\star$ of a block LP that covers $V$ and for which separation
+has converged, $\mathbb E[\cost(\mathcal C)]\le 2.06\,\OPT$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
@@ -150,10 +154,17 @@ optimal clustering (Lemma~\ref{lem:half} and Proposition~\ref{prop:subgraph}),
 whose cut vector is therefore feasible for the block LP; hence the block LP
 value is at most $\OPT$.  By Theorem~\ref{thm:sparse}(b,c),
 $\mathbb E[\cost(\textsc{CMSY-Round}(x^\star))]\le 2.06\,\OPT$.  The remaining
-steps are monotone.  (The LP solver returns $x^\star$ in floating point and
-feasible up to its tolerance; part~(c) is a statement about the exact
-optimum, unlike part~(b), which is checked exactly.)
+steps are monotone.
 \end{proof}
+
+Part~(c) is a statement about an idealised run.  The implementation solves
+the block LP with HiGHS in floating point, so $x^\star$ is feasible and
+optimal only up to the solver's tolerances, and separation converges up to a
+tolerance as well; we neither check $x^\star$ exactly nor account for the
+effect of these errors on the rounding.  On the runs of Section~\ref{sec:exp}
+line~7 is therefore a heuristic seed, and we claim the factor $2.06$ for none
+of them.  Part~(b), in contrast, is checked exactly for every run
+(Section~\ref{sec:cert}).
 
 \begin{remark}
 Part~(a) holds for any procedure that starts from a Pivot clustering and never

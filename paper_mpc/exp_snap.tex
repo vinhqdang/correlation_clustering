@@ -8,17 +8,19 @@ of Table~\ref{tab:instances}); R\&R packing, the ruin-and-recreate star
 packing alone; R\&R+LP, that packing followed by block LPs (\SI{1200}{s}); SLS,
 the star local search of Section~\ref{sec:dual} (\SI{600}{s}; $^k$: at most
 100 leaves per star); SLS+LP, the star local search followed by block LPs
-(\SI{600}{s} each); one run each with seed~0; the largest is in bold.  B\&B
+(\SI{600}{s} each); one run each with seed~0, the largest of these five in
+bold.  best checked LB: the largest checked bound of any archived
+certificate for the graph, including the further seeds and longer runs of
+Table~\ref{tab:snap-sls} ($^\S$: from the packing run of
+Table~\ref{tab:snap-eqtime}; $^\ddagger$: from a run of
+Table~\ref{tab:snap-sls}).  B\&B
 root: the root star-packing bound of the KaPoCE branch-and-bound (up to four
 hours), run on the graphs with at most $2.5\cdot10^4$ vertices; its packing
 was exported and accepted by our checker ($^\circ$ where not), $^\dagger$
-where it exceeds all our checked bounds; t.o.: no bound within four hours;
-mem.: out of memory.  gap: $(\mathrm{UB}-\LB)/\LB$ with the largest checked
-bound of any archived certificate for the graph, including the runs of
-Table~\ref{tab:snap-sls} ($^\S$: from the packing run of
-Table~\ref{tab:snap-eqtime}; $^\ddagger$: from a run of
-Table~\ref{tab:snap-sls}); gap$^*$: the same with the best value of any
-run of any solver (reported, not archived); tri.\ factor: best known value
+where it exceeds the best checked LB; t.o.: no bound within four hours;
+mem.: out of memory.  gap: $(\mathrm{UB}-\LB)/\LB$ with the best checked LB;
+gap$^*$: the same with the best value of any run of any solver instead of
+UB (reported, not archived, so not certified); tri.\ factor: best known value
 divided by the better of the two triangle packings.  Upper block:
 development graphs; lower block: held-out graphs.}
 \label{tab:snap-bounds}
@@ -111,7 +113,9 @@ from the packing of the star local search (column SLS+LP, half of the
 $0.005\%$ on \numSlpGainPos{} of them, by a median of \numSlpGainMedian{} and
 by at most \numSlpGainMax{} on \numSlpGainMaxGraph{}, whose road network has
 many short cycles and few large induced stars.  This gain does not pay
-for the time: against the star local search run for the whole \SI{1200}{s},
+for the time: against the star local search run for the whole \SI{1200}{s}
+(equal nominal budget; measured medians \numEqLpTimeSls{}\,s and
+\numEqLpTimeSlp{}\,s, at most \numEqLpTimeSlpMax{}\,s for SLS+LP),
 SLS+LP is larger on only \numEqLpWins{} of the \numEqLpN{} graphs
 (\numEqLpWinList{}) and smaller on \numEqLpLoses{}; the difference has a
 median of \numEqLpMedian{} and ranges from \numEqLpMin{}

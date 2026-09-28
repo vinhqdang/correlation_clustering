@@ -472,6 +472,12 @@ def snap_sls(arch, SS, SL, SX):
         NUM["numEqLpMin"] = f"{tl[1]:.1f}\\%"
         NUM["numEqLpMinGraph"] = tt(tl[0])
         NUM["numEqLpWinList"] = ", ".join(tt(x) for x, d in eq if d > 0) or "none"
+        # measured times of the two procedures (nominal budget 1200 s each)
+        t12 = [T12[(x, 0)]["time"] for x, _ in eq]
+        tsl = [SL[(x, 0)]["time"] for x, _ in eq if "time" in SL[(x, 0)]]
+        NUM["numEqLpTimeSls"] = f"{np.median(t12):.0f}"
+        NUM["numEqLpTimeSlp"] = f"{np.median(tsl):.0f}"
+        NUM["numEqLpTimeSlpMax"] = f"{max(tsl):.0f}"
     qf = os.path.join(COLAB, "queue.json")
     failed = sorted({j["graph"] for j in json.load(open(qf)) if j["status"] == "failed"
                      and j["tag"] in ("lsstar+t3600", "lsstar+k100+t3600")}) if os.path.exists(qf) else []
@@ -628,7 +634,7 @@ def snap():
             allb = old + [x for x in (ss, sl) if x is not None] + ext
             if not allb or ub is None:
                 no_bound.append(name)
-                rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}{{no bound}} \\\\")
+                rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{10}}{{c}}{{no bound}} \\\\")
                 continue
             lb = max(allb)
             lb_old = max(old) if old else None
@@ -679,7 +685,8 @@ def snap():
                 if rt[0] > lb:
                     root_better.append(name)
                 (root_cert if kc == rt[0] else root_nocert).append(name)
-            b = lambda v: "--" if v is None else (f"\\textbf{{\\num{{{v}}}}}" if v == lb
+            shown = max(x for x in (cf, pk, plp, ss, sl) if x is not None)
+            b = lambda v: "--" if v is None else (f"\\textbf{{\\num{{{v}}}}}" if v == shown
                                                   else f"\\num{{{v}}}")
             running = qstat_root.get(f"lkroot_{name}_0") in ("pending", "running")
             # out of memory: the export job died with its machine three times
@@ -693,16 +700,16 @@ def snap():
                 rcell = "--"
             smark = "" if lb <= lb_ours else ("$^\\S$" if eq == lb else "$^\\ddagger$")
             kmark = "$^k$" if name in kmax_graphs else ""
-            ga = "--" if gap_a is None else f"{gap_a:.2f}{smark}"
+            ga = "--" if gap_a is None else f"{gap_a:.2f}"
             rows.append(f"{tt(name)} & {ucell} & {b(cf)} & {b(pk)} & {b(plp)} & {b(ss)}{kmark} & "
-                        f"{b(sl)} & {rcell} & {ga} & {gap_b:.2f} & "
+                        f"{b(sl)} & \\num{{{lb}}}{smark} & {rcell} & {ga} & {gap_b:.2f} & "
                         f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
-    write("snap_bounds", "\\begin{tabular}{lrrrrrrrrrr}\n\\toprule\n"
-          "graph & UB & \\multicolumn{5}{c}{checked LB} & B\\&B & gap & gap$^*$ & tri.\\\\\n"
+    write("snap_bounds", "\\begin{tabular}{lrrrrrrrrrrr}\n\\toprule\n"
+          "graph & UB & \\multicolumn{5}{c}{checked LB, one run each} & best & B\\&B & gap & gap$^*$ & tri.\\\\\n"
           "\\cmidrule(lr){3-7}\n"
-          " & & CertiFlip & R\\&R & R\\&R & SLS & SLS & root & (\\%) & (\\%) & factor \\\\\n"
-          " & & & packing & +LP & & +LP & & & & \\\\\n"
+          " & & CertiFlip & R\\&R & R\\&R & SLS & SLS & checked & root & (\\%) & (\\%) & factor \\\\\n"
+          " & & & packing & +LP & & +LP & LB & & & & \\\\\n"
           "\\midrule\n"
           + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
     # metric LP on P against the checked bounds, where it was run
