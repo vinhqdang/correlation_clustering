@@ -182,8 +182,16 @@ def sstar_stars(g, T, seed, min_time, kmax=None):
         if p.returncode != 0 or 'star' not in res:
             raise RuntimeError(f'sstar failed (exit {p.returncode}): {p.stderr[-300:]}')
         stars = [list(map(int, l.split())) for l in open(sf) if l.strip()]
+    # trajectory: (round, value, seconds) of every round that changed the value
+    traj, last = [], None
+    for l in p.stderr.splitlines():
+        w = l.split()
+        if len(w) == 6 and w[0] == 'round' and w[2] == 'value':
+            if w[3] != last:
+                traj.append([int(w[1]), int(w[3]), float(w[5])])
+            last = w[3]
     return (stars, int(res['star'][0]), float(res['star'][1]), int(res['init'][0]),
-            [int(x) for x in res.get('rounds', [0, 0])])
+            [int(x) for x in res.get('rounds', [0, 0])], traj)
 
 
 def star_rows(stars):
@@ -247,7 +255,7 @@ def run(name, mode, T, seed, tag=None):
                     'stars': ns, 'kapoce': '63079a9'})
     elif mode == 'sslp':
         bd = BlockDualBound(g, sup)
-        stars, value, secs, init, rounds = sstar_stars(g, T / 2, seed, T / 2)
+        stars, value, secs, init, rounds, traj = sstar_stars(g, T / 2, seed, T / 2)
         u, v, vals, ptr, b = star_rows(stars)
         key = sup.pu.astype(np.int64) * g.n + sup.pv.astype(np.int64)
         order = np.argsort(key)
@@ -324,12 +332,18 @@ def run_sstar(g, name, T, seed, tag):
     import re
     k = re.search(r'\+k(\d+)', tag or '')
     kmax = int(k.group(1)) if k else None
-    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed, 'kmax': kmax}
+    # +kr: the stopping rule of the KaPoCE root bound (stop once the rounds
+    # exceed five times the improving ones), T only as a cap; otherwise the
+    # search runs until T
+    min_time = 0.0 if '+kr' in (tag or '') else T
+    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed, 'kmax': kmax,
+           'min_time': min_time}
     t1 = time.time()
-    stars, value, secs, init, rounds = sstar_stars(g, T, seed, T, kmax)
+    stars, value, secs, init, rounds, traj = sstar_stars(g, T, seed, min_time, kmax)
     u, v, vals, ptr, b = star_rows(stars)
     out.update({'value': float(value), 'sstar_time': secs, 'sstar_init': init,
-                'rounds': rounds, 'stars': len(stars), 'time': time.time() - t1})
+                'rounds': rounds, 'trajectory': traj, 'stars': len(stars),
+                'time': time.time() - t1})
     cert_d = {'n': g.n, 'ptr': ptr, 'u': u, 'v': v, 'val': vals, 'b': b,
               'y': np.ones(len(b)), 'bound': float(value)}
     return write_check(cert_d, name, g, tag or 'lsstar', seed, out)
