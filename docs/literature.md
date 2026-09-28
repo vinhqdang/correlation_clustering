@@ -2,7 +2,7 @@
 
 Min-disagreement correlation clustering on complete signed graphs
 (equivalently, Cluster Editing).  Full bibliographic entries are in
-`paper/refs.bib`.
+`paper_mpc/refs.bib`.
 
 ## Approximation ratios on complete graphs
 

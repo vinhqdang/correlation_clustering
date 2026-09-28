@@ -1,83 +1,111 @@
-# Certified correlation clustering at scale
+# Certified lower bounds for correlation clustering on large sparse graphs
 
-Code, benchmark pipeline and manuscript for a study of min-disagreement
-correlation clustering on complete signed graphs (equivalently, Cluster
-Editing): the input is the positive graph G+ and every other pair is negative.
+This repository holds the code, the raw results, the archived certificates
+and the manuscript (`paper_mpc/`) of a study of lower bounds for correlation
+clustering on complete graphs, also called cluster editing. The input is the
+positive graph G+; every other pair is negative.
 
-The code computes **certified lower bounds** for this problem on sparse graphs
-with up to 10^6 vertices, and checks them independently:
+Heuristics find good clusterings of large graphs, but on such graphs nobody can
+say how far a clustering is from optimal. This code computes lower bounds on
+sparse graphs with up to 10^6 vertices and exports them as **certificates**.
+An independent checker verifies each certificate in exact arithmetic against
+the raw instance file.
+
+## What is here
 
 * **Distance-two support.** Optimal clusters have diameter at most two, so
   every pair at distance three or more is separated in every optimal
   clustering. The metric LP, its star and local subgraph inequalities, and
   every packing of induced stars can therefore be restricted to the pairs at
-  distance at most two.
-* **Star local search** (`experiments/sstar/sstar.cc`). This is a sparse
+  distance at most two (`ccbench/support.py`, `ccbench/lp.py`).
+* **Star local search** (`experiments/sstar/sstar.cc`). A sparse, independent
   reimplementation of the star-packing heuristic of the KaPoCE
-  branch-and-bound (Bläsius et al., SEA 2022). Its memory is linear in the
-  graph plus the packing, and its stars are written directly as certificate
-  rows.
+  branch-and-bound (Bläsius et al., SEA 2022), which extends the P3-packing
+  search of Gottesbüren et al. (SEA 2020).
+  * Its memory is linear in the graph plus the packing.
+  * It writes its stars directly as certificate rows.
+  * It is not a better heuristic than the original; it runs where the dense
+    original does not fit into memory.
 * **Anytime block-dual bound** (`ccbench/blockdual.py`). Dual
-  block-coordinate ascent with exact block LPs, started from any packing. The
-  bound is valid at any time.
-* **Independent checker** (`experiments/check_certificate.py`). The checker
-  parses the raw instance file itself and verifies that the certificate
-  belongs to that instance. It then checks every row and evaluates the bound
-  in exact integer arithmetic. The certificate format is specified in
+  block-coordinate ascent with exact block LPs (HiGHS), started from any
+  packing. The bound is valid after every step.
+* **Independent checker** (`experiments/check_certificate.py`), about 600
+  lines, sharing no code with the solver. It:
+  * parses the raw file itself;
+  * binds each certificate to the file by SHA-256 hashes;
+  * checks the validity of every row;
+  * evaluates the bound in integer arithmetic.
+
+  The format is specified in
   [`docs/certificate_format.md`](docs/certificate_format.md). The checker
-  also accepts the star packings of the KaPoCE branch-and-bound, which
-  `experiments/kapoce/` exports.
-
-Primal methods supply the clusterings that the bounds certify:
-
-* **CertiFlip** (`ccbench/certiflip.py`). Pivot, then an iterated flipping
-  local search, then the block-dual bound, then an LNS guided by the gap
-  decomposition. It returns a clustering together with a checked bound.
-* **PXMem** (`ccbench/memetic.py`). A memetic search based on exact partition
+  also accepts the star packings of the KaPoCE branch-and-bound, which the
+  13-line hook in `experiments/kapoce/` exports.
+* **Primal methods** supply the clusterings that the bounds certify:
+  * CertiFlip (`ccbench/certiflip.py`): Pivot, then iterated flipping local
+    search, then block-dual bound, then a gap-guided LNS with exact sub-MIPs;
+  * PXMem (`ccbench/memetic.py`): a memetic search with exact partition
+    crossover.
+* **Lean 4 development** (`lean/CCProofs/`). It proves the inequality that
+  the checker evaluates, the separation of far pairs by optimal
+  clusterings, the move, swap and contraction formulas, and partition
   crossover.
 
-The manuscript is in `paper_mpc/`, and [`REPRODUCE.md`](REPRODUCE.md) maps
-every table to the command that produced it.
+## Main results (manuscript `paper_mpc/main.pdf`)
 
-KaPoCE (GPL-3.0) is an external baseline. It is not part of this repository.
-`experiments/kapoce/` contains only build and run scripts and a 13-line
-export hook (`star_dump.inc`). That hook is compiled into the KaPoCE sources,
-and the resulting program is covered by KaPoCE's licence.
+* **PACE 2021 exact track, 173 instances with known optimum.**
+  * Under the stopping rule of the KaPoCE branch-and-bound, the star local
+    search proves optimality on 83 of them in a median of 0.5 s. The
+    published root bound proves it on 79.
+  * Run for 60 s, the same heuristic proves optimality on 122. Together with
+    the CertiFlip bound, whose block LPs close 8 instances that five times the
+    packing time does not, 130 instances are proved optimal.
+  * The checked bounds improve the published root bounds of most of the 27
+    open instances.
+* **27 SNAP graphs, up to 1.1·10^6 vertices.** Every graph has a checked
+  lower bound. On the 23 graphs with an archived clustering, the certified
+  gap ranges from 0.2% to about 21%. Triangle packings leave gaps of 17% to
+  90%.
+* **Certificates.** Every bound in the paper comes from an archived
+  certificate that the checker accepts, including the packings of the KaPoCE
+  branch-and-bound.
+
+The exact numbers, their spread over seeds and the controls are in Section 7
+of the manuscript.
 
 ## Layout
 
 | path | contents |
 |---|---|
-| `ccbench/graph.py` | CSR graphs, SNAP / PACE readers, components |
-| `ccbench/objective.py` | exact objective |
-| `ccbench/support.py` | distance-2 support P = E+ ∪ N2, bad-triangle enumeration |
-| `ccbench/pivot.py` | Pivot (KwikCluster) |
-| `ccbench/localsearch.py` | vertex moves and multilevel local search (weighted objective) |
-| `ccbench/insertion.py` | cluster-insertion local search |
-| `ccbench/flip.py` | iterated flipping local search, 3-way pivot |
-| `ccbench/lp.py` | cutting-plane LP / ILP on the distance-2 support; ACN and CMSY rounding; star and local subgraph separation |
-| `ccbench/dual.py` | packing bounds (greedy, MWU, star packing with local search), MatchFlipPivot |
-| `ccbench/blockdual.py` | anytime dual block-coordinate ascent |
-| `ccbench/lns.py` | gap map, local certificates, exact sub-MIP neighbourhoods |
-| `ccbench/certiflip.py` | the CertiFlip pipeline |
-| `ccbench/reduce.py` | exact critical-clique (twin) contraction to a weighted instance |
-| `ccbench/anneal.py` | simulated annealing on (weighted) vertex moves and swaps |
-| `ccbench/memetic.py` | partition crossover, PX-annealing, memetic search (`pxmem`) |
-| `lean/CCProofs/` | Lean 4 proofs of the move/swap formulas, twin lemma, contraction identity and partition crossover |
-| `experiments/` | datasets, baselines (KaPoCE, Leiden-CPM), benchmark runner, analysis, ablations, Colab fleet |
-| `results/` | raw CSV results |
-| `paper/` | manuscript (LaTeX) |
-| `data/pace2021_exact_kapoce_bounds.csv` | published per-instance optima and bounds for the PACE 2021 exact track |
+| `ccbench/` | Python package (Numba kernels): graphs and readers, objective, support, Pivot, local searches, flipping, LP and ILP on the support, packing bounds, block-dual ascent, gap map and LNS, CertiFlip, twin contraction, annealing, PXMem |
+| `experiments/sstar/` | star local search (C++17, single file) |
+| `experiments/check_certificate.py` | independent certificate checker |
+| `experiments/colab_run_*.py` | one run of one method on one instance, with checked certificate (the scripts behind every result file) |
+| `experiments/colab_fleet.py`, `colab_fleet.sh`, `colab_adopt.py`, `colab_reap.py` | job runner on a fleet of Google Colab machines |
+| `experiments/mpc_tables.py`, `make_figures.py` | all tables, numbers (`paper_mpc/numbers.tex`) and figures of the manuscript, from `results/` |
+| `experiments/kapoce/`, `rama/`, `scc/` | build and run scripts for the external baselines (not redistributed) |
+| `experiments/run_bench.py`, `ablation.py`, `kapoce_root_snap.py`, `run_local_*.py`, `run_local_kroot.sh`, `run_all_local.sh` | benchmark runner and local jobs (triangle packings, KaPoCE root bounds, PACE bound runs) |
+| `experiments/recheck_all.sh`, `restart_background.sh` | re-check all certificates; restart long-running jobs |
+| `experiments/heldout.md` | held-out graphs and analysis plan of the head-to-head comparison, fixed before its runs |
+| `results/colab/`, `results/local/` | one JSON file per run |
+| `results/certificates/colab/`, `results/local/certs/` | the certificates and clusterings behind every reported value |
+| `results/mpc/` | complete re-check of all certificates |
+| `results/*.csv`, `results/scc/` | earlier benchmark results used for the triangle packings, SCC and the published PACE bounds |
+| `data/` | instance manifest (SHA-256), instance table, published PACE 2021 bounds |
+| `docs/` | certificate format, literature notes |
+| `lean/CCProofs/` | Lean 4 development |
+| `tests/` | unit tests (`python -m pytest -q tests`) |
+| `paper_mpc/` | manuscript (Springer Nature template) |
 
 ## Installation
 
 ```bash
-pip install -r requirements.txt
-pip install -e .
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements-lock.txt && pip install -e .
 python -m pytest -q tests
+python experiments/fetch_data.py      # SNAP and PACE 2021 instances, checked against data/MANIFEST.sha256
 ```
 
-KaPoCE (external baseline) is built as described in `experiments/kapoce/README.md`.
+The star local search is compiled on first use with `g++ -O2 -std=c++17`.
 
 ## Usage
 
@@ -86,71 +114,29 @@ import ccbench as cc
 from ccbench.certiflip import certiflip
 
 g = cc.read_edgelist("graph.txt")          # or cc.read_pace("instance.gr")
-res = certiflip(g, time_limit=300, rng=0)
+res = certiflip(g, time_limit=300, rng=0, cert_path="cert.npz")
 print(res.cost, res.lower_bound, res.certified_ratio)
 ```
 
-## Reproducing the experiments
+Star local search and its certificate on one instance, followed by the check:
 
 ```bash
-# instances: SNAP graphs are downloaded on first use; PACE 2021 instances from
-# https://github.com/PACE-challenge/Cluster-Editing-PACE-2021-instances into data/raw/pace/{exact,heur}
-python experiments/run_bench.py --suite pace-exact --algos all --budget 60 --out results/pace_exact.csv
-python experiments/run_bench.py --suite snap --algos all --budget 600 --workers 3 --out results/snap.csv
-python experiments/ablation.py bounds --budget 300 --out results/ablation_lb.csv
-python experiments/ablation.py scaling --out results/scaling.csv
-python experiments/anytime.py results/anytime_hepth.csv 600 ca-HepTh
-python experiments/anytime.py results/anytime_dblp.csv 600 com-DBLP
-python experiments/plot_anytime.py
-python experiments/analyze.py --pace-exact results/pace_exact.csv --snap results/snap.csv \
-    --ablation results/ablation_lb.csv --scaling results/scaling.csv
-cd paper && pdflatex certified_correlation_clustering && bibtex certified_correlation_clustering && pdflatex certified_correlation_clustering && pdflatex certified_correlation_clustering
+RESULTS_DIR=out CC_ROOT=$PWD python experiments/colab_run_lp.py 600 0 lsstar ca-GrQc
+python experiments/check_certificate.py data/raw/ca-GrQc.txt.gz out/certs/lsstar_ca-GrQc_0.npz
 ```
 
-Lower-bound certificates and their independent check:
+Re-check every archived certificate (no solver needed):
 
 ```bash
-# PACE exact track: CertiFlip writes one certificate per instance, then check all of them
-CERT_DIR=results/certificates/pace-exact python experiments/run_bench.py --suite pace-exact \
-    --algos certiflip --budget 60 --out results/pace_exact_cert.csv
-python experiments/check_certificate.py --dir data/raw results/certificates/pace-exact results/pace_exact_cert_check.csv
-# a single graph (SNAP certificates, Colab tag c1): run, write and check
-python experiments/colab_run_cert.py 600 0 c1 ca-GrQc
+bash experiments/recheck_all.sh
 ```
 
-Head-to-head against KaPoCE (one machine, solvers run one after the other,
-both pinned to CPU 0 with `taskset`; KaPoCE seeded through `KAPOCE_SEED`).
-Outside Colab set `CC_ROOT` (this repository), `KAPOCE_SRC` (a KaPoCE checkout,
-patched and built on first use), `RESULTS_DIR` and `SEQ_READY`:
-
-```bash
-python experiments/colab_run_seq.py 600 0 s1 ca-AstroPh      # one graph, one seed
-python experiments/seq_stats.py s1 results/headtohead_s1.csv results/headtohead_s1_runs.csv
-python experiments/seq_stats.py --pace s1h                     # PACE heuristic track, pooled
-python experiments/make_pxmem_tables.py
-python experiments/make_figures.py        # all figures of the paper
-```
-
-`experiments/colab_fleet.py` distributes these jobs over Colab machines
-(`experiments/colab_fleet.sh` keeps it running); results land in `results/colab/`.
-
-## Main results (see `paper/certified_correlation_clustering.pdf`)
-
-* PACE 2021 exact track (200 instances): the CertiFlip bound proves optimality
-  on 111 of the 173 instances with known optimum (root bounds of the KaPoCE
-  branch-and-bound: 79); published lower bounds improved on the open instances
-  exact179 (632) and exact180 (1068); a solution of cost 2788 for exact183
-  (published upper bound 2789), stored in `results/solutions/`.  All 200
-  certificates are accepted by the independent checker.
-* SNAP graphs with up to 10^6 edges: best known solutions certified within
-  0.25%-10.1% of optimal (checked certificates), where greedy / fractional
-  triangle packings certify only factors 1.17-1.81.
-* PXMem against KaPoCE, 600 s each on the same core, fifteen SNAP graphs, ten
-  seeds: 67 wins, 49 ties, 34 losses; better on four graphs and worse on one
-  by the sign test (one each after Holm correction).
-* IteratedFlip stays within 0.10%-0.44% of the PACE 2021 winner KaPoCE on
-  SNAP graphs, at a fraction of its running time.
+[`REPRODUCE.md`](REPRODUCE.md) maps every table and figure of the manuscript
+to the command that produced it.
 
 ## License
 
-BSD 3-Clause (see `LICENSE`).  KaPoCE is GPL-3.0 and is not redistributed here.
+BSD 3-Clause (see `LICENSE`). KaPoCE (GPL-3.0), RAMA and SCC are external
+baselines and are not redistributed here. `experiments/kapoce/star_dump.inc`
+is a 13-line hook that is compiled into the KaPoCE sources, and the resulting
+program is covered by KaPoCE's licence.
