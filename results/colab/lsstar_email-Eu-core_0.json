@@ -1,0 +1,1 @@
+{"graph": "email-Eu-core", "n": 1005, "m": 16064, "mode": "sstar", "T": 600.0, "seed": 0, "value": 12251.0, "sstar_time": 600.008, "sstar_init": 11593, "rounds": [1942, 183], "stars": 3653, "time": 600.166140794754, "check": "ok", "certified": 12251, "lb_exact": 12251.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "AMD EPYC 7B12", "python": "3.13.15"}
