@@ -219,3 +219,40 @@ def test_directory_check_uses_the_instance_table(tmp_path):
     status = {r["certificate"]: r["status"] for r in csv.DictReader(open(out))}
     assert status["a_ok.npz"] == "ok"
     assert all(status[k].startswith("rejected") for k in ("b_sign.npz", "c_fmt.npz", "d_file.npz"))
+
+
+def _tiny(tmp_path, n, edges):
+    gr = str(tmp_path / "t.gr")
+    with open(gr, "w") as fh:
+        fh.write(f"p cep {n} {len(edges)}\n")
+        for a, b in edges:
+            fh.write(f"{a + 1} {b + 1}\n")
+    inst = C.read_instance(gr, "pace")
+    ident = {"n": np.array(inst.n), "instance_m": np.array(inst.m),
+             "edge_sha256": np.array(inst.edge_sha256), "raw_sha256": np.array(inst.raw_sha256)}
+    return inst, ident
+
+
+def test_certificate_rejects_int64_wrap_in_row(tmp_path):
+    """An invalid row whose left-hand side wraps around in int64 (4097 copies
+    of -2^51 on one edge, b = 0) must be rejected, not accepted as valid."""
+    inst, ident = _tiny(tmp_path, 3, [(0, 1), (1, 2)])
+    k = 4097
+    cert = dict(ident, ptr=np.array([0, k]), u=np.zeros(k, dtype=np.int64),
+                v=np.ones(k, dtype=np.int64), val=np.full(k, -2.0 ** 51), b=np.array([0.0]),
+                y=np.array([0.0]))
+    with pytest.raises(ValueError, match="same pair twice"):
+        C.check(inst, cert)
+
+
+def test_certificate_rejects_huge_row_sum(tmp_path):
+    """Distinct pairs whose coefficients sum to 2^61 or more are rejected."""
+    n = 51
+    inst, ident = _tiny(tmp_path, n, [(0, t) for t in range(1, n)])
+    pairs = [(0, t) for t in range(1, n)] + [(a, c) for a in range(1, n) for c in range(a + 1, n)]
+    u = np.array([a for a, _ in pairs], dtype=np.int64)
+    v = np.array([c for _, c in pairs], dtype=np.int64)
+    cert = dict(ident, ptr=np.array([0, len(pairs)]), u=u, v=v,
+                val=np.full(len(pairs), -2.0 ** 51), b=np.array([0.0]), y=np.array([0.0]))
+    with pytest.raises(ValueError, match="too large for exact int64 enumeration"):
+        C.check(inst, cert)

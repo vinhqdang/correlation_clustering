@@ -381,6 +381,18 @@ def check(g, cert):
         raise ValueError("vertex id out of range")
     val, b = fval.astype(np.int64), fb.astype(np.int64)
     lo, hi = np.minimum(u, v), np.maximum(u, v)
+    rowof = np.repeat(np.arange(nrows), np.diff(ptr))
+    # the enumeration of step 2 sums a row's coefficients in int64: a pair may
+    # occur only once in a row, and sum_p |a_ip| < 2^61 keeps every partial sum
+    # of a row exact
+    if len(u):
+        order = np.lexsort((hi, lo, rowof))
+        same = ((rowof[order][1:] == rowof[order][:-1]) & (lo[order][1:] == lo[order][:-1])
+                & (hi[order][1:] == hi[order][:-1]))
+        if same.any():
+            raise ValueError("a row contains the same pair twice")
+        if np.bincount(rowof, weights=np.abs(fval), minlength=nrows).max() >= 2.0 ** 61:
+            raise ValueError("row coefficients too large for exact int64 enumeration")
     # 1. pairs of P
     sign = np.zeros(len(u), dtype=np.int64)
     bad = _check_pairs(g.indptr, g.indices, lo, hi, sign)
@@ -409,7 +421,6 @@ def check(g, cert):
         raise ValueError("negative scaled multiplier")
     key = lo * g.n + hi
     uniq, inv = np.unique(key, return_inverse=True)
-    rowof = np.repeat(np.arange(nrows), np.diff(ptr))
     # int64 accumulation is exact if no partial sum can exceed 2^62; this is
     # checked with an upper bound in floating point (with a generous margin)
     absbound = np.zeros(len(uniq))
@@ -446,10 +457,17 @@ def clustering_cost(g, labels):
 # --------------------------------------------------------------------------
 
 def check_file(raw, cert_path, fmt=None, sign_col=None):
+    """Single-file mode.  Unless given here, the parser settings are taken from
+    the certificate, so the result only says that the file, read that way, has
+    the certified bound; the settings are part of the report.  Directory mode
+    takes them from the committed instance table instead."""
     cert = dict(np.load(cert_path, allow_pickle=False))
+    source = "argument" if fmt is not None or sign_col is not None else "certificate"
     fmt = fmt or str(_meta(cert, "instance_format", "pace" if raw.endswith(".gr") else "snap"))
     sign_col = int(_meta(cert, "sign_col", -1)) if sign_col is None else sign_col
-    return check(read_instance(raw, fmt, sign_col), cert)
+    report = check(read_instance(raw, fmt, sign_col), cert)
+    report.update({"instance_format": fmt, "sign_col": sign_col, "parser_settings_from": source})
+    return report
 
 
 def check_dir(data_dir, cert_dir, out_csv, resume=False):
