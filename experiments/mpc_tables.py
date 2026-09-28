@@ -145,9 +145,10 @@ def pace_exact():
     old["inst"] = old["instance"].str.split("/").str[-1]
     for a, nm in [("lb:greedy", "greedy triangle packing"), ("lb:tri-mwu", "fractional triangle packing")]:
         B[nm] = np.ceil(old[old.algo == a].set_index("inst")["lb"] - 1e-6)
-    for tag, seed, nm in [("lpack", 1, "sparse star packing"), ("c2x", 0, "CertiFlip bound"),
-                          ("ltri", 0, "metric LP on $P$, triangle rows"),
-                          ("lwarm", 0, "CertiFlip bound, 1800 s")]:
+    for tag, seed, nm in [("lpack", 1, "ruin-and-recreate star packing"), ("c2x", 0, "CertiFlip bound"),
+                          ("lwarm", 0, "CertiFlip bound, 1800 s"),
+                          ("lsstar", 0, "star local search"),
+                          ("ltri", 0, "metric LP on $P$, triangle rows")]:
         R = runs(tag)
         vals = {}
         for i in ref.index:
@@ -163,9 +164,12 @@ def pace_exact():
     B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"] = ref["low_star"].astype(float)
     B["B\\&B $P_3$ packing~\\cite{BlasiusEtAl22sea}"] = ref["low_p3"].astype(float)
     solved = ref[ref["solved_1h"] == 1]
-    # the larger of two valid bounds is a valid bound
-    B["max of CertiFlip and B\\&B star"] = pd.concat(
-        [B["CertiFlip bound"], ref["low_star"].astype(float)], axis=1).max(axis=1, skipna=False)
+    # the larger of valid bounds is a valid bound
+    B["larger of CertiFlip and star local search"] = pd.concat(
+        [B["CertiFlip bound"], B["star local search"]], axis=1).max(axis=1, skipna=False)
+    B["larger of both and B\\&B star"] = pd.concat(
+        [B["larger of CertiFlip and star local search"], ref["low_star"].astype(float)],
+        axis=1).max(axis=1, skipna=False)
     rows = []
     for nm, v in B.items():
         v = v.reindex(solved.index)
@@ -191,25 +195,46 @@ def pace_exact():
         mx = np.maximum(ours, star)
         NUM["numPaceMaxOpt"] = str(int((mx >= solved["opt"]).sum()))
         NUM["numPaceMaxMean"] = f"{(mx / solved['opt'].clip(lower=1)).mean():.4f}"
+    # the star local search (sstar, 60 s) and the best checked bound
+    sls = B["star local search"].reindex(solved.index)
+    best = B["larger of CertiFlip and star local search"].reindex(solved.index)
+    if sls.notna().sum() == len(solved):
+        o = solved["opt"].clip(lower=1)
+        NUM["numPaceSlsMean"] = f"{(sls / o).mean():.4f}"
+        NUM["numPaceSlsOpt"] = str(int((sls >= solved["opt"]).sum()))
+        NUM["numPaceSlsAbove"] = str(int((sls > star).sum()))
+        NUM["numPaceSlsBelow"] = str(int((sls < star).sum()))
+        NUM["numPaceSlsEqual"] = str(int((sls == star).sum()))
+        NUM["numPaceSlsMin"] = f"{(sls / o).min():.3f}"
+        NUM["numPaceBestOpt"] = str(int((best >= solved["opt"]).sum()))
+        NUM["numPaceBestMean"] = f"{(best / o).mean():.4f}"
+        mx2 = np.maximum(best, star)
+        NUM["numPaceBestMaxOpt"] = str(int((mx2 >= solved["opt"]).sum()))
+        NUM["numPaceBestMaxMean"] = f"{(mx2 / o).mean():.4f}"
+        NUM["numPaceSlsOverCf"] = str(int((sls > ours).sum()))
+        NUM["numPaceSlsUnderCf"] = str(int((sls < ours).sum()))
+        ts = [runs("lsstar")[(key(i), 0)]["time"] for i in ref.index if (key(i), 0) in runs("lsstar")]
+        NUM["numPaceSlsTimeMedian"] = f"{np.median(ts):.0f}"
+        NUM["numPaceSlsTimeMax"] = f"{max(ts):.0f}"
     fr = B["fractional triangle packing"].reindex(solved.index)
     NUM["numPaceFracMean"] = f"{(fr / solved['opt'].clip(lower=1)).mean():.4f}"
     # density bands
     bands = [(0, 0.1), (0.1, 0.3), (0.3, 0.5), (0.5, 1.01)]
     brow = []
-    pk = B["sparse star packing"].reindex(solved.index)
+    pk = B["ruin-and-recreate star packing"].reindex(solved.index)
     for lo, hi in bands:
         sel = solved[(solved.density >= lo) & (solved.density < hi)]
         cells = [f"$[{lo:g},{min(hi, 1):g})$", str(len(sel))]
-        for v in (ours, pk, fr, star):
+        for v in (ours, sls, pk, fr, star):
             v = v.reindex(sel.index)
             cells.append("--" if v.isna().all() else f"{(v / sel['opt'].clip(lower=1)).mean():.4f}")
         brow.append(" & ".join(cells) + " \\\\")
-    write("pace_density", "\\begin{tabular}{lrrrrr}\n\\toprule\nedge density & instances & CertiFlip "
-          "& sparse star & fractional & B\\&B star \\\\\n"
-          " & & bound & packing & triangle packing & packing \\\\\n\\midrule\n" + "\n".join(brow) +
+    write("pace_density", "\\begin{tabular}{lrrrrrr}\n\\toprule\nedge density & instances & CertiFlip "
+          "& star local & ruin-and-recreate & fractional & B\\&B star \\\\\n"
+          " & & bound & search & star packing & triangle packing & packing \\\\\n\\midrule\n" + "\n".join(brow) +
           "\n\\bottomrule\n\\end{tabular}\n")
     # further bounds on the solved instances, each on the instances where it ran
-    for nm, kk in (("sparse star packing", "Pack"), ("CertiFlip bound, 1800 s", "Warm"),
+    for nm, kk in (("ruin-and-recreate star packing", "Pack"), ("CertiFlip bound, 1800 s", "Warm"),
                     ("metric LP on $P$, triangle rows", "Tri")):
         v = B[nm].reindex(solved.index)
         ok = v.notna()
@@ -224,15 +249,16 @@ def pace_exact():
     # open instances: best checked bound against the published bounds
     unsolved = ref[ref["solved_1h"] != 1]
     C = runs("c2x")
-    orows, improved, below = [], 0, []
+    orows, improved, below, gap_open = [], 0, [], []
     for i in unsolved.index:
-        vals = [B[nm].get(i) for nm in ("CertiFlip bound", "sparse star packing",
-                                        "CertiFlip bound, 1800 s")]
+        vals = [B[nm].get(i) for nm in ("CertiFlip bound", "ruin-and-recreate star packing",
+                                        "CertiFlip bound, 1800 s", "star local search")]
         vals = [x for x in vals if x is not None and np.isfinite(x)]
         if not vals:
             continue
         lb = int(max(vals))
         pub = int(max(ref.loc[i, "low_star"], ref.loc[i, "low_p3"]))
+        gap_open.append(int(ref.loc[i, "upper"]) - lb)
         ub = C.get((key(i), 0), {}).get("cost")
         if lb < pub:
             below.append(100 * (pub - lb) / pub)
@@ -247,6 +273,7 @@ def pace_exact():
           "\\midrule\n" + ("\n".join(orows) if orows else "\\multicolumn{7}{c}{none} \\\\") +
           "\n\\bottomrule\n\\end{tabular}\n")
     NUM["numPaceOpenImproved"] = str(improved)
+    NUM["numPaceOpenGapMin"] = str(min(gap_open)) if gap_open else "--"
     NUM["numPaceOpenBelow"] = str(len(below))
     NUM["numPaceOpenMaxBelow"] = f"{max(below):.1f}\\%" if below else "0"
     NUM["numPaceOpen"] = str(len(unsolved))
@@ -278,7 +305,7 @@ def pace_exact():
         NUM["numKrootPaceTimeMedian"] = f"{np.median(ts):.1f}"
         NUM["numKrootPaceTimeMax"] = f"{max(ts):.0f}"
         # the rerun star packing against our sparse star packing, same instances
-        pk = B["sparse star packing"]
+        pk = B["ruin-and-recreate star packing"]
         both = [i for i in st if i in solved.index and np.isfinite(pk.get(i, np.nan))]
         if both:
             o = solved["opt"].reindex(both).clip(lower=1)
@@ -367,72 +394,71 @@ def snap():
             return None
         return 100 * (ub - np.ceil(rec["value"] - 1e-6)) / max(1.0, np.ceil(rec["value"] - 1e-6))
 
+    SS = {**runs("lsstar"), **runs("lsstar+k100")}   # star local search, 600 s
+    SL = runs("lsslp")                              # star local search, then block LPs
+    sls_rows, gaps_old, gaps_same, kmax_graphs = [], [], [], []
     for role, names in (("dev", DEV), ("held-out", HELD)):
         for name in names:
-            if cache[name]["pairs"] is None:
-                # above the support threshold: no CertiFlip run; the packing
-                # alone was run without the threshold where memory allowed
-                pk = checked(PK.get((name, 0)))
-                ub_a, ub = arch.get(name), anyrun.get(name)
-                ucell = "--" if ub_a is None else f"\\num{{{ub_a}}}"
-                if pk is None or ub is None:
-                    no_bound.append(name)
-                    rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}"
-                                "{no bound: the packing job died three times (memory)} \\\\")
-                    continue
-                pack_only.append((name, role, pk, ub_a, ub))
-                t_pk = PK[(name, 0)]["time"]
-                tb = tri.get(name)
-                fac = None if tb is None or not np.isfinite(tb) else ub / tb
-                ga = "--" if ub_a is None else f"{100 * (ub_a - pk) / pk:.2f}"
-                rows.append(f"{tt(name)} & {ucell} & -- & -- & "
-                            f"\\num{{{pk}}} & {t_pk:.0f} & -- & -- & {ga} & "
-                            f"{100 * (ub - pk) / pk:.2f} & {fmt_pct(fac, 2) if fac else '--'} \\\\")
-                continue
-            lbs = [checked(C2.get((name, sd))) for sd in range(3)]
-            lbs = [x for x in lbs if x is not None]
+            sup_ok = cache[name]["pairs"] is not None
             ub_a, ub = arch.get(name), anyrun.get(name)
-            if not lbs or ub_a is None:
-                rows.append(f"{tt(name)} & \\multicolumn{{10}}{{c}}{{\\pending{{}}}} \\\\")
-                continue
-            cf = max(lbs)
-            spreads.append(100 * (max(lbs) - min(lbs)) / cf)
+            ucell = "--" if ub_a is None else f"\\num{{{ub_a}}}"
+            lbs = [checked(C2.get((name, sd))) for sd in range(3)] if sup_ok else []
+            lbs = [x for x in lbs if x is not None]
+            cf = max(lbs) if lbs else None
             pk = checked(PK.get((name, 0)))
             plp = checked(PL.get((name, 0)))
-            prev = cf if pk is None else max(cf, pk)
-            lb = prev if plp is None else max(prev, plp)
             eq = checked(EQ.get((name, 0)))
-            lb_ours = lb  # the largest checked bound of the columns shown
-            if eq is not None and eq > lb:
-                lb = eq
+            ss = checked(SS.get((name, 0)))
+            sl = checked(SL.get((name, 0)))
+            if SS.get((name, 0), {}).get("kmax"):
+                kmax_graphs.append(name)
+            old = [x for x in (cf, pk, plp, eq) if x is not None]
+            allb = old + [x for x in (ss, sl) if x is not None]
+            if not allb or ub is None:
+                no_bound.append(name)
+                rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}{{no bound}} \\\\")
+                continue
+            lb = max(allb)
+            lb_old = max(old) if old else None
+            lb_ours = max(x for x in (cf, pk, plp, ss, sl) if x is not None)
+            sls_rows.append((name, role, lb_old, ss, sl, lb, ub_a, ub))
             if eq is not None:
-                eq_rows.append((name, role, eq, EQ[(name, 0)]["time"], plp, lb))
-            if pk is not None:
-                (cf_better if cf > pk else pk_better).append(name)
-            if plp is not None:
-                (plp_better if plp > prev else plp_below).append((name, plp - prev))
-                # the block LPs against the packing they started from
-                plp_gain.append((name, 100 * (plp - PL[(name, 0)]["pack_value"]) /
-                                 PL[(name, 0)]["pack_value"]))
-            gap_a = 100 * (ub_a - lb) / lb
-            gaps.append(gap_a)
-            # each procedure on its own: CertiFlip at its median seed, the packing alone
-            gaps_cf.append(100 * (ub_a - np.median(lbs)) / np.median(lbs))
-            if pk is not None:
-                gaps_pk.append(100 * (ub_a - pk) / pk)
-                if min(lbs) < pk < max(lbs):
-                    seed_below.append(name)
-            role_gaps.setdefault(role, []).append(gap_a)
+                eq_rows.append((name, role, eq, EQ[(name, 0)]["time"], plp, max(old)))
+            gap_a = None if ub_a is None else 100 * (ub_a - lb) / lb
+            gap_b = 100 * (ub - lb) / lb
+            if gap_a is not None:
+                gaps.append(gap_a)
+                role_gaps.setdefault(role, []).append(gap_a)
+                if lb_old is not None:
+                    gaps_old.append(100 * (ub_a - lb_old) / lb_old)
+                    gaps_same.append(gap_a)
             tb = tri.get(name)
             fac = None if tb is None or not np.isfinite(tb) else ub / tb
-            if fac is not None:
+            if fac is not None and sup_ok:
                 facs.append(fac)
-            t_lbs = [C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2]
-            t_lb = np.median(t_lbs)
-            TIMES[name] = t_lb
-            t_pk = PK[(name, 0)]["time"] if (name, 0) in PK else None
-            if t_pk is not None and pk is not None and pk > cf and t_pk > max(t_lbs):
-                longer.append(name)
+            if not sup_ok:
+                pack_only.append((name, role, lb, ub_a, ub))
+            if cf is not None:
+                spreads.append(100 * (max(lbs) - min(lbs)) / cf)
+                prev = cf if pk is None else max(cf, pk)
+                if pk is not None:
+                    (cf_better if cf > pk else pk_better).append(name)
+                if plp is not None:
+                    (plp_better if plp > prev else plp_below).append((name, plp - prev))
+                    plp_gain.append((name, 100 * (plp - PL[(name, 0)]["pack_value"]) /
+                                     PL[(name, 0)]["pack_value"]))
+                if ub_a is not None:
+                    gaps_cf.append(100 * (ub_a - np.median(lbs)) / np.median(lbs))
+                    if pk is not None:
+                        gaps_pk.append(100 * (ub_a - pk) / pk)
+                if pk is not None and min(lbs) < pk < max(lbs):
+                    seed_below.append(name)
+                t_lbs = [C2[(name, sd)]["lb_time"] for sd in range(3) if (name, sd) in C2]
+                TIMES[name] = np.median(t_lbs)
+                t_pk = PK[(name, 0)]["time"] if (name, 0) in PK else None
+                if t_pk is not None and pk is not None and pk > cf and t_pk > max(t_lbs):
+                    longer.append(name)
+                lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, lb))
             rt = root.get(name)
             kc = checked(LK.get((name, 0)))
             if rt is not None:
@@ -441,30 +467,30 @@ def snap():
                 if rt[0] > lb:
                     root_better.append(name)
                 (root_cert if kc == rt[0] else root_nocert).append(name)
-            gap_b = 100 * (ub - lb) / lb
-            g_tri = lp_gap(LT.get((name, 0)), ub)
-            g_star = lp_gap(LS.get((name, 0)), ub)
-            lp_rows.append((name, LT.get((name, 0)), LS.get((name, 0)), ub, pk, lb))
-            b = lambda v: (f"\\textbf{{\\num{{{v}}}}}" if v == lb else f"\\num{{{v}}}")
+            b = lambda v: "--" if v is None else (f"\\textbf{{\\num{{{v}}}}}" if v == lb
+                                                  else f"\\num{{{v}}}")
             running = qstat_root.get(f"lkroot_{name}_0") in ("pending", "running")
             # out of memory: the export job died with its machine three times
             oom = qstat_root.get(f"lkstar_{name}_0") == "failed"
+            small = cache[name]["n"] <= 25000
             rcell = ("t.o." if name in root_to else "\\pending{}" if running else
                      "mem." if oom else "--") if rt is None else (
                 f"\\num{{{rt[0]}}}" + ("$^\\dagger$" if rt[0] > lb else "") +
                 ("" if kc == rt[0] else "$^\\circ$"))
+            if rt is None and not small:
+                rcell = "--"
             smark = "$^\\S$" if lb > lb_ours else ""
-            rows.append(f"{tt(name)} & \\num{{{ub_a}}} & {b(cf)} & {t_lb:.0f} & "
-                        f"{'--' if pk is None else b(pk)} & "
-                        f"{'--' if t_pk is None else f'{t_pk:.0f}'} & "
-                        f"{'--' if plp is None else b(plp)} & {rcell} & "
-                        f"{gap_a:.2f}{smark} & {gap_b:.2f} & "
+            kmark = "$^k$" if name in kmax_graphs else ""
+            ga = "--" if gap_a is None else f"{gap_a:.2f}{smark}"
+            rows.append(f"{tt(name)} & {ucell} & {b(cf)} & {b(pk)} & {b(plp)} & {b(ss)}{kmark} & "
+                        f"{b(sl)} & {rcell} & {ga} & {gap_b:.2f} & "
                         f"{fmt_pct(fac, 2) if fac else '--'} \\\\")
         rows.append("\\midrule")
     write("snap_bounds", "\\begin{tabular}{lrrrrrrrrrr}\n\\toprule\n"
           "graph & UB & \\multicolumn{5}{c}{checked LB} & B\\&B & gap & gap$^*$ & tri.\\\\\n"
           "\\cmidrule(lr){3-7}\n"
-          " & & CertiFlip & $t$ (s) & packing & $t$ (s) & pack.+LP & root & (\\%) & (\\%) & factor \\\\\n"
+          " & & CertiFlip & R\\&R & R\\&R & SLS & SLS & root & (\\%) & (\\%) & factor \\\\\n"
+          " & & & packing & +LP & & +LP & & & & \\\\\n"
           "\\midrule\n"
           + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
     # metric LP on P against the checked bounds, where it was run
@@ -538,7 +564,55 @@ def snap():
         NUM["numPackAllAboveCount"] = str(sum(1 for n_, x in ns if n_ >= thr))
         NUM["numCfBetterMaxN"] = f"\\num{{{max(n_ for n_, x in ns if x in cf_better)}}}"
     NUM["numSnapTotal"] = str(len(DEV) + len(HELD))
-    NUM["numSnapNoBound"] = str(len(DEV) + len(HELD) - len(gaps))
+    NUM["numSnapNoBound"] = str(len(no_bound))
+    NUM["numSnapGapN"] = str(len(gaps))
+    NUM["numSnapNoArch"] = str(sum(1 for r in sls_rows if r[6] is None))
+    NUM["numSnapNoArchList"] = ", ".join(tt(r[0]) for r in sls_rows if r[6] is None) or "none"
+    if gaps_old:
+        NUM["numSnapGapOldN"] = str(len(gaps_old))
+        NUM["numSnapGapOldMedian"] = f"{np.median(gaps_old):.1f}\\%"
+        NUM["numSnapGapOldHi"] = f"{max(gaps_old):.1f}\\%"
+        NUM["numSnapGapSameMedian"] = f"{np.median(gaps_same):.1f}\\%"
+    # the star local search against the earlier bounds
+    imp = [(r[0], r[2], max(x for x in (r[3], r[4]) if x is not None)) for r in sls_rows
+           if r[2] is not None and (r[3] is not None or r[4] is not None)]
+    NUM["numSlsN"] = str(sum(1 for r in sls_rows if r[3] is not None))
+    NUM["numSlsBetter"] = str(sum(1 for _, o, n_ in imp if n_ > o))
+    NUM["numSlsBelow"] = str(sum(1 for _, o, n_ in imp if n_ < o))
+    NUM["numSlsBelowList"] = ", ".join(tt(x) for x, o, n_ in imp if n_ < o) or "none"
+    NUM["numSlsNew"] = str(sum(1 for r in sls_rows if r[2] is None))
+    NUM["numSlsNewList"] = ", ".join(tt(r[0]) for r in sls_rows if r[2] is None) or "none"
+    ga = [(r[0], 100 * (r[6] - r[2]) / r[2], 100 * (r[6] - r[5]) / r[5]) for r in sls_rows
+          if r[6] is not None and r[2] is not None]
+    if ga:
+        top = max(ga, key=lambda x: x[1] - x[2])
+        NUM["numSlsTopGraph"] = tt(top[0])
+        NUM["numSlsTopOld"] = f"{top[1]:.1f}\\%"
+        NUM["numSlsTopNew"] = f"{top[2]:.1f}\\%"
+    # block LPs after the star local search: gain over its own packing
+    slg = [(x, 100 * (r["value"] - r["pack_value"]) / r["pack_value"]) for (x, _), r in SL.items()
+           if r.get("check") == "ok"]
+    if slg:
+        NUM["numSlpN"] = str(len(slg))
+        NUM["numSlpGainMedian"] = f"{np.median([g for _, g in slg]):.2f}\\%"
+        tg = max(slg, key=lambda z: z[1])
+        NUM["numSlpGainMax"] = f"{tg[1]:.1f}\\%"
+        NUM["numSlpGainMaxGraph"] = tt(tg[0])
+        NUM["numSlpGainPos"] = str(sum(g > 0.005 for _, g in slg))
+    tss = [SS[(x, 0)]["time"] for x in DEV + HELD if (x, 0) in SS]
+    if tss:
+        NUM["numSlsTimeMedian"] = f"{np.median(tss):.0f}"
+        NUM["numSlsTimeMax"] = f"{max(tss):.0f}"
+    NUM["numSlsKmaxList"] = " and ".join(tt(x) for x in kmax_graphs) or "none"
+    # the best checked bound comes from which procedure
+    src = {"sls": 0, "old": 0}
+    for r in sls_rows:
+        if r[2] is None or r[5] > r[2]:
+            src["sls"] += 1
+        else:
+            src["old"] += 1
+    NUM["numBestFromSls"] = str(src["sls"])
+    NUM["numBestFromOld"] = str(src["old"])
     NUM["numSnapHeldTotal"] = str(len(HELD))
     # over the graphs with a support, the ones compared with CertiFlip
     pt = [PK[(n, 0)]["time"] for n in DEV + HELD if (n, 0) in PK and cache[n]["pairs"] is not None]
@@ -671,11 +745,15 @@ def snap():
         gs = [100 * (x[4] - x[2]) / x[2] for x in pack_only]
         NUM["numPackOnlyGapLo"] = f"{min(gs):.1f}\\%"
         NUM["numPackOnlyGapHi"] = f"{max(gs):.1f}\\%"
-        NUM["numPackOnlyTimeMax"] = f"{max(PK[(x[0], 0)]['time'] for x in pack_only):.0f}"
+        NUM["numPackOnlyTimeMax"] = f"{max(PK[(x[0], 0)]['time'] for x in pack_only if (x[0], 0) in PK):.0f}"
         NUM["numPackOnlyMaxN"] = f"\\num{{{max(cache[x[0]]['n'] for x in pack_only)}}}"
     NUM["numNoBoundN"] = str(len(no_bound))
     NUM["numNoBoundList"] = ", ".join(tt(x) for x in no_bound) or "none"
-    NUM["numSnapAnyBound"] = str(len(gaps) + len(pack_only))
+    NUM["numSnapAnyBound"] = str(len(DEV) + len(HELD) - len(no_bound))
+    withb = [r[0] for r in sls_rows]
+    if withb:
+        NUM["numMaxCertN"] = f"\\num{{{max(cache[x]['n'] for x in withb)}}}"
+        NUM["numMaxCertM"] = f"\\num{{{max(cache[x]['m'] for x in withb)}}}"
     # RAMA (multicut dual on P, not certified)
     NUM["numRamaOk"] = str(len(rama_ok))
     NUM["numRamaFailed"] = str(len(rama_fail))

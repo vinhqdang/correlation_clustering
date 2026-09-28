@@ -4,6 +4,8 @@
 \newcommand{\numBaseGapHi}{90\%}
 \newcommand{\numBaseGapLo}{17\%}
 \newcommand{\numBaseGapMedian}{46\%}
+\newcommand{\numBestFromOld}{2}
+\newcommand{\numBestFromSls}{25}
 \newcommand{\numCertPaceOk}{200}
 \newcommand{\numCertPaceRejected}{0}
 \newcommand{\numCertPackOk}{223}
@@ -39,7 +41,7 @@
 \newcommand{\numEqTimeMax}{2043}
 \newcommand{\numEqTimeMedian}{302}
 \newcommand{\numEqTimeOver}{2}
-\newcommand{\numGrqcBest}{\num{6036}}
+\newcommand{\numGrqcBest}{\num{6038}}
 \newcommand{\numGrqcStar}{\num{6039}}
 \newcommand{\numGrqcStarGap}{0.18\%}
 \newcommand{\numGrqcStarTime}{2578}
@@ -120,10 +122,10 @@
 \newcommand{\numLpSeedSnap}{0}
 \newcommand{\numLpShareHi}{70\%}
 \newcommand{\numLpShareLo}{-43\%}
-\newcommand{\numMaxCertM}{\num{1541898}}
-\newcommand{\numMaxCertN}{\num{1088092}}
-\newcommand{\numNoBoundList}{\texttt{com-Youtube}, \texttt{loc-Gowalla}, \texttt{email-EuAll}, \texttt{web-NotreDame}}
-\newcommand{\numNoBoundN}{4}
+\newcommand{\numMaxCertM}{\num{2987624}}
+\newcommand{\numMaxCertN}{\num{1134890}}
+\newcommand{\numNoBoundList}{none}
+\newcommand{\numNoBoundN}{0}
 \newcommand{\numOverPaceCount}{41}
 \newcommand{\numOverPaceLarge}{3}
 \newcommand{\numOverPaceMax}{393}
@@ -146,15 +148,20 @@
 \newcommand{\numPHWilcoxon}{0.789}
 \newcommand{\numPHWorse}{13}
 \newcommand{\numPHn}{190}
+\newcommand{\numPaceBestMaxMean}{0.9989}
+\newcommand{\numPaceBestMaxOpt}{131}
+\newcommand{\numPaceBestMean}{0.9989}
+\newcommand{\numPaceBestOpt}{130}
 \newcommand{\numPaceFracMean}{0.9664}
 \newcommand{\numPaceMaxMean}{0.9981}
 \newcommand{\numPaceMaxOpt}{117}
 \newcommand{\numPaceMeanOurs}{0.9874}
 \newcommand{\numPaceMeanStar}{0.9948}
 \newcommand{\numPaceOpen}{27}
-\newcommand{\numPaceOpenBelow}{25}
-\newcommand{\numPaceOpenImproved}{2}
-\newcommand{\numPaceOpenMaxBelow}{18.3\%}
+\newcommand{\numPaceOpenBelow}{6}
+\newcommand{\numPaceOpenGapMin}{1}
+\newcommand{\numPaceOpenImproved}{21}
+\newcommand{\numPaceOpenMaxBelow}{0.9\%}
 \newcommand{\numPaceOptOurs}{106}
 \newcommand{\numPaceOursAbove}{55}
 \newcommand{\numPaceOursBelow}{48}
@@ -165,6 +172,16 @@
 \newcommand{\numPacePackOursMean}{0.9874}
 \newcommand{\numPacePackOursOpt}{106}
 \newcommand{\numPacePackStarMean}{0.9948}
+\newcommand{\numPaceSlsAbove}{89}
+\newcommand{\numPaceSlsBelow}{4}
+\newcommand{\numPaceSlsEqual}{80}
+\newcommand{\numPaceSlsMean}{0.9984}
+\newcommand{\numPaceSlsMin}{0.960}
+\newcommand{\numPaceSlsOpt}{122}
+\newcommand{\numPaceSlsOverCf}{62}
+\newcommand{\numPaceSlsTimeMax}{67}
+\newcommand{\numPaceSlsTimeMedian}{60}
+\newcommand{\numPaceSlsUnderCf}{9}
 \newcommand{\numPaceTriMean}{0.9762}
 \newcommand{\numPaceTriN}{39}
 \newcommand{\numPaceTriOpt}{21}
@@ -182,12 +199,12 @@
 \newcommand{\numPackBetter}{13}
 \newcommand{\numPackLonger}{4}
 \newcommand{\numPackLongerList}{\texttt{email-Enron}, \texttt{loc-Brightkite}, \texttt{wiki-Vote}, \texttt{cit-HepPh}}
-\newcommand{\numPackOnlyGapHi}{10.2\%}
-\newcommand{\numPackOnlyGapLo}{5.3\%}
-\newcommand{\numPackOnlyHeld}{2}
-\newcommand{\numPackOnlyList}{\texttt{soc-Epinions}, \texttt{Slashdot+}, \texttt{Epinions+}, \texttt{cit-HepTh}, \texttt{soc-Slashdot0902}}
-\newcommand{\numPackOnlyMaxN}{\num{114467}}
-\newcommand{\numPackOnlyN}{5}
+\newcommand{\numPackOnlyGapHi}{27.4\%}
+\newcommand{\numPackOnlyGapLo}{4.4\%}
+\newcommand{\numPackOnlyHeld}{5}
+\newcommand{\numPackOnlyList}{\texttt{soc-Epinions}, \texttt{Slashdot+}, \texttt{Epinions+}, \texttt{com-Youtube}, \texttt{cit-HepTh}, \texttt{soc-Slashdot0902}, \texttt{loc-Gowalla}, \texttt{email-EuAll}, \texttt{web-NotreDame}}
+\newcommand{\numPackOnlyMaxN}{\num{1134890}}
+\newcommand{\numPackOnlyN}{9}
 \newcommand{\numPackOnlyTimeMax}{3498}
 \newcommand{\numPackPaceMax}{1588}
 \newcommand{\numPackPaceMedian}{68}
@@ -213,7 +230,7 @@
 \newcommand{\numRamaBelowTri}{13}
 \newcommand{\numRamaFailed}{4}
 \newcommand{\numRamaFailedList}{\texttt{ca-AstroPh}, \texttt{loc-Brightkite}, \texttt{com-DBLP}, \texttt{email-Eu-core}}
-\newcommand{\numRamaFracMax}{0.81}
+\newcommand{\numRamaFracMax}{0.80}
 \newcommand{\numRamaFracMaxGraph}{\texttt{roadNet-PA}}
 \newcommand{\numRamaNearZero}{6}
 \newcommand{\numRamaNearZeroList}{\texttt{ca-HepPh}, \texttt{email-Enron}, \texttt{BitcoinOTC+}, \texttt{facebook}, \texttt{wiki-Vote}, \texttt{cit-HepPh}}
@@ -225,15 +242,15 @@
 \newcommand{\numRecheckN}{594}
 \newcommand{\numRecheckOk}{594}
 \newcommand{\numRecheckTotal}{0.5}
-\newcommand{\numRootBelowList}{\texttt{ca-GrQc}, \texttt{ca-HepTh}}
+\newcommand{\numRootBelowList}{\texttt{ca-GrQc}, \texttt{ca-HepTh}, \texttt{BitcoinAlpha+}, \texttt{email-Eu-core}}
 \newcommand{\numRootBelowMax}{0.38\%}
 \newcommand{\numRootBestGap}{1.53\%}
 \newcommand{\numRootBestGraph}{\texttt{facebook}}
-\newcommand{\numRootBestOurGap}{21.63\%}
-\newcommand{\numRootBetter}{5}
-\newcommand{\numRootBetterHi}{19.8\%}
-\newcommand{\numRootBetterList}{\texttt{ca-HepPh}, \texttt{BitcoinOTC+}, \texttt{BitcoinAlpha+}, \texttt{email-Eu-core}, \texttt{facebook}}
-\newcommand{\numRootBetterLo}{1.7\%}
+\newcommand{\numRootBestOurGap}{2.29\%}
+\newcommand{\numRootBetter}{3}
+\newcommand{\numRootBetterHi}{0.7\%}
+\newcommand{\numRootBetterList}{\texttt{ca-HepPh}, \texttt{BitcoinOTC+}, \texttt{facebook}}
+\newcommand{\numRootBetterLo}{0.1\%}
 \newcommand{\numRootCert}{7}
 \newcommand{\numRootGapBitcoinAlpha}{3.8\%}
 \newcommand{\numRootGapBitcoinOTC}{3.6\%}
@@ -252,19 +269,43 @@
 \newcommand{\numRootTimeoutList}{\texttt{ca-AstroPh}, \texttt{wiki-Vote}}
 \newcommand{\numSccHit}{200}
 \newcommand{\numSccRuns}{200}
-\newcommand{\numSnapAnyBound}{23}
+\newcommand{\numSlpGainMax}{2.7\%}
+\newcommand{\numSlpGainMaxGraph}{\texttt{roadNet-PA}}
+\newcommand{\numSlpGainMedian}{0.00\%}
+\newcommand{\numSlpGainPos}{8}
+\newcommand{\numSlpN}{18}
+\newcommand{\numSlsBelow}{2}
+\newcommand{\numSlsBelowList}{\texttt{ca-HepTh}, \texttt{p2p-Gnutella31}}
+\newcommand{\numSlsBetter}{21}
+\newcommand{\numSlsKmaxList}{\texttt{com-Youtube} and \texttt{email-EuAll}}
+\newcommand{\numSlsN}{27}
+\newcommand{\numSlsNew}{4}
+\newcommand{\numSlsNewList}{\texttt{com-Youtube}, \texttt{loc-Gowalla}, \texttt{email-EuAll}, \texttt{web-NotreDame}}
+\newcommand{\numSlsTimeMax}{641}
+\newcommand{\numSlsTimeMedian}{606}
+\newcommand{\numSlsTopGraph}{\texttt{facebook}}
+\newcommand{\numSlsTopNew}{2.3\%}
+\newcommand{\numSlsTopOld}{21.6\%}
+\newcommand{\numSnapAnyBound}{27}
 \newcommand{\numSnapCert}{18}
 \newcommand{\numSnapCertHeld}{7}
 \newcommand{\numSnapGapCfMedian}{7.1\%}
-\newcommand{\numSnapGapHi}{21.6\%}
-\newcommand{\numSnapGapLo}{0.25\%}
-\newcommand{\numSnapGapMedDev}{5.5\%}
-\newcommand{\numSnapGapMedHeld}{9.2\%}
-\newcommand{\numSnapGapMedian}{5.6\%}
+\newcommand{\numSnapGapHi}{27.4\%}
+\newcommand{\numSnapGapLo}{0.22\%}
+\newcommand{\numSnapGapMedDev}{1.4\%}
+\newcommand{\numSnapGapMedHeld}{4.9\%}
+\newcommand{\numSnapGapMedian}{3.5\%}
 \newcommand{\numSnapGapMinHeld}{0.63\%}
+\newcommand{\numSnapGapN}{23}
+\newcommand{\numSnapGapOldHi}{21.6\%}
+\newcommand{\numSnapGapOldMedian}{5.6\%}
+\newcommand{\numSnapGapOldN}{20}
 \newcommand{\numSnapGapPkMedian}{6.7\%}
+\newcommand{\numSnapGapSameMedian}{3.2\%}
 \newcommand{\numSnapHeldTotal}{12}
-\newcommand{\numSnapNoBound}{9}
+\newcommand{\numSnapNoArch}{4}
+\newcommand{\numSnapNoArchList}{\texttt{soc-Epinions}, \texttt{Slashdot+}, \texttt{Epinions+}, \texttt{com-Youtube}}
+\newcommand{\numSnapNoBound}{0}
 \newcommand{\numSnapSpreadMax}{0.99\%}
 \newcommand{\numSnapTotal}{27}
 \newcommand{\numWarmLocal}{49}

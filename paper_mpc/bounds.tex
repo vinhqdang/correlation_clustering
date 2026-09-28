@@ -189,8 +189,42 @@ rows $x_{uw}+x_{wv}-x_{uv}\ge0$.
 Packings are the bounds used inside the KaPoCE branch-and-bound
 algorithm~\citep{BlasiusEtAl22sea}.  Its implementation stores the instance
 as a dense matrix, so it applies only to graphs with at most about
-$2.5\cdot10^4$ vertices on our machines.  We build a greedy packing on the sparse support, processing
-centres by decreasing degree, and improve it by \emph{ruin and recreate}.
+$2.5\cdot10^4$ vertices on our machines.  Every pair of an induced star is an
+edge or a pair of leaves with a common neighbour, the centre, so every star
+packing lives on the support $P$, and a packing heuristic needs no dense
+matrix.  We use two.
+
+\emph{Star local search.}  This is our implementation, on the sparse graph,
+of the star-packing heuristic of the KaPoCE branch-and-bound
+(\citealp{BlasiusEtAl22sea}; a separate implementation that shares no code with KaPoCE).
+Pairs are represented by their endpoints, and a hash map from the pairs used
+by the packing to their star replaces the matrix, so the memory is
+$O(n+m)$ plus the number of used pairs.  The start processes the vertices
+by decreasing degree; for a vertex $v$ it colours the conflict graph on the
+neighbours $t$ with a free pair $vt$ (two neighbours conflict if they are
+adjacent or their pair is used) greedily in reverse degeneracy order, and
+every colour class of at least two neighbours becomes a star centred at
+$v$.  The local search visits the stars in random order and tries three
+moves.  A \emph{merge} joins two stars with the same centre whose leaves
+are pairwise non-adjacent through free pairs ($+1$).  An \emph{exchange}
+removes one leaf $\ell$ from a star, or the whole star if it has two leaves,
+which frees the pairs of $\ell$; it lists the candidates that use a freed
+pair, namely new stars with two leaves and extensions of existing stars by
+one leaf, and applies two candidates through different freed pairs if they
+are compatible ($+1$).  Otherwise a \emph{plateau move} applies one
+candidate, with probability $0.8$ one whose pairs lie in the fewest induced
+paths on three vertices and otherwise a random one, which keeps the value.
+Rounds are repeated until they are more than five times as many as the
+rounds that improved the packing, but at least for a given time, and at
+most until the time limit.  The stars are written out directly as
+certificate rows, so neither the search nor the certificate needs the
+support.  A star with $k$ leaves occupies $k+\binom k2$ pairs; on graphs with
+very large degrees we therefore cap the number of leaves per star, which
+loses at most one unit of bound per split star.
+
+\emph{Ruin and recreate.}  Our first packing, which CertiFlip uses as its
+warm start, builds a greedy packing on the sparse support, processing
+centres by decreasing degree, and improves it by ruin and recreate.
 (On dense instances large stars waste pairs, since a star with $k$ leaves
 uses $k+\binom k2$ pairs for a value of $k-1$.  There we also try a packing
 that first packs bad triangles maximally and then extends stars on free
@@ -199,7 +233,9 @@ the candidates.)
 Each step picks a random vertex, removes all stars centred in a random
 connected region of about 12 vertices around it, and repacks the freed
 pairs greedily in a random order.  A step is kept iff the value does not
-decrease.  The packing is installed as the initial multipliers.  Subsequent
+decrease.
+
+Either packing is installed as the initial multipliers.  Subsequent
 block steps release the packed rows that lie inside a block and re-optimise
 them fractionally together with newly separated rows.  By
 Theorem~\ref{thm:anytime}(b), the final bound is never below the packing

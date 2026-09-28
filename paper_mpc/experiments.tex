@@ -6,7 +6,7 @@
 Python with Numba-compiled kernels (package \texttt{ccbench}).  LPs and MIPs
 are solved with HiGHS~1.15~\cite{HuangfuH18} and graph partitions are
 computed with METIS~\cite{KarypisK98}.  The runs of CertiFlip, of the
-sparse star packing, of the metric LP on $P$ and of the head-to-head
+star packings, of the metric LP on $P$ and of the head-to-head
 comparison were made on Google Colab virtual machines with two logical cores
 and \SI{12.7}{GB} of memory, one run per machine at a time, with the CPU model
 recorded in every result file (\numCpuModels; the AMD model on
@@ -41,9 +41,9 @@ coincide with development graphs and seven with held-out graphs
 \caption{SNAP instances: vertices, edges, size of the distance-two support
 $P$ and role.  ``--'': the estimate $m+\sum_v\binom{\deg v}2$ of the support
 exceeds $3\cdot10^7$ pairs, a threshold fixed in advance from the memory of
-the machines; CertiFlip was not run on these graphs, and the star packing
-alone was run on them afterwards without the threshold
-(Table~\ref{tab:snap-bounds}); $^\ast$: $|P|$ as measured by that run.  PACE: the
+the machines; CertiFlip and the block LPs were not run on these graphs, the
+star packings were (Table~\ref{tab:snap-bounds}); $^\ast$: $|P|$ as measured
+by the ruin-and-recreate packing, which builds the support.  PACE: the
 heuristic-track instance with the same graph.}
 \label{tab:instances}
 \small
@@ -58,14 +58,22 @@ Section~\ref{sec:cert} from an archived certificate.
 triangles (the bound of MatchFlipPivot~\cite{veldt2022stc}) and a
 fractional packing by the Garg--K\"onemann scheme with
 $\varepsilon=0.05$~\cite{GargK07,Fleischer00}, scaled by its maximum load.
-\item \emph{Sparse star packing} (checked): the greedy star packing on $P$
-improved by ruin and recreate, installed as a dual solution without any LP.
+\item \emph{Star local search} (SLS, checked): the star-packing local search
+of Section~\ref{sec:dual}, compiled C++ (\texttt{experiments/sstar}), one run
+per instance with seed~0, for \SI{600}{s} on the SNAP graphs and \SI{60}{s}
+on the PACE exact track, the budget of the CertiFlip runs there.  It runs
+until the time limit, as a minimum time; the certificate is written from its
+stars without building the support.  On \texttt{com-Youtube} and
+\texttt{email-EuAll} a star has at most 100 leaves.
+\item \emph{SLS, then block LPs} (SLS+LP, checked): the star local search for
+\SI{600}{s}, then METIS block sweeps from its packing for \SI{600}{s}, on the
+SNAP graphs with a support.
+\item \emph{Ruin-and-recreate star packing} (R\&R, checked): the greedy star
+packing on $P$ improved by ruin and recreate, installed as a dual solution
+without any LP.
 The number of iterations is set before the run from the iteration rate
 measured on the instance, so as to fill the budget; the measured running
-times, which can be well above it, are reported.  It uses the rows of the
-root star-packing bound of the KaPoCE branch-and-bound (every induced star
-lies in $P$), with a different packing heuristic and local search that work
-on the sparse support.
+times, which can be well above it, are reported.
 \item \emph{Metric LP on $P$}: $\mathrm{LP}_P$ with triangle
 rows~\eqref{eq:t1}--\eqref{eq:t2} only, solved by cutting planes with HiGHS
 until no row is violated or the budget ends; and the same with star rows.
@@ -76,7 +84,7 @@ computed within CertiFlip, whose bound phase targets half of the remaining
 budget but does not interrupt a block LP (measured times in
 Section~\ref{sec:exp-time}), and, on a subset of PACE instances, with a long
 budget and one block covering the graph.
-\item \emph{Long packing, then block LPs} (checked): the sparse star
+\item \emph{R\&R, then block LPs} (R\&R+LP, checked): the ruin-and-recreate
 packing with half of a \SI{1200}{s} budget, followed by METIS block sweeps
 from it for the other half, as one procedure; by
 Theorem~\ref{thm:anytime}(b) the result is never below the packing it starts
@@ -175,7 +183,11 @@ never executed on the SNAP graphs.  The large overruns come from steps that
 are not interrupted: single block LPs on \texttt{email-Enron}, and on the three
 PACE instances with 620 vertices and $9\cdot10^4$ to $2\cdot10^5$ edges the
 bound phase and, on two of them, the LP-rounding start with the local search
-after it (up to \SI{277}{s} on \texttt{exact199}).  The sparse star packing
+after it (up to \SI{277}{s} on \texttt{exact199}).  The star local search
+checks its time limit between stars and took a median of
+\numSlsTimeMedian{}\,s (at most \numSlsTimeMax{}\,s) on the SNAP graphs and
+\numPaceSlsTimeMedian{}\,s (at most \numPaceSlsTimeMax{}\,s) on the PACE
+exact track, including its certificate.  The ruin-and-recreate packing
 fixes its number of iterations in advance from a measured rate; on the SNAP
 graphs (nominal \SI{600}{s}) it took \numPackTimeLo{} to \numPackTimeHi{}\,s,
 and on the PACE exact track (nominal \SI{60}{s}) a median of
@@ -184,7 +196,7 @@ and on the PACE exact track (nominal \SI{60}{s}) a median of
 followed by block LPs (nominal \SI{1200}{s}) took a median of
 \numPlpTimeMedian{}\,s and more than \SI{1260}{s} on \numPlpTimeOver{} graphs
 (at most \numPlpTimeMax{}\,s).  All times are in
-the archived result files and per graph in Table~\ref{tab:snap-bounds}.  The
+the archived result files.  The
 comparisons of bounds in Sections~\ref{sec:exp-bounds}
 and~\ref{sec:exp-cert} are therefore at comparable, not equal, running times;
 the head-to-head comparison of Section~\ref{sec:exp-h2h} is at equal elapsed

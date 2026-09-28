@@ -2,43 +2,39 @@
 
 Lower bounds that scale to large correlation clustering instances, packings
 of bad triangles, certify only factors of about two.  On sparse graphs, three
-observations give much tighter checked bounds: the metric LP and its
-strengthenings can be restricted to the pairs at distance at most two; dual
-block-coordinate ascent turns the restricted relaxation into an anytime
-bound whose state is linear in the support; and star packings on the support
-are feasible dual solutions that can be computed where the dense
-implementations of the branch-and-bound do not fit into memory.  On the
-largest graphs of our study this packing supplies most of the bound, and
-block LPs started from it raise it on every graph.  The resulting
-bounds are exported as certificates that an independent checker verifies
-against the raw instance in exact arithmetic.  The gap decomposition turns
-the same certificate into a map of where a clustering can still improve.
+observations give much tighter checked bounds: the metric LP, its
+strengthenings and every star packing can be restricted to the pairs at
+distance at most two; a local search for star packings, the heuristic
+behind the root bound of the branch-and-bound, runs on these pairs with
+memory linear in the graph and the packing; and dual block-coordinate ascent
+turns the restricted relaxation into an anytime bound that starts from any
+packing.  With \SI{60}{s} per instance the star local search is stronger
+than the published root bound on the PACE exact track, and it gives checked
+bounds on all SNAP graphs of our study, up to $10^6$ vertices.  The bounds
+are exported as certificates that an independent checker verifies against
+the raw instance in exact arithmetic; the same checker accepts the packings
+of the branch-and-bound.  The gap decomposition turns a certificate into a
+map of where a clustering can still improve.
 
 \paragraph{Limitations.}
 \begin{itemize}
-\item On the PACE exact track the root star-packing bound of the KaPoCE
-branch-and-bound is stronger than ours on average, on the denser instances
-and on 25 of the 27 open instances; our packing heuristic is weaker than
-its, and on dense instances the block LPs do not converge within the
-budget.  Where the dense implementation finishes on SNAP graphs (at most
-$2.5\cdot10^4$ vertices), its root bound exceeds ours on \numRootBetter{} of
-\numRootN{} graphs, by up to \numRootBetterHi{} (Section~\ref{sec:exp-cert}).
-\item On \numPackBetter{} of the \numSnapCert{} SNAP graphs the sparse star
-packing alone gives a larger bound than CertiFlip's combination of a short
-packing and block LPs: within its budget CertiFlip gives the packing too
-little time.  A long packing followed by block LPs gives the largest bound
-on \numPlpBetter{} of the \numPlpN{} graphs; on the others its packing phase
-ended lower than in a separate run.  With the same nominal budget the
-packing alone is larger on \numEqPackBetter{} of \numEqN{} graphs, and we
-did not optimise how to split the budget between the two phases
-(Section~\ref{sec:exp-cert}).
-\item The support has $O(\sum_v\deg(v)^2)$ pairs.  On graphs with strong
-hubs it exceeds the threshold we fixed in advance for CertiFlip, on
-\numSnapNoBound{} of our \numSnapTotal{} SNAP graphs.  The packing alone
-gave checked bounds on \numPackOnlyN{} of them; on the other \numNoBoundN{}
-our implementation, which materialises the support, ran out of memory.
-Packing stars without materialising the support, or restricting it to
-centres of bounded degree, would keep the bound valid.
+\item The star local search implements the heuristic of an existing
+solver; what is new is that it runs on the support, with its certificate,
+at a scale where the dense implementation does not.  Where both finish, on
+seven SNAP graphs, the root bound of the branch-and-bound, run for up to
+four hours, exceeds ours on \numRootBetter{} of them by at most
+\numRootBetterHi{} (Section~\ref{sec:exp-cert}).
+\item After a strong star packing the block LPs add a median of
+\numSlpGainMedian{} on the SNAP graphs; they matter on sparse graphs with
+many short cycles, such as \texttt{roadNet-PA}, and on the PACE instances
+below density $0.1$.  We did not optimise how to split a budget between the
+two phases.
+\item The remaining gaps on the held-out social, citation and web graphs
+(up to \numSnapGapHi{}) are not closed from either side, and we cannot tell
+how they divide between the lower and the upper bound.
+\item A star with $k$ leaves occupies $k+\binom k2$ pairs.  On the two graphs
+with the largest hubs we capped the stars at 100 leaves to fit into
+\SI{12.7}{GB}.
 \item We consider unweighted instances only.  The weighted form enters only
 through the contraction of twins in the primal methods.
 \item The checker is short but not formally verified; the formal development
@@ -49,9 +45,10 @@ from Pivot, and the $2.06$ guarantee applies only when one block covers the
 graph and separation converges.
 \end{itemize}
 
-\paragraph{Open directions.}  The split of the budget between packing and
-block LPs; packing heuristics as strong as those of the branch-and-bound; parallel block
-solves; cluster-LP columns inside blocks, to which the roundings of
-\citet{CaoCLLNV24} and \citet{GarciaSorianoS26} could be applied; overlapping
-blocks with Lagrangian cost splitting; and a verified checker, for example by
+\paragraph{Open directions.}  Star packings with weights, which the same
+local search could handle with multiplicities; the split of the budget
+between packing and block LPs; parallel block solves; cluster-LP columns
+inside blocks, to which the roundings of \citet{CaoCLLNV24} and
+\citet{GarciaSorianoS26} could be applied; overlapping blocks with
+Lagrangian cost splitting; and a verified checker, for example by
 extracting it from the Lean development.

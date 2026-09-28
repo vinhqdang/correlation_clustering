@@ -3,33 +3,27 @@ approximation algorithms and strong heuristics, but on large graphs nobody
 can say how far a given clustering is from optimal: exact solvers stop at a
 few hundred vertices, and the lower bounds used at scale so far, packings of
 bad triangles, certify only factors of \numBaseFacLo{} to \numBaseFacHi{} on our
-graphs.  We compute certified
-lower bounds on sparse unweighted instances with up to $10^6$ vertices.
-Since optimal clusters have diameter at most two, the metric LP and its
-strengthening by star and local subgraph inequalities can be restricted to
-the $O(\sum_v\deg(v)^2)$ pairs at distance at most two without losing
-validity or LP-rounding guarantees.  Dual block-coordinate ascent,
-warm-started by a star packing on these pairs, turns this relaxation into an
-anytime bound that is valid after every step.  Its certificates are verified
+graphs.  We compute lower bounds on sparse unweighted instances with up to
+$10^6$ vertices and certify every one of them.  Optimal clusters have
+diameter at most two, so the metric LP and its strengthening by star and
+local subgraph inequalities can be restricted to the
+$O(\sum_v\deg(v)^2)$ pairs at distance at most two, and so can every
+packing of induced stars.  On these pairs we run a local search for star
+packings, a sparse implementation of the heuristic behind the root bound of
+the KaPoCE branch-and-bound, and a dual block-coordinate ascent that turns
+the relaxation into an anytime bound.  Their certificates are verified
 against the raw instance file, in exact arithmetic, by a short checker that
 shares no code with the solver; the inequality it evaluates is proved in
-Lean~4.  The optimality gap of any clustering decomposes exactly into
-non-negative local terms, which yields local optimality certificates.  On
-the PACE~2021 exact track the checked bound proves optimality on
-\numPaceOptOurs{} of 173 solved instances, against 79 for the root
-star-packing bound of the KaPoCE branch-and-bound; the latter is stronger on
-average (\numPaceMeanStar{} against \numPaceMeanOurs{} of the optimum) and on
-the denser instances.  Our bound improves the published root bounds of two
-open instances.  On \numSnapCert{} of \numSnapTotal{} SNAP graphs
-(\numSnapCertHeld{} of \numSnapHeldTotal{} held out during development; the
-others exceed a support size fixed in advance), our checked bounds certify
-the archived solutions within \numSnapGapLo{} to \numSnapGapHi{} (median
-\numSnapGapMedian{}); triangle packings leave \numBaseGapLo{} to
-\numBaseGapHi{} (median \numBaseGapMedian{}).  On the large graphs most of
-the bound comes from a long star packing, and block LPs started from it
-raise it on every graph, by a median of \numPlpGainMedian{}.  On
-\numPackOnlyN{} of the other nine graphs the packing alone gives checked
-bounds within \numPackOnlyGapHi{} of the best known values.  Where the dense
-root bound of KaPoCE runs (at most $2.5\cdot10^4$ vertices), it is usually
-stronger than ours, and its exported packings pass our checker as well; our
-bounds matter where it does not run.
+Lean~4.  On the PACE~2021 exact track the larger of two checked bounds,
+each computed in \SI{60}{s}, proves optimality on \numPaceBestOpt{} of the 173 solved
+instances, against 79 for the published root bound of the branch-and-bound,
+reaches \numPaceBestMean{} of the optimum on average, against
+\numPaceMeanStar{}, and improves the published root bounds of
+\numPaceOpenImproved{} of the \numPaceOpen{} open instances.  On all
+\numSnapTotal{} SNAP graphs of our study, with up to \numMaxCertN{} vertices,
+it gives checked bounds, which certify the archived solutions within
+\numSnapGapLo{} to \numSnapGapHi{} (median \numSnapGapMedian{}); triangle
+packings leave \numBaseGapLo{} to \numBaseGapHi{}.  The dense implementation
+of the branch-and-bound runs on seven of these graphs, exceeds our bound on
+\numRootBetter{} of them by at most \numRootBetterHi{}, and its exported
+packings pass the same checker.

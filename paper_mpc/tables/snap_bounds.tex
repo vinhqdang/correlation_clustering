@@ -2,35 +2,36 @@
 \toprule
 graph & UB & \multicolumn{5}{c}{checked LB} & B\&B & gap & gap$^*$ & tri.\\
 \cmidrule(lr){3-7}
- & & CertiFlip & $t$ (s) & packing & $t$ (s) & pack.+LP & root & (\%) & (\%) & factor \\
+ & & CertiFlip & R\&R & R\&R & SLS & SLS & root & (\%) & (\%) & factor \\
+ & & & packing & +LP & & +LP & & & & \\
 \midrule
-\texttt{ca-GrQc} & \num{6051} & \textbf{\num{6036}} & 298 & \num{6003} & 47 & \num{6034} & \num{6015} & 0.25 & 0.23 & 1.28 \\
-\texttt{ca-HepTh} & \num{15861} & \num{15682} & 299 & \num{15705} & 285 & \num{15725} & \num{15670} & 0.83$^\S$ & 0.53 & 1.45 \\
-\texttt{ca-HepPh} & \num{46194} & \num{43199} & 281 & \num{42865} & 136 & \textbf{\num{43740}} & \num{46014}$^\dagger$ & 5.61 & 5.47 & 1.17 \\
-\texttt{ca-AstroPh} & \num{125682} & \num{118224} & 278 & \num{117865} & 176 & \textbf{\num{119101}} & t.o. & 5.53 & 5.41 & 1.46 \\
-\texttt{ca-CondMat} & \num{56974} & \num{55283} & 292 & \num{55627} & 106 & \textbf{\num{55910}} & mem. & 1.90 & 1.65 & 1.43 \\
-\texttt{email-Enron} & \num{150701} & \num{140551} & 854 & \num{140854} & 1285 & \num{140862} & -- & 6.91$^\S$ & 6.71 & 1.77 \\
-\texttt{loc-Brightkite} & \num{175081} & \num{163366} & 420 & \num{163927} & 906 & \num{164106} & -- & 6.62$^\S$ & 6.38 & 1.71 \\
-\texttt{soc-Epinions} & -- & -- & -- & \num{344995} & 2707 & -- & -- & -- & 5.84 & -- \\
-\texttt{Slashdot+} & -- & -- & -- & \num{334298} & 2830 & -- & -- & -- & 5.25 & -- \\
-\texttt{Epinions+} & -- & -- & -- & \num{489582} & 3498 & -- & -- & -- & 6.58 & -- \\
-\texttt{BitcoinOTC+} & \num{16497} & \num{15582} & 301 & \num{15642} & 220 & \textbf{\num{15661}} & \num{15927}$^\dagger$ & 5.34 & 5.11 & 1.80 \\
-\texttt{BitcoinAlpha+} & \num{11461} & \num{10749} & 300 & \num{10802} & 232 & \textbf{\num{10820}} & \num{11038}$^\dagger$ & 5.92 & 5.70 & 1.81 \\
-\texttt{com-Amazon} & \num{615035} & \num{562505} & 205 & \num{574956} & 148 & \num{576376} & -- & 6.15$^\S$ & 5.68 & 1.43 \\
-\texttt{com-DBLP} & \num{608183} & \num{582821} & 219 & \num{589979} & 198 & \num{589275} & -- & 2.76$^\S$ & 2.51 & 1.42 \\
-\texttt{com-Youtube} & -- & \multicolumn{9}{c}{no bound: the packing job died three times (memory)} \\
+\texttt{ca-GrQc} & \num{6051} & \num{6036} & \num{6003} & \num{6034} & \num{6029} & \textbf{\num{6038}} & \num{6015} & 0.22 & 0.20 & 1.28 \\
+\texttt{ca-HepTh} & \num{15861} & \num{15682} & \num{15705} & \num{15725} & \num{15697} & \num{15706} & \num{15670} & 0.83$^\S$ & 0.53 & 1.45 \\
+\texttt{ca-HepPh} & \num{46194} & \num{43199} & \num{42865} & \num{43740} & \num{45969} & \textbf{\num{45974}} & \num{46014}$^\dagger$ & 0.48 & 0.35 & 1.17 \\
+\texttt{ca-AstroPh} & \num{125682} & \num{118224} & \num{117865} & \num{119101} & \num{123935} & \textbf{\num{123955}} & t.o. & 1.39 & 1.28 & 1.46 \\
+\texttt{ca-CondMat} & \num{56974} & \num{55283} & \num{55627} & \num{55910} & \textbf{\num{56420}} & \num{56417} & mem. & 0.98 & 0.73 & 1.43 \\
+\texttt{email-Enron} & \num{150701} & \num{140551} & \num{140854} & \num{140862} & \textbf{\num{144207}} & \num{144166} & -- & 4.50 & 4.31 & 1.77 \\
+\texttt{loc-Brightkite} & \num{175081} & \num{163366} & \num{163927} & \num{164106} & \textbf{\num{169694}} & \num{169661} & -- & 3.17 & 2.95 & 1.71 \\
+\texttt{soc-Epinions} & -- & -- & \num{344995} & -- & \textbf{\num{349706}} & -- & -- & -- & 4.41 & -- \\
+\texttt{Slashdot+} & -- & -- & \num{334298} & -- & \textbf{\num{336751}} & -- & -- & -- & 4.49 & -- \\
+\texttt{Epinions+} & -- & -- & \num{489582} & -- & \textbf{\num{498929}} & -- & -- & -- & 4.58 & -- \\
+\texttt{BitcoinOTC+} & \num{16497} & \num{15582} & \num{15642} & \num{15661} & \num{15909} & \textbf{\num{15911}} & \num{15927}$^\dagger$ & 3.68 & 3.46 & 1.80 \\
+\texttt{BitcoinAlpha+} & \num{11461} & \num{10749} & \num{10802} & \num{10820} & \num{11061} & \textbf{\num{11062}} & \num{11038} & 3.61 & 3.39 & 1.81 \\
+\texttt{com-Amazon} & \num{615035} & \num{562505} & \num{574956} & \num{576376} & \textbf{\num{594310}} & \num{593290} & -- & 3.49 & 3.03 & 1.43 \\
+\texttt{com-DBLP} & \num{608183} & \num{582821} & \num{589979} & \num{589275} & \textbf{\num{600982}} & \num{600373} & -- & 1.20 & 0.96 & 1.42 \\
+\texttt{com-Youtube} & -- & -- & -- & -- & \textbf{\num{2516213}}$^k$ & -- & -- & -- & 5.29 & -- \\
 \midrule
-\texttt{email-Eu-core} & \num{12732} & \textbf{\num{11657}} & 360 & \num{11413} & 352 & \num{11651} & \num{12228}$^\dagger$ & 9.22 & 9.22 & 1.59 \\
-\texttt{facebook} & \num{53547} & \num{43344} & 285 & \num{42953} & 213 & \textbf{\num{44025}} & \num{52739}$^\dagger$ & 21.63 & 21.63 & 1.37 \\
-\texttt{wiki-Vote} & \num{95263} & \num{85487} & 397 & \num{85522} & 495 & \textbf{\num{85548}} & t.o. & 11.36 & 11.35 & 1.90 \\
-\texttt{cit-HepTh} & \num{293167} & -- & -- & \num{266019} & 1197 & -- & -- & 10.21 & 10.20 & -- \\
-\texttt{cit-HepPh} & \num{357463} & \num{322666} & 245 & \num{324327} & 410 & \num{324608} & -- & 10.11$^\S$ & 10.09 & 1.72 \\
-\texttt{p2p-Gnutella31} & \num{131362} & \num{130297} & 283 & \num{130336} & 84 & \num{130326} & -- & 0.63$^\S$ & 0.63 & 1.79 \\
-\texttt{soc-Slashdot0902} & \num{470778} & -- & -- & \num{447216} & 2263 & -- & -- & 5.27 & 5.26 & -- \\
-\texttt{loc-Gowalla} & \num{788550} & \multicolumn{9}{c}{no bound: the packing job died three times (memory)} \\
-\texttt{email-EuAll} & \num{342709} & \multicolumn{9}{c}{no bound: the packing job died three times (memory)} \\
-\texttt{amazon0302} & \num{540844} & \num{503032} & 215 & \num{511221} & 144 & \num{508994} & -- & 4.92$^\S$ & 4.92 & 1.32 \\
-\texttt{web-NotreDame} & \num{733709} & \multicolumn{9}{c}{no bound: the packing job died three times (memory)} \\
-\texttt{roadNet-PA} & \num{944542} & \num{865131} & 215 & \num{884166} & 71 & \textbf{\num{905670}} & -- & 4.29 & 4.29 & 1.30 \\
+\texttt{email-Eu-core} & \num{12732} & \num{11657} & \num{11413} & \num{11651} & \textbf{\num{12251}} & \num{12227} & \num{12228} & 3.93 & 3.93 & 1.59 \\
+\texttt{facebook} & \num{53547} & \num{43344} & \num{42953} & \num{44025} & \num{52330} & \textbf{\num{52347}} & \num{52739}$^\dagger$ & 2.29 & 2.29 & 1.37 \\
+\texttt{wiki-Vote} & \num{95263} & \num{85487} & \num{85522} & \num{85548} & \num{87595} & \textbf{\num{87600}} & t.o. & 8.75 & 8.74 & 1.90 \\
+\texttt{cit-HepTh} & \num{293167} & -- & \num{266019} & -- & \textbf{\num{277208}} & -- & -- & 5.76 & 5.75 & -- \\
+\texttt{cit-HepPh} & \num{357463} & \num{322666} & \num{324327} & \num{324608} & \textbf{\num{336163}} & \num{336120} & -- & 6.34 & 6.32 & 1.72 \\
+\texttt{p2p-Gnutella31} & \num{131362} & \num{130297} & \num{130336} & \num{130326} & \num{130020} & \num{130010} & -- & 0.63$^\S$ & 0.63 & 1.79 \\
+\texttt{soc-Slashdot0902} & \num{470778} & -- & \num{447216} & -- & \textbf{\num{449403}} & -- & -- & 4.76 & 4.75 & -- \\
+\texttt{loc-Gowalla} & \num{788550} & -- & -- & -- & \textbf{\num{750395}} & -- & -- & 5.08 & 5.08 & -- \\
+\texttt{email-EuAll} & \num{342709} & -- & -- & -- & \textbf{\num{321593}}$^k$ & -- & -- & 6.57 & 6.57 & -- \\
+\texttt{amazon0302} & \num{540844} & \num{503032} & \num{511221} & \num{508994} & \textbf{\num{531655}} & \num{531166} & -- & 1.73 & 1.73 & 1.32 \\
+\texttt{web-NotreDame} & \num{733709} & -- & -- & -- & \textbf{\num{576001}} & -- & -- & 27.38 & 27.38 & -- \\
+\texttt{roadNet-PA} & \num{944542} & \num{865131} & \num{884166} & \num{905670} & \num{891590} & \textbf{\num{915741}} & -- & 3.15 & 3.14 & 1.30 \\
 \bottomrule
 \end{tabular}
