@@ -25044,7 +25044,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790578264.6369247
  },
@@ -25144,7 +25144,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790579521.3583121
  },
@@ -25214,8 +25214,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790580837.5345552
  },
  {
   "id": "lsstar_soc-Slashdot0902_1",
@@ -25223,8 +25224,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790580837.5345583
  },
  {
   "id": "lsstar_web-NotreDame_1",
@@ -25232,8 +25234,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790580837.534559
  },
  {
   "id": "lsstar_wiki-Vote_1",
@@ -25241,8 +25244,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790580837.5345604
  },
  {
   "id": "lsstar_BitcoinAlpha+_2",
