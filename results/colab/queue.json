@@ -25524,7 +25524,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790584328.75004
  },
@@ -25694,8 +25694,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790586891.5465279
  },
  {
   "id": "lsstar_roadNet-PA_3",
@@ -25703,8 +25704,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790586891.54653
  },
  {
   "id": "lsstar_soc-Epinions_3",
@@ -25712,8 +25714,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790586891.546531
  },
  {
   "id": "lsstar_soc-Slashdot0902_3",
@@ -25721,8 +25724,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790586891.5465317
  },
  {
   "id": "lsstar_web-NotreDame_3",
