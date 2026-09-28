@@ -24924,7 +24924,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790573316.0883832
  },
@@ -25054,8 +25054,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790578488.3709822
  },
  {
   "id": "lsstar_ca-CondMat_1",
@@ -25063,8 +25064,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790578488.3709853
  },
  {
   "id": "lsstar_ca-GrQc_1",
@@ -25072,8 +25074,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790578488.3709862
  },
  {
   "id": "lsstar_ca-HepPh_1",
@@ -25081,8 +25084,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790578488.370987
  },
  {
   "id": "lsstar_ca-HepTh_1",
