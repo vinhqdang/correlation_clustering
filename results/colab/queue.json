@@ -25965,7 +25965,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790588916.5942945
  },
