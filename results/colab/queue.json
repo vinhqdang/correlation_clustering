@@ -24806,7 +24806,8 @@
   "graph": "com-Youtube",
   "status": "running",
   "machine": "w4",
-  "started": 1790573278.2739131
+  "started": 1790587276.255366,
+  "tries": 1
  },
  {
   "id": "lsstar+k100+t3600_email-EuAll_0",
@@ -25564,7 +25565,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790584666.6843572
  },
@@ -25654,7 +25655,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790586630.1553752
  },
@@ -25734,8 +25735,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790587276.255369
  },
  {
   "id": "lsstar_wiki-Vote_3",
@@ -25743,8 +25745,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790587276.25537
  },
  {
   "id": "lsstar_BitcoinAlpha+_4",
@@ -25752,8 +25755,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w4",
+  "started": 1790587276.255371
  },
  {
   "id": "lsstar_BitcoinOTC+_4",
@@ -25761,8 +25765,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790587280.962645
  },
  {
   "id": "lsstar_Epinions+_4",
@@ -25770,8 +25775,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790587280.9626472
  },
  {
   "id": "lsstar_Slashdot+_4",
@@ -25779,8 +25785,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790587280.9626484
  },
  {
   "id": "lsstar_amazon0302_4",
@@ -25788,8 +25795,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790587280.962649
  },
  {
   "id": "lsstar_ca-AstroPh_4",
