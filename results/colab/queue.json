@@ -25484,7 +25484,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790583659.8607585
  },
@@ -25554,7 +25554,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790584666.6843567
  },
@@ -25654,8 +25654,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790586630.1553752
  },
  {
   "id": "lsstar_facebook_3",
@@ -25663,8 +25664,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790586630.1553779
  },
  {
   "id": "lsstar_loc-Brightkite_3",
@@ -25672,8 +25674,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790586630.1553783
  },
  {
   "id": "lsstar_loc-Gowalla_3",
@@ -25681,8 +25684,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790586630.155379
  },
  {
   "id": "lsstar_p2p-Gnutella31_3",
