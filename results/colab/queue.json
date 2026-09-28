@@ -25585,7 +25585,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790586133.3692596
  },
