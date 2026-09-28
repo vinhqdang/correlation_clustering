@@ -21442,7 +21442,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790552165.926928
  },
@@ -21482,7 +21482,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790552168.2569747
  },
@@ -21522,7 +21522,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790552197.8008246
  },
@@ -21592,7 +21592,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790552427.1779022
  },
@@ -21602,7 +21602,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790552427.177903
  },
@@ -21632,7 +21632,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790552429.3903828
  },
@@ -21672,7 +21672,7 @@
   "T": 600.0,
   "seed": 0,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790552431.0434864
  },
