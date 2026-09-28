@@ -93,10 +93,11 @@ single runs of this size carry no information about the methods.  On
 \numSlsNotConv{} of the \numSlsGraphsN{} graphs every round of the
 \SI{600}{s} run improved the packing, so the search was far from its
 stopping rule; on the largest graphs it completed only a few rounds.  Run for
-\SI{3600}{s} on the \numSlsLongN{} graphs with fewer than 100 rounds, all of
-them improving, the bound rose by a median of \numSlsLongGainMedian{} and by
+\SI{3600}{s} on the graphs with fewer than 100 rounds, all of them
+improving (\numSlsLongN{} runs finished), the bound rose by a median of \numSlsLongGainMedian{} and by
 up to \numSlsLongGainMax{} (\numSlsLongGainMaxGraph{};
-Figure~\ref{fig:sls-anytime}).  The gaps on these graphs are therefore partly
+Figure~\ref{fig:sls-anytime}); on \numSlsLongFailList{} the longer run was
+killed three times, most likely for lack of memory, as its packing grows.  The gaps on these graphs are therefore partly
 a matter of budget.  The largest checked bound of a graph, which enters the
 column gap of Table~\ref{tab:snap-bounds}, is the maximum over all archived
 certificates for it, these longer runs and further seeds included; the last

@@ -463,6 +463,11 @@ def snap_sls(arch, SS, SL, SX):
         NUM["numEqLpMin"] = f"{tl[1]:.1f}\\%"
         NUM["numEqLpMinGraph"] = tt(tl[0])
         NUM["numEqLpWinList"] = ", ".join(tt(x) for x, d in eq if d > 0) or "none"
+    qf = os.path.join(COLAB, "queue.json")
+    failed = sorted({j["graph"] for j in json.load(open(qf)) if j["status"] == "failed"
+                     and j["tag"] in ("lsstar+t3600", "lsstar+k100+t3600")}) if os.path.exists(qf) else []
+    NUM["numSlsLongFailList"] = " and ".join(tt(x) for x in failed) or "none"
+    NUM["numSlsLongFailN"] = str(len(failed))
     if longg:
         NUM["numSlsLongN"] = str(len(longg))
         NUM["numSlsLongGainMedian"] = f"{np.median([g for _, g, _ in longg]):.2f}\\%"
