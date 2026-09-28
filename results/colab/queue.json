@@ -25364,7 +25364,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790582141.1116498
  },
@@ -25534,8 +25534,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790584666.6843538
  },
  {
   "id": "lsstar_amazon0302_3",
@@ -25543,8 +25544,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790584666.6843562
  },
  {
   "id": "lsstar_ca-AstroPh_3",
@@ -25552,8 +25554,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790584666.6843567
  },
  {
   "id": "lsstar_ca-CondMat_3",
@@ -25561,8 +25564,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790584666.6843572
  },
  {
   "id": "lsstar_ca-GrQc_3",
