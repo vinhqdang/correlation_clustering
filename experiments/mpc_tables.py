@@ -874,8 +874,8 @@ def snap():
     if root_cmp:
         up = [100 * (r - b) / b for _, r, b, _ in root_cmp if r > b]
         down = [100 * (b - r) / b for _, r, b, _ in root_cmp if r <= b]
-        NUM["numRootBetterLo"] = f"{min(up):.1f}\\%" if up else "--"
-        NUM["numRootBetterHi"] = f"{max(up):.1f}\\%" if up else "--"
+        NUM["numRootBetterLo"] = f"{min(up):.2f}\\%" if up else "--"
+        NUM["numRootBetterHi"] = f"{max(up):.2f}\\%" if up else "--"
         NUM["numRootBelowMax"] = f"{max(down):.2f}\\%" if down else "--"
         NUM["numRootBelowList"] = ", ".join(tt(x) for x, r, b, _ in root_cmp if r <= b) or "none"
         ts = [t for *_, t in root_cmp]

@@ -168,11 +168,12 @@ and on \numRootMemList{} it needs about \SI{11.6}{GB} and was killed in each
 of four runs on the machines with \SI{12.7}{GB}, the longest after
 \SI{3.8}{h}; its dense matrices, of which it keeps several with $n^2$
 entries, do not fit into memory above $2.5\cdot10^4$ vertices.  The two
-implement the same heuristic.  On the graphs where the root bound is larger,
-its margin exceeds the spread of our search over seeds
-(Table~\ref{tab:snap-sls}), and our longest runs do not close it; we have
-not analysed whether this comes from the four-hour budget or from
-differences in the candidate generation of the two implementations.  Its
+implement the same heuristic.  On \texttt{ca-HepPh} the root bound is larger by
+\numRootBetterLo{}, the size of the spread of our search over seeds; on
+\texttt{facebook} its margin of \numRootBetterHi{} exceeds that spread
+(Table~\ref{tab:snap-sls}), and our runs of up to \SI{1200}{s} do not close
+it.  We have not analysed whether this comes from the four-hour budget or
+from differences in the candidate generation of the two implementations.  Its
 packings use the same rows as ours, so we exported them from its code (a
 function of 13 lines that writes the stars of its final packing, centre
 first; \texttt{experiments/kapoce/}), converted each into a dual solution on
