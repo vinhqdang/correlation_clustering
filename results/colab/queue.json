@@ -25635,7 +25635,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790586337.4698153
  },
