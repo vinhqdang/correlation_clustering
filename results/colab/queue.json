@@ -25975,7 +25975,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790588916.5942974
  },
@@ -26005,7 +26005,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-Youtube",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790589262.7762892
  },
@@ -26125,7 +26125,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact005.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790590175.9841495
  },
