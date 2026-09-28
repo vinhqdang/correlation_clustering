@@ -45,8 +45,9 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact124.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790578163.0191567
  },
  {
   "id": "lsstar+t300_pace-exact_exact130.gr_0",
@@ -54,8 +55,9 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact130.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790578163.019159
  },
  {
   "id": "lsstar+t300_pace-exact_exact161.gr_0",
@@ -63,8 +65,9 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact161.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790578163.0191603
  },
  {
   "id": "lsstar+t300_pace-exact_exact178.gr_0",
@@ -72,8 +75,9 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact178.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790578163.0191607
  },
  {
   "id": "lkroot_pace-exact_exact191.gr_0",
@@ -24820,7 +24824,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790573289.626913
  },
@@ -24880,7 +24884,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790573301.848273
  },
