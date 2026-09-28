@@ -34069,7 +34069,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "pace-exact/exact199.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790602193.6983273
  },
@@ -34079,7 +34079,7 @@
   "T": 60.0,
   "seed": 4,
   "graph": "pace-exact/exact200.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790602193.6983278
  }
