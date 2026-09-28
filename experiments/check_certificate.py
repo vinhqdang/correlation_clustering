@@ -268,6 +268,24 @@ def _brute_rows(indptr, indices, ptr, u, v, val, b, rows, max_brute):
     return ok
 
 
+@nb.njit(cache=True)
+def _row_sums(ptr, lo, hi, val, n):
+    """(some row repeats a pair, largest sum of |coefficients| of a row)."""
+    best = 0.0
+    for r in range(len(ptr) - 1):
+        s, e = ptr[r], ptr[r + 1]
+        k = np.sort(lo[s:e] * n + hi[s:e])
+        for t in range(1, e - s):
+            if k[t] == k[t - 1]:
+                return True, best
+        tot = 0.0
+        for t in range(s, e):
+            tot += abs(val[t])
+        if tot > best:
+            best = tot
+    return False, best
+
+
 def _max_independent(adj):
     """Exact maximum independent set size of a small graph (dict of sets)."""
     best = 0
@@ -383,23 +401,20 @@ def check(g, cert):
         raise ValueError("vertex id out of range")
     val, b = fval.astype(np.int64), fb.astype(np.int64)
     lo, hi = np.minimum(u, v), np.maximum(u, v)
-    rowof = np.repeat(np.arange(nrows), np.diff(ptr))
+    del fval, u, v  # large certificates: keep only one copy of each array
     # the enumeration of step 2 sums a row's coefficients in int64: a pair may
     # occur only once in a row, and sum_p |a_ip| < 2^61 keeps every partial sum
-    # of a row exact
-    if len(u):
-        order = np.lexsort((hi, lo, rowof))
-        same = ((rowof[order][1:] == rowof[order][:-1]) & (lo[order][1:] == lo[order][:-1])
-                & (hi[order][1:] == hi[order][:-1]))
-        if same.any():
+    # of a row exact (checked row by row, in memory of one row)
+    if len(lo):
+        dup, rowabs = _row_sums(ptr, lo, hi, val, g.n)
+        if dup:
             raise ValueError("a row contains the same pair twice")
-        rowabs = np.bincount(rowof, weights=np.abs(fval), minlength=nrows).max()
         if rowabs >= 2.0 ** 61:
             raise ValueError("row coefficients too large for exact int64 enumeration")
         report["max_row_abs"] = int(rowabs)
         report["max_y"] = float(y.max()) if nrows else 0.0
     # 1. pairs of P
-    sign = np.zeros(len(u), dtype=np.int64)
+    sign = np.zeros(len(lo), dtype=np.int64)
     bad = _check_pairs(g.indptr, g.indices, lo, hi, sign)
     if bad:
         raise ValueError(f"{bad} row entries are not pairs of P")
@@ -428,6 +443,7 @@ def check(g, cert):
         raise ValueError("negative scaled multiplier")
     key = lo * g.n + hi
     uniq, inv = np.unique(key, return_inverse=True)
+    rowof = np.repeat(np.arange(nrows), np.diff(ptr))
     # int64 accumulation is exact if no partial sum can exceed 2^62; this is
     # checked with an upper bound in floating point (with a generous margin)
     absbound = np.zeros(len(uniq))
