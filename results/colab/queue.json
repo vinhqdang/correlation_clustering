@@ -25404,7 +25404,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790583485.7067742
  },
@@ -25514,7 +25514,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790584328.7500393
  },
@@ -25614,8 +25614,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790586337.4698124
  },
  {
   "id": "lsstar_com-Amazon_3",
@@ -25623,8 +25624,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790586337.4698148
  },
  {
   "id": "lsstar_com-DBLP_3",
@@ -25632,8 +25634,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790586337.4698153
  },
  {
   "id": "lsstar_email-Enron_3",
@@ -25641,8 +25644,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790586337.4698157
  },
  {
   "id": "lsstar_email-Eu-core_3",
