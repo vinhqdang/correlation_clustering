@@ -18,6 +18,7 @@ CertiFlip bound, the whole CertiFlip run; for the rerun, its star bound);
 --: not measured or not published.}
 \label{tab:pace-bounds}
 \footnotesize
+\setlength{\tabcolsep}{4pt}
 \input{tables/pace_bounds}
 \end{table}
 
@@ -68,10 +69,10 @@ be.  Run until its \SI{60}{s} time limit instead, the same search proves
 optimality on \numPaceSlsOpt{} instances (mean \numPaceSlsMean{}; from
 \numPaceSlsOptSeedLo{} to \numPaceSlsOptSeedHi{} over five seeds, mean
 \numPaceSlsMeanSeedLo{} to \numPaceSlsMeanSeedHi{}), and at least
-\numPaceSlsMin{} of the optimum on every instance.  On the
-\numPaceSlsOverKrOpt{} instances that it closes only with the longer run, the
-\SI{60}{s} run reached the optimum after a median of
-\numPaceReachOptMedian{}\,s.  The published root bounds are therefore far
+\numPaceSlsMin{} of the optimum on every instance.  With seed~1, on the
+\numPaceReachOptN{} instances that the \SI{60}{s} run closes and the run with
+the stopping rule does not, the \SI{60}{s} run reached the optimum after a
+median of \numPaceReachOptMedian{}\,s (at most \numPaceReachOptMax{}\,s).  The published root bounds are therefore far
 from what the same heuristic reaches with a few seconds more; the dense
 implementation could be run longer on these instances as well, and our
 comparison says nothing about which implementation is faster per round.

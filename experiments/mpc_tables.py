@@ -148,8 +148,8 @@ def pace_exact():
         B[nm] = np.ceil(old[old.algo == a].set_index("inst")["lb"] - 1e-6)
     for tag, seed, nm in [("lpack", 1, "ruin-and-recreate star packing"), ("c2x", 0, "CertiFlip bound"),
                           ("lwarm", 0, "CertiFlip bound, 1800 s"),
-                          ("lsstar", 0, "star local search"),
-                          ("lsstar+kr", 0, "star local search, B\\&B stopping rule"),
+                          ("lsstar", 0, "star local search (SLS)"),
+                          ("lsstar+kr", 0, "SLS, B\\&B stopping rule"),
                           ("ltri", 0, "metric LP on $P$, triangle rows")]:
         R = runs(tag)
         vals = {}
@@ -175,10 +175,10 @@ def pace_exact():
                                             if ref.loc[i, "solved_1h"] == 1]
     solved = ref[ref["solved_1h"] == 1]
     # the larger of valid bounds is a valid bound
-    B["larger of CertiFlip and star local search"] = pd.concat(
-        [B["CertiFlip bound"], B["star local search"]], axis=1).max(axis=1, skipna=False)
+    B["larger of CertiFlip and SLS"] = pd.concat(
+        [B["CertiFlip bound"], B["star local search (SLS)"]], axis=1).max(axis=1, skipna=False)
     B["larger of both and B\\&B star"] = pd.concat(
-        [B["larger of CertiFlip and star local search"], ref["low_star"].astype(float)],
+        [B["larger of CertiFlip and SLS"], ref["low_star"].astype(float)],
         axis=1).max(axis=1, skipna=False)
     rows = []
     for nm, v in B.items():
@@ -207,8 +207,8 @@ def pace_exact():
         NUM["numPaceMaxOpt"] = str(int((mx >= solved["opt"]).sum()))
         NUM["numPaceMaxMean"] = f"{(mx / solved['opt'].clip(lower=1)).mean():.4f}"
     # the star local search (sstar, 60 s) and the best checked bound
-    sls = B["star local search"].reindex(solved.index)
-    best = B["larger of CertiFlip and star local search"].reindex(solved.index)
+    sls = B["star local search (SLS)"].reindex(solved.index)
+    best = B["larger of CertiFlip and SLS"].reindex(solved.index)
     if sls.notna().sum() == len(solved):
         o = solved["opt"].clip(lower=1)
         NUM["numPaceSlsMean"] = f"{(sls / o).mean():.4f}"
@@ -263,7 +263,12 @@ def pace_exact():
     orows, improved, below, gap_open = [], 0, [], []
     for i in unsolved.index:
         vals = [B[nm].get(i) for nm in ("CertiFlip bound", "ruin-and-recreate star packing",
-                                        "CertiFlip bound, 1800 s", "star local search")]
+                                        "CertiFlip bound, 1800 s", "star local search (SLS)",
+                                        "SLS, B\\&B stopping rule")]
+        # further seeds of the star local search (every archived certificate counts)
+        for tg in ("lsstar", "lsstar+kr"):
+            R_ = runs(tg)
+            vals += [checked(R_.get((key(i), sd))) for sd in range(1, 5)]
         vals = [x for x in vals if x is not None and np.isfinite(x)]
         if not vals:
             continue
@@ -367,17 +372,21 @@ def pace_controls(ref, B, solved, key):
         NUM["numPaceKrCap"] = str(sum(R[(key(i), 0)]["sstar_time"] >= 59.5 for i in solved.index))
         sls = per["lsstar"].get(0)
         if sls is not None:
-            gain = (sls > kr) & (sls >= solved["opt"])
             NUM["numPaceSlsOverKrOpt"] = str(int(((sls >= solved["opt"]) & (kr < solved["opt"])).sum()))
-            # time the 60 s run needed to reach OPT where the B&B rule stops short
+        # time a 60 s run needed to reach OPT where the B&B rule, same seed,
+        # stops short (seed 1: the runs of seed 0 predate the trajectory log)
+        s1, k1 = per["lsstar"].get(1), per["lsstar+kr"].get(1)
+        if s1 is not None and k1 is not None:
             Rs = runs("lsstar")
             reach = []
-            for i in solved.index[((sls >= solved["opt"]) & (kr < solved["opt"])).values]:
-                tr = Rs[(key(i), 0)].get("trajectory")
-                if tr:
-                    reach.append(next((t for _, v, t in tr if v >= solved.loc[i, "opt"]), np.nan))
+            for i in solved.index[((s1 >= solved["opt"]) & (k1 < solved["opt"])).values]:
+                tr = Rs[(key(i), 1)].get("trajectory")
+                if tr is not None:
+                    reach.append(next((t for _, v, t in tr if v >= solved.loc[i, "opt"]), 0.0))
             if reach:
-                NUM["numPaceReachOptMedian"] = f"{np.nanmedian(reach):.1f}"
+                NUM["numPaceReachOptN"] = str(len(reach))
+                NUM["numPaceReachOptMedian"] = f"{np.median(reach):.1f}"
+                NUM["numPaceReachOptMax"] = f"{max(reach):.0f}"
     # instances whose CertiFlip bound is optimal while the star local search (seed 0) is not
     cf = B["CertiFlip bound"].reindex(solved.index)
     sls = per["lsstar"].get(0)
@@ -436,11 +445,11 @@ def snap_sls(arch, SS, SL, SX):
         gap0 = "--" if ub is None else f"{100 * (ub - vals[0]) / vals[0]:.2f}"
         f = lambda v: "--" if v is None else f"\\num{{{v}}}"
         rng = (f"{f(min(vals))}--{f(max(vals))}" if len(vals) >= 2 else "--")
-        rows.append(f"{tt(name)} & {R} ({I}) & {f(vals[0])} & {rng} & "
+        rows.append(f"{tt(name)} & {R} ({I}) & {f(vals[0])} & "
                     f"{fmt_pct(sp, 2) if sp is not None else '--'} & {f(c12)} & {f(slp)} & "
                     f"{f(c36)} & {r36.get('rounds', [0])[0] if r36 else '--'} & {gap0} \\\\")
-    write("snap_sls", "\\begin{tabular}{lrrrrrrrrr}\n\\toprule\n"
-          "graph & rounds (impr.) & seed 0 & 5 seeds & spread \\% & \\SI{1200}{s} & "
+    write("snap_sls", "\\begin{tabular}{lrrrrrrrr}\n\\toprule\n"
+          "graph & rounds (impr.) & seed 0 & spread \\% & \\SI{1200}{s} & "
           "SLS+LP & \\SI{3600}{s} & rounds & gap \\% \\\\\n\\midrule\n" + "\n".join(rows) +
           "\n\\bottomrule\n\\end{tabular}\n")
     NUM["numSlsNotConv"] = str(len(conv))
