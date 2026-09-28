@@ -294,7 +294,7 @@ def _max_independent(adj):
     return best
 
 
-def _star_valid(rows_u, rows_v, rows_val, b, close):
+def _star_valid(rows_u, rows_v, rows_val, b, close, stats=None):
     """Row  sum_t x_vt - sum_{tt' in R} x_tt' >= b  with centre v and leaves T.
     Minimum over far-separating clusterings: |T| - |R| - M with
     M = max over S (S + v far-free) of |S| - e_R(S).  If R contains every
@@ -332,6 +332,8 @@ def _star_valid(rows_u, rows_v, rows_val, b, close):
             adj[a].add(c)
             adj[c].add(a)
         M = _max_independent(adj)
+        if stats is not None:
+            stats["alpha"] = stats.get("alpha", 0) + 1
     return b <= len(T) - len(R) - M
 
 
@@ -391,8 +393,11 @@ def check(g, cert):
                 & (hi[order][1:] == hi[order][:-1]))
         if same.any():
             raise ValueError("a row contains the same pair twice")
-        if np.bincount(rowof, weights=np.abs(fval), minlength=nrows).max() >= 2.0 ** 61:
+        rowabs = np.bincount(rowof, weights=np.abs(fval), minlength=nrows).max()
+        if rowabs >= 2.0 ** 61:
             raise ValueError("row coefficients too large for exact int64 enumeration")
+        report["max_row_abs"] = int(rowabs)
+        report["max_y"] = float(y.max()) if nrows else 0.0
     # 1. pairs of P
     sign = np.zeros(len(u), dtype=np.int64)
     bad = _check_pairs(g.indptr, g.indices, lo, hi, sign)
@@ -408,13 +413,15 @@ def check(g, cert):
     def close(a, c):
         return bool(_close(g.indptr, g.indices, min(a, c), max(a, c)))
 
+    stats = {}
     for r in big:
         s, e = ptr[r], ptr[r + 1]
         if not _star_valid(lo[s:e].tolist(), hi[s:e].tolist(), val[s:e].tolist(), int(b[r]),
-                           close):
+                           close, stats):
             raise ValueError(f"row {r} ({e - s} entries) could not be verified")
     report["brute_rows"] = int((flags == 1).sum())
     report["star_rows"] = len(big)
+    report["star_rows_alpha"] = stats.get("alpha", 0)
     # 3. exact evaluation, in Python integers
     yi = np.floor(y * 2.0 ** SCALE).astype(np.int64)
     if (yi < 0).any():
@@ -478,7 +485,7 @@ def check_dir(data_dir, cert_dir, out_csv, resume=False):
     import os
     import time
     keys = ["certificate", "instance", "status", "identity", "n", "m", "rows", "nnz",
-            "brute_rows", "star_rows", "lb_exact", "certified", "solver_bound", "cost", "seconds",
+            "brute_rows", "star_rows", "star_rows_alpha", "max_row_abs", "max_y", "lb_exact", "certified", "solver_bound", "cost", "seconds",
             "raw_sha256", "edge_sha256"]
 
     def save():
