@@ -25384,7 +25384,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790583485.7067728
  },
@@ -25494,7 +25494,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790584328.7500331
  },
