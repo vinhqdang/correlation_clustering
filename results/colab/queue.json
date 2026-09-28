@@ -25204,7 +25204,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790580725.5499902
  },
@@ -25244,7 +25244,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "wiki-Vote",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790580837.5345604
  },
@@ -25374,8 +25374,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790583485.70677
  },
  {
   "id": "lsstar_com-DBLP_2",
@@ -25383,8 +25384,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790583485.7067728
  },
  {
   "id": "lsstar_email-Enron_2",
@@ -25392,8 +25394,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790583485.706774
  },
  {
   "id": "lsstar_email-Eu-core_2",
@@ -25401,8 +25404,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790583485.7067742
  },
  {
   "id": "lsstar_facebook_2",
@@ -25410,8 +25414,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790583496.4434078
  },
  {
   "id": "lsstar_loc-Brightkite_2",
@@ -25419,8 +25424,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790583496.4434106
  },
  {
   "id": "lsstar_loc-Gowalla_2",
@@ -25428,8 +25434,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790583496.4434118
  },
  {
   "id": "lsstar_p2p-Gnutella31_2",
@@ -25437,8 +25444,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w8",
+  "started": 1790583496.4434123
  },
  {
   "id": "lsstar_roadNet-PA_2",
