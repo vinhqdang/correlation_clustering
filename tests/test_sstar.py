@@ -29,7 +29,7 @@ def random_graph(n, p, seed):
     return iu[keep], ju[keep]
 
 
-def run(binary, tmp_path, n, eu, ev, T=1.0, seed=0):
+def run(binary, tmp_path, n, eu, ev, T=1.0, seed=0, env=None):
     gr = tmp_path / "g.gr"
     with open(gr, "w") as fh:
         fh.write(f"p cep {n} {len(eu)}\n")
@@ -38,7 +38,8 @@ def run(binary, tmp_path, n, eu, ev, T=1.0, seed=0):
     st = tmp_path / "stars.txt"
     with open(gr) as fin:
         p = subprocess.run([binary, str(st), str(T), str(seed)], stdin=fin,
-                           capture_output=True, text=True, timeout=120)
+                           capture_output=True, text=True, timeout=120,
+                           env=dict(os.environ, **(env or {})))
     assert p.returncode == 0, p.stderr
     value = int([l for l in p.stdout.splitlines() if l.startswith("star ")][0].split()[1])
     stars = [list(map(int, l.split())) for l in open(st) if l.strip()]
@@ -68,6 +69,13 @@ def test_stars_are_valid_and_disjoint(binary, tmp_path, n, p, seed):
             used.add(k)
         total += len(L) - 1
     assert total == value
+
+
+def test_leaf_cap(binary, tmp_path):
+    eu, ev = random_graph(80, 0.3, 4)
+    value, stars, _ = run(binary, tmp_path, 80, eu, ev, env={"SSTAR_KMAX": "3"})
+    assert stars and max(len(st) - 1 for st in stars) <= 3
+    assert value == sum(len(st) - 2 for st in stars)
 
 
 def test_certificate_is_accepted(binary, tmp_path):

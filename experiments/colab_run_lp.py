@@ -26,6 +26,7 @@ Modes (the tag's second character onward, e.g. tag "ltri"):
         (experiments/sstar/sstar.cc) for T seconds; the stars are written
         directly as certificate rows, without building the support, so it also
         runs where the support does not fit into memory; certificate checked;
+        a tag suffix +kK caps the leaves per star at K (e.g. lsstar+k100);
   sslp  sstar for T/2 seconds, then METIS block sweeps from its packing for
         T/2 seconds (as plp); certificate checked.
 
@@ -164,8 +165,9 @@ def sstar_bin():
     return b
 
 
-def sstar_stars(g, T, seed, min_time):
-    """Run sstar on g; returns (stars as lists centre-first, value, seconds, init)."""
+def sstar_stars(g, T, seed, min_time, kmax=None):
+    """Run sstar on g; returns (stars as lists centre-first, value, seconds, init);
+    kmax caps the leaves per star (memory on graphs with very high degrees)."""
     import tempfile
     from baselines import write_pace
     binary = sstar_bin()
@@ -173,8 +175,9 @@ def sstar_stars(g, T, seed, min_time):
         f, sf = os.path.join(d, 'g.gr'), os.path.join(d, 'stars.txt')
         write_pace(g, f)
         with open(f) as fin:
+            env = dict(os.environ, **({'SSTAR_KMAX': str(kmax)} if kmax else {}))
             p = subprocess.run([binary, sf, str(T), str(seed), str(min_time)], stdin=fin,
-                               capture_output=True, text=True, timeout=T + 3600)
+                               capture_output=True, text=True, timeout=T + 3600, env=env)
         res = {l.split()[0]: l.split()[1:] for l in p.stdout.splitlines() if l.strip()}
         if p.returncode != 0 or 'star' not in res:
             raise RuntimeError(f'sstar failed (exit {p.returncode}): {p.stderr[-300:]}')
@@ -318,9 +321,12 @@ def write_check(cert_d, name, g, tag, seed, out):
 def run_sstar(g, name, T, seed, tag):
     """The sparse star packing alone, its stars written directly as rows: the
     support is never built."""
-    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed}
+    import re
+    k = re.search(r'\+k(\d+)', tag or '')
+    kmax = int(k.group(1)) if k else None
+    out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed, 'kmax': kmax}
     t1 = time.time()
-    stars, value, secs, init, rounds = sstar_stars(g, T, seed, T)
+    stars, value, secs, init, rounds = sstar_stars(g, T, seed, T, kmax)
     u, v, vals, ptr, b = star_rows(stars)
     out.update({'value': float(value), 'sstar_time': secs, 'sstar_init': init,
                 'rounds': rounds, 'stars': len(stars), 'time': time.time() - t1})

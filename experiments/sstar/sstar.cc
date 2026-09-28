@@ -21,6 +21,8 @@
 //   stops when rounds > MAX_UNCHANGED * improving rounds (default 5), but not
 //   before MIN_TIME seconds (default 0), and at the latest after TIME_LIMIT.
 // prints "init VALUE SECONDS" and "star VALUE SECONDS".
+// environment: SSTAR_KMAX caps the leaves per star (the pairs of a star grow
+// quadratically; only needed on graphs with very high degrees).
 #include <algorithm>
 #include <chrono>
 #include <cstdint>
@@ -181,6 +183,7 @@ struct Packing {
     long long value = 0;
     mt19937_64 gen;
     int cand_cap = 16, total_cap = 256;
+    size_t kmax = (size_t)-1;  // at most this many leaves per star (memory)
     PairMap p3cache;
 
     Packing(const Graph &g_, u64 seed) : g(g_), n(g_.n), owner(1 << 16), by_center(g_.n),
@@ -239,7 +242,7 @@ struct Packing {
     }
     // v can join the leaves of s: edge c-v free, v non-adjacent to and free with every leaf
     bool leaf_ok(const Star &s, int v) const {
-        if (v == s.c || !pfree(s.c, v)) return false;
+        if (s.L.size() >= kmax || v == s.c || !pfree(s.c, v)) return false;
         for (int x : s.L)
             if (x == v || g.is_edge(v, x) || !pfree(v, x)) return false;
         return true;
@@ -297,7 +300,7 @@ struct Packing {
                 for (int sid : by_center[x]) {
                     if (full()) break;
                     const Star &s = stars[sid];
-                    bool ok = true;
+                    bool ok = s.L.size() < kmax;
                     for (int l : s.L)
                         if (l == y || g.is_edge(y, l) || !pfree(y, l)) { ok = false; break; }
                     if (ok) out.push_back({1, x, -1, -1, sid, s.version, y, pidx});
@@ -409,7 +412,11 @@ struct Packing {
             vector<vector<int>> cls(ncol);
             for (int i = 0; i < f; ++i) cls[color[i]].push_back(F[i]);
             for (auto &L : cls)
-                if (L.size() >= 2) add_star(u, L);
+                for (size_t a = 0; a + 1 < L.size();) {
+                    size_t b = L.size() - a > kmax ? a + kmax : L.size();
+                    if (b - a >= 2) add_star(u, vector<int>(L.begin() + a, L.begin() + b));
+                    a = b;
+                }
         }
     }
 
@@ -419,7 +426,7 @@ struct Packing {
         for (int t : vector<int>(by_center[s.c])) {
             if (t == id) continue;
             const Star &o = stars[t];
-            bool ok = true;
+            bool ok = s.L.size() + o.L.size() <= kmax;
             for (int x : s.L) {
                 for (int y : o.L)
                     if (x == y || g.is_edge(x, y) || !pfree(x, y)) { ok = false; break; }
@@ -537,6 +544,7 @@ int main(int argc, char **argv) {
     Packing P(g, seed);
     if (getenv("SSTAR_CAND")) P.cand_cap = atoi(getenv("SSTAR_CAND"));
     if (getenv("SSTAR_TOTAL")) P.total_cap = atoi(getenv("SSTAR_TOTAL"));
+    if (getenv("SSTAR_KMAX")) P.kmax = (size_t)atol(getenv("SSTAR_KMAX"));
     P.greedy_start();
     printf("init %lld %.3f\n", P.value, el());
     fflush(stdout);
