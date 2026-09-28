@@ -25154,7 +25154,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790579521.3583128
  },
@@ -25174,7 +25174,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790580725.5499852
  },
@@ -25214,7 +25214,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790580837.5345552
  },
