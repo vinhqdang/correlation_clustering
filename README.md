@@ -125,10 +125,11 @@ RESULTS_DIR=out CC_ROOT=$PWD python experiments/colab_run_lp.py 600 0 lsstar ca-
 python experiments/check_certificate.py data/raw/ca-GrQc.txt.gz out/certs/lsstar_ca-GrQc_0.npz
 ```
 
-Re-check every archived certificate (no solver needed):
+Re-check every archived certificate from scratch (no solver needed); the
+script compares the result with the committed `results/mpc/recheck*.csv`:
 
 ```bash
-bash experiments/recheck_all.sh
+bash experiments/recheck_all.sh            # --resume continues an interrupted run
 ```
 
 [`REPRODUCE.md`](REPRODUCE.md) maps every table and figure of the manuscript

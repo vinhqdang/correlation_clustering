@@ -7,8 +7,8 @@ local subgraph inequalities, and every packing of induced stars can be
 restricted to the pairs at distance at most two.  On these pairs we
 reimplement the star-packing local search of the KaPoCE branch-and-bound
 in memory linear in the graph and the packing, and add dual
-block-coordinate ascent as an anytime bound.  Every bound is exported
-as a certificate and verified against the raw instance, in exact arithmetic,
+block-coordinate ascent as an anytime bound.  Their bounds are exported
+as certificates and verified against the raw instance, in exact arithmetic,
 by an independent checker.  On the PACE~2021 exact track, under the
 branch-and-bound's own stopping rule, the reimplementation proves optimality
 on \numPaceKrOpt{} of the 173 solved instances, against 79 for the published

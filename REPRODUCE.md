@@ -34,17 +34,31 @@ commit `67f5df3`) into `data/raw/` and checks all 427 files against
 ## 3. Re-checking the certificates (no solver needed)
 
 ```bash
-bash experiments/recheck_all.sh
+bash experiments/recheck_all.sh             # full re-check, about 2.5 h on 4 cores
+bash experiments/recheck_all.sh --resume    # continue an interrupted re-check
 ```
 
-re-parses every instance with the independent reader of
-`experiments/check_certificate.py`, checks the instance hashes, every row and
-the exact value of every certificate, recomputes the cost of every archived
-clustering, and writes `results/mpc/recheck.csv` (Colab runs) and
-`results/mpc/recheck_local.csv` (`results/local/certs/`).  The checker can
-also be run without its compiled kernels (`NUMBA_DISABLE_JIT=1`), much more
-slowly.  The certificate format is specified in `docs/certificate_format.md`.  It exits with a non-zero
-status if any certificate is rejected.
+The script:
+1. re-parses every instance with the independent reader of
+   `experiments/check_certificate.py`;
+2. checks the instance hashes, every row and the exact value of every
+   certificate;
+3. recomputes the cost of every archived clustering;
+4. writes `results/mpc/fresh/recheck.csv` (Colab runs) and
+   `results/mpc/fresh/recheck_local.csv` (`results/local/certs/`);
+5. compares every value with the committed `results/mpc/recheck*.csv`.
+
+Without `--resume` every certificate is checked again, whatever the output
+files contain. Two outcomes give a non-zero exit status: a rejected
+certificate, or a value that differs from the committed one. A second
+argument sets another output directory.
+
+To check single files:
+- use `python experiments/check_certificate.py RAW_FILE CERT.npz`;
+- to run the checker without its compiled kernels, which is much slower,
+  set `NUMBA_DISABLE_JIT=1`.
+
+The certificate format is specified in `docs/certificate_format.md`.
 
 ## 4. Re-running the experiments
 

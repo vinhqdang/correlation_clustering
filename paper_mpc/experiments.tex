@@ -186,14 +186,18 @@ The checker accepted all \numCertPaceOk{} certificates of the PACE runs, all
 \numCertPackOk{} of the star-packing runs when they were written, and
 rejected none.  After the review of the checker (Section~\ref{sec:cert}) we
 re-checked all \numRecheckCerts{} archived certificates, including those of
-the runs made after the review, and \numRecheckLabels{} archived clusterings
-with its final version (commit \texttt{\numCheckerCommit}) against freshly
+the runs made after the review, together with the cost of each of the
+\numRecheckPaired{} archived clusterings stored with a certificate, and
+\numRecheckLabels{} standalone archived clusterings, with its final version (commit \texttt{\numCheckerCommit}) against freshly
 downloaded instance files whose hashes are looked up in the committed
 manifest and whose parser settings are taken from the committed instance
-table: \numRecheckOk{} of the \numRecheckN{} were accepted, every accepted
+table: \numRecheckOk{} of the \numRecheckN{} entries (certificates and
+standalone clusterings) were accepted, every accepted
 bound equals the one checked during its run, the slowest took
 \numRecheckMax{}\,s and all together \numRecheckTotal{}\,h
-(\texttt{results/mpc/recheck.csv} and \texttt{recheck\_local.csv}).  The
+(\texttt{results/mpc/recheck.csv} and \texttt{recheck\_local.csv};
+\texttt{experiments/recheck\_all.sh} repeats this check from scratch and
+compares the values).  The
 largest certificate, on \texttt{\numCheckMaxGraph}, has \numCheckMaxRows{}
 rows.  No accepted certificate uses the independence-number case of the
 star formula (\numAlphaRows{} rows), and the largest multiplier is

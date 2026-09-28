@@ -1308,6 +1308,7 @@ def timing():
         NUM["numRecheckN"] = str(len(d))
         NUM["numRecheckCerts"] = str(int((~lab).sum()))
         NUM["numRecheckLabels"] = str(int(lab.sum()))
+        NUM["numRecheckPaired"] = str(int((~lab & d.cost.notna()).sum()))
         NUM["numRecheckOk"] = str(int((d.status == "ok").sum()))
         NUM["numRecheckMax"] = f"{d.seconds.max():.0f}"
         NUM["numRecheckTotal"] = f"{d.seconds.sum() / 3600:.1f}"
