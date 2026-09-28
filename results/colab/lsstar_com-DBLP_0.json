@@ -1,0 +1,1 @@
+{"graph": "com-DBLP", "n": 317080, "m": 1049866, "mode": "sstar", "T": 600.0, "seed": 0, "value": 600982.0, "sstar_time": 600.552, "sstar_init": 583783, "rounds": [51, 51], "stars": 249833, "time": 612.1769258975983, "check": "ok", "certified": 600982, "lb_exact": 600982.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "AMD EPYC 7B12", "python": "3.13.15"}
