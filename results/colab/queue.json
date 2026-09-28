@@ -24856,7 +24856,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790573301.8482716
  },
@@ -24896,7 +24896,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790573316.088382
  },
@@ -24936,7 +24936,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790573344.864008
  },
@@ -24976,7 +24976,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790573365.2171435
  },
