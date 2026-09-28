@@ -24766,7 +24766,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790573278.2739081
  },
@@ -24806,7 +24806,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "email-EuAll",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790573289.626911
  },
@@ -24866,7 +24866,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790573301.8482723
  },
@@ -24906,7 +24906,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790573316.0883827
  },
@@ -24946,7 +24946,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790573344.864009
  },
