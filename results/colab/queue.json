@@ -75,7 +75,7 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact178.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790578163.0191607
  },
@@ -24834,7 +24834,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790573289.6269138
  },
@@ -25024,7 +25024,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790578264.6369233
  },
@@ -25134,8 +25134,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790579521.3583093
  },
  {
   "id": "lsstar_email-Enron_1",
@@ -25143,8 +25144,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790579521.3583121
  },
  {
   "id": "lsstar_email-Eu-core_1",
@@ -25152,8 +25154,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790579521.3583128
  },
  {
   "id": "lsstar_facebook_1",
@@ -25161,8 +25164,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790579521.3583138
  },
  {
   "id": "lsstar_loc-Brightkite_1",
