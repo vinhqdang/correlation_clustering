@@ -25645,7 +25645,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790586337.4698157
  },
@@ -25715,7 +25715,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "soc-Epinions",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790586891.546531
  },
@@ -25965,8 +25965,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "soc-Epinions",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790588916.5942945
  },
  {
   "id": "lsstar_soc-Slashdot0902_4",
@@ -25974,8 +25975,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "soc-Slashdot0902",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790588916.5942974
  },
  {
   "id": "lsstar_web-NotreDame_4",
@@ -25983,8 +25985,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "web-NotreDame",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790588916.5942984
  },
  {
   "id": "lsstar_wiki-Vote_4",
@@ -25992,8 +25995,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790588916.594299
  },
  {
   "id": "lsstar+k100_com-Youtube_1",
