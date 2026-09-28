@@ -25074,7 +25074,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790578488.3709862
  },
@@ -25104,7 +25104,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790579219.7291627
  },
