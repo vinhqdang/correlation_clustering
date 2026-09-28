@@ -25194,7 +25194,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790580725.5499897
  },
@@ -25334,7 +25334,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790582141.1116457
  },
