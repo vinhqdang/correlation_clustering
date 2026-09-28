@@ -25775,7 +25775,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790587280.9626472
  },
@@ -25805,7 +25805,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790587911.4487016
  },
@@ -25845,7 +25845,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790587925.4796836
  },
@@ -25885,7 +25885,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790588029.9934375
  },
