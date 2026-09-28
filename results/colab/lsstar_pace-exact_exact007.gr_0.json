@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact007.gr", "n": 30, "m": 147, "mode": "sstar", "T": 60.0, "seed": 0, "value": 84.0, "sstar_time": 60.0, "sstar_init": 74, "rounds": [102392, 6], "stars": 57, "time": 60.031288385391235, "check": "ok", "certified": 84, "lb_exact": 84.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "Intel(R) Xeon(R) CPU @ 2.20GHz", "python": "3.13.15"}
