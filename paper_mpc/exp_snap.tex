@@ -14,8 +14,10 @@ hours), run on the graphs with at most $2.5\cdot10^4$ vertices; its packing
 was exported and accepted by our checker ($^\circ$ where not), $^\dagger$
 where it exceeds all our checked bounds; t.o.: no bound within four hours;
 mem.: out of memory.  gap: $(\mathrm{UB}-\LB)/\LB$ with the largest checked
-bound of our runs ($^\S$: from the packing run of
-Table~\ref{tab:snap-eqtime}); gap$^*$: the same with the best value of any
+bound of any archived certificate for the graph, including the runs of
+Table~\ref{tab:snap-sls} ($^\S$: from the packing run of
+Table~\ref{tab:snap-eqtime}; $^\ddagger$: from a run of
+Table~\ref{tab:snap-sls}); gap$^*$: the same with the best value of any
 run of any solver (reported, not archived); tri.\ factor: best known value
 divided by the better of the two triangle packings.  Upper block:
 development graphs; lower block: held-out graphs.}
@@ -53,28 +55,27 @@ best value of any run, is available.  The triangle packings, the lower
 bounds used at this scale so far, leave gaps of \numBaseGapLo{} to
 \numBaseGapHi{} (median \numBaseGapMedian{}) on the graphs with a support.
 The median gap is \numSnapGapMedDev{} on the development graphs and
-\numSnapGapMedHeld{} on the held-out graphs.  We attribute most of the
-difference to the composition of the held-out set, which contains the
-denser social and citation networks and four of the five largest graphs,
-but with twelve held-out graphs we cannot exclude that the methods are
-tuned to the development graphs.  The largest gaps are on
+\numSnapGapMedHeld{} on the held-out graphs.  The split is descriptive: the
+bound procedures were not evaluated out of sample (Section~\ref{sec:intro}),
+and the held-out set contains the denser social and citation networks and
+four of the five largest graphs.  The largest gaps are on
 \texttt{web-NotreDame} (\numSnapGapHi{}), a web graph with hubs of more than
 $10^4$ links, and on the held-out voting, citation and e-mail graphs
 \texttt{wiki-Vote}, \texttt{cit-HepPh} and \texttt{email-EuAll}; the column
 gap$^*$ shows that no solver we ran closes them from above, so we cannot
 tell how they divide between the two bounds.
 
-\paragraph{The star local search.}  The star local search gives the largest
-checked bound on \numBestFromSls{} of the \numSnapTotal{} graphs, alone or
-followed by block LPs.  It raises the best bound of our earlier procedures
-on \numSlsBetter{} graphs, is below it on \numSlsBelow{}
-(\numSlsBelowList{}, sparse graphs on which the block LPs of CertiFlip gain
-most), and gives the only bound on \numSlsNew{} (\numSlsNewList{}), where the
-earlier implementation of the packing materialised the support and ran out
-of memory.  The largest change is on \numSlsTopGraph{}, whose gap falls from
-\numSlsTopOld{} to \numSlsTopNew{}; over the \numSnapGapOldN{} graphs that
-had a checked bound and an archived clustering before, the median gap falls
-from \numSnapGapOldMedian{} to \numSnapGapSameMedian{}.  A run took a median of
+\paragraph{The star local search.}  With seed~0 and \SI{600}{s}, the star
+local search, alone or followed by block LPs, gives a larger bound than all of
+our earlier procedures on \numSlsBetter{} graphs and a smaller one on
+\numSlsBelow{} (\numSlsBelowList{}, where a \SI{1200}{s} ruin-and-recreate
+packing is larger; Table~\ref{tab:snap-eqtime}), and the only bound on
+\numSlsNew{} (\numSlsNewList{}), where the earlier implementation of the
+packing materialised the support and ran out of memory.  The largest change
+is on \numSlsTopGraph{}, whose gap falls from \numSlsTopOld{} to
+\numSlsTopNew{}; over the \numSnapGapOldN{} graphs that had a checked bound
+and an archived clustering before, the median gap falls from
+\numSnapGapOldMedian{} to \numSnapGapSameMedian{}.  A run took a median of
 \numSlsTimeMedian{}\,s and at most \numSlsTimeMax{}\,s, including the
 certificate: the time limit is checked between stars, and the stars are
 written as certificate rows directly, without building the support.  On
@@ -83,19 +84,69 @@ $7.6\cdot10^3$, the unrestricted search was killed three times for lack of
 memory (a star with $k$ leaves occupies $k+\binom k2$ pairs); with at most
 100 leaves per star it used about \SI{4}{GB} and finished.
 
+\paragraph{Seeds and convergence.}  The search stops on wall-clock time, so
+its result depends on the seed and on the speed of the machine
+(Table~\ref{tab:snap-sls}).  Over five seeds the range of its \SI{600}{s}
+bound is a median of \numSlsSeedSpreadMedian{} of its median and at most
+\numSlsSeedSpreadMax{} (\numSlsSeedSpreadMaxGraph{}).  Differences of this
+size between single runs, such as those between the root bound of the
+branch-and-bound and ours below, are within the spread of either method.  On
+\numSlsNotConv{} of the \numSlsGraphsN{} graphs every round of the
+\SI{600}{s} run improved the packing, so the search was far from its
+stopping rule; on the largest graphs it completed only a few rounds.  Run for
+\SI{3600}{s} on the \numSlsLongN{} graphs with fewer than 100 rounds, all of
+them improving, the bound rose by a median of \numSlsLongGainMedian{} and by
+up to \numSlsLongGainMax{} (\numSlsLongGainMaxGraph{};
+Figure~\ref{fig:sls-anytime}).  The gaps on these graphs are therefore partly
+a matter of budget.  The largest checked bound of a graph, which enters the
+column gap of Table~\ref{tab:snap-bounds}, is the maximum over all archived
+certificates for it, these longer runs and further seeds included; the last
+column of Table~\ref{tab:snap-sls} gives the gap of the single \SI{600}{s}
+run.
+
 \paragraph{Block LPs after the star local search.}  Starting the block LPs
 from the packing of the star local search (column SLS+LP, half of the
-\SI{1200}{s} for each phase) raised the bound above that packing on
-\numSlpGainPos{} of the \numSlpN{} graphs with a support, by a median of
-\numSlpGainMedian{} and by at most \numSlpGainMax{} on
-\numSlpGainMaxGraph{}, whose road network has many short cycles and few
-large induced stars.  With the ruin-and-recreate packing as the start the
-block LPs had added a median of \numPlpGainMedian{} (column R\&R+LP), because
-that packing leaves more room.  With the stronger packing the relaxation
-adds little on the social and collaboration graphs; the gaps that remain are
-those of the star packing bound itself or of the clusterings.  The earlier
-comparison of the two uses of the same budget with the ruin-and-recreate
+\SI{1200}{s} for each phase) raised the checked bound above that packing on
+\numSlpGainPosAny{} of the \numSlpN{} graphs with a support, by more than
+$0.005\%$ on \numSlpGainPos{} of them, by a median of \numSlpGainMedian{} and
+by at most \numSlpGainMax{} on \numSlpGainMaxGraph{}, whose road network has
+many short cycles and few large induced stars.  The comparison with the star
+local search run for the whole \SI{1200}{s} is the fair one: SLS+LP is larger
+on \numEqLpWins{} of the \numEqLpN{} graphs (\numEqLpWinList{}) and smaller
+on \numEqLpLoses{}, by a median of \numEqLpMedian{}, from \numEqLpMin{}
+(\numEqLpMinGraph{}) to \numEqLpMax{} (\numEqLpMaxGraph{}).  On the social
+and collaboration graphs the time is better spent on the packing.  With the
+ruin-and-recreate packing as the start the block LPs had added a median of
+\numPlpGainMedian{} (column R\&R+LP), because that packing leaves more room;
+the comparison of the two uses of that budget with the ruin-and-recreate
 packing is in Appendix~\ref{app:eqtime}.
+
+\begin{table}[!tbp]
+\centering
+\caption{The star local search on the SNAP graphs (checked values).  rounds
+(impr.): rounds of the \SI{600}{s} run with seed~0 and the rounds among them
+that improved the packing; seed~0: its bound; 5 seeds: the range over seeds
+0--4 at \SI{600}{s}; spread: that range relative to the median;
+\SI{1200}{s}: one run of \SI{1200}{s} (seed~0) on the graphs with a support;
+SLS+LP: \SI{600}{s} of search followed by \SI{600}{s} of block LPs, as in
+Table~\ref{tab:snap-bounds}; \SI{3600}{s} and rounds: one run of
+\SI{3600}{s} on the graphs with fewer than 100 rounds at \SI{600}{s}, all
+improving; gap: $(\mathrm{UB}-\LB)/\LB$ of the archived clustering against
+the seed-0 run alone.}
+\label{tab:snap-sls}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{tables/snap_sls}
+\end{table}
+
+\begin{figure}[!tbp]
+\centering
+\IfFileExists{figures/fig_sls_anytime.pdf}{\includegraphics[width=0.7\textwidth]{figures/fig_sls_anytime.pdf}}{\pending{}}
+\caption{The bound of the star local search over time in the \SI{3600}{s}
+runs, relative to its final checked value (intermediate values as reported
+by the search, logarithmic time axis; dotted line: \SI{600}{s}).}
+\label{fig:sls-anytime}
+\end{figure}
 
 \paragraph{The root bound of the branch-and-bound.}  On the graphs with at
 most $2.5\cdot10^4$ vertices, the root star-packing bound of the KaPoCE
@@ -110,8 +161,9 @@ and on \numRootMemList{} it needs about \SI{11.6}{GB} and was killed in each
 of four runs on the machines with \SI{12.7}{GB}, the longest after
 \SI{3.8}{h}; its dense matrices, of which it keeps several with $n^2$
 entries, do not fit into memory above $2.5\cdot10^4$ vertices.  The two
-implement the same heuristic, and the small differences where both finish
-are those of a randomised local search stopped at different times.  Its
+implement the same heuristic, and the differences where both finish are of
+the size of the spread over seeds (Table~\ref{tab:snap-sls}): those of a
+randomised local search stopped at different times.  Its
 packings use the same rows as ours, so we exported them from its code (a
 function of 13 lines that writes the stars of its final packing, centre
 first; \texttt{experiments/kapoce/}), converted each into a dual solution on

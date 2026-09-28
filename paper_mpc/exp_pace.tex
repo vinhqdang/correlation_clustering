@@ -3,16 +3,19 @@
 \caption{PACE~2021 exact track, the 173 instances with known optimum: lower
 bounds.  Checked (values returned by the checker from archived
 certificates): the ruin-and-recreate star packing, the CertiFlip bound
-(budget \SI{60}{s}; measured times in Section~\ref{sec:exp-time}), the
-CertiFlip bound with \SI{1800}{s} (every fourth instance), the star local
-search (\SI{60}{s}) and the larger of the CertiFlip bound and the star local
-search.  Not certified: the triangle
-packings, computed earlier on a 4-core workstation; the metric LP on $P$, a
-floating-point LP value reported only where cutting planes converged within
-\SI{900}{s} (every fourth instance); the two B\&B rows, the root bounds of the
-KaPoCE branch-and-bound as published by its authors (reproduced by a rerun
-without data reductions, see the text); and the last row, which
-takes the larger of a checked and a published value.}
+(budget \SI{60}{s}), the CertiFlip bound with \SI{1800}{s} (every fourth
+instance), the star local search run until \SI{60}{s}, the star local search
+with the stopping rule of the branch-and-bound (\SI{60}{s} cap), and the
+larger of the CertiFlip bound and the star local search.  Not certified: the
+triangle packings, computed earlier on a 4-core workstation; the metric LP on
+$P$, a floating-point LP value reported only where cutting planes converged
+within \SI{900}{s} (every fourth instance); the root bounds of the KaPoCE
+branch-and-bound as published by its authors, and its star packing as rerun
+by us without data reductions; and the last row, which takes the larger of a
+checked and a published value.  Seed~0 throughout.  time: median measured
+time of the runs behind the row, including the certificate (for the
+CertiFlip bound, the whole CertiFlip run; for the rerun, its star bound);
+--: not measured or not published.}
 \label{tab:pace-bounds}
 \footnotesize
 \input{tables/pace_bounds}
@@ -29,50 +32,66 @@ $m/\binom n2$.  The fractional triangle packing was computed earlier on a
 \input{tables/pace_density}
 \end{table}
 
-\paragraph{Strength of the bounds.}  The star local search, run for
-\SI{60}{s} per instance, gives the strongest bound on this track
-(Table~\ref{tab:pace-bounds}).  Its mean LB/OPT on the 173 solved instances
-is \numPaceSlsMean{}, against \numPaceMeanStar{} for the root star packing of
-the KaPoCE branch-and-bound as published and \numPaceMeanOurs{} for the
-CertiFlip bound, and it is at least \numPaceSlsMin{} of the optimum on every
-instance.  It proves optimality on \numPaceSlsOpt{} instances, against 79 for
-the B\&B star packing, 59 for its $P_3$ packing and \numPaceOptOurs{} for the
-CertiFlip bound, and together with the CertiFlip bound, both checked, on
-\numPaceBestOpt{} (mean \numPaceBestMean{}).  Against the published B\&B star
-packing it is larger on \numPaceSlsAbove{} instances, equal on
-\numPaceSlsEqual{} and smaller on \numPaceSlsBelow{}; adding that bound to
-the two checked ones proves optimality on only one more instance
-(\numPaceBestMaxOpt{}).  The advantage holds in every density band
-(Table~\ref{tab:pace-density}).  The CertiFlip bound is larger than the star
-local search on \numPaceSlsUnderCf{} instances, by one to eight units, and
-proves optimality on eight of them, where the star local search does not:
-there the block LPs close the last units.  Below density $0.1$ the two are
-equal on average.  Each run took about the budget (median \numPaceSlsTimeMedian{}\,s,
-at most \numPaceSlsTimeMax{}\,s, including the certificate).
+\paragraph{Same heuristic, different stopping rules.}  The published root
+bound of the KaPoCE branch-and-bound and our star local search pack the same
+induced stars with the same moves; they differ in the implementation and in
+when they stop.  The published data state neither the time spent on the root
+bounds nor whether they were computed after the data reductions of the
+branch-and-bound, so we reran its lower-bound program on the input graphs,
+without reductions (the program of Section~\ref{sec:exp-cert}, \SI{900}{s}
+limit, one run per instance; \numKrootPaceColab{} on the Colab machines, one
+at a time, the others on a 4-core cloud machine with a \SI{2.2}{GHz} Xeon, at
+most three at a time).  The star packing finished within the limit on
+\numKrootPaceStarN{} of the \numKrootPaceN{} instances
+(\numKrootPaceTimeoutList{} stopped after the $P_3$ packing).  Its $P_3$
+packing equals the published value on \numKrootPacePthreeEqual{} of
+\numKrootPacePthreeN{}, its star packing on \numKrootPaceStarEqual{}, and on
+the others the star packing differs by at most \numKrootPaceStarDiffMax{}
+(\numKrootPaceStarAbove{} larger, \numKrootPaceStarBelow{} smaller, at most
+\numKrootPaceStarRelMax{}; the heuristic uses a random generator, which we
+ran with its default seed, and the published values may come from another
+version).  The published root bounds are therefore bounds of the input
+graphs.  The heuristic stops by its own rule, once the rounds are more than
+five times the rounds that improved the packing; its star bound took a median
+of \numKrootPaceTimeMedian{}\,s (at most \numKrootPaceTimeMax{}\,s).
 
-All three star packings pack the same induced stars, and our earlier
-ruin-and-recreate packing reaches only \numPacePackMean{} on average
-(Table~\ref{tab:pace-bounds}): the difference lies in the packing
-heuristic.  The published data state neither the time
-spent on the root bounds nor whether they were computed after the data
-reductions of the branch-and-bound, so we reran its lower-bound program on
-the input graphs, without reductions (the program of
-Section~\ref{sec:exp-cert}, \SI{900}{s} limit, one run per instance;
-\numKrootPaceColab{} on the Colab machines, one at a time, the others on a
-4-core cloud machine with a \SI{2.2}{GHz} Xeon, at most three at a time).
-The star packing finished within the limit on \numKrootPaceStarN{} of the
-\numKrootPaceN{} instances (\numKrootPaceTimeoutList{} stopped after the $P_3$
-packing).  Its $P_3$ packing equals the published value on
-\numKrootPacePthreeEqual{} of \numKrootPacePthreeN{}, its star packing on
-\numKrootPaceStarEqual{}, and on the others the star packing differs by at
-most \numKrootPaceStarDiffMax{} (\numKrootPaceStarAbove{} larger,
-\numKrootPaceStarBelow{} smaller, at most \numKrootPaceStarRelMax{}; the
-heuristic uses a random generator, which we ran with its default seed, and
-the published values may come from another version).  The star bound took a
-median of \numKrootPaceTimeMedian{}\,s and at most \numKrootPaceTimeMax{}\,s.
-The published root bounds are therefore bounds of the input graphs.  The
-heuristic stops by its own rule, after five times as many rounds as improved
-the packing; the star local search instead runs until its time limit.
+Under the same rule, with \SI{60}{s} only as a cap, the star local search
+proves optimality on \numPaceKrOpt{} of the 173 solved instances (mean LB/OPT
+\numPaceKrMean{}), against 79 for the published root bound (mean
+\numPaceMeanStar{}); it is larger than that bound on \numPaceKrAbove{}
+instances, equal on \numPaceKrEqual{} and smaller on \numPaceKrBelow{}, and
+took a median of \numPaceKrTimeMedian{}\,s including its certificate
+(Table~\ref{tab:pace-bounds}).  Over five seeds its count ranges from
+\numPaceKrOptSeedLo{} to \numPaceKrOptSeedHi{}.  The reimplementation is thus
+equivalent to the original where both run, which is what it was written to
+be.  Run until its \SI{60}{s} time limit instead, the same search proves
+optimality on \numPaceSlsOpt{} instances (mean \numPaceSlsMean{}; from
+\numPaceSlsOptSeedLo{} to \numPaceSlsOptSeedHi{} over five seeds, mean
+\numPaceSlsMeanSeedLo{} to \numPaceSlsMeanSeedHi{}), and at least
+\numPaceSlsMin{} of the optimum on every instance.  On the
+\numPaceSlsOverKrOpt{} instances that it closes only with the longer run, the
+\SI{60}{s} run reached the optimum after a median of
+\numPaceReachOptMedian{}\,s.  The published root bounds are therefore far
+from what the same heuristic reaches with a few seconds more; the dense
+implementation could be run longer on these instances as well, and our
+comparison says nothing about which implementation is faster per round.
+Our earlier ruin-and-recreate packing reaches only \numPacePackMean{} on
+average.
+
+\paragraph{Block LPs.}  The CertiFlip bound, a ruin-and-recreate packing
+followed by block LPs within a \SI{60}{s} CertiFlip run, proves optimality on
+\numPaceOptOurs{} instances and is larger than the star local search on
+\numPaceSlsUnderCf{}, by one to eight units.  On \numPaceCfOnly{} of these it
+is optimal and the star local search (seed~0, \SI{60}{s}) is not.  Neither
+four further seeds nor a run of \SI{300}{s} close \numPaceCfOnlyKept{} of them
+(closed: \numPaceCfOnlyClosedList{}), and their densities range from
+\numPaceCfOnlyDensLo{} to \numPaceCfOnlyDensHi{}: there the block LPs close
+units that more packing time does not.  Together, the two checked bounds
+prove optimality on \numPaceBestOpt{} instances (mean \numPaceBestMean{}), at
+a cost of two runs of \SI{60}{s} nominal each; adding the published root bound
+to them proves optimality on only one more (\numPaceBestMaxOpt{}).  Below
+density $0.1$ the two checked bounds are equal on average
+(Table~\ref{tab:pace-density}).
 
 On every fourth instance we also ran the bound with \SI{1800}{s} and one
 block covering the graph, and the metric LP on $P$ with triangle rows only.

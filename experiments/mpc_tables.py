@@ -141,6 +141,7 @@ def pace_exact():
     key = lambda i: f"pace-exact/{i}"
     # bounds per instance
     B = {}
+    TM = {}  # measured times of the runs behind each row (solved instances)
     old = pd.read_csv(os.path.join(RES, "pace_exact.csv"))
     old["inst"] = old["instance"].str.split("/").str[-1]
     for a, nm in [("lb:greedy", "greedy triangle packing"), ("lb:tri-mwu", "fractional triangle packing")]:
@@ -148,9 +149,12 @@ def pace_exact():
     for tag, seed, nm in [("lpack", 1, "ruin-and-recreate star packing"), ("c2x", 0, "CertiFlip bound"),
                           ("lwarm", 0, "CertiFlip bound, 1800 s"),
                           ("lsstar", 0, "star local search"),
+                          ("lsstar+kr", 0, "star local search, B\\&B stopping rule"),
                           ("ltri", 0, "metric LP on $P$, triangle rows")]:
         R = runs(tag)
         vals = {}
+        TM[nm] = [R[(key(i), seed)]["time"] for i in ref.index if (key(i), seed) in R
+                  and ref.loc[i, "solved_1h"] == 1 and "time" in R[(key(i), seed)]]
         for i in ref.index:
             r = R.get((key(i), seed))
             if r is None:
@@ -163,6 +167,12 @@ def pace_exact():
         B[nm] = pd.Series(vals, dtype=float)
     B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"] = ref["low_star"].astype(float)
     B["B\\&B $P_3$ packing~\\cite{BlasiusEtAl22sea}"] = ref["low_p3"].astype(float)
+    KR = runs("lkroot")
+    kst = {i: KR[(key(i), 0)]["star"] for i in ref.index
+           if (key(i), 0) in KR and KR[(key(i), 0)].get("star") is not None}
+    B["B\\&B star packing, our rerun"] = pd.Series(kst, dtype=float)
+    TM["B\\&B star packing, our rerun"] = [KR[(key(i), 0)]["star_time"] for i in kst
+                                            if ref.loc[i, "solved_1h"] == 1]
     solved = ref[ref["solved_1h"] == 1]
     # the larger of valid bounds is a valid bound
     B["larger of CertiFlip and star local search"] = pd.concat(
@@ -178,10 +188,11 @@ def pace_exact():
             rows.append(f"{nm} & \\pending{{}} & & & \\\\")
             continue
         r = v[ok] / solved["opt"][ok].clip(lower=1)
+        tm = f"{np.median(TM[nm]):.1f}" if TM.get(nm) else "--"
         rows.append(f"{nm} & {int(ok.sum())} & {r.mean():.4f} & {r.min():.3f} & "
-                    f"{int((v[ok] >= solved['opt'][ok]).sum())} \\\\")
-    write("pace_bounds", "\\begin{tabular}{lrrrr}\n\\toprule\nbound & instances & mean LB/OPT & "
-          "min LB/OPT & LB $=$ OPT \\\\\n\\midrule\n" + "\n".join(rows) +
+                    f"{int((v[ok] >= solved['opt'][ok]).sum())} & {tm} \\\\")
+    write("pace_bounds", "\\begin{tabular}{lrrrrr}\n\\toprule\nbound & instances & mean LB/OPT & "
+          "min LB/OPT & LB $=$ OPT & time (s) \\\\\n\\midrule\n" + "\n".join(rows) +
           "\n\\bottomrule\n\\end{tabular}\n")
     ours = B["CertiFlip bound"].reindex(solved.index)
     star = B["B\\&B star packing~\\cite{BlasiusEtAl22sea}"].reindex(solved.index)
@@ -312,7 +323,183 @@ def pace_exact():
             NUM["numKrootPaceStarMean"] = f"{np.mean([K[i]['star'] for i in both] / o):.4f}"
             NUM["numKrootPacePackMean"] = f"{np.mean(pk.reindex(both) / o):.4f}"
             NUM["numKrootPaceBothN"] = str(len(both))
+    pace_controls(ref, B, solved, key)
     return ref, B
+
+
+def pace_controls(ref, B, solved, key):
+    """The star local search under the stopping rule of the B&B (lsstar+kr)
+    and over five seeds, and the instances closed only by the CertiFlip bound."""
+    o = solved["opt"].clip(lower=1)
+    pub = ref["low_star"].reindex(solved.index).astype(float)
+    per = {}
+    for tag, nm in (("lsstar", "Sls"), ("lsstar+kr", "Kr")):
+        R = runs(tag)
+        cnt, mean, vals = [], [], {}
+        for sd in range(5):
+            v = pd_series({i: checked(R.get((key(i), sd))) for i in solved.index})
+            if v.notna().sum() < len(solved):
+                continue
+            vals[sd] = v
+            cnt.append(int((v >= solved["opt"]).sum()))
+            mean.append(float((v / o).mean()))
+        per[tag] = vals
+        if cnt:
+            NUM[f"numPace{nm}Seeds"] = str(len(cnt))
+            NUM[f"numPace{nm}OptSeedLo"], NUM[f"numPace{nm}OptSeedHi"] = str(min(cnt)), str(max(cnt))
+            NUM[f"numPace{nm}MeanSeedLo"] = f"{min(mean):.4f}"
+            NUM[f"numPace{nm}MeanSeedHi"] = f"{max(mean):.4f}"
+            best = np.max(np.vstack([v.values for v in vals.values()]), axis=0)
+            NUM[f"numPace{nm}OptAny"] = str(int((best >= solved["opt"].values).sum()))
+    kr = per["lsstar+kr"].get(0)
+    if kr is not None:
+        NUM["numPaceKrOpt"] = str(int((kr >= solved["opt"]).sum()))
+        NUM["numPaceKrMean"] = f"{(kr / o).mean():.4f}"
+        NUM["numPaceKrAbove"] = str(int((kr > pub).sum()))
+        NUM["numPaceKrBelow"] = str(int((kr < pub).sum()))
+        NUM["numPaceKrEqual"] = str(int((kr == pub).sum()))
+        R = runs("lsstar+kr")
+        ts = [R[(key(i), 0)]["time"] for i in solved.index]
+        tsearch = [R[(key(i), 0)]["sstar_time"] for i in solved.index]
+        NUM["numPaceKrTimeMedian"] = f"{np.median(ts):.1f}"
+        NUM["numPaceKrSearchMedian"] = f"{np.median(tsearch):.2f}"
+        NUM["numPaceKrTimeMax"] = f"{max(ts):.0f}"
+        NUM["numPaceKrCap"] = str(sum(R[(key(i), 0)]["sstar_time"] >= 59.5 for i in solved.index))
+        sls = per["lsstar"].get(0)
+        if sls is not None:
+            gain = (sls > kr) & (sls >= solved["opt"])
+            NUM["numPaceSlsOverKrOpt"] = str(int(((sls >= solved["opt"]) & (kr < solved["opt"])).sum()))
+            # time the 60 s run needed to reach OPT where the B&B rule stops short
+            Rs = runs("lsstar")
+            reach = []
+            for i in solved.index[((sls >= solved["opt"]) & (kr < solved["opt"])).values]:
+                tr = Rs[(key(i), 0)].get("trajectory")
+                if tr:
+                    reach.append(next((t for _, v, t in tr if v >= solved.loc[i, "opt"]), np.nan))
+            if reach:
+                NUM["numPaceReachOptMedian"] = f"{np.nanmedian(reach):.1f}"
+    # instances whose CertiFlip bound is optimal while the star local search (seed 0) is not
+    cf = B["CertiFlip bound"].reindex(solved.index)
+    sls = per["lsstar"].get(0)
+    if sls is not None:
+        only = solved.index[((cf >= solved["opt"]) & (sls < solved["opt"])).values]
+        NUM["numPaceCfOnly"] = str(len(only))
+        closed = set()
+        for sd, v in per["lsstar"].items():
+            closed |= {i for i in only if v[i] >= solved.loc[i, "opt"]}
+        R3 = runs("lsstar+t300")
+        long_ok = {i for i in only if checked(R3.get((key(i), 0))) is not None}
+        closed |= {i for i in long_ok if checked(R3[(key(i), 0)]) >= solved.loc[i, "opt"]}
+        NUM["numPaceCfOnlyLongN"] = str(len(long_ok))
+        NUM["numPaceCfOnlyKept"] = str(len(only) - len(closed))
+        NUM["numPaceCfOnlyClosedList"] = ", ".join(tt(i.replace(".gr", "")) for i in sorted(closed)) or "none"
+        dens = ref["density"].reindex(only)
+        NUM["numPaceCfOnlyDensLo"] = f"{dens.min():.2f}"
+        NUM["numPaceCfOnlyDensHi"] = f"{dens.max():.2f}"
+
+
+def pd_series(d):
+    import pandas as pd
+    return pd.Series({k: (np.nan if v is None else v) for k, v in d.items()}, dtype=float)
+
+
+def snap_sls(arch, SS, SL, SX):
+    """The star local search on the SNAP graphs: rounds, spread over five
+    seeds, longer runs, and the block LPs against the search alone at equal
+    budget (tab:snap-sls)."""
+    rows, spreads, eq, longg, conv = [], [], [], [], []
+    T12 = {**runs("lsstar+t1200")}
+    T36 = {**runs("lsstar+t3600"), **runs("lsstar+k100+t3600")}
+    for name in DEV + HELD:
+        r0 = SS.get((name, 0))
+        if r0 is None or checked(r0) is None:
+            continue
+        tag0 = r0.get("tag", "lsstar")
+        vals = [checked(r0)] + [checked(SX.get((name, (tag0, sd)))) for sd in range(1, 5)]
+        vals = [v for v in vals if v is not None]
+        R, I = r0.get("rounds", [0, 0])
+        if R == I:
+            conv.append(name)
+        med = float(np.median(vals))
+        sp = 100 * (max(vals) - min(vals)) / med if len(vals) >= 2 else None
+        if len(vals) == 5:
+            spreads.append((name, sp))
+        c12 = checked(T12.get((name, 0)))
+        r36 = T36.get((name, 0))
+        c36 = checked(r36)
+        slp = checked(SL.get((name, 0)))
+        if c12 is not None and slp is not None:
+            eq.append((name, 100 * (slp - c12) / c12))
+        if c36 is not None:
+            longg.append((name, 100 * (c36 - vals[0]) / vals[0], r36.get("rounds", [0, 0])[0]))
+        ub = arch.get(name)
+        gap0 = "--" if ub is None else f"{100 * (ub - vals[0]) / vals[0]:.2f}"
+        f = lambda v: "--" if v is None else f"\\num{{{v}}}"
+        rng = (f"{f(min(vals))}--{f(max(vals))}" if len(vals) >= 2 else "--")
+        rows.append(f"{tt(name)} & {R} ({I}) & {f(vals[0])} & {rng} & "
+                    f"{fmt_pct(sp, 2) if sp is not None else '--'} & {f(c12)} & {f(slp)} & "
+                    f"{f(c36)} & {r36.get('rounds', [0])[0] if r36 else '--'} & {gap0} \\\\")
+    write("snap_sls", "\\begin{tabular}{lrrrrrrrrr}\n\\toprule\n"
+          "graph & rounds (impr.) & seed 0 & 5 seeds & spread \\% & \\SI{1200}{s} & "
+          "SLS+LP & \\SI{3600}{s} & rounds & gap \\% \\\\\n\\midrule\n" + "\n".join(rows) +
+          "\n\\bottomrule\n\\end{tabular}\n")
+    NUM["numSlsNotConv"] = str(len(conv))
+    NUM["numSlsGraphsN"] = str(len(rows))
+    if spreads:
+        NUM["numSlsSeedN"] = str(len(spreads))
+        NUM["numSlsSeedSpreadMedian"] = f"{np.median([x for _, x in spreads]):.2f}\\%"
+        top = max(spreads, key=lambda z: z[1])
+        NUM["numSlsSeedSpreadMax"] = f"{top[1]:.2f}\\%"
+        NUM["numSlsSeedSpreadMaxGraph"] = tt(top[0])
+    if eq:
+        NUM["numEqLpN"] = str(len(eq))
+        NUM["numEqLpWins"] = str(sum(d > 0 for _, d in eq))
+        NUM["numEqLpLoses"] = str(sum(d < 0 for _, d in eq))
+        NUM["numEqLpMedian"] = f"{np.median([d for _, d in eq]):.2f}\\%"
+        tw = max(eq, key=lambda z: z[1])
+        NUM["numEqLpMax"] = f"{tw[1]:.1f}\\%"
+        NUM["numEqLpMaxGraph"] = tt(tw[0])
+        tl = min(eq, key=lambda z: z[1])
+        NUM["numEqLpMin"] = f"{tl[1]:.1f}\\%"
+        NUM["numEqLpMinGraph"] = tt(tl[0])
+        NUM["numEqLpWinList"] = ", ".join(tt(x) for x, d in eq if d > 0) or "none"
+    if longg:
+        NUM["numSlsLongN"] = str(len(longg))
+        NUM["numSlsLongGainMedian"] = f"{np.median([g for _, g, _ in longg]):.2f}\\%"
+        tl = max(longg, key=lambda z: z[1])
+        NUM["numSlsLongGainMax"] = f"{tl[1]:.1f}\\%"
+        NUM["numSlsLongGainMaxGraph"] = tt(tl[0])
+        NUM["numSlsLongRoundsMin"] = str(min(r for _, _, r in longg))
+    anytime_figure(T36)
+
+
+def anytime_figure(T36):
+    """Bound of the star local search over time (3600 s runs), relative to
+    its final checked value; the trajectory values are those the search
+    reports, the final ones are checked."""
+    pick = [g for g in ("web-NotreDame", "loc-Gowalla", "soc-Epinions", "com-Amazon",
+                        "roadNet-PA", "cit-HepPh") if (g, 0) in T36 and T36[(g, 0)].get("trajectory")]
+    if not pick:
+        return
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(5.5, 3.2))
+    for g in pick:
+        r = T36[(g, 0)]
+        tr = np.array(r["trajectory"], dtype=float)
+        fin = float(r["value"])
+        t = np.concatenate([[r.get("sstar_init_time", 0.0) or 0.0], tr[:, 2]])
+        v = np.concatenate([[r["sstar_init"]], tr[:, 1]]) / fin
+        ax.step(np.maximum(t, 1.0), v, where="post", label=g)
+    ax.axvline(600, color="grey", lw=0.8, ls=":")
+    ax.set_xscale("log")
+    ax.set_xlabel("time (s)")
+    ax.set_ylabel("bound / final bound")
+    ax.legend(fontsize=7, frameon=False)
+    fig.tight_layout()
+    fig.savefig(os.path.join(ROOT, "paper_mpc", "figures", "fig_sls_anytime.pdf"))
+    plt.close(fig)
 
 
 def best_costs():
@@ -396,6 +583,12 @@ def snap():
 
     SS = {**runs("lsstar"), **runs("lsstar+k100")}   # star local search, 600 s
     SL = runs("lsslp")                              # star local search, then block LPs
+    SX = {}
+    for tag in ("lsstar", "lsstar+k100"):
+        SX.update({(g, (tag, sd)): r for (g, sd), r in runs(tag).items() if sd > 0})
+    for tag in ("lsstar+t1200", "lsstar+t3600", "lsstar+k100+t3600"):
+        SX.update({(g, (tag, sd)): r for (g, sd), r in runs(tag).items()})
+    ext_best = []
     sls_rows, gaps_old, gaps_same, kmax_graphs = [], [], [], []
     for role, names in (("dev", DEV), ("held-out", HELD)):
         for name in names:
@@ -413,7 +606,12 @@ def snap():
             if SS.get((name, 0), {}).get("kmax"):
                 kmax_graphs.append(name)
             old = [x for x in (cf, pk, plp, eq) if x is not None]
-            allb = old + [x for x in (ss, sl) if x is not None]
+            # further runs of the star local search (seeds 1-4, 1200 s, 3600 s)
+            ext = [checked(r) for (g, sd), r in SX.items() if g == name]
+            ext = [x for x in ext if x is not None]
+            if ext and max(ext) > max([x for x in (ss, sl) if x is not None] + old + [0]):
+                ext_best.append(name)
+            allb = old + [x for x in (ss, sl) if x is not None] + ext
             if not allb or ub is None:
                 no_bound.append(name)
                 rows.append(f"{tt(name)} & {ucell} & \\multicolumn{{9}}{{c}}{{no bound}} \\\\")
@@ -479,7 +677,7 @@ def snap():
                 ("" if kc == rt[0] else "$^\\circ$"))
             if rt is None and not small:
                 rcell = "--"
-            smark = "$^\\S$" if lb > lb_ours else ""
+            smark = "" if lb <= lb_ours else ("$^\\S$" if eq == lb else "$^\\ddagger$")
             kmark = "$^k$" if name in kmax_graphs else ""
             ga = "--" if gap_a is None else f"{gap_a:.2f}{smark}"
             rows.append(f"{tt(name)} & {ucell} & {b(cf)} & {b(pk)} & {b(plp)} & {b(ss)}{kmark} & "
@@ -599,6 +797,10 @@ def snap():
         NUM["numSlpGainMax"] = f"{tg[1]:.1f}\\%"
         NUM["numSlpGainMaxGraph"] = tt(tg[0])
         NUM["numSlpGainPos"] = str(sum(g > 0.005 for _, g in slg))
+        units = [(x, int(r["certified"]) - int(np.floor(r["pack_value"] + 1e-6)))
+                 for (x, _), r in SL.items() if r.get("check") == "ok"]
+        NUM["numSlpGainPosAny"] = str(sum(u > 0 for _, u in units))
+        NUM["numSlpGainUnitsHi"] = f"\\num{{{max(u for _, u in units)}}}"
     tss = [SS[(x, 0)]["time"] for x in DEV + HELD if (x, 0) in SS]
     if tss:
         NUM["numSlsTimeMedian"] = f"{np.median(tss):.0f}"
@@ -612,6 +814,8 @@ def snap():
         else:
             src["old"] += 1
     NUM["numBestFromSls"] = str(src["sls"])
+    NUM["numBestFromExt"] = str(len(ext_best))
+    snap_sls(arch, SS, SL, SX)
     NUM["numBestFromOld"] = str(src["old"])
     NUM["numSnapHeldTotal"] = str(len(HELD))
     # over the graphs with a support, the ones compared with CertiFlip

@@ -59,12 +59,19 @@ triangles (the bound of MatchFlipPivot~\cite{veldt2022stc}) and a
 fractional packing by the Garg--K\"onemann scheme with
 $\varepsilon=0.05$~\cite{GargK07,Fleischer00}, scaled by its maximum load.
 \item \emph{Star local search} (SLS, checked): the star-packing local search
-of Section~\ref{sec:dual}, compiled C++ (\texttt{experiments/sstar}), one run
-per instance with seed~0, for \SI{600}{s} on the SNAP graphs and \SI{60}{s}
-on the PACE exact track, the budget of the CertiFlip runs there.  It runs
-until the time limit, as a minimum time; the certificate is written from its
-stars without building the support.  On \texttt{com-Youtube} and
-\texttt{email-EuAll} a star has at most 100 leaves.
+of Section~\ref{sec:dual}, compiled C++ (\texttt{experiments/sstar},
+\texttt{g++ -O2}), for \SI{600}{s} on the SNAP graphs and \SI{60}{s} on the
+PACE exact track, the budget of the CertiFlip runs there, with seeds 0--4;
+seed~0 is reported unless stated otherwise.  It runs until the time limit,
+as a minimum time; the certificate is written from its stars without
+building the support.  On \texttt{com-Youtube} and \texttt{email-EuAll} a
+star has at most 100 leaves.  Controls: with the stopping rule of the KaPoCE
+branch-and-bound and \SI{60}{s} only as a cap (PACE exact, seeds 0--4; the
+rule counts rounds, so these runs were made partly on a 4-core cloud machine
+with a \SI{2.8}{GHz} Xeon, three at a time); \SI{300}{s} on the PACE
+instances closed only by the CertiFlip bound; \SI{1200}{s} on the SNAP graphs
+with a support; and \SI{3600}{s} on the SNAP graphs on which it did not
+approach its stopping rule within \SI{600}{s}.
 \item \emph{SLS, then block LPs} (SLS+LP, checked): the star local search for
 \SI{600}{s}, then METIS block sweeps from its packing for \SI{600}{s}, on the
 SNAP graphs with a support.
@@ -166,10 +173,11 @@ followed by block LPs (nominal \SI{1200}{s}) took a median of
 \numPlpTimeMedian{}\,s and more than \SI{1260}{s} on \numPlpTimeOver{} graphs
 (at most \numPlpTimeMax{}\,s).  All times are in
 the archived result files.  The
-comparisons of bounds in Sections~\ref{sec:exp-bounds}
-and~\ref{sec:exp-cert} are therefore at comparable, not equal, running times;
-the head-to-head comparison of Section~\ref{sec:exp-h2h} is at equal elapsed
-time by construction.
+comparisons of different bound procedures in Sections~\ref{sec:exp-bounds}
+and~\ref{sec:exp-cert} are therefore at comparable, not equal, running
+times, except for the controls of the star local search, which compare it
+under the same stopping rule or the same budget; the head-to-head comparison
+of Appendix~\ref{sec:exp-h2h} is at equal elapsed time by construction.
 
 The checker accepted all \numCertPaceOk{} certificates of the PACE runs, all
 \numCertSnapOk{} of the CertiFlip runs on SNAP graphs and all

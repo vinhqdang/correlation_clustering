@@ -199,4 +199,18 @@ runs.  All reported runs are from one version of its code, except the leaf
 cap on two graphs, which was added after their first runs had been killed.
 Its runs are therefore not out of sample in the sense of the held-out
 protocol, which was fixed for the head-to-head comparison.
+\item \emph{Controls after the third round of review.}  A review of the
+version built around the star local search pointed out that its advantage on
+the PACE exact track had not been separated from its longer running time; a
+reviewer reran it with the stopping rule of the branch-and-bound and found
+that the advantage disappears.  We then added the runs with that rule, the
+further seeds, the \SI{300}{s}, \SI{1200}{s} and \SI{3600}{s} runs and the
+logging of the trajectory, all with the code of the earlier runs (the
+trajectory was already written to the error stream and is now kept; the
+stopping rule was already an option), and rewrote the claims accordingly.
+The same review found the unguarded 64-bit sum in the row check of the
+checker (Section~\ref{sec:cert}); it was fixed before these runs, and all
+certificates were re-checked with the fixed version.  PXMem and the
+head-to-head comparison were moved to Appendix~\ref{sec:primal} without
+changes to their results.
 \end{itemize}
