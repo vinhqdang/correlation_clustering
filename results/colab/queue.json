@@ -24664,7 +24664,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790573229.713933
  },
@@ -24704,7 +24704,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790573242.607662
  },
@@ -24744,7 +24744,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790573266.475203
  },
@@ -24784,7 +24784,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790573278.2739112
  },
@@ -24844,7 +24844,7 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790573289.6269145
  },
@@ -25174,8 +25174,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Brightkite",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790580725.5499852
  },
  {
   "id": "lsstar_loc-Gowalla_1",
@@ -25183,8 +25184,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "loc-Gowalla",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790580725.5499885
  },
  {
   "id": "lsstar_p2p-Gnutella31_1",
@@ -25192,8 +25194,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "p2p-Gnutella31",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790580725.5499897
  },
  {
   "id": "lsstar_roadNet-PA_1",
@@ -25201,8 +25204,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "roadNet-PA",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w5",
+  "started": 1790580725.5499902
  },
  {
   "id": "lsstar_soc-Epinions_1",
