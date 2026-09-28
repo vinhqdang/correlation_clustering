@@ -121,33 +121,6 @@ encoding, in which every non-adjacent pair is an explicit edge of weight
 $-1$.  This needs $\binom n2$ edges and is feasible on the PACE exact track
 (Section~\ref{sec:exp-bounds}) but not on the SNAP graphs.
 
-\paragraph{Head-to-head protocol.}  PXMem and KaPoCE are compared under a
-protocol that was fixed before the runs
-(\texttt{experiments/heldout.md}).  On one machine, the two solvers run one
-after the other in an order drawn from a hash of (graph, seed), each on the
-same logical core while the machine is otherwise idle.  Both read the same
-PACE-format text file inside their measured time.  KaPoCE's only changes are
-a seed and its two internal time limits, set to $\tfrac{590}{600}T$ and
-$\tfrac{90}{600}T$ (the ratio of its PACE configuration); it is stopped with
-SIGTERM at $T$ and its output is validated.  PXMem is scored at KaPoCE's
-elapsed wall-clock time, read from its improvement history, so the
-comparison is at equal elapsed time; its value at $T$ is also recorded.
-Invalid KaPoCE output counts as a PXMem win, as in PACE, and is reported
-separately.  Budgets are $T=\SI{600}{s}$ (primary), \SI{150}{s} and
-\SI{60}{s}, with ten seeds on each held-out SNAP graph and one run on each
-PACE heuristic instance at \SI{600}{s}.
-
-\paragraph{Statistics.}  The unit of inference is the graph.  For each graph
-we take the median over seeds of the relative difference
-$(\cost_{\mathrm{PXMem}}-\cost_{\mathrm{KaPoCE}})/\cost_{\mathrm{KaPoCE}}$ and
-apply the two-sided Wilcoxon signed-rank test~\cite{Wilcoxon45} and the sign
-test to the twelve medians.  Per graph we report the exact sign test over
-seeds with Holm's correction~\cite{Holm79} over graphs, noting that with ten
-seeds only a 10:0 split can be significant, and the Hodges--Lehmann
-estimate~\cite{HodgesL63} of the paired difference with its exact confidence
-interval.  We do not claim equivalence from non-significance.  Performance
-profiles~\cite{DolanM02profiles} summarise the PACE heuristic track.
-
 \subsection{Lower bounds on the PACE exact track}\label{sec:exp-bounds}
 
 \input{exp_pace}
@@ -155,10 +128,6 @@ profiles~\cite{DolanM02profiles} summarise the PACE heuristic track.
 \subsection{Certified gaps on SNAP graphs}\label{sec:exp-cert}
 
 \input{exp_snap}
-
-\subsection{PXMem against KaPoCE}\label{sec:exp-h2h}
-
-\input{exp_h2h}
 
 \subsection{Running times and checking}\label{sec:exp-time}
 

@@ -10,8 +10,10 @@ $N(v)$ denotes the positive neighbourhood of $v$ and $d(u,v)$ the distance in
 $G^+$.  The \emph{metric LP}~\cite{CharikarGW05,AilonCN08} relaxes $x$ to
 $[0,1]^{\binom V2}$ subject to the triangle inequalities
 $x_{uv}\le x_{uw}+x_{wv}$ for all triples.  A \emph{bad triangle} is a triple
-$u,w,v$ with $uw,wv\in\Ep$ and $uv\notin\Ep$; every clustering makes at least
-one mistake on it.  An \emph{induced star} with centre $v$ and $k\ge2$ leaves
+$u,w,v$ with $uw,wv\in\Ep$ and $uv\notin\Ep$, that is, an induced path on
+three vertices ($P_3$), also called a conflict triple; every clustering makes
+at least one mistake on it.  Packings of bad triangles and $P_3$ packings are
+therefore the same bound and differ only in the heuristic that finds them.  An \emph{induced star} with centre $v$ and $k\ge2$ leaves
 is a set of $k$ pairwise non-adjacent neighbours of $v$; every clustering makes
 at least $k-1$ mistakes on its $k+\binom k2$ pairs.
 
@@ -26,8 +28,11 @@ Further improvements use Sherali--Adams
 hierarchies~\cite{CohenAddadLN22}, preclustering~\cite{CohenAddadLLN23} and
 the cluster LP~\cite{CaoCLLNV24,CaoCLLLNTVYZ25,GarciaSorianoS26}; the best
 combinatorial ratio, $2-2/13$, comes from a local search with
-flips~\cite{CohenAddadLPTYZ24}.  For parallel, streaming, dynamic and weighted
-variants see~\cite{cohenaddad2021constant,behnezhad2022almost3,DemaineEFI06}.
+flips~\cite{CohenAddadLPTYZ24}.  For parallel algorithms
+see~\cite{cohenaddad2021constant,behnezhad2022almost3}, for streaming and
+dynamic ones~\cite{behnezhad2023singlepass,cambus2024dynamicstreams,
+cohenaddad2024dynamic}, and for weighted general graphs~\cite{DemaineEFI06};
+\citet{BockerB13} survey cluster editing.
 
 \paragraph{Lower bounds.}  The classical scalable bounds are packings of bad
 triangles, greedy or fractional; the latter approximates the covering LP over
@@ -44,10 +49,20 @@ scheme~\cite{SonthaliaG22project}, which also keeps only active triangle
 rows, reaches larger sparse instances of correlation clustering on general
 graphs, where pairs without an edge carry no cost; that objective differs
 from ours in the same way as the multicut objective below.  Exact branch-and-bound for cluster
-editing~\cite{BockerBK11exact,BlasiusEtAl22sea} uses packings of stars and of
-induced paths on three vertices as lower bounds; \citet{BlasiusEtAl22sea} mark
-the pairs at distance at least three as forbidden, and \citet{BastosOPSMP16}
-observe that they are separated in every optimal solution.  For the clique
+editing~\cite{BockerBK11exact,BlasiusEtAl22sea,BlasiusEtAl21kapoceExact} uses
+packings of stars and of induced paths on three vertices as lower bounds.
+\citet[Theorem~1]{BlasiusEtAl22sea} show that for any family of pairwise
+non-conflicting integer cost functions whose absolute values sum to at most
+the cost of every pair, the sum of their optima is a lower bound, and evaluate
+$P_3$, star and $K_{a,b}$ packings.  Their packing local search extends the
+$P_3$-packing search of \citet{GottesburenHSSWZ20} by leaf and merge moves
+and a relaxed stopping rule, and gives a star an integer multiplicity on
+weighted instances.  They also mark the pairs at distance at
+least three as forbidden (the ``distance-three rule''), while
+\citet{BastosOPSMP16} observe that these pairs are separated in every optimal
+solution.  Packings of $P_3$s are also the lower bound above which
+parameterised algorithms for cluster editing are
+analysed~\cite{vanBevernFK18,LiPS21}.  For the clique
 partitioning problem, the weighted maximisation form, facets and cutting
 planes go back to Gr\"otschel and Wakabayashi~\cite{GrotschelW89,
 GrotschelW90facets}; later work removes redundant triangle
@@ -65,7 +80,14 @@ persistency criteria fix variables that take the same value in every optimal
 solution~\cite{lange2018partial,LangeAS19persistency}.  Our block-dual ascent
 is closest in spirit to block-coordinate ascent for dense graphical
 models~\cite{TouraniSRS18mplp}: each block is solved to optimality with the
-other multipliers fixed.  These multicut methods are not designed for correlation clustering on
+other multipliers fixed.  In operations-research terms it is a relax-and-cut
+scheme~\cite{Lucena05}, in which rows are separated dynamically and dualised,
+with the safe bound of \citet{NeumaierS04safe} for arbitrary multipliers.
+Like every block-coordinate method it can stop at a point that is not
+optimal for the whole LP when the blocks do not cover the graph.  First-order
+LP methods such as PDLP~\cite{ApplegateDHLLOS21pdlp} solve large LPs globally,
+and their dual iterates could be certified in the same way; we did not try
+them.  These multicut methods are not designed for correlation clustering on
 complete graphs, where the $\binom n2-m$ negative pairs all carry cost, but
 the distance-two support reduces the complete instance to a sparse one.  For
 every clustering $\mathcal C$, the multicut objective on the graph $(V,P)$

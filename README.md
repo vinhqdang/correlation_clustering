@@ -4,23 +4,45 @@ Code, benchmark pipeline and manuscript for a study of min-disagreement
 correlation clustering on complete signed graphs (equivalently, Cluster
 Editing): the input is the positive graph G+ and every other pair is negative.
 
-The main algorithm, **CertiFlip**, returns a clustering together with a
-certified lower bound on the optimum:
+The code computes **certified lower bounds** for this problem on sparse graphs
+with up to 10^6 vertices, and checks them independently:
 
-* Pivot seed (3-approximation in expectation), then an iterated flipping local
-  search with cluster-insertion moves (a practical version of the 2 - 2/13
-  scheme of Cohen-Addad et al., STOC 2024); every later step is monotone, so
-  the expected cost stays within 3 OPT.
-* Lower bound from the **distance-two relaxation** (all LP variables live on
-  pairs at G+-distance at most two; farther pairs are provably separated) with
-  triangle, star and local subgraph inequalities, computed by **dual
-  block-coordinate ascent** with exact block LPs, warm-started by a sparse star
-  packing with ruin-and-recreate local search.  The bound is valid at any time.
-* **Gap decomposition**: cost(C) - LB splits into non-negative per-pair and
-  per-row terms; it certifies regions as locally optimal and guides a
-  large-neighbourhood search with exact sub-MIPs.
-* When a single block covers the graph and separation converges, CMSY rounding
-  of the LP solution is added as a seed, giving a 2.06 guarantee.
+* **Distance-two support.** Optimal clusters have diameter at most two, so
+  every pair at distance three or more is separated in every optimal
+  clustering. The metric LP, its star and local subgraph inequalities, and
+  every packing of induced stars can therefore be restricted to the pairs at
+  distance at most two.
+* **Star local search** (`experiments/sstar/sstar.cc`). This is a sparse
+  reimplementation of the star-packing heuristic of the KaPoCE
+  branch-and-bound (Bläsius et al., SEA 2022). Its memory is linear in the
+  graph plus the packing, and its stars are written directly as certificate
+  rows.
+* **Anytime block-dual bound** (`ccbench/blockdual.py`). Dual
+  block-coordinate ascent with exact block LPs, started from any packing. The
+  bound is valid at any time.
+* **Independent checker** (`experiments/check_certificate.py`). The checker
+  parses the raw instance file itself and verifies that the certificate
+  belongs to that instance. It then checks every row and evaluates the bound
+  in exact integer arithmetic. The certificate format is specified in
+  [`docs/certificate_format.md`](docs/certificate_format.md). The checker
+  also accepts the star packings of the KaPoCE branch-and-bound, which
+  `experiments/kapoce/` exports.
+
+Primal methods supply the clusterings that the bounds certify:
+
+* **CertiFlip** (`ccbench/certiflip.py`). Pivot, then an iterated flipping
+  local search, then the block-dual bound, then an LNS guided by the gap
+  decomposition. It returns a clustering together with a checked bound.
+* **PXMem** (`ccbench/memetic.py`). A memetic search based on exact partition
+  crossover.
+
+The manuscript is in `paper_mpc/`, and [`REPRODUCE.md`](REPRODUCE.md) maps
+every table to the command that produced it.
+
+KaPoCE (GPL-3.0) is an external baseline. It is not part of this repository.
+`experiments/kapoce/` contains only build and run scripts and a 13-line
+export hook (`star_dump.inc`). That hook is compiled into the KaPoCE sources,
+and the resulting program is covered by KaPoCE's licence.
 
 ## Layout
 

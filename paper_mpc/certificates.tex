@@ -37,6 +37,9 @@ certificate can neither choose the instance it is checked against nor how
 that instance is read;
 \item checks that every pair of every row is in $P$, i.e.\ is an edge or has a
 common neighbour, by intersecting sorted adjacency lists;
+\item checks that no row contains a pair twice and that the absolute values
+of the coefficients of every row sum to less than $2^{61}$, so that every
+partial sum below is exact in 64-bit integers;
 \item checks that every row is valid for every clustering that separates the
 far pairs.  A row on at most nine vertices is checked by enumerating all
 partitions of its vertex set (at most $21{,}147$, as restricted growth
@@ -46,7 +49,13 @@ positive entries are the pairs $vt$, $t\in T$, of one centre $v$, and its
 negative entries are pairs $R$ inside $T$.  Its minimum over far-separating
 clusterings is at least $|T|-|R|-M$ with $M=1$ if $R$ contains every non-far
 pair inside $T$ (then a far-free subset of $T$ is a clique of $R$) and $M$
-the independence number of $(T,R)$ otherwise, computed exactly;
+the independence number of $(T,R)$ otherwise, computed exactly.  (If $K\subseteq
+T$ is the set of leaves in the cluster of $v$ and $e_R(K)$ the number of pairs
+of $R$ inside $K$, the left-hand side is at least $|T|-|R|-(|K|-e_R(K))$.  In
+the first case $K$ is a clique of $R$ and $|K|-\binom{|K|}2\le1$; in the
+second, $|K|-e_R(K)$ is at most the number of connected components of
+$(K,R)$, since a component with $s$ vertices has at least $s-1$ edges, and
+hence at most the independence number of $(T,R)$.)
 \item rounds each $y_i$ down to a multiple of $2^{-30}$ and evaluates
 \begin{equation}\label{eq:checked}
 \LB=\sum_i b_iy_i+\sum_{p\in P}\Bigl(\min\bigl\{0,\,c_p-\textstyle\sum_i a_{ip}y_i\bigr\}-\min\{0,c_p\}\Bigr)
@@ -67,7 +76,7 @@ If the checker accepts a certificate for an instance, then the value it
 returns is at most $\OPT$ of that instance.
 \end{proposition}
 \begin{proof}
-By steps 2 and 3, every row is supported on $P$ and satisfied by the cut
+By steps 2 and 4, every row is supported on $P$ and satisfied by the cut
 vector of every clustering that separates far pairs.  By
 Lemma~\ref{lem:half} this includes every optimal clustering, and
 Theorem~\ref{thm:anytime}(a) with the rounded multipliers gives $\LB\le\OPT$.
@@ -78,9 +87,15 @@ The inequality behind the proof, that~\eqref{eq:checked} is at most the cost
 of every far-separating clustering for any rows valid for such clusterings,
 is proved in Lean~4 (\texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt};
 Appendix~\ref{app:lean}), as is the fact that optimal clusterings separate far
-pairs.  What remains to be trusted is the checker's reader, the enumeration
-and the star formula of step~3, the integer evaluation, and the Python,
-NumPy and Numba (LLVM) runtime.  Every archived certificate records the edge
+pairs; row validity is a hypothesis there.  The procedures that decide it
+(steps 2--4), the reader and the integer evaluation are tested, not verified,
+and so is the closed form for star rows with an incomplete $R$, whose
+validity argument is the one given in step~4; no archived certificate uses
+that case.  What remains to be trusted is therefore the checker's reader, the
+enumeration and the star formula of step~4, the integer evaluation, and the
+Python, NumPy and Numba (LLVM) runtime; running the checker with
+\texttt{NUMBA\_DISABLE\_JIT=1} removes the compiled kernels from this list
+at the price of speed (Section~\ref{sec:exp-time}).  Every archived certificate records the edge
 hash computed by the solver's loader, so the acceptance of all of them shows
 that the two readers agree on every instance we use.  The tests of the
 repository check the star formula against the enumeration on random star
@@ -91,9 +106,35 @@ hash or a different instance.  An earlier version of the checker converted
 the multipliers to 64-bit integers before checking their range, so a
 certificate with a multiplier above $2^{33}$ would have wrapped around to a
 negative value and been accepted with a wrong bound.  This was found in
-review and fixed; the largest multiplier in any archived certificate is 14,
-and all archived certificates were re-checked with the final version
-(Section~\ref{sec:exp-time}).
+review and fixed; the largest multiplier in any archived certificate is 14.
+A second review found that the enumeration summed the coefficients of a row
+in 64-bit integers without a bound on the row, so a row that repeats one pair
+thousands of times with coefficients near $2^{51}$ wrapped around and was
+accepted as valid; step~3 now rejects such rows (the largest sum of absolute
+coefficients of a row in any archived certificate is \numMaxRowAbs{}).  Both
+cases are regression tests, and all archived certificates were re-checked
+with the final version (Section~\ref{sec:exp-time}).
+
+\paragraph{Relation to proof formats.}  VIPR~\cite{CheungGS17vipr} certifies
+a mixed-integer program by a derivation: cutting planes and branching
+disjunctions, each checked syntactically.  A local row of ours would need a
+branching derivation over all far-separating partitions of its vertices, up
+to $21{,}147$ leaves per row, so we decide its validity semantically by
+enumerating these partitions instead, which enlarges the trusted base by the
+enumeration code but keeps a certificate to the rows and their multipliers.
+Proof logging for pseudo-Boolean and constraint
+solvers~\cite{GochtN21veripb,GochtMMNPT20} certifies combinatorial bounds of
+the same local kind through cutting-plane derivations, with verified checkers
+available; translating our rows into such a format would give a second,
+independent check and is left open.  The certificate format is specified,
+independently of the checker's code, in
+\texttt{docs/certificate\_format.md}, including the byte layout of the edge
+hash and the reading rules for PACE and SNAP files, so that other solvers can
+write certificates; the checker accepts the packings of the KaPoCE
+branch-and-bound exported in this format (Section~\ref{sec:exp-cert}).  In
+single-file use the parser settings are read from the certificate unless
+given on the command line, and are printed as part of the result; only the
+directory mode of step~1 takes them from the committed instance table.
 
 \paragraph{Cost of checking.}  Checking is much cheaper than computing the
 bound: the largest certificate we report, on \texttt{\numCheckMaxGraph}, has

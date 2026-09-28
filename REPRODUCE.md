@@ -40,7 +40,10 @@ bash experiments/recheck_all.sh
 re-parses every instance with the independent reader of
 `experiments/check_certificate.py`, checks the instance hashes, every row and
 the exact value of every certificate, recomputes the cost of every archived
-clustering, and writes `results/mpc/recheck.csv`.  It exits with a non-zero
+clustering, and writes `results/mpc/recheck.csv` (Colab runs) and
+`results/mpc/recheck_local.csv` (`results/local/certs/`).  The checker can
+also be run without its compiled kernels (`NUMBA_DISABLE_JIT=1`), much more
+slowly.  The certificate format is specified in `docs/certificate_format.md`.  It exits with a non-zero
 status if any certificate is rejected.
 
 ## 4. Re-running the experiments
@@ -50,10 +53,27 @@ first part of the file name) selects the script and the budget:
 
 | tag | script | content | paper |
 |---|---|---|---|
-| `c2`, `c2x` | `colab_run_cert.py T SEED TAG GRAPH` | CertiFlip with checked certificate (SNAP 600 s, PACE exact 60 s) | Tables of Sections 7.2 and 7.3 |
-| `lpack`, `ltri`, `lstar`, `lwarm` | `colab_run_lp.py T SEED TAG GRAPH` | bound baselines: sparse star packing, metric LP on P with triangle / star rows, bound without time limit | Sections 7.2, 7.3 |
-| `s2h`, `s2h150`, `s2h60`, `s2p` | `colab_run_seq.py T SEED TAG GRAPH` | protocol v2 head-to-head PXMem vs KaPoCE (held-out SNAP, PACE heuristic) | Section 7.4 |
+| `c2`, `c2x` | `colab_run_cert.py T SEED TAG GRAPH` | CertiFlip with a checked certificate (SNAP 600 s, PACE exact 60 s) | Sections 7.2, 7.3 |
+| `lsstar` | `colab_run_lp.py T SEED lsstar GRAPH` | star local search (`experiments/sstar/sstar.cc`, compiled on first use with `g++ -O2`), runs until T; SNAP 600 s, PACE exact 60 s, seeds 0-4 | Tables 2, 6; Sections 7.2, 7.3 |
+| `lsstar+k100` | same, tag `lsstar+k100` | as `lsstar` with at most 100 leaves per star (`SSTAR_KMAX=100`); com-Youtube, email-EuAll | Table 6 |
+| `lsstar+kr` | same, tag `lsstar+kr` (or `run_local_sstar_kr.py`) | star local search with the stopping rule of the KaPoCE root bound, T = 60 s only as a cap; PACE exact, seeds 0-4 | Table 2 |
+| `lsstar+t1200`, `lsstar+t3600`, `lsstar+k100+t3600` | same, T = 1200 / 3600 | equal-budget control for the block LPs, long runs on unconverged graphs | Section 7.3 |
+| `lsslp` | same, tag `lsslp`, T = 1200 | star local search for T/2, then block LPs for T/2 | Table 6 |
+| `lpack`, `lplp`, `lpack+eq` | same | ruin-and-recreate packing; packing then block LPs; packing alone with the budget of both | Table 6, Appendix B |
+| `ltri`, `lstar`, `lwarm` | same | metric LP on P with triangle / star rows; bound with 1800 s and one block | Tables 2, 7 |
+| `lkroot`, `lkstar` | same (modes `kroot`, `kstar`; needs the KaPoCE build of `experiments/kapoce/`) and `run_local_kroot.sh` | root bounds of the KaPoCE branch-and-bound on the input graph; its star packing exported and checked | Section 7.2, Table 6 |
+| RAMA | `experiments/rama/` (GPU) | multicut dual on the support | Table 7 |
+| `s2h`, `s2h150`, `s2h60`, `s2p` | `colab_run_seq.py T SEED TAG GRAPH` | protocol v2 head-to-head PXMem vs KaPoCE (held-out SNAP, PACE heuristic) | Appendix C |
 | `sccevo` (in `results/scc/`) | `run_scc.py T SEED evo GRAPH` | SCC on the complete encoding | Section 7.2 |
+
+The star local search stops on wall-clock time (except with `+kr`), so a
+rerun with the same seed gives a similar but not identical packing; its
+certificate is archived and re-checkable.  Machines: Colab VMs with two
+logical cores (Intel Xeon 2.20 GHz on most runs, AMD EPYC on some; the CPU
+model is in every result file, and the compiler in the files of the
+revision runs), and a 4-core workstation for the rows marked in the paper.
+Runs with the tag `+kr` that are not in `results/colab/` were made on a
+4-core cloud container (`results/local/`).
 
 For example
 

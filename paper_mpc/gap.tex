@@ -20,8 +20,13 @@ Ax^{\mathcal C}$.  Subtract~\eqref{eq:lb}.  Each $g_e\ge0$ because
 $x_e\in\{0,1\}$, and each $s_i\ge0$ by the validity of row $i$.
 \end{proof}
 
-A pair term vanishes iff the clustering agrees with the sign of the reduced
-cost.  A row term vanishes iff the row is tight or has multiplier $0$.
+Theorem~\ref{thm:gap} is complementary slackness for the pair
+$(x^{\mathcal C},y)$, written with the box constraints, and
+Corollary~\ref{cor:local} below is the reduced-cost argument behind
+reduced-cost fixing and persistency~\citep{lange2018partial}; we state both
+because the LNS relies on their exact form.  A pair term vanishes iff the
+clustering agrees with the sign of the reduced cost.  A row term vanishes iff
+the row is tight or has multiplier $0$.
 Assigning each term to the endpoints of its pairs gives a \emph{gap map} over
 the vertices.
 
@@ -53,7 +58,10 @@ Corollary~\ref{cor:local} applicable, $v$ may join $K$ only if it is within
 distance two of every member of $K$, and far pairs inside $B$ are fixed apart.
 Neighbourhoods are grown around high-gap vertices, either by breadth-first
 search or as a union of whole clusters.  Neighbourhoods with $\Gamma_B<1$ are
-skipped because they are certified optimal.  Theorem~\ref{thm:gap} and
+skipped because they are certified optimal.  We did not compare this choice
+with random or breadth-first neighbourhoods around arbitrary vertices, so we
+make no claim about its benefit; the LNS is part of CertiFlip, whose bounds
+and clusterings enter Section~\ref{sec:exp}.  Theorem~\ref{thm:gap} and
 Corollary~\ref{cor:local} need a clustering that separates far pairs, which
 the output of the flipping search need not do.  Before the search, and after
 every improvement, we therefore move to a singleton every vertex $v$ with

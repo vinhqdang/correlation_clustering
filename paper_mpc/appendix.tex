@@ -41,7 +41,7 @@ rows \eqref{eq:t1}--\eqref{eq:t2} & full & \texttt{sep\_triangle}, \texttt{sep\_
 Theorem~\ref{thm:anytime}(a) & full & \texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt} (bound on $P$ for rows valid for far-separating clusterings, $\le$ the cost of every clustering); \texttt{cost\_eq\_supp} \\
 Theorem~\ref{thm:anytime}(b,c), Theorem~\ref{thm:gap}, Corollary~\ref{cor:local} & -- & \\
 Theorem~\ref{thm:certiflip} & (a) reduction, (b) full, (c) -- & (a) as Theorem~\ref{thm:pxmem}; (b) is Theorem~\ref{thm:anytime}(a) \\
-Proposition~\ref{prop:checker} & partial & the inequality evaluated by the checker: \texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt}; the checker code itself is not verified \\
+Proposition~\ref{prop:checker} & partial & the inequality evaluated by the checker, given valid rows: \texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt}; the validity procedures (enumeration, star closed forms), the reader, the translation from ordered to unordered pairs and the rounding up are not formalised \\
 Lemma~\ref{lem:twins} & full & \texttt{twins\_split\_improvable}, \texttt{optimal\_keeps\_twins} \\
 Pivot keeps twins together & partial & one round: \texttt{pivot\_round\_twins} \\
 contraction~\eqref{eq:wcost} & partial & cost identity: \texttt{cost\_contract} \\
@@ -117,6 +117,8 @@ runs.  Upper block: development graphs; lower block: held-out graphs.}
 \footnotesize
 \input{tables/snap_eqtime}
 \end{table}
+
+\input{app_primal}
 
 \section{Development log}\label{app:devlog}
 
