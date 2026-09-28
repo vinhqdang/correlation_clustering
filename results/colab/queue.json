@@ -26839,7 +26839,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact076.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790591581.821956
  },
@@ -26859,7 +26859,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact078.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790591689.7207396
  },
@@ -26869,7 +26869,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact079.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790591689.72074
  },
@@ -26899,7 +26899,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact082.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790591705.4886181
  },
@@ -26909,7 +26909,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact083.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790591705.4886189
  },
@@ -26929,7 +26929,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact085.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790591807.202099
  },
@@ -26969,7 +26969,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact089.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790591820.5197294
  },
@@ -27009,7 +27009,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact093.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790591829.0919952
  },
@@ -27049,8 +27049,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact097.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790591933.4639332
  },
  {
   "id": "lsstar_pace-exact_exact098.gr_1",
@@ -27058,8 +27059,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact098.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790591933.4639351
  },
  {
   "id": "lsstar_pace-exact_exact099.gr_1",
@@ -27067,8 +27069,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact099.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790591933.463936
  },
  {
   "id": "lsstar_pace-exact_exact100.gr_1",
@@ -27076,8 +27079,9 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact100.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790591933.4639366
  },
  {
   "id": "lsstar_pace-exact_exact101.gr_1",
