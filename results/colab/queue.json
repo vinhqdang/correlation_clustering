@@ -25895,7 +25895,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790588029.9934409
  },
@@ -25925,7 +25925,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "loc-Brightkite",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790588635.9112737
  },
