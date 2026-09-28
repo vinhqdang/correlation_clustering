@@ -25124,7 +25124,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790579219.729164
  },
@@ -25254,7 +25254,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790581124.40264
  },
@@ -25294,8 +25294,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "amazon0302",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790581780.8803136
  },
  {
   "id": "lsstar_ca-AstroPh_2",
@@ -25303,8 +25304,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790581780.8803163
  },
  {
   "id": "lsstar_ca-CondMat_2",
@@ -25312,8 +25314,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790581780.880317
  },
  {
   "id": "lsstar_ca-GrQc_2",
@@ -25321,8 +25324,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790581780.8803174
  },
  {
   "id": "lsstar_ca-HepPh_2",
