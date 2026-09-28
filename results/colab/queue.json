@@ -24684,7 +24684,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790573229.7139344
  },
@@ -24724,7 +24724,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790573242.6076639
  },
@@ -25665,7 +25665,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "facebook",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790586630.1553779
  },
@@ -25805,8 +25805,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-AstroPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790587911.4487016
  },
  {
   "id": "lsstar_ca-CondMat_4",
@@ -25814,8 +25815,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-CondMat",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790587911.4487045
  },
  {
   "id": "lsstar_ca-GrQc_4",
@@ -25823,8 +25825,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-GrQc",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790587911.448705
  },
  {
   "id": "lsstar_ca-HepPh_4",
@@ -25832,8 +25835,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w1",
+  "started": 1790587911.4487057
  },
  {
   "id": "lsstar_ca-HepTh_4",
@@ -25841,8 +25845,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790587925.4796836
  },
  {
   "id": "lsstar_cit-HepPh_4",
@@ -25850,8 +25855,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790587925.4796858
  },
  {
   "id": "lsstar_cit-HepTh_4",
@@ -25859,8 +25865,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790587925.4796867
  },
  {
   "id": "lsstar_com-Amazon_4",
@@ -25868,8 +25875,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w2",
+  "started": 1790587925.4796875
  },
  {
   "id": "lsstar_com-DBLP_4",
