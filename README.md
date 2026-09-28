@@ -57,8 +57,8 @@ the raw instance file.
     search proves optimality on 83 of them in a median of 0.5 s. The
     published root bound proves it on 79.
   * Run for 60 s, the same heuristic proves optimality on 122. Together with
-    the CertiFlip bound, whose block LPs close 8 instances that five times the
-    packing time does not, 130 instances are proved optimal.
+    the CertiFlip bound, whose block LPs close 7 instances that five times the
+    packing time or four more seeds do not, 130 instances are proved optimal.
   * The checked bounds improve the published root bounds of most of the 27
     open instances.
 * **27 SNAP graphs, up to 1.1·10^6 vertices.** Every graph has a checked
