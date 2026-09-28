@@ -338,6 +338,11 @@ def run_sstar(g, name, T, seed, tag):
     min_time = 0.0 if '+kr' in (tag or '') else T
     out = {'graph': name, 'n': g.n, 'm': g.m, 'mode': 'sstar', 'T': T, 'seed': seed, 'kmax': kmax,
            'min_time': min_time}
+    try:
+        out['compiler'] = subprocess.run(['g++', '--version'], capture_output=True,
+                                         text=True).stdout.splitlines()[0]
+    except (OSError, IndexError):
+        pass
     t1 = time.time()
     stars, value, secs, init, rounds, traj = sstar_stars(g, T, seed, min_time, kmax)
     u, v, vals, ptr, b = star_rows(stars)

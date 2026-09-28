@@ -251,3 +251,4 @@ rama_build/
 logs_local/
 results/colab/lkroot_pace.done
 experiments/sstar/sstar
+results/sstar_bin*
