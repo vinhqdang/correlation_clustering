@@ -1,12 +1,16 @@
-\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+\documentclass[smallextended,envcountsame]{svjour3}
+\smartqed
 
 \usepackage{graphicx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
 \usepackage{multirow}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{adjustbox}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
@@ -17,16 +21,6 @@
 \definecolor{pxorange}{HTML}{EB6834}
 \definecolor{pxaqua}{HTML}{1BAF7A}
 \sisetup{group-separator={,},group-minimum-digits=4}
-
-\theoremstyle{thmstyleone}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\theoremstyle{thmstylethree}
-\newtheorem{definition}[theorem]{Definition}
-\theoremstyle{thmstyletwo}
-\newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\OPT}{\mathrm{OPT}}
 \newcommand{\cost}{\mathrm{cost}}
@@ -49,24 +43,28 @@
 \providecommand{\numSlsLongGainMax}{\pending{}}
 
 \raggedbottom
+\setlength{\emergencystretch}{2em}
 
 \begin{document}
 
-\title[Certified lower bounds for correlation clustering]{Certified lower
-bounds for correlation clustering on large sparse graphs}
+\title{Certified lower bounds for correlation clustering on large sparse
+graphs}
+\titlerunning{Certified lower bounds for correlation clustering}
 
-\author*[1]{\fnm{Quang-Vinh} \sur{Dang}}\email{vinh.dq4@buv.edu.vn}
-\affil*[1]{\orgname{British University Vietnam}, \orgaddress{\city{Hung Yen},
-\country{Vietnam}}}
+\author{Quang-Vinh Dang}
+\institute{Quang-Vinh Dang \at British University Vietnam, Hung Yen, Vietnam\\
+\email{vinh.dq4@buv.edu.vn}, ORCID 0000-0002-3877-8024}
 
-\abstract{\input{abstract}}
-
-\keywords{correlation clustering, cluster editing, lower bounds, linear
-programming, dual ascent, certificates, verified computation}
-
-\pacs[MSC Classification]{90C27, 90C05, 90C57, 05C85, 68W25}
+\date{Received: date / Accepted: date}
 
 \maketitle
+
+\begin{abstract}
+\input{abstract}
+\keywords{correlation clustering \and cluster editing \and lower bounds \and
+dual ascent \and certificates \and verified computation}
+\subclass{90C27 \and 90C05 \and 90C57 \and 05C85 \and 68W25}
+\end{abstract}
 
 \input{intro}
 \input{prelim}
@@ -76,9 +74,7 @@ programming, dual ascent, certificates, verified computation}
 \input{experiments}
 \input{conclusion}
 
-\backmatter
-
-\bmhead{Supplementary information}  The code, the instance lists, the raw
+\section*{Supplementary information}  The code, the instance lists, the raw
 results of every run and the archived certificates are available at
 \url{https://github.com/vinhqdang/correlation_clustering}; the file
 \texttt{REPRODUCE.md} lists one command per table and figure.
@@ -94,10 +90,10 @@ hashes.
 \item Code availability: see the supplementary information.
 \end{itemize}
 
-\begin{appendices}
+\appendix
 \input{appendix}
-\end{appendices}
 
+\bibliographystyle{plainnat}
 \bibliography{refs}
 
 \end{document}
