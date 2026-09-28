@@ -4,7 +4,7 @@
 \newcommand{\numBaseGapHi}{90\%}
 \newcommand{\numBaseGapLo}{17\%}
 \newcommand{\numBaseGapMedian}{46\%}
-\newcommand{\numBestFromExt}{0}
+\newcommand{\numBestFromExt}{17}
 \newcommand{\numBestFromOld}{2}
 \newcommand{\numBestFromSls}{25}
 \newcommand{\numCertPaceOk}{200}
@@ -29,6 +29,15 @@
 \newcommand{\numCpuLocal}{12th Gen Intel\textsuperscript{\textregistered} Core(TM) i9-12900H}
 \newcommand{\numCpuModels}{AMD EPYC 7B12; Intel\textsuperscript{\textregistered} Xeon\textsuperscript{\textregistered} CPU @ 2.20GHz}
 \newcommand{\numEnronLbTime}{946}
+\newcommand{\numEqLpLoses}{15}
+\newcommand{\numEqLpMax}{2.5\%}
+\newcommand{\numEqLpMaxGraph}{\texttt{roadNet-PA}}
+\newcommand{\numEqLpMedian}{-0.17\%}
+\newcommand{\numEqLpMin}{-0.5\%}
+\newcommand{\numEqLpMinGraph}{\texttt{cit-HepPh}}
+\newcommand{\numEqLpN}{17}
+\newcommand{\numEqLpWinList}{\texttt{ca-GrQc}, \texttt{roadNet-PA}}
+\newcommand{\numEqLpWins}{2}
 \newcommand{\numEqN}{18}
 \newcommand{\numEqNew}{8}
 \newcommand{\numEqNewList}{\texttt{ca-HepTh}, \texttt{email-Enron}, \texttt{loc-Brightkite}, \texttt{com-Amazon}, \texttt{com-DBLP}, \texttt{cit-HepPh}, \texttt{p2p-Gnutella31}, \texttt{amazon0302}}
@@ -158,8 +167,23 @@
 \newcommand{\numPaceCfOnlyDensHi}{0.38}
 \newcommand{\numPaceCfOnlyDensLo}{0.01}
 \newcommand{\numPaceCfOnlyKept}{8}
-\newcommand{\numPaceCfOnlyLongN}{0}
+\newcommand{\numPaceCfOnlyLongN}{8}
 \newcommand{\numPaceFracMean}{0.9664}
+\newcommand{\numPaceKrAbove}{43}
+\newcommand{\numPaceKrBelow}{45}
+\newcommand{\numPaceKrCap}{5}
+\newcommand{\numPaceKrEqual}{85}
+\newcommand{\numPaceKrMean}{0.9949}
+\newcommand{\numPaceKrMeanSeedHi}{0.9953}
+\newcommand{\numPaceKrMeanSeedLo}{0.9946}
+\newcommand{\numPaceKrOpt}{83}
+\newcommand{\numPaceKrOptAny}{99}
+\newcommand{\numPaceKrOptSeedHi}{85}
+\newcommand{\numPaceKrOptSeedLo}{81}
+\newcommand{\numPaceKrSearchMedian}{0.31}
+\newcommand{\numPaceKrSeeds}{5}
+\newcommand{\numPaceKrTimeMax}{63}
+\newcommand{\numPaceKrTimeMedian}{0.5}
 \newcommand{\numPaceMaxMean}{0.9981}
 \newcommand{\numPaceMaxOpt}{117}
 \newcommand{\numPaceMeanOurs}{0.9874}
@@ -191,6 +215,7 @@
 \newcommand{\numPaceSlsOptSeedHi}{122}
 \newcommand{\numPaceSlsOptSeedLo}{122}
 \newcommand{\numPaceSlsOverCf}{62}
+\newcommand{\numPaceSlsOverKrOpt}{39}
 \newcommand{\numPaceSlsSeeds}{1}
 \newcommand{\numPaceSlsTimeMax}{67}
 \newcommand{\numPaceSlsTimeMedian}{60}
@@ -213,7 +238,7 @@
 \newcommand{\numPackLonger}{4}
 \newcommand{\numPackLongerList}{\texttt{email-Enron}, \texttt{loc-Brightkite}, \texttt{wiki-Vote}, \texttt{cit-HepPh}}
 \newcommand{\numPackOnlyGapHi}{27.4\%}
-\newcommand{\numPackOnlyGapLo}{4.4\%}
+\newcommand{\numPackOnlyGapLo}{4.1\%}
 \newcommand{\numPackOnlyHeld}{5}
 \newcommand{\numPackOnlyList}{\texttt{soc-Epinions}, \texttt{Slashdot+}, \texttt{Epinions+}, \texttt{com-Youtube}, \texttt{cit-HepTh}, \texttt{soc-Slashdot0902}, \texttt{loc-Gowalla}, \texttt{email-EuAll}, \texttt{web-NotreDame}}
 \newcommand{\numPackOnlyMaxN}{\num{1134890}}
@@ -255,15 +280,15 @@
 \newcommand{\numRecheckN}{840}
 \newcommand{\numRecheckOk}{840}
 \newcommand{\numRecheckTotal}{0.9}
-\newcommand{\numRootBelowList}{\texttt{ca-GrQc}, \texttt{ca-HepTh}, \texttt{BitcoinAlpha+}, \texttt{email-Eu-core}}
-\newcommand{\numRootBelowMax}{0.38\%}
+\newcommand{\numRootBelowList}{\texttt{ca-GrQc}, \texttt{ca-HepTh}, \texttt{BitcoinOTC+}, \texttt{BitcoinAlpha+}, \texttt{email-Eu-core}}
+\newcommand{\numRootBelowMax}{0.45\%}
 \newcommand{\numRootBestGap}{1.53\%}
 \newcommand{\numRootBestGraph}{\texttt{facebook}}
-\newcommand{\numRootBestOurGap}{2.29\%}
-\newcommand{\numRootBetter}{3}
-\newcommand{\numRootBetterHi}{0.7\%}
-\newcommand{\numRootBetterList}{\texttt{ca-HepPh}, \texttt{BitcoinOTC+}, \texttt{facebook}}
-\newcommand{\numRootBetterLo}{0.1\%}
+\newcommand{\numRootBestOurGap}{1.96\%}
+\newcommand{\numRootBetter}{2}
+\newcommand{\numRootBetterHi}{0.4\%}
+\newcommand{\numRootBetterList}{\texttt{ca-HepPh}, \texttt{facebook}}
+\newcommand{\numRootBetterLo}{0.0\%}
 \newcommand{\numRootCert}{7}
 \newcommand{\numRootGapBitcoinAlpha}{3.8\%}
 \newcommand{\numRootGapBitcoinOTC}{3.6\%}
@@ -294,6 +319,11 @@
 \newcommand{\numSlsBetter}{21}
 \newcommand{\numSlsGraphsN}{27}
 \newcommand{\numSlsKmaxList}{\texttt{com-Youtube} and \texttt{email-EuAll}}
+\newcommand{\numSlsLongGainMax}{2.4\%}
+\newcommand{\numSlsLongGainMaxGraph}{\texttt{email-EuAll}}
+\newcommand{\numSlsLongGainMedian}{0.41\%}
+\newcommand{\numSlsLongN}{5}
+\newcommand{\numSlsLongRoundsMin}{25}
 \newcommand{\numSlsN}{27}
 \newcommand{\numSlsNew}{4}
 \newcommand{\numSlsNewList}{\texttt{com-Youtube}, \texttt{loc-Gowalla}, \texttt{email-EuAll}, \texttt{web-NotreDame}}
@@ -301,7 +331,7 @@
 \newcommand{\numSlsTimeMax}{641}
 \newcommand{\numSlsTimeMedian}{606}
 \newcommand{\numSlsTopGraph}{\texttt{facebook}}
-\newcommand{\numSlsTopNew}{2.3\%}
+\newcommand{\numSlsTopNew}{2.0\%}
 \newcommand{\numSlsTopOld}{21.6\%}
 \newcommand{\numSnapAnyBound}{27}
 \newcommand{\numSnapCert}{18}
@@ -309,16 +339,16 @@
 \newcommand{\numSnapGapCfMedian}{7.1\%}
 \newcommand{\numSnapGapHi}{27.4\%}
 \newcommand{\numSnapGapLo}{0.22\%}
-\newcommand{\numSnapGapMedDev}{1.4\%}
-\newcommand{\numSnapGapMedHeld}{4.9\%}
-\newcommand{\numSnapGapMedian}{3.5\%}
+\newcommand{\numSnapGapMedDev}{1.2\%}
+\newcommand{\numSnapGapMedHeld}{4.4\%}
+\newcommand{\numSnapGapMedian}{3.4\%}
 \newcommand{\numSnapGapMinHeld}{0.63\%}
 \newcommand{\numSnapGapN}{23}
 \newcommand{\numSnapGapOldHi}{21.6\%}
 \newcommand{\numSnapGapOldMedian}{5.6\%}
 \newcommand{\numSnapGapOldN}{20}
 \newcommand{\numSnapGapPkMedian}{6.7\%}
-\newcommand{\numSnapGapSameMedian}{3.2\%}
+\newcommand{\numSnapGapSameMedian}{3.0\%}
 \newcommand{\numSnapHeldTotal}{12}
 \newcommand{\numSnapNoArch}{4}
 \newcommand{\numSnapNoArchList}{\texttt{soc-Epinions}, \texttt{Slashdot+}, \texttt{Epinions+}, \texttt{com-Youtube}}
