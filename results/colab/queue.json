@@ -24646,7 +24646,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "Epinions+",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790573229.7139306
  },
@@ -24686,7 +24686,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790573242.6076596
  },
@@ -24726,7 +24726,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790573266.4752007
  },
