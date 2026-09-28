@@ -25705,7 +25705,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790586891.54653
  },
