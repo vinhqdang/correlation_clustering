@@ -24794,7 +24794,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "web-NotreDame",
-  "status": "running",
+  "status": "done",
   "machine": "w4",
   "started": 1790573278.2739127
  },
@@ -25454,7 +25454,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790583659.8607552
  },
