@@ -25725,7 +25725,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "soc-Slashdot0902",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790586891.5465317
  },
@@ -26045,8 +26045,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790589534.757422
  },
  {
   "id": "lsstar+k100_email-EuAll_3",
@@ -26054,8 +26055,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790589534.7574263
  },
  {
   "id": "lsstar+k100_com-Youtube_4",
@@ -26063,8 +26065,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790589534.7574275
  },
  {
   "id": "lsstar+k100_email-EuAll_4",
@@ -26072,8 +26075,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790589534.757428
  },
  {
   "id": "lsstar_pace-exact_exact001.gr_1",
