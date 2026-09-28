@@ -25034,7 +25034,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790578264.6369238
  },
@@ -25134,7 +25134,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-DBLP",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790579521.3583093
  },
