@@ -25815,7 +25815,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "ca-CondMat",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790587911.4487045
  },
