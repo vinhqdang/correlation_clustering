@@ -25905,7 +25905,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790588029.9934416
  },
@@ -25935,7 +25935,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790588635.9112768
  },
@@ -26085,7 +26085,7 @@
   "T": 60.0,
   "seed": 1,
   "graph": "pace-exact/exact001.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790589890.2772639
  },
