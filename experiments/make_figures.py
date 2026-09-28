@@ -1,10 +1,11 @@
-"""Figures of the paper that show the algorithms at work and the main results.
+"""The figures of paper_mpc/ that show the algorithms at work (support,
+gap map, partition crossover).
 
     python experiments/make_figures.py            # all figures
     python experiments/make_figures.py crossover  # one of them
 
-Algorithm figures are computed by running the solver code on a 70-vertex
-neighbourhood of ca-GrQc; result figures are read from results/."""
+They are computed by running the solver code on a neighbourhood of ca-GrQc.
+The result figures are written by experiments/mpc_tables.py."""
 import glob
 import json
 import os
@@ -20,7 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
-FIG = os.path.join(ROOT, "paper", "figures")
+FIG = os.path.join(ROOT, "paper_mpc", "figures")
 RES = os.path.join(ROOT, "results")
 
 # categorical slots 1-3 of the reference palette (validated all-pairs), inks, grid
@@ -269,130 +270,7 @@ def fig_gapmap():
 # 4. convergence of PXMem against the final KaPoCE values (sequential runs)
 # --------------------------------------------------------------------------
 
-def fig_convergence():
-    graphs = ["ca-AstroPh", "email-Enron", "com-DBLP", "com-Amazon"]
-    fig, axes = plt.subplots(1, 4, figsize=(7.0, 2.1))
-    tgrid = np.linspace(0, 600, 601)
-    for ax, gname in zip(axes, graphs):
-        rs = [json.load(open(f)) for f in glob.glob(os.path.join(RES, "colab", f"s1_{gname}_*.json"))]
-        best = min(min(r["ours"], r["kapoce"]) for r in rs)
-        curves = []
-        for r in rs:
-            h = np.array(r["hist"], dtype=float)
-            y = np.full(len(tgrid), np.nan)
-            for i, t in enumerate(tgrid):
-                k = np.searchsorted(h[:, 0], t, side="right") - 1
-                if k >= 0:
-                    y[i] = h[k, 1]
-            curves.append(100 * (y - best) / best)
-        C = np.array(curves)
-        ok = np.isfinite(C).all(axis=0)
-        med = np.median(C[:, ok], axis=0)
-        ax.fill_between(tgrid[ok], np.min(C[:, ok], axis=0), np.max(C[:, ok], axis=0),
-                        color=BLUE, alpha=0.10, lw=0)
-        ax.plot(tgrid[ok], med, color=BLUE, lw=1.6, label="PXMem (median, range)")
-        k = np.array([100 * (r["kapoce"] - best) / best for r in rs])
-        ax.axhspan(k.min(), k.max(), color=ORANGE, alpha=0.12, lw=0)
-        ax.axhline(np.median(k), color=ORANGE, lw=1.6, label="KaPoCE at 600 s (median, range)")
-        ax.set_title(gname)
-        ax.set_xlim(0, 600)
-        top = max(np.median(k) * 4, np.percentile(med, 60), 0.02)
-        ax.set_ylim(0, top)
-        ax.set_xlabel("time (s)")
-        grid(ax, "y")
-    axes[0].set_ylabel("excess over best (%)")
-    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=2,
-               frameon=False, bbox_to_anchor=(0.5, -0.1))
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
-    save(fig, "fig_convergence")
-
-
-# --------------------------------------------------------------------------
-# 5. results: budgets, PACE heuristic track, PACE exact bounds
-# --------------------------------------------------------------------------
-
-ORDER15 = ["ca-GrQc", "BitcoinAlpha+", "BitcoinOTC+", "ca-HepTh", "ca-HepPh", "ca-AstroPh",
-           "ca-CondMat", "email-Enron", "loc-Brightkite", "Slashdot+", "soc-Epinions",
-           "Epinions+", "com-DBLP", "com-Amazon", "com-Youtube"]
-
-
-def fig_budget():
-    fig, ax = plt.subplots(figsize=(3.4, 3.6))
-    for (tag, lab, c, dy) in (("s1t60", "60 s", ORANGE, 0.22), ("s1t150", "150 s", AQUA, 0.0),
-                              ("s1", "600 s", BLUE, -0.22)):
-        for i, gname in enumerate(ORDER15[::-1]):
-            rs = [json.load(open(f)) for f in glob.glob(os.path.join(RES, "colab", f"{tag}_{gname}_*.json"))]
-            rs = [r for r in rs if r["tag"] == tag]
-            d = np.array([100 * (r["ours"] - r["kapoce"]) / r["kapoce"] for r in rs])
-            m = float(np.median(d))
-            ax.plot([np.percentile(d, 25), np.percentile(d, 75)], [i + dy] * 2, color=c, lw=1.2,
-                    alpha=0.6, solid_capstyle="round")
-            ax.scatter([m], [i + dy], s=18, color=c, edgecolors="white", linewidths=0.8,
-                       zorder=3, label=lab if i == 0 else None)
-    ax.axvline(0, color=INK2, lw=0.8)
-    ax.set_yticks(range(len(ORDER15)))
-    ax.set_yticklabels(ORDER15[::-1])
-    ax.set_xscale("symlog", linthresh=0.01)
-    ax.set_xlim(-0.08, 1.0)
-    ax.set_xticks([-0.05, -0.01, 0, 0.01, 0.1, 0.5])
-    ax.set_xticklabels(["$-0.05$", "$-0.01$", "0", "0.01", "0.1", "0.5"])
-    ax.set_xlabel("PXMem $-$ KaPoCE (%), median and quartiles")
-    ax.text(-0.004, -1.3, "$\\leftarrow$ PXMem better", color=INK2, fontsize=7, ha="right")
-    ax.text(0.004, -1.3, "KaPoCE better $\\rightarrow$", color=INK2, fontsize=7, ha="left")
-    ax.set_ylim(-1.7, len(ORDER15) - 0.5)
-    grid(ax, "x")
-    ax.legend(loc="lower center", bbox_to_anchor=(0.45, 1.0), ncol=3, frameon=False,
-              title="budget per run", title_fontsize=7.5)
-    save(fig, "fig_budget")
-
-
-def fig_paceheur():
-    rs = [json.load(open(f)) for f in glob.glob(os.path.join(RES, "colab", "s1h_*.json"))]
-    n = np.array([r["n"] for r in rs])
-    d = np.array([100 * (r["ours"] - r["kapoce"]) / r["kapoce"] for r in rs])
-    fig, ax = plt.subplots(figsize=(3.4, 2.4))
-    for mask, c, lab in ((d < 0, BLUE, f"PXMem better ({(d < 0).sum()})"),
-                         (d == 0, MUTED, f"tie ({(d == 0).sum()})"),
-                         (d > 0, ORANGE, f"KaPoCE better ({(d > 0).sum()})")):
-        ax.scatter(n[mask], d[mask], s=14, color=c, edgecolors="white", linewidths=0.6,
-                   label=lab, zorder=3)
-    ax.axhline(0, color=INK2, lw=0.8)
-    ax.set_xscale("log")
-    ax.set_yscale("symlog", linthresh=0.005)
-    ax.set_yticks([-0.05, -0.01, 0, 0.01, 0.05, 0.3])
-    ax.set_yticklabels(["$-0.05$", "$-0.01$", "0", "0.01", "0.05", "0.3"])
-    ax.set_xlabel("vertices")
-    ax.set_ylabel("PXMem $-$ KaPoCE (%)")
-    grid(ax)
-    ax.legend(loc="lower left", frameon=False)
-    save(fig, "fig_paceheur")
-
-
-def fig_pacebounds():
-    import analyze as A
-    _, _, _, ref, d = A.pace_exact(os.path.join(RES, "pace_exact.csv"))
-    cf = d[d.algo == "certiflip"].set_index("inst")
-    s = ref[ref.solved_1h == 1].copy()
-    s["cf"] = np.ceil(cf["lb"].reindex(s.index) - 1e-6)
-    s["dens"] = 2 * s.m / (s.n * (s.n - 1))
-    fig, ax = plt.subplots(figsize=(3.4, 2.4))
-    for col, c, lab in (("low_star", ORANGE, "B&B star packing (KaPoCE)"),
-                        ("cf", BLUE, "CertiFlip bound (checked)")):
-        ax.scatter(s.dens, s[col] / s.opt.clip(lower=1), s=12, color=c, edgecolors="white",
-                   linewidths=0.5, label=lab, zorder=3, alpha=0.9)
-    ax.axhline(1, color=INK2, lw=0.8)
-    ax.set_xscale("log")
-    ax.set_xlabel("edge density")
-    ax.set_ylabel("lower bound / OPT")
-    ax.set_ylim(0.86, 1.005)
-    grid(ax)
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=2, frameon=False)
-    save(fig, "fig_pacebounds")
-
-
-FIGS = {"support": fig_support, "crossover": fig_crossover, "gapmap": fig_gapmap,
-        "convergence": fig_convergence, "budget": fig_budget, "paceheur": fig_paceheur,
-        "pacebounds": fig_pacebounds}
+FIGS = {"support": fig_support, "crossover": fig_crossover, "gapmap": fig_gapmap}
 
 if __name__ == "__main__":
     for k in (sys.argv[1:] or FIGS):
