@@ -28549,7 +28549,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact047.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790594083.087752
  },
@@ -28589,7 +28589,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact051.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790594088.4884324
  },
@@ -28599,7 +28599,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact052.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790594310.2546775
  },
@@ -28639,7 +28639,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact056.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790594315.1671174
  },
@@ -28679,7 +28679,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact060.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790594321.0792747
  },
@@ -28719,7 +28719,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact064.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790594326.0168889
  },
@@ -28759,7 +28759,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact068.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790594350.5468035
  },
@@ -28799,7 +28799,7 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact072.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790594358.2591462
  },
@@ -28839,8 +28839,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact076.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790594457.3008983
  },
  {
   "id": "lsstar_pace-exact_exact077.gr_2",
@@ -28848,8 +28849,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact077.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790594457.300901
  },
  {
   "id": "lsstar_pace-exact_exact078.gr_2",
@@ -28857,8 +28859,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact078.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790594457.3009021
  },
  {
   "id": "lsstar_pace-exact_exact079.gr_2",
@@ -28866,8 +28869,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact079.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w6",
+  "started": 1790594457.3009028
  },
  {
   "id": "lsstar_pace-exact_exact080.gr_2",
@@ -28875,8 +28879,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact080.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790594462.4233482
  },
  {
   "id": "lsstar_pace-exact_exact081.gr_2",
@@ -28884,8 +28889,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact081.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790594462.4233508
  },
  {
   "id": "lsstar_pace-exact_exact082.gr_2",
@@ -28893,8 +28899,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact082.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790594462.4233513
  },
  {
   "id": "lsstar_pace-exact_exact083.gr_2",
@@ -28902,8 +28909,9 @@
   "T": 60.0,
   "seed": 2,
   "graph": "pace-exact/exact083.gr",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790594462.4233518
  },
  {
   "id": "lsstar_pace-exact_exact084.gr_2",
