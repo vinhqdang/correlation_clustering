@@ -25394,7 +25394,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-Enron",
-  "status": "running",
+  "status": "done",
   "machine": "w5",
   "started": 1790583485.706774
  },
@@ -25434,7 +25434,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790583496.4434118
  },
