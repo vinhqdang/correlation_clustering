@@ -1,0 +1,1 @@
+{"graph": "pace-exact/exact032.gr", "n": 80, "m": 865, "mode": "sstar", "T": 60.0, "seed": 0, "value": 512.0, "sstar_time": 60.003, "sstar_init": 451, "rounds": [18846, 26], "stars": 322, "time": 60.035451889038086, "check": "ok", "certified": 512, "lb_exact": 512.0, "identity": "hash", "tag": "lsstar", "commit": "e4fb0c9", "cpu": "AMD EPYC 7B12", "python": "3.13.15"}
