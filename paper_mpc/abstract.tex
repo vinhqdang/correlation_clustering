@@ -2,28 +2,28 @@ Correlation clustering (equivalently, cluster editing) has strong
 approximation algorithms and strong heuristics, but on large graphs nobody
 can say how far a given clustering is from optimal: exact solvers stop at a
 few hundred vertices, and the lower bounds used at scale so far, packings of
-bad triangles, certify only factors of \numBaseFacLo{} to \numBaseFacHi{} on our
-graphs.  We compute lower bounds on sparse unweighted instances with up to
+bad triangles, certify only factors of \numBaseFacLo{} to \numBaseFacHi{} on
+our graphs.  We compute lower bounds on sparse unweighted instances with up to
 $10^6$ vertices and certify every one of them.  Optimal clusters have
-diameter at most two, so the metric LP and its strengthening by star and
-local subgraph inequalities can be restricted to the
-$O(\sum_v\deg(v)^2)$ pairs at distance at most two, and so can every
-packing of induced stars.  On these pairs we run a local search for star
-packings, a sparse implementation of the heuristic behind the root bound of
-the KaPoCE branch-and-bound, and a dual block-coordinate ascent that turns
-the relaxation into an anytime bound.  Their certificates are verified
-against the raw instance file, in exact arithmetic, by a short checker that
-shares no code with the solver; the inequality it evaluates is proved in
-Lean~4.  On the PACE~2021 exact track the larger of two checked bounds,
-each computed in \SI{60}{s}, proves optimality on \numPaceBestOpt{} of the 173 solved
-instances, against 79 for the published root bound of the branch-and-bound,
-reaches \numPaceBestMean{} of the optimum on average, against
-\numPaceMeanStar{}, and improves the published root bounds of
-\numPaceOpenImproved{} of the \numPaceOpen{} open instances.  On all
-\numSnapTotal{} SNAP graphs of our study, with up to \numMaxCertN{} vertices,
-it gives checked bounds, which certify the archived solutions within
-\numSnapGapLo{} to \numSnapGapHi{} (median \numSnapGapMedian{}); triangle
-packings leave \numBaseGapLo{} to \numBaseGapHi{}.  The dense implementation
-of the branch-and-bound runs on seven of these graphs, exceeds our bound on
-\numRootBetter{} of them by at most \numRootBetterHi{}, and its exported
-packings pass the same checker.
+diameter at most two, so the metric LP, its strengthening by star and local
+subgraph inequalities, and every packing of induced stars can be restricted
+to the $O(\sum_v\deg(v)^2)$ pairs at distance at most two.  On these pairs we
+reimplement the star-packing local search of the KaPoCE branch-and-bound
+with memory linear in the graph and the packing, and add a dual
+block-coordinate ascent that turns the relaxation into an anytime bound.
+Certificates are verified against the raw instance file, in exact
+arithmetic, by a short checker that shares no code with the solver; the
+inequality it evaluates is proved in Lean~4.  On the PACE~2021 exact track,
+under the stopping rule of the branch-and-bound, the reimplementation proves
+optimality on \numPaceKrOpt{} of the 173 solved instances, against 79 for the
+published root bound; run for \SI{60}{s}, the same heuristic proves it on
+\numPaceSlsOpt{}, and the block LPs on \numPaceCfOnlyKept{} more that longer
+packing does not close.  The checked bounds improve the published root
+bounds of \numPaceOpenImproved{} of the \numPaceOpen{} open instances.  On
+all \numSnapTotal{} SNAP graphs of our study, with up to \numMaxCertN{}
+vertices, we obtain checked bounds; on the \numSnapGapN{} with an archived
+clustering they certify it within \numSnapGapLo{} to \numSnapGapHi{} (median
+\numSnapGapMedian{}), where triangle packings leave \numBaseGapLo{} to
+\numBaseGapHi{}.  The dense implementation of the branch-and-bound runs on
+seven of these graphs, exceeds our best bound on \numRootBetter{} of them by
+at most \numRootBetterHi{}, and its exported packings pass the same checker.
