@@ -24674,7 +24674,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "amazon0302",
-  "status": "running",
+  "status": "done",
   "machine": "w1",
   "started": 1790573229.7139337
  },
@@ -24714,7 +24714,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "com-Amazon",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790573242.6076632
  },
@@ -24754,7 +24754,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790573266.4752035
  },
@@ -25324,7 +25324,7 @@
   "T": 600.0,
   "seed": 2,
   "graph": "ca-GrQc",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790581780.8803174
  },
@@ -25494,8 +25494,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "wiki-Vote",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790584328.7500331
  },
  {
   "id": "lsstar_BitcoinAlpha+_3",
@@ -25503,8 +25504,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790584328.7500386
  },
  {
   "id": "lsstar_BitcoinOTC+_3",
@@ -25512,8 +25514,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790584328.7500393
  },
  {
   "id": "lsstar_Epinions+_3",
@@ -25521,8 +25524,9 @@
   "T": 600.0,
   "seed": 3,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790584328.75004
  },
  {
   "id": "lsstar_Slashdot+_3",
