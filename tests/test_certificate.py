@@ -256,3 +256,38 @@ def test_certificate_rejects_huge_row_sum(tmp_path):
                 val=np.full(len(pairs), -2.0 ** 51), b=np.array([0.0]), y=np.array([0.0]))
     with pytest.raises(ValueError, match="too large for exact int64 enumeration"):
         C.check(inst, cert)
+
+
+@pytest.mark.parametrize("change", [
+    ("val", lambda c: np.where(np.arange(len(c["val"])) == 0, np.nan, c["val"])),
+    ("val", lambda c: np.where(np.arange(len(c["val"])) == 0, np.inf, c["val"])),
+    ("b", lambda c: np.where(np.arange(len(c["b"])) == 0, -np.inf, c["b"])),
+    ("b", lambda c: np.where(np.arange(len(c["b"])) == 0, np.nan, c["b"])),
+    ("y", lambda c: np.where(np.arange(len(c["y"])) == 0, np.nan, c["y"])),
+    ("v", lambda c: c["v"][:-1]),
+    ("val", lambda c: np.concatenate([c["val"], [1.0]])),
+    ("val", lambda c: c["val"][:1]),
+    ("b", lambda c: c["b"][:-1]),
+    ("u", lambda c: np.stack([c["u"], c["u"]])),
+    ("u", lambda c: c["u"].astype(np.uint64) + np.uint64(2 ** 63)),
+    ("v", lambda c: c["v"].astype(np.float64)),
+    ("val", lambda c: c["val"].astype(np.complex128)),
+    ("val", lambda c: np.where(np.arange(len(c["val"])) == 0, 2.0 ** 60, c["val"])),
+    ("ptr", lambda c: np.concatenate([c["ptr"][:1], c["ptr"][2:]])),
+    ("ptr", lambda c: c["ptr"] + 1),
+])
+def test_certificate_rejects_malformed_arrays(tmp_path, change):
+    """NaN, infinity, arrays of different lengths or shapes, wrapped or huge
+    integers and non-real types are rejected, never evaluated."""
+    g, _, cert, _ = _cert(tmp_path, seed=1)
+    key, f = change
+    cert[key] = f(cert)
+    with pytest.raises(ValueError):
+        C.check(g, cert)
+
+
+def test_certificate_without_array_is_rejected(tmp_path):
+    g, _, cert, _ = _cert(tmp_path, seed=1)
+    cert.pop("val")
+    with pytest.raises(ValueError):
+        C.check(g, cert)

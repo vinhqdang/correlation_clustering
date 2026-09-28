@@ -35,6 +35,10 @@ instance files, and the parser settings of that file (format and sign column)
 are taken from a committed instance table, never from the certificate, so a
 certificate can neither choose the instance it is checked against nor how
 that instance is read;
+\item checks the shape, type, length and range of every array before
+converting it: one-dimensional arrays, integer vertex ids in $[0,n)$ and
+offsets, real and finite coefficients, right-hand sides and multipliers, and
+equal lengths of the arrays that describe the same entries or rows;
 \item checks that every pair of every row is in $P$, i.e.\ is an edge or has a
 common neighbour, by intersecting sorted adjacency lists;
 \item checks that no row contains a pair twice and that the absolute values
@@ -76,7 +80,7 @@ If the checker accepts a certificate for an instance, then the value it
 returns is at most $\OPT$ of that instance.
 \end{proposition}
 \begin{proof}
-By steps 2 and 4, every row is supported on $P$ and satisfied by the cut
+By steps 3 and 5, every row is supported on $P$ and satisfied by the cut
 vector of every clustering that separates far pairs.  By
 Lemma~\ref{lem:half} this includes every optimal clustering, and
 Theorem~\ref{thm:anytime}(a) with the rounded multipliers gives $\LB\le\OPT$.
@@ -88,11 +92,11 @@ of every far-separating clustering for any rows valid for such clusterings,
 is proved in Lean~4 (\texttt{far\_dual\_bound}, \texttt{far\_dual\_le\_opt};
 Appendix~\ref{app:lean}), as is the fact that optimal clusterings separate far
 pairs; row validity is a hypothesis there.  The procedures that decide it
-(steps 2--4), the reader and the integer evaluation are tested, not verified,
+(steps 3--5), the reader and the integer evaluation are tested, not verified,
 and so is the closed form for star rows with an incomplete $R$, whose
-validity argument is the one given in step~4; no archived certificate uses
+validity argument is the one given in step~5; no archived certificate uses
 that case.  What remains to be trusted is therefore the checker's reader, the
-enumeration and the star formula of step~4, the integer evaluation, and the
+enumeration and the star formula of step~5, the integer evaluation, and the
 Python, NumPy and Numba (LLVM) runtime; running the checker with
 \texttt{NUMBA\_DISABLE\_JIT=1} removes the compiled kernels from this list
 at the price of speed (Section~\ref{sec:exp-time}).  Every archived certificate records the edge
@@ -110,10 +114,14 @@ review and fixed; the largest multiplier in any archived certificate is \numMaxY
 A second review found that the enumeration summed the coefficients of a row
 in 64-bit integers without a bound on the row, so a row that repeats one pair
 thousands of times with coefficients near $2^{51}$ wrapped around and was
-accepted as valid; step~3 now rejects such rows (the largest sum of absolute
-coefficients of a row in any archived certificate is \numMaxRowAbs{}).  Both
-cases are regression tests, and all archived certificates were re-checked
-with the final version (Section~\ref{sec:exp-time}).
+accepted as valid; step~4 now rejects such rows (the largest sum of absolute
+coefficients of a row in any archived certificate is \numMaxRowAbs{}).  A third
+review found that the checker did not compare the lengths of the arrays, so
+a certificate whose coefficient array was shorter than its pair arrays was
+not rejected, and that it accepted complex coefficients; step~2 now rejects
+both, and non-finite values explicitly.  All three cases are regression
+tests, and all archived certificates were re-checked with the final version
+(Section~\ref{sec:exp-time}).
 
 \paragraph{Relation to proof formats.}  VIPR~\cite{CheungGS17vipr} certifies
 a mixed-integer program by a derivation: cutting planes and branching

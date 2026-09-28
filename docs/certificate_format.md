@@ -62,6 +62,14 @@ The rows are stored in compressed-sparse-row form, in the x-form `sum_p a_ip x_p
 
 ### Constraints on the data
 
+- Every array is one-dimensional, and none may be missing.
+- `ptr`, `u` and `v` have an integer type.
+- `val`, `b` and `y` are real: integer or floating point, never complex.
+- `u`, `v` and `val` have the same length.
+- `b` and `y` have one entry per row, and `ptr` has one more.
+- Every value is finite.
+- `0 <= u, v < n`.
+
 - `|val| < 2^52` and `|b| < 2^52`, and both are integral.
 - `y * 2^30 < 2^62`.
 - No row contains the same pair twice.

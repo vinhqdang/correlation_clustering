@@ -374,31 +374,52 @@ def check(g, cert):
         if str(want) != str(have):
             raise ValueError(f"{key} mismatch: certificate {want}, file {have}")
     report["identity"] = "hash"
-    for key in ("ptr", "u", "v"):  # vertex ids and offsets must be integers, not truncated
-        if not np.issubdtype(np.asarray(cert[key]).dtype, np.integer):
-            raise ValueError(f"certificate array {key} is not of an integer type")
-    ptr = np.asarray(cert["ptr"]).astype(np.int64)
-    u, v = np.asarray(cert["u"]).astype(np.int64), np.asarray(cert["v"]).astype(np.int64)
-    fval, fb = np.asarray(cert["val"], dtype=np.float64), np.asarray(cert["b"], dtype=np.float64)
-    y = np.asarray(cert["y"], dtype=np.float64)
-    nrows = len(fb)
-    report.update({"rows": nrows, "nnz": len(u)})
-    if len(ptr) != nrows + 1 or ptr[0] != 0 or ptr[-1] != len(u) or (np.diff(ptr) < 0).any():
+    # shape, type and range of every array are checked before any cast
+    raw = {}
+    for key in ("ptr", "u", "v", "val", "b", "y"):
+        if key not in cert:
+            raise ValueError(f"certificate has no array {key}")
+        x = np.asarray(cert[key])
+        if x.ndim != 1:
+            raise ValueError(f"certificate array {key} is not one-dimensional")
+        if key in ("ptr", "u", "v"):   # vertex ids and offsets: integers, not truncated
+            if not np.issubdtype(x.dtype, np.integer):
+                raise ValueError(f"certificate array {key} is not of an integer type")
+        elif not (np.issubdtype(x.dtype, np.integer) or np.issubdtype(x.dtype, np.floating)):
+            raise ValueError(f"certificate array {key} is not real-valued")
+        raw[key] = x
+    nrows, nnz = len(raw["b"]), len(raw["u"])
+    report.update({"rows": nrows, "nnz": nnz})
+    if len(raw["v"]) != nnz or len(raw["val"]) != nnz:
+        raise ValueError("arrays u, v and val differ in length")
+    if len(raw["y"]) != nrows or len(raw["ptr"]) != nrows + 1:
+        raise ValueError("arrays b, y and ptr do not describe the same rows")
+    for key in ("u", "v"):
+        if nnz and (raw[key].min() < 0 or raw[key].max() >= g.n):
+            raise ValueError("vertex id out of range")
+    if raw["ptr"].min() < 0 or raw["ptr"].max() > nnz:
         raise ValueError("malformed row pointer")
-    if len(y) != nrows or (y < 0).any() or not np.all(np.isfinite(y)):
+    ptr = raw["ptr"].astype(np.int64)
+    u, v = raw["u"].astype(np.int64), raw["v"].astype(np.int64)
+    fval, fb = raw["val"].astype(np.float64), raw["b"].astype(np.float64)
+    y = raw["y"].astype(np.float64)
+    if ptr[0] != 0 or ptr[-1] != nnz or (np.diff(ptr) < 0).any():
+        raise ValueError("malformed row pointer")
+    if not (np.all(np.isfinite(fval)) and np.all(np.isfinite(fb))):
+        raise ValueError("non-finite row data")
+    if not np.all(np.isfinite(y)) or (y < 0).any():
         raise ValueError("negative or non-finite multiplier")
     if not (np.all(fval == np.round(fval)) and np.all(fb == np.round(fb))):
         raise ValueError("non-integral row data")
     # every value must fit into int64 before any cast, or the cast wraps
     # around (a huge multiplier would become negative); 2^52 keeps the floats
     # exact integers, and y 2^SCALE < 2^62 bounds the scaled multipliers
-    if (len(fval) and np.abs(fval).max() >= 2.0 ** 52) or \
+    if (nnz and np.abs(fval).max() >= 2.0 ** 52) or \
             (nrows and np.abs(fb).max() >= 2.0 ** 52):
         raise ValueError("row data out of range")
     if nrows and y.max() * 2.0 ** SCALE >= 2.0 ** 62:
         raise ValueError("multiplier out of range")
-    if len(u) and (min(u.min(), v.min()) < 0 or max(u.max(), v.max()) >= g.n):
-        raise ValueError("vertex id out of range")
+    del raw
     val, b = fval.astype(np.int64), fb.astype(np.int64)
     lo, hi = np.minimum(u, v), np.maximum(u, v)
     del fval, u, v  # large certificates: keep only one copy of each array
