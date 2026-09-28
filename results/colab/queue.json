@@ -25685,7 +25685,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "loc-Gowalla",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790586630.155379
  },
@@ -25785,7 +25785,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "Slashdot+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790587280.9626484
  },
@@ -25855,7 +25855,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "cit-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w2",
   "started": 1790587925.4796858
  },
@@ -26005,8 +26005,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790589262.7762892
  },
  {
   "id": "lsstar+k100_email-EuAll_1",
@@ -26014,8 +26015,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790589262.7762914
  },
  {
   "id": "lsstar+k100_com-Youtube_2",
@@ -26023,8 +26025,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "com-Youtube",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790589262.7762926
  },
  {
   "id": "lsstar+k100_email-EuAll_2",
@@ -26032,8 +26035,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "email-EuAll",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790589262.776293
  },
  {
   "id": "lsstar+k100_com-Youtube_3",
