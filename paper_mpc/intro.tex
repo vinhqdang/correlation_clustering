@@ -98,12 +98,11 @@ step solves the LP of one vertex block exactly by cutting planes, with costs
 equal to the current reduced costs.  The bound is valid after every step and
 never decreases, and its state is one reduced cost per pair plus the rows
 with positive multipliers (Theorem~\ref{thm:anytime}).  Any star or triangle
-packing is a feasible start.  After a strong star packing it adds most on
-sparse graphs with many short cycles, such as road networks, and little on
-social and collaboration graphs, also under an equal budget
-(Section~\ref{sec:exp-cert}); on the PACE exact track it closes
-\numPaceCfOnlyKept{} instances that the star local search does not close with
-five times the budget or with five seeds.
+packing is a feasible start.  After a strong star packing, and at an
+equal budget, it pays on the SNAP graphs only where short cycles rather than
+stars carry the bound (\numEqLpWinList{}; Section~\ref{sec:exp-cert}); on
+the PACE exact track it closes \numPaceCfOnlyKept{} instances that the star
+local search does not close with five times the budget or with five seeds.
 
 \item \textbf{Exactly checked certificates} (Section~\ref{sec:cert}).  A
 certificate lists the rows with positive multipliers.  A checker of about

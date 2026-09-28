@@ -88,9 +88,8 @@ memory (a star with $k$ leaves occupies $k+\binom k2$ pairs); with at most
 its result depends on the seed and on the speed of the machine
 (Table~\ref{tab:snap-sls}).  Over five seeds the range of its \SI{600}{s}
 bound is a median of \numSlsSeedSpreadMedian{} of its median and at most
-\numSlsSeedSpreadMax{} (\numSlsSeedSpreadMaxGraph{}).  Differences of this
-size between single runs, such as those between the root bound of the
-branch-and-bound and ours below, are within the spread of either method.  On
+\numSlsSeedSpreadMax{} (\numSlsSeedSpreadMaxGraph{}).  Differences between
+single runs of this size carry no information about the methods.  On
 \numSlsNotConv{} of the \numSlsGraphsN{} graphs every round of the
 \SI{600}{s} run improved the packing, so the search was far from its
 stopping rule; on the largest graphs it completed only a few rounds.  Run for
@@ -110,12 +109,15 @@ from the packing of the star local search (column SLS+LP, half of the
 \numSlpGainPosAny{} of the \numSlpN{} graphs with a support, by more than
 $0.005\%$ on \numSlpGainPos{} of them, by a median of \numSlpGainMedian{} and
 by at most \numSlpGainMax{} on \numSlpGainMaxGraph{}, whose road network has
-many short cycles and few large induced stars.  The comparison with the star
-local search run for the whole \SI{1200}{s} is the fair one: SLS+LP is larger
-on \numEqLpWins{} of the \numEqLpN{} graphs (\numEqLpWinList{}) and smaller
-on \numEqLpLoses{}, by a median of \numEqLpMedian{}, from \numEqLpMin{}
-(\numEqLpMinGraph{}) to \numEqLpMax{} (\numEqLpMaxGraph{}).  On the social
-and collaboration graphs the time is better spent on the packing.  With the
+many short cycles and few large induced stars.  This gain does not pay
+for the time: against the star local search run for the whole \SI{1200}{s},
+SLS+LP is larger on only \numEqLpWins{} of the \numEqLpN{} graphs
+(\numEqLpWinList{}) and smaller on \numEqLpLoses{}; the difference has a
+median of \numEqLpMedian{} and ranges from \numEqLpMin{}
+(\numEqLpMinGraph{}) to \numEqLpMax{} (\numEqLpMaxGraph{}).  On the social,
+collaboration, citation and web graphs the time is better spent on the
+packing; the block LPs pay only where short cycles, not stars, carry the
+bound.  With the
 ruin-and-recreate packing as the start the block LPs had added a median of
 \numPlpGainMedian{} (column R\&R+LP), because that packing leaves more room;
 the comparison of the two uses of that budget with the ruin-and-recreate
@@ -161,9 +163,11 @@ and on \numRootMemList{} it needs about \SI{11.6}{GB} and was killed in each
 of four runs on the machines with \SI{12.7}{GB}, the longest after
 \SI{3.8}{h}; its dense matrices, of which it keeps several with $n^2$
 entries, do not fit into memory above $2.5\cdot10^4$ vertices.  The two
-implement the same heuristic, and the differences where both finish are of
-the size of the spread over seeds (Table~\ref{tab:snap-sls}): those of a
-randomised local search stopped at different times.  Its
+implement the same heuristic.  On the graphs where the root bound is larger,
+its margin exceeds the spread of our search over seeds
+(Table~\ref{tab:snap-sls}), and our longest runs do not close it; we have
+not analysed whether this comes from the four-hour budget or from
+differences in the candidate generation of the two implementations.  Its
 packings use the same rows as ours, so we exported them from its code (a
 function of 13 lines that writes the stars of its final packing, centre
 first; \texttt{experiments/kapoce/}), converted each into a dual solution on

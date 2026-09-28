@@ -31,9 +31,11 @@ result; over five seeds its bound varies by up to \numSlsSeedSpreadMax{} on
 the SNAP graphs.  On the largest graphs it completes only a few rounds in
 \SI{600}{s}, and with \SI{3600}{s} the bound rises by up to
 \numSlsLongGainMax{}; the gaps on these graphs are partly a matter of budget.
-\item The block LPs matter on sparse graphs with many short cycles, such as
-\texttt{roadNet-PA}, and on some dense PACE instances; on the social and
-collaboration graphs the time is better spent on the packing.  We did not
+\item At an equal budget the block LPs beat the star local search alone on
+only \numEqLpWins{} of the \numEqLpN{} SNAP graphs with a support
+(\numEqLpWinList{}); on the PACE exact track they close
+\numPaceCfOnlyKept{} instances that five times the packing time does not.
+Elsewhere the time is better spent on the packing.  We did not
 optimise how to split a budget between the two phases, and we did not try
 first-order LP methods, whose duals the checker would accept as well.
 \item The remaining gaps on the social, citation and web graphs (up to
