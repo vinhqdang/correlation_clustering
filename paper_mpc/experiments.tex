@@ -193,4 +193,10 @@ bound equals the one checked during its run, the slowest took
 \numRecheckMax{}\,s and all together \numRecheckTotal{}\,h
 (\texttt{results/mpc/recheck.csv} and \texttt{recheck\_local.csv}).  The
 largest certificate, on \texttt{\numCheckMaxGraph}, has \numCheckMaxRows{}
-rows.
+rows.  No accepted certificate uses the independence-number case of the
+star formula (\numAlphaRows{} rows), and the largest multiplier is
+\numMaxY{}.  Run without its compiled kernels
+(\texttt{NUMBA\_DISABLE\_JIT=1}), the checker accepted \numNojitN{}
+certificates, every fifth star local search and every tenth CertiFlip
+certificate of the PACE exact track and two on \texttt{ca-GrQc}, with the
+same values.

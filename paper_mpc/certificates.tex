@@ -106,7 +106,7 @@ hash or a different instance.  An earlier version of the checker converted
 the multipliers to 64-bit integers before checking their range, so a
 certificate with a multiplier above $2^{33}$ would have wrapped around to a
 negative value and been accepted with a wrong bound.  This was found in
-review and fixed; the largest multiplier in any archived certificate is 14.
+review and fixed; the largest multiplier in any archived certificate is \numMaxY{}.
 A second review found that the enumeration summed the coefficients of a row
 in 64-bit integers without a bound on the row, so a row that repeats one pair
 thousands of times with coefficients near $2^{51}$ wrapped around and was

@@ -1300,6 +1300,19 @@ def timing():
                     mism.append(stem)
         assert not mism, f"recheck differs from the run records: {mism}"
         NUM["numRecheckMatched"] = "all"
+        nj = os.path.join(RES, "mpc", "recheck_nojit.csv")
+        if os.path.exists(nj):
+            x = pd.read_csv(nj)
+            ok = x[x.status == "ok"]
+            same = all(int(json.load(open(os.path.join(COLAB, c[:-4] + ".json")))["certified"]) == int(v)
+                       for c, v in zip(ok.certificate, ok.certified))
+            assert same and len(ok) == len(x), "the checker without JIT disagrees"
+            NUM["numNojitN"] = str(len(x))
+        stats = d[~lab & (d.status == "ok")]
+        if "max_row_abs" in stats:
+            NUM["numMaxRowAbs"] = f"\\num{{{int(stats.max_row_abs.max())}}}"
+            NUM["numMaxY"] = f"{stats.max_y.max():.0f}"
+            NUM["numAlphaRows"] = str(int(stats.star_rows_alpha.sum()))
         big = d[~lab].sort_values("rows").iloc[-1]
         NUM["numCheckMaxGraph"] = str(big.instance).split("/")[-1].replace(".txt.gz", "").replace(".gr", "")
         NUM["numCheckMaxRows"] = r"\num{%d}" % int(big.rows)
