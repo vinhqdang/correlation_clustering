@@ -35,7 +35,7 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact107.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790577903.2057555
  },
@@ -65,7 +65,7 @@
   "T": 300.0,
   "seed": 0,
   "graph": "pace-exact/exact161.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790578163.0191603
  },
@@ -25054,7 +25054,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-AstroPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790578488.3709822
  },
@@ -25094,8 +25094,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790579219.7291608
  },
  {
   "id": "lsstar_cit-HepPh_1",
@@ -25103,8 +25104,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepPh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790579219.7291627
  },
  {
   "id": "lsstar_cit-HepTh_1",
@@ -25112,8 +25114,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepTh",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790579219.7291632
  },
  {
   "id": "lsstar_com-Amazon_1",
@@ -25121,8 +25124,9 @@
   "T": 600.0,
   "seed": 1,
   "graph": "com-Amazon",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w9",
+  "started": 1790579219.729164
  },
  {
   "id": "lsstar_com-DBLP_1",
