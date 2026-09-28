@@ -21744,8 +21744,8 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "email-Enron",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790554530.923322
  },
  {
@@ -21754,8 +21754,8 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "loc-Brightkite",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790554530.9233243
  },
  {
@@ -21764,8 +21764,8 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinOTC+",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790554530.9233253
  },
  {
@@ -21774,8 +21774,8 @@
   "T": 1200.0,
   "seed": 0,
   "graph": "BitcoinAlpha+",
-  "status": "running",
-  "machine": "w8",
+  "status": "pending",
+  "machine": null,
   "started": 1790554530.9233258
  },
  {
@@ -21894,7 +21894,7 @@
   "T": 60.0,
   "seed": 0,
   "graph": "pace-exact/exact003.gr",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790556193.1613162
  },
