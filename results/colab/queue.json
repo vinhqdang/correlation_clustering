@@ -24764,7 +24764,7 @@
   "T": 3600.0,
   "seed": 0,
   "graph": "roadNet-PA",
-  "status": "running",
+  "status": "done",
   "machine": "w3",
   "started": 1790573266.475204
  },
@@ -25595,7 +25595,7 @@
   "T": 600.0,
   "seed": 3,
   "graph": "ca-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w8",
   "started": 1790586133.3692608
  },
@@ -25765,7 +25765,7 @@
   "T": 600.0,
   "seed": 4,
   "graph": "BitcoinOTC+",
-  "status": "running",
+  "status": "done",
   "machine": "w6",
   "started": 1790587280.962645
  },
@@ -25885,8 +25885,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "com-DBLP",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790588029.9934375
  },
  {
   "id": "lsstar_email-Enron_4",
@@ -25894,8 +25895,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Enron",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790588029.9934409
  },
  {
   "id": "lsstar_email-Eu-core_4",
@@ -25903,8 +25905,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "email-Eu-core",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790588029.9934416
  },
  {
   "id": "lsstar_facebook_4",
@@ -25912,8 +25915,9 @@
   "T": 600.0,
   "seed": 4,
   "graph": "facebook",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w3",
+  "started": 1790588029.993442
  },
  {
   "id": "lsstar_loc-Brightkite_4",
