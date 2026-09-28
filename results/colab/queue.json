@@ -25084,7 +25084,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "ca-HepPh",
-  "status": "running",
+  "status": "done",
   "machine": "w7",
   "started": 1790578488.370987
  },
@@ -25114,7 +25114,7 @@
   "T": 600.0,
   "seed": 1,
   "graph": "cit-HepTh",
-  "status": "running",
+  "status": "done",
   "machine": "w9",
   "started": 1790579219.7291632
  },
@@ -25254,8 +25254,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinAlpha+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790581124.40264
  },
  {
   "id": "lsstar_BitcoinOTC+_2",
@@ -25263,8 +25264,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "BitcoinOTC+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790581124.4026418
  },
  {
   "id": "lsstar_Epinions+_2",
@@ -25272,8 +25274,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "Epinions+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790581124.4026423
  },
  {
   "id": "lsstar_Slashdot+_2",
@@ -25281,8 +25284,9 @@
   "T": 600.0,
   "seed": 2,
   "graph": "Slashdot+",
-  "status": "pending",
-  "machine": null
+  "status": "running",
+  "machine": "w7",
+  "started": 1790581124.402643
  },
  {
   "id": "lsstar_amazon0302_2",
