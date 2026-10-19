@@ -15,8 +15,6 @@
 \newtheorem{problem}{Open Problem}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-% Unaudited results (MAX, HUB, SM only): promote to theorem/lemma only after audit.
-\newtheorem{claim}{Claim (unaudited)}
 \newcommand{\sd}{\triangle}
 \newcommand{\IH}{I(H)}
 \newcommand{\tw}{\mathrm{tw}}
@@ -37,7 +35,7 @@ We prove: (i) for $\ell=0$ the problem is a CSP with domain size $3$ whose const
 (v) adjacent true twins lie in one cluster in every optimum, and if $H$ is maximal among pair-disjoint packings (no induced $P_3$ has all three pairs unpacked), then in \emph{every} optimum no cluster contains more than one whole twin class of vertices outside $V(H)$, so no edit has both endpoints outside $V(H)$; we derive a normal form (frozen classes, a shrink rule with a tight threshold, a size bound $|R|\le(\ell+1)|V(H)|$, a classification of the partners of edits touching $R$) and show by a five-vertex example that pair-maximality cannot be weakened to maximality among vertex-disjoint packings;
 (vi) CEaMP is solvable in time $1.62^{(\binom s2+1)\ell}n^{O(1)}+n3^s$ and has a kernel with at most $(s^2-s+2)\ell$ vertices, where $s$ is the largest number of vertices spanned by a connected component of $I(H)$; in particular $I(H)$ a perfect matching is FPT in $\ell$. This is proved from a rule of van Bevern, Froese and Komusiewicz after verifying its hypotheses at the level of components; the parts that rest on their published proofs are listed explicitly.
 The main question, whether the problem is fixed-parameter tractable in $\ell+w$, is \emph{open}; we do not prove or disprove it.
-Three further statements (MAX, HUB, SM) obtained by our team are listed separately as unaudited claims, and are not part of the results above.
+(vii) For every packing $H$ and every YES instance we prove counting lemmas on the structure of solutions: maximalising $H$ by pair-disjoint induced $P_3$'s costs at most $+|M|\le\ell$ in treewidth (tight on stars); the hard non-adjacent pairs among the non-packed neighbours of a vertex have matching number at most $\ell$, so the independence number of that neighbourhood is at most $2\ell+c+1$; pieces of a solution that share a cluster are small ($|C|\le\max\{D+u+1,2D,2u\}$ for a cluster with at least two pieces); and the graph of packed pairs has treewidth at most $3w+2$. A clearly labelled heuristic discussion explains why hub and grid-tiling encodings do not give hardness; it is not a theorem. These lemmas give neither an FPT algorithm in $\ell+w$ nor hardness.
 \end{abstract}
 \input{sections/intro}
 \input{sections/prelim}
@@ -45,8 +43,8 @@ Three further statements (MAX, HUB, SM) obtained by our team are listed separate
 \input{sections/excess}
 \input{sections/structure}
 \input{sections/components}
+\input{sections/packing}
 \input{sections/limits}
-\input{sections/pending}
 \input{sections/open}
 \input{sections/related}
 \bibliographystyle{plain}
