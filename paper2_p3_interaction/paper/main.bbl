@@ -1,9 +1,15 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Bocci22}
 Bocci et~al.
 \newblock A new temporal interpretation of cluster editing, 2022.
 \newblock Notes: opened. TODO: full author list.
+
+\bibitem{Bod96}
+Hans~L. Bodlaender.
+\newblock A linear-time algorithm for finding tree-decompositions of small
+  treewidth.
+\newblock {\em SIAM Journal on Computing}, 25(6):1305--1317, 1996.
 
 \bibitem{Crespelle20}
 Crespelle, Drange, Fomin, and Golovach.
@@ -28,6 +34,16 @@ Garvardt, Morawietz, Nichterlein, and Weller.
 \newblock Notes: opened (Dagstuhl PDF); the DOI is read off the recorded
   Dagstuhl URL. Journal version JCSS 2026 per the notes.
 
+\bibitem{Guo09}
+Jiong Guo.
+\newblock A more effective linear kernelization for cluster editing.
+\newblock {\em Theoretical Computer Science}, 410(8--10):718--726, 2009.
+
+\bibitem{IPZ01}
+Russell Impagliazzo, Ramamohan Paturi, and Francis Zane.
+\newblock Which problems have strongly exponential complexity?
+\newblock {\em Journal of Computer and System Sciences}, 63(4):512--530, 2001.
+
 \bibitem{KU12}
 Komusiewicz and Uhlmann.
 \newblock Cluster editing with locally bounded modifications.
@@ -35,6 +51,14 @@ Komusiewicz and Uhlmann.
 \newblock Notes: opened,
   \url{https://www.uni-marburg.de/de/fb12/arbeitsgruppen/algorith/paper/ce-bounded-degree.pdf}.
   Volume and pages not recorded in the notes.
+
+\bibitem{Kor21}
+Tuukka Korhonen.
+\newblock A single-exponential time 2-approximation algorithm for treewidth.
+\newblock In {\em 2021 IEEE 62nd Annual Symposium on Foundations of Computer
+  Science (FOCS)}, pages 184--192, 2021.
+\newblock Crossref dates the proceedings 2022-02; the booktitle names the 2021
+  symposium.
 
 \bibitem{LPS23}
 Li, Pilipczuk, and Sorge.

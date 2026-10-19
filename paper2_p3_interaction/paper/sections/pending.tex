@@ -1,20 +1,5 @@
 \section{Results pending verification}\label{sec:pending}
-\textbf{Everything in this section is unaudited.} The statements come from the working notes (\texttt{wave2\_c1\_w1.md}, \texttt{wave2\_hardness.md}); each has a proof sketch in the notes and computer checks on small instances ($n\le11$), but none has passed the hostile-referee audit that the results of Sections~\ref{sec:l0}--\ref{sec:structure} passed. They are labelled \emph{Claim (unaudited)} so that they can be promoted to theorems after verification, and nothing else in the paper depends on them. Throughout, $H$ is maximal and $R=V\setminus V(H)$.
-
-\begin{claim}[Twins]\label{cl:twin}
-If $u\ne v$ and $N[u]=N[v]$, then $u,v$ lie in one cluster in every optimal partition.
-\end{claim}
-\emph{Sketch.} Suppose $u\in C_u\ne C_v\ni v$. For $y\notin\{u,v\}$ and a set $D\not\ni u,v$ let $f(y,D)$ be the number of non-neighbours of $y$ in $D$ minus the number of neighbours; $f(u,D)=f(v,D)$. Moving $u$ into $C_v$ changes the cost by $D_1=-f(u,C_u{-}u)+f(u,C_v{-}v)-1$, moving $v$ into $C_u$ by $D_2=-f(v,C_v{-}v)+f(v,C_u{-}u)-1$; $D_1+D_2=-2<0$, so one move strictly improves. (Cf.\ the critical-clique property of Guo, TCS 410 (2009); not re-read.)
-
-\begin{claim}[C1: no unpacked edit inside $R$]\label{cl:c1}
-Let $X_1,\dots,X_m$ be the components of $G[R]$ and $A_i=N(X_i)\setminus X_i\subseteq V(H)$ (pairwise disjoint, Lemma~\ref{lem:R}). Some optimal partition has every cluster containing no vertex of $R$ or exactly one entire class $X_i$. In particular some optimum has no unpacked edit with both endpoints in $R$.
-\end{claim}
-\emph{Sketch.} By Claim~\ref{cl:twin} each $X_i$ is inside one cluster, so an edit inside $R$ exists only if a cluster $C$ contains two classes $X_1,X_2$. Let $x_i=|X_i|$, $a_i=|A_i\cap C|$. Moving $X_1$ into a cluster of its own changes the cost by $\Delta_1=x_1(x_1+2a_1-|C|)$, and $|C|\ge x_1+x_2+a_1+a_2$. If $\Delta_1,\Delta_2>0$ then $x_2+a_2<a_1$ and $x_1+a_1<a_2$, so $x_1+x_2<0$, absurd. So one class can be moved out for free; iterate.
-
-\begin{claim}[Theorem K: FPT in $(\ell,s)$]\label{cl:K}
-Let $s$ be the maximum number of vertices of a connected component of $I(H)$ (the union of the vertex sets of its $P_3$'s). Then CEaMP is FPT in $(\ell,s)$; in particular it is FPT when $I(H)$ is a perfect matching.
-\end{claim}
-\emph{Sketch.} Components have disjoint vertex sets $W_j$. Compute $\tau_j=\OPT(G[W_j])\ge|C_j|$ by brute force (exponential in $s$ only). Then ``$\OPT(G)\le|H|+\ell$'' is Cluster Editing with $k=|H|+\ell$ and a vertex-disjoint packing $\{G[W_j]\}$ of cost $t\le\binom s2$, with excess $\ell'=\ell-\sum_j(\tau_j-|C_j|)$ (NO if negative); apply the above-lower-bound algorithm of van Bevern et al.~\cite[Thm.~6.6, Cor.~6.7]{BFK18} (time $f(t,\ell')n^{O(1)}$). A pair with exactly one end in $W_j$ is never packed, which restores the property of~\cite{BFK18} that external edits are excess. \emph{Depends on a cited theorem used outside its stated setting, to be checked.} Not valid for trees of unbounded size.
+\textbf{Everything in this section is unaudited.} The three statements MAX, HUB and SM come from the working notes (\texttt{wave2\_c1\_w1.md}, \texttt{wave2\_hardness.md}); each has a proof sketch in the notes and computer checks on small instances ($n\le11$), but none has passed the hostile-referee audit that the results of Sections~\ref{sec:l0}--\ref{sec:K} passed. (The twin lemma, statement C1 and Theorem~K, previously listed here, have been audited and are proved in Sections~\ref{sec:structure} and~\ref{sec:K}.) They are labelled \emph{Claim (unaudited)} so that they can be promoted to theorems after verification, and nothing else in the paper depends on them. Throughout, $H$ is pair-maximal and $R=V\setminus V(H)$.
 
 \begin{claim}[MAX: maximalisation costs $+\ell$ in treewidth]\label{cl:max}
 Let $M$ be a maximal set of induced $P_3$'s with pairwise disjoint pair sets, disjoint from the pairs of $H$. Then $\OPT\le|H|+\ell$ iff $|M|\le\ell$ and $\OPT\le|H\cup M|+(\ell-|M|)$, and $\tw(I(H\cup M))\le w+|M|\le w+\ell$.

@@ -1,10 +1,10 @@
 \section{Open problems}\label{sec:open}
 Notation as above; $w=\tw(I(H))$.
-\begin{problem}[Main question]\label{op:main}
-Is CEaMP fixed-parameter tractable parameterized by $\ell+w$, i.e.\ solvable in $f(\ell,w)n^{O(1)}$ time, or is it W[1]-hard in $\ell+w$? Known: XP in $\ell$ and FPT in $w$ for each fixed $\ell$ only via $n^{2\ell}$ (Theorem~\ref{thm:A}); FPT for $w=0$ by~\cite{BFK18}; the case $w=0$ and the case $H=\emptyset$ (plain Cluster Editing, $\ell=k$) are both FPT. Note that adding $c$ to the parameter changes nothing, since $c\le w+1$. A positive answer needs a bound $g(\ell,w)$ on the number of candidate positions for each unpacked edit (Lemma~\ref{lem:viab} gives none); a negative answer has to encode $[n]$-valued information through unpacked edits.
+\begin{problem}[Main question: $(\ell,w)$ in general]\label{op:main}
+Is CEaMP fixed-parameter tractable parameterized by $\ell+w$, i.e.\ solvable in $f(\ell,w)n^{O(1)}$ time, or is it W[1]-hard in $\ell+w$? Known: XP in $\ell$ and FPT in $w$ for each fixed $\ell$ only via $n^{2\ell}$ (Theorem~\ref{thm:A}); FPT in $\ell$ when $w=0$ by~\cite{BFK18}, and FPT in $(\ell,s)$ when the components of $I(H)$ span at most $s$ vertices (Theorem~\ref{thm:K}); the case $H=\emptyset$ (plain Cluster Editing, $\ell=k$) is FPT. Note that adding $c$ to the parameter changes nothing, since $c\le w+1$. A positive answer needs a bound $g(\ell,w)$ on the number of candidate positions for each unpacked edit (Lemma~\ref{lem:viab} gives none; Theorem~\ref{thm:C1} and Proposition~\ref{prop:pointer} only organise the edits touching $R$ and do not bound the HH-edits); a negative answer has to encode $[n]$-valued information through unpacked edits.
 \end{problem}
-\begin{problem}[Forests]\label{op:forest}
-If $I(H)$ is a forest ($w\le1$, hence $c\le2$), is CEaMP FPT in $\ell$? (Perfect-matching $I(H)$ is covered only by the unaudited Claim~\ref{cl:K}.)
+\begin{problem}[$w=1$ with unbounded tree components]\label{op:forest}
+If $I(H)$ is a forest ($w\le1$, hence $c\le2$) with components of unbounded size, is CEaMP FPT in $\ell$? Theorem~\ref{thm:K} settles bounded components, in particular perfect matchings (Corollary~\ref{cor:pm}), but its counting argument is at the level of whole components and gives nothing for a single large tree component.
 \end{problem}
 \begin{problem}[Half-integral and intermediate packings]\label{op:c2}
 Is CEaMP with $c=2$ FPT in $\ell$? What is the complexity of $\ell=0$ for $3\le c\le22$? Both are open in~\cite{LPS23}, whose authors say a W[1]-hardness result for $c=2$ ``would also not be surprising''.
