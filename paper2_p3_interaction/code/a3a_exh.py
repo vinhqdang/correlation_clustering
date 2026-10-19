@@ -75,9 +75,9 @@ def run(seed, ninst, nmin, nmax, hyp='pairmax'):
                     A2 = [z for z in range(n) if z not in X2 and A[X2[0], z]]
                     a2 = M2[rows][:, A2].sum(1) if A2 else np.zeros(len(rows), int)
                     d2 = len(X2) * (len(X2) + 2 * a2 - Csz)
-                    bad = ((d1 > 0) & (d2 > 0)).sum()
+                    bad = ((d1 >= 0) & (d2 >= 0)).sum()  # STRONG form: one of the two moves is strictly improving
                     C['two_class_partitions(all, not only optimal)'] += len(rows)
-                    if bad: C['INEQUALITY_FAIL'] += int(bad); fails.append(('ineq', A.tolist(), H))
+                    if bad: C['STRICT_INEQUALITY_FAIL'] += int(bad); fails.append(('ineq', A.tolist(), H))
         # --- move DAG from every (capped) optimum
         if len(classes) >= 2 and l4:
             cls_of = {}
