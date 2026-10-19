@@ -1,0 +1,1 @@
+{'total': 18749, 'yes': 14132, 'no': 4617, 'mism_l0': 0, 'mism_l': 0, 'maximal': 12841, 'nonmax': 5908, 'tested_l': 56247, 'seconds': 10.3}
