@@ -27,7 +27,12 @@ def analyse(name, n, edges, opt, do_dp, ls_iters_cap=300000):
     Hg = greedy_pack(A, indptr, indices, 0, big)
     row['H_greedy'] = len(Hg)
     for cap in (1, 2, 3):
-        row[f'H_cap{cap}'] = len(greedy_pack(A, indptr, indices, 0, cap))
+        Hc = greedy_pack(A, indptr, indices, 0, cap)
+        row[f'H_cap{cap}'] = len(Hc)
+        sc = interaction_stats(Hc, n)
+        row[f'c_cap{cap}'] = sc['c']; row[f'tw_ub_cap{cap}'] = sc['tw_ub']
+        row[f'tw_lb_cap{cap}'] = sc['tw_lb']; row[f'comps_cap{cap}'] = sc['comps']
+        row[f'maxdeg_cap{cap}'] = sc['maxdeg']
     iters = min(ls_iters_cap, 100 * len(Hg) + 20000)
     t1 = time.time()
     H, gains = local_search(A, Hg, iters, 1, 4)
@@ -59,7 +64,7 @@ def pace_job(args):
 def snap_job(name):
     fn, sc = SNAPFILE[name]
     n, edges = read_snap(os.path.join(ROOT, 'data/raw', fn), sc)
-    return analyse(name, n, edges, None, False, 200000)
+    return analyse(name, n, edges, None, False, 1500000)
 
 def write(rows, out):
     keys = []
