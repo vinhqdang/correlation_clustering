@@ -1,0 +1,197 @@
+\section{The cluster-identity route: bounded candidates, an \texorpdfstring{$n^{\ell}$}{n\^l} algorithm and an FPT algorithm in \texorpdfstring{$(\ell,D,\omega)$}{(l,D,omega)}}\label{sec:dproute}
+This section pursues the following route to fixed-parameter tractability in $\ell+w$: describe the clusters of an optimal solution by a normal form (Lemmas~\ref{lem:CP}--\ref{lem:NF}), show that one endpoint of an unpacked edit determines a bounded candidate set for the other (Corollary~\ref{cor:cand}), and run a dynamic program that either guesses the positions of the edits (Theorem~\ref{thm:nl}) or follows the clusters directly (Theorem~\ref{thm:omega}). The route yields two proved results, a halving of the exponent in Theorem~\ref{thm:A} and an FPT algorithm for a stronger parameter $\omega$, and \textbf{it does not yield FPT in $\ell+w$}: $\omega$ is not bounded by any function of $(\ell,w)$ (Proposition~\ref{prop:expander}), and the reduction that would repair this is missing (Conjecture~\ref{conj:ML}). The question ``FPT in $(\ell,w)$?'' remains \textbf{open}.
+
+\paragraph{Setting and notation.}
+$H$ is pair-maximal; for an arbitrary packing apply Lemma~\ref{lem:MAX} and read $w,D,\ell$ as the primed values $w'\le w+|M|$, $D'\le D+2|M|$, $\ell'=\ell-|M|$ (Remark~\ref{rem:primed} below). ``Soft'' means packed, ``hard'' unpacked; $Q(v)$ is the set of soft partners of $v$ and $D$ is any number with $D\ge\max_v|Q(v)|$ (for example $D=D(H)=2c$). $N_h(v)$ is the set of hard neighbours and $d_h(v)=|N_h(v)|$. A \emph{solution} is a set $S$ of pairs with $G\sd S$ a cluster graph; its \emph{clusters} are the cliques of $G\sd S$, and every partition $\pi$ of $V$ is the cluster partition of exactly one solution, namely the set of pairs $ab$ with $[a,b\text{ in one block}]\neq[ab\in E]$; its size is the \emph{cost} of $\pi$. As in Section~\ref{sec:packing}, $U$ is the set of \emph{edited hard pairs} of $S$ (hard pairs in $S$), with $u=|U|\le|S|-|H|$ (Lemma~\ref{lem:decomp}); $\mathrm{del}_x$ and $\mathrm{ins}_x$ count the deleted hard edges (hard edges across clusters) and inserted hard non-edges (hard non-edges inside clusters) of $U$ at the vertex $x$. A \emph{hard component} is a connected component of the graph $(V,\text{hard edges of }G)$; it is \emph{clean} if all its non-adjacent pairs are soft. We say $(G,H,\ell)$ is a YES instance if $\OPT\le|H|+\ell$, and then every solution of size $\le|H|+\ell$ has $u\le\ell$.
+
+\subsection{Cost decomposition}
+\begin{lemma}[CP: cost decomposition]\label{lem:CP}
+Let $\pi$ be a partition of $V$ and $f(C)=\binom{|C|}2-2e(C)$, where $e(C)$ is the number of edges of $G$ inside $C$.
+\begin{enumerate}
+\item[(a)] $\mathrm{cost}(\pi)=|E|+\sum_{C\in\pi}f(C)$.
+\item[(b)] $\mathrm{cost}(\pi)=\sum_i c_i+|U|$, where $c_i\ge1$ is the number of edited pairs among the three pairs of $P_i$ (it depends only on $\pi$ restricted to $V(P_i)$). The excess is $\sum_i(c_i-1)+|U|$.
+\item[(c)] Let $(T,\beta)$ be a tree decomposition of the soft graph $W$ (Proposition~\ref{prop:soft}) and call a hard pair \emph{local} if it lies in a common bag. Then $\mathrm{cost}(\pi)=\sum_{t}\mathrm{loc}_t+\mathrm{far}$, where each edited soft pair and each edited local hard pair is charged to one bag containing it, $\mathrm{loc}_t$ depends only on $\pi|_{\beta(t)}$, and $\mathrm{far}$ is the number of edited non-local hard pairs, so $\mathrm{far}\le|U|$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The cost counts non-edges inside blocks, $\sum_C[\binom{|C|}2-e(C)]$, plus edges across blocks, $|E|-\sum_Ce(C)$. (b) The pair sets $\pairs(P_i)$ are disjoint and are exactly the soft pairs, and $c_i\ge1$ since otherwise the triple $V(P_i)$ would stay an induced $P_3$ of $G\sd S$ (Lemma~\ref{lem:decomp}). (c) is bookkeeping: all edited pairs are soft, or hard and local, or hard and non-local; soft pairs always lie in a bag.
+\end{proof}
+(The $\ell=0$ CSP of Theorem~\ref{thm:l0} is the local part; all non-locality is in $\mathrm{far}$.)
+
+\subsection{Structure of the hard pairs}
+Lemma~\ref{lem:HE} (HE) is the first statement used below. We add its companion.
+\begin{lemma}[H2]\label{lem:H2}
+Let $H$ be pair-maximal and $uv$ a hard non-edge. Then $N_h(u)\cap N_h(v)=\emptyset$.
+\end{lemma}
+\begin{proof}
+If $z\in N_h(u)\cap N_h(v)$, then $u\,z\,v$ is an induced $P_3$ ($uz,zv\in E$, $uv\notin E$) all of whose pairs are hard, contradicting pair-maximality.
+\end{proof}
+
+\begin{lemma}[EX: bounds at an edited hard pair]\label{lem:EX}
+Let $H$ be pair-maximal, $S$ a solution with edited hard pair set $U$, $u=|U|$, let $xy\in U$ and let $C$ be the cluster of $x$. Then:
+\begin{enumerate}
+\item[(a)] if $xy$ is deleted, $d_h(x)\le D+\mathrm{del}_x+\mathrm{del}_y-1$; if $xy$ is inserted, $d_h(x)\le D+\mathrm{ins}_y-1+\mathrm{del}_x$. In both cases $d_h(x)\le D+u$;
+\item[(b)] $|C|\le1+D+d_h(x)+\mathrm{ins}_x$, hence $|C|\le1+2D+u$;
+\item[(c)] every $z\in C$ has $d_h(z)\le|C|-1+\mathrm{del}_z\le2D+2u$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) \emph{Deleted:} $x\in C$, $y\notin C$. A hard neighbour $z$ of $x$ with $xz$ not deleted (``kept'') lies in $C$, and $z\ne y$. Apply Lemma~\ref{lem:HE} with centre $x$ to the hard edges $xz,xy$: $zy\in E$ or $zy$ is soft. If $zy$ is a hard edge, it joins $z\in C$ to $y\notin C$, so it is a deleted hard edge at $y$ other than $xy$ (there are $\mathrm{del}_y-1$ of these); otherwise $z\in Q(y)$, at most $D$ vertices. So at most $D+\mathrm{del}_y-1$ hard neighbours are kept, and $d_h(x)\le D+\mathrm{del}_y-1+\mathrm{del}_x$. \emph{Inserted:} $x,y\in C$. A kept hard neighbour $z$ of $x$ lies in $C$ and $z\ne y$ (as $xy\notin E$); $zy$ is a pair inside $C$, hence an edge of $G\sd S$. If $zy$ were a hard edge, $z\in N_h(x)\cap N_h(y)$, contradicting Lemma~\ref{lem:H2}. So $zy$ is soft ($z\in Q(y)$, at most $D$ choices) or a hard non-edge, inserted at $y$ and different from $xy$ ($\mathrm{ins}_y-1$ choices). So $d_h(x)\le D+\mathrm{ins}_y-1+\mathrm{del}_x$. In the deleted case the pairs counted by $\mathrm{del}_x+\mathrm{del}_y-1$ are distinct pairs of $U$, so the sum is $\le u$; in the inserted case $\mathrm{ins}_y-1+\mathrm{del}_x\le u-1$ (an inserted pair at $y$ other than $xy$ and a deleted pair at $x$ are distinct elements of $U\setminus\{xy\}$).
+
+(b) For $z\in C\setminus\{x\}$ the pair $xz$ is an edge of $G\sd S$. Either $xz$ is soft (at most $D$ such $z$), or a kept hard edge (at most $d_h(x)$), or a hard non-edge, inserted at $x$ (at most $\mathrm{ins}_x$). With (a): in the deleted case $|C|\le1+D+(D+\mathrm{del}_x+\mathrm{del}_y-1)+\mathrm{ins}_x\le1+2D+u$ because the deleted pairs at $x$ or $y$ and the inserted pairs at $x$ are distinct elements of $U$; in the inserted case $\mathrm{ins}_x+\mathrm{ins}_y-1$ counts the inserted pairs at $x$ or $y$ and $\mathrm{del}_x$ is disjoint from them, so the total is again $\le u$.
+
+(c) Hard neighbours of $z$ inside $C$ are at most $|C|-1$; hard neighbours outside $C$ are joined by deleted edges, at most $\mathrm{del}_z\le u$. Use (b).
+\end{proof}
+Slack $0$ is attained in the finer forms of (a) and (b) in small cases (computer evidence), so the finer forms cannot be shaved by $1$; the coarse bounds are loose.
+
+\begin{lemma}[F1: clusters of an optimum are connected]\label{lem:conn}
+In an optimal solution every cluster $C$ induces a connected subgraph $G[C]$.
+\end{lemma}
+\begin{proof}
+If $C=C_1\cup C_2$ with $C_1,C_2\neq\emptyset$ and no edge of $G$ between them, splitting $C$ into $C_1,C_2$ turns the $|C_1||C_2|>0$ inserted pairs between them into non-edges outside $S$ and creates no deletion.
+\end{proof}
+
+Fix $\ell$ and put
+\[
+B=2D+3\ell,\qquad L_B=\{v:\ d_h(v)\le B\},\qquad Z=B+D+1=3D+3\ell+1.
+\]
+In an optimal solution of size at most $|H|+\ell$ call a cluster \emph{exceptional} if it contains an endpoint of a pair of $U$. Let $\mathrm{BIG}$ be the union of the hard components that contain a vertex $v$ with $d_h(v)>B$.
+
+\begin{lemma}[NF: normal form]\label{lem:NF}
+Let $H$ be pair-maximal and $S$ an optimal solution with $|S|\le|H|+\ell$, so $u\le\ell$.
+\begin{enumerate}
+\item[($\alpha$)] There are at most $2u\le2\ell$ exceptional clusters. Each exceptional cluster $C$ has $|C|\le1+2D+u\le2D+\ell+1$, lies in $L_B$, and $G[C]$ is connected.
+\item[($\beta$)] Let $C$ be a non-exceptional cluster. Then no hard edge leaves $C$ and no hard non-edge lies in $C$; so $C$ is a union of whole hard components, each clean, and all pairs between different components inside $C$ are soft. If $C$ contains at least two components, $|C|\le2D$.
+\item[($\gamma$)] Every hard component $K$ of $\mathrm{BIG}$ is a whole cluster of $S$, and this cluster is non-exceptional. Consequently every exceptional cluster is disjoint from $\mathrm{BIG}$, and every component of $\mathrm{BIG}$ is clean.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+($\alpha$) Each pair of $U$ has at most two clusters at its ends, which gives the count. The bound on $|C|$ is Lemma~\ref{lem:EX}(b) (for an endpoint $x\in C$ of a pair in $U$), the inclusion $C\subseteq L_B$ is Lemma~\ref{lem:EX}(c) together with $2D+2u\le B$, and connectivity is Lemma~\ref{lem:conn}.
+
+($\beta$) A hard edge leaving $C$ would be deleted, with an endpoint in $C$; a hard non-edge inside $C$ would be inserted. Both would make $C$ exceptional. If $K$ is a hard component meeting $C$, hard edges at a vertex of $K\cap C$ do not leave $C$, so $K\subseteq C$ by connectivity of $K$; $K$ is clean since $C$ contains no hard non-edge. Two vertices of different components inside $C$ are not joined by a hard edge, and are not a hard non-edge, so their pair is soft. If $C$ contains components $K_1\ne K_2$, a vertex $x\in K_1$ has all vertices of $C\setminus K_1$ as soft partners, so $|C\setminus K_1|\le D$; likewise $|C\setminus K_2|\le D$; since $K_1\subseteq C\setminus K_2$, $|C|=|K_1|+|C\setminus K_1|\le2D$.
+
+($\gamma$) Let $d_h(v)>B$ and let $K=K(v)$ be its hard component. By Lemma~\ref{lem:EX}(a) no endpoint of a pair of $U$ has hard degree above $D+u\le B$, and by ($\alpha$) no vertex of an exceptional cluster has hard degree above $B$. So the cluster $C$ of $v$ is non-exceptional, and by ($\beta$) $K\subseteq C$ and $C$ is a union of components. Now $|K|\ge d_h(v)+1>B+1>2D$, so by ($\beta$) $C$ cannot contain two components; hence $C=K$. Every other vertex of $K$ lies in the same cluster. Cleanness is ($\beta$). The disjointness statement follows since a component of $\mathrm{BIG}$ is a non-exceptional cluster.
+\end{proof}
+
+\begin{corollary}[CAND: bounded candidate partners]\label{cor:cand}
+Let $H$ be pair-maximal, $S$ optimal with $|S|\le|H|+\ell$, and $xy\in U$. Put $\rho=2D+\ell$ and $\Delta=B+D$. Then $x,y\in L_B$ and:
+\begin{enumerate}
+\item[(i)] if $xy$ is deleted, $y\in N_h(x)$, and $|N_h(x)|\le D+\ell$;
+\item[(ii)] if $xy$ is inserted, the distance from $x$ to $y$ in $G[L_B]$ is at most $|C|-1\le\rho$, where $C$ is the common cluster;
+\item[(iii)] in both cases $y$ lies in the ball $\mathrm{Ball}(x,\rho)$ of $G[L_B]$, which has at most $(\Delta+1)^{\rho}=Z^{\rho}$ vertices.
+\end{enumerate}
+The same holds with the roles of $x$ and $y$ exchanged.
+\end{corollary}
+\begin{proof}
+$x,y\in L_B$ by Lemma~\ref{lem:EX}(a) ($d_h\le D+u\le B$). (i) is the definition together with Lemma~\ref{lem:EX}(a). (ii) $G[C]$ is connected (Lemma~\ref{lem:conn}), $C\subseteq L_B$ by Lemma~\ref{lem:NF}($\alpha$), so a shortest path in $G[C]$ has at most $|C|-1\le2D+u\le\rho$ edges, and lies in $G[L_B]$. (iii) A vertex of $G[L_B]$ has at most $B$ hard neighbours and at most $D$ soft ones, so degree at most $\Delta$, and a ball of radius $\rho$ has at most $\sum_{i\le\rho}\Delta^i\le(\Delta+1)^\rho$ vertices; deleted pairs have distance $1$. Finally $\Delta+1=B+D+1=Z$.
+\end{proof}
+\begin{remark}[Radius two]\label{rem:rad2}
+Lemma~\ref{lem:half}(b) gives more for inserted pairs: the ends of an inserted pair have a common neighbour inside the cluster, so their distance in $G[C]\subseteq G[L_B]$ is exactly $2$, and (ii) holds with $\rho=2$ in place of $2D+\ell$. This is an immediate combination of Lemma~\ref{lem:half} and Lemma~\ref{lem:NF}($\alpha$), and would replace $\rho$ by $2$ in Theorem~\ref{thm:nl} (and so $Z_*^{\rho_*\ell}$ by $Z_*^{2\ell}$); it was not part of the audited statements, so we keep the audited value in the theorems. (The computer checks observed distance $\le2$ throughout.)
+\end{remark}
+In the language of Section~\ref{sec:locality}: Corollary~\ref{cor:cand} says that \emph{one} endpoint of an edited hard pair determines a set of at most $Z^{\rho}$ candidates for the other, for every pair, including (T2) pairs and deleted edges. What it does not bound is the number of candidates for the first endpoint, which is $n$.
+
+\subsection{Algorithms}
+\begin{remark}[Fixed edited set]\label{rem:fixU}
+The proof of Theorem~\ref{thm:A} shows: for a \emph{fixed} set $U'$ of hard pairs, $\min\sum_i|x_i|$ over all $x\in\prod\mathcal D_i$ with $G\sd(U'\cup\bigcup x_i)$ a cluster graph is computed in $7^{w+1}n^{O(1)}$ time from a tree decomposition of $I(H)$ of width $w$, and for \emph{every} $U'$ of hard pairs the value $m_{U'}+|U'|$ is the size of an actual solution.
+\end{remark}
+
+\begin{theorem}[$n^{\ell}$ algorithm]\label{thm:nl}
+Given $(G,H,\ell)$ and a tree decomposition of $I(H)$ of width $w$, CEaMP is solvable in time
+\[
+(n+1)^{\ell}\;Z_*^{\,\rho_*\ell}\;7^{\,w+\ell+1}\;n^{O(1)},\qquad D_*=D(H)+2\ell,\ \ Z_*=3D_*+3\ell+1,\ \ \rho_*=2D_*+\ell .
+\]
+Since $D(H)\le2(w+1)$, the factor $Z_*^{\rho_*\ell}$ is a function of $(\ell,w)$ only. This improves the exponent $2\ell$ of Theorem~\ref{thm:A} to $\ell$; it is still XP in $\ell$.
+\end{theorem}
+\begin{proof}
+Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then $H'$ is pair-maximal, $\ell'=\ell-|M|\le\ell$, $D(H')\le D+2|M|\le D_*$, a tree decomposition of $I(H')$ of width $w'\le w+|M|\le w+\ell$ is available, and the instance is equivalent to $(G,H',\ell')$. All lemmas apply to $H'$ with $D_*$ (any upper bound on $|Q|$ is allowed) and $\ell'$; put $B,L_B,Z,\rho$ accordingly (they are at most $B_*,Z_*,\rho_*$).
+
+\emph{Algorithm.} Compute $L_B$ and, for $x\in L_B$, the set $P(x)$ of vertices $y\in\mathrm{Ball}_{G[L_B]}(x,\rho)\setminus\{x\}$ with $xy$ hard; $|P(x)|\le Z^{\rho}$. Enumerate all sequences of at most $\ell'$ pairs $(x_1,y_1),\dots,(x_j,y_j)$ with $x_i\in L_B$ and $y_i\in P(x_i)$; there are at most $(1+nZ^{\rho})^{\ell'}\le(n+1)^{\ell'}Z^{\rho\ell'}$ of them. For each, let $U'=\{x_iy_i\}$ (a set of at most $\ell'$ hard pairs), compute $m_{U'}$ by Remark~\ref{rem:fixU} for $H'$ in $7^{w'+1}n^{O(1)}$ time, and accept iff $m_{U'}+|U'|\le|H'|+\ell'$.
+
+\emph{Soundness.} By Remark~\ref{rem:fixU}, $m_{U'}+|U'|$ is the size of an actual solution of $G$ for every $U'$ of hard pairs of $H'$; acceptance gives a solution of size $\le|H'|+\ell'=|H|+\ell$.
+
+\emph{Completeness.} Suppose the instance is a YES instance and let $S$ be an optimal solution, $|S|\le|H'|+\ell'$, with edited hard pair set $U$, $|U|\le\ell'$ (Lemma~\ref{lem:decomp} for $H'$). For each pair of $U$ take one endpoint $x$; it lies in $L_B$ and the other endpoint lies in $P(x)$ by Corollary~\ref{cor:cand}. So $U$ is among the enumerated sets, and for it $m_U+|U|\le|S|\le|H'|+\ell'$ (the packed part of $S$ is a feasible choice of $x$ for $U$ by Lemma~\ref{lem:decomp}).
+
+\emph{Time.} $(n+1)^{\ell'}Z^{\rho\ell'}7^{w'+1}n^{O(1)}\le(n+1)^{\ell}Z_*^{\rho_*\ell}7^{w+\ell+1}n^{O(1)}$.
+\end{proof}
+\begin{remark}\label{rem:primed}
+The statement is in terms of the primed instance $(G,H',\ell')$: $D_*,w+\ell$ and $\ell$ are upper bounds for $D(H'),w',\ell'$, which is the normalisation of Lemma~\ref{lem:MAX}. The exponent is halved because the candidate list is attached to \emph{one} endpoint (Corollary~\ref{cor:cand}); Theorem~\ref{thm:A} guesses both. Note that $\ell$ bounds the \emph{number} of edited hard pairs but not the cost of locating them: the $n^{\ell}$ comes from the position of the first endpoint of each pair. An FPT algorithm needs a bound on the positions as well. Computing the tree decomposition is FPT in $w$ (Section~\ref{sec:prelim}).
+\end{remark}
+
+\begin{theorem}[FPT in $(\ell,D,\omega)$]\label{thm:omega}
+Let $H$ be pair-maximal and let $\ell$, $D$, $B$, $Z$, $L_B$, $\mathrm{BIG}$ be as above. Let $V'=V\setminus\mathrm{BIG}$ and let $\Gamma'$ be the graph on $V'$ whose edges are all edges of $G$ and all soft pairs with both ends in $V'$; let $\omega=\tw(\Gamma')$ and assume a tree decomposition of $\Gamma'$ of width $\omega$ is given. Then one can compute in time $(Z(\omega+1))^{O(\omega)}n+n^{O(1)}$ a number $m^*$ such that
+\[
+\OPT(G)\le|H|+\ell\iff|E|+\sum_{K}f(K)+m^*\le|H|+\ell ,
+\]
+where $K$ ranges over the hard components of $\mathrm{BIG}$ and $f$ is as in Lemma~\ref{lem:CP}. Moreover $m_{\mathrm{all}}\le m^*\le m_{\mathrm{conn}}$, where $m_{\mathrm{all}}$ ($m_{\mathrm{conn}}$) is the minimum of $\sum_{C\in\pi'}f(C)$ over all partitions $\pi'$ of $V'$ with clusters of at most $Z$ vertices (and, for $m_{\mathrm{conn}}$, connected in $\Gamma'$).
+\end{theorem}
+\begin{proof}
+\emph{($\Leftarrow$)} Let $\pi'$ be the partition of $V'$ realising $m^*$ (the dynamic program below produces a real partition) and $\pi=\pi'\cup\{K:K\text{ a component of BIG}\}$. By Lemma~\ref{lem:CP}(a), $\mathrm{cost}(\pi)=|E|+\sum_Kf(K)+m^*\ge\OPT$, so the right-hand side gives $\OPT\le|H|+\ell$. No structure of $G$ is needed for this direction.
+
+\emph{($\Rightarrow$)} Let $S$ be optimal with $|S|\le|H|+\ell$. By Lemma~\ref{lem:NF}($\gamma$) every component of $\mathrm{BIG}$ is a whole cluster; let $\pi'$ be the restriction of $S$'s partition to $V'$. Its clusters are $\Gamma'$-connected and have at most $Z$ vertices:
+\begin{itemize}
+\item \emph{Exceptional $C$.} $C\cap\mathrm{BIG}=\emptyset$ by ($\gamma$), so $C\subseteq V'$; $G[C]$ is connected by ($\alpha$) and its edges are edges of $\Gamma'$. $|C|\le2D+\ell+1\le Z$.
+\item \emph{Non-exceptional $C$ not in $\mathrm{BIG}$.} By ($\beta$), $C$ is a union of whole hard components, none of which is in $\mathrm{BIG}$ (a component of $\mathrm{BIG}$ is a cluster by itself), so $C\subseteq V'$. Each component is connected by hard edges, which are edges of $\Gamma'$. If there are at least two components, all pairs between them are soft, hence edges of $\Gamma'$, so $C$ is $\Gamma'$-connected, and $|C|\le2D$. If there is exactly one component $K=C$, it is clean, so every vertex $y$ of $K$ has all other vertices of $K$ as hard neighbours or soft partners, $|K|\le d_h(y)+D+1\le B+D+1=Z$ because $y\notin\mathrm{BIG}$ has $d_h(y)\le B$.
+\end{itemize}
+So $\pi'$ is feasible for $m_{\mathrm{conn}}$ and $\mathrm{cost}(S)=|E|+\sum_Kf(K)+\sum_{C\in\pi'}f(C)\ge|E|+\sum_Kf(K)+m_{\mathrm{conn}}\ge|E|+\sum_Kf(K)+m^*$.
+
+\emph{The dynamic program.} Take a nice tree decomposition of $\Gamma'$ of width $\omega$ with empty root bag. A state at node $t$ is a partition $\mathcal P$ of the bag $X_t$ into blocks together with a size $s(\mathsf b)\in\{|\mathsf b|,\dots,Z\}$ for each block $\mathsf b$ (the number of vertices introduced so far, in the subtree of $t$, of the cluster containing $\mathsf b$). Its value is the minimum, over partitions of the introduced vertices into clusters that realise $(\mathcal P,s)$ (every cluster either contains a block of $\mathcal P$ or has been \emph{closed}, i.e.\ has no vertex left in the bag), of $\sum_C g(C)$, with $g(C)=\binom{|C|}2-2e(C)$ evaluated on the introduced vertices of $C$. \emph{Introduce} $v$ into the block $\mathsf b$ of size $s$ (or into a new block of size $1$): the value increases by $s-2k$, where $k$ is the number of $G$-neighbours of $v$ in $\mathsf b$; here we use that an introduced vertex $y$ that has been forgotten cannot be a $G$-neighbour of $v$, because $yv$ would be an edge of $\Gamma'$ and $y,v$ would share a bag. \emph{Forget} $v$: if its block has other bag vertices the block shrinks; otherwise the cluster is closed and is never extended. \emph{Join} of two children with the same partition $\mathcal P$: for a block with bag part $\mathsf b$ and sizes $s_1,s_2$ in the two children, put $x_1=s_1-|\mathsf b|$, $x_2=s_2-|\mathsf b|$; the new size is $s_1+s_2-|\mathsf b|$ and the value is $g_1+g_2-g(\mathsf b)+x_1x_2$ summed over blocks, where $g(\mathsf b)=\binom{|\mathsf b|}2-2e(\mathsf b)$ is read off the bag. This is correct because pairs inside $\mathsf b$ and edges inside $\mathsf b$ are counted in both children, pairs between the two exclusive parts number $x_1x_2$, and there is no $G$-edge between the exclusive parts (such an edge would be an edge of $\Gamma'$ between vertices forgotten in different subtrees, which share no bag). \emph{The join term $x_1x_2$ and the subtraction of $g(\mathsf b)$ are essential}: omitting them gives a different value on some inputs (about $6\%$ of the audit's tests). At the root the value is $\sum_Cf(C)$ over a partition of $V'$ with clusters of size $\le Z$. Call it $m^*$ (the minimum over states; we treat the closed clusters as final).
+
+Every state sequence yields a real partition of $V'$ with cluster sizes $\le Z$ and correct cost, so $m^*\ge m_{\mathrm{all}}$. A $\Gamma'$-connected partition is represented: if the last bag vertex of a cluster $C$ is forgotten at $t$, the vertex subtrees of $C$ have a connected union (as $C$ is $\Gamma'$-connected), which cannot contain the parent of $t$, so it lies below $t$ and all of $C$ has been introduced; hence no later vertex needs to join a closed cluster. So $m^*\le m_{\mathrm{conn}}$. There are at most $(\omega+1)^{\omega+1}Z^{\omega+1}$ states per node, a join combines at most $Z^{2(\omega+1)}$ pairs of states with equal partition, and the tree has $O(\omega n)$ nodes; the total time is $(Z(\omega+1))^{O(\omega)}n$. Computing $d_h$, $\mathrm{BIG}$ and $\Gamma'$ takes $n^{O(1)}$.
+
+Combining: $\OPT\le|H|+\ell$ implies $|E|+\sum_Kf(K)+m^*\le\mathrm{cost}(S)\le|H|+\ell$ by ($\Rightarrow$), and the converse is ($\Leftarrow$).
+\end{proof}
+\begin{remark}[Remarks on Theorem~\ref{thm:omega}]\label{rem:omegastate}
+(1) Cleanliness of the components of $\mathrm{BIG}$ need not be tested: it is implied when the instance is a YES instance (Lemma~\ref{lem:NF}($\gamma$)), and the inequality itself accounts for the true cost $f(K)$; rejecting an unclean component is a harmless optimisation. (2) The proof uses that an exceptional cluster is disjoint from $\mathrm{BIG}$ and hence lies in $V'$. It is \emph{not} true that $L_B\subseteq V'$: a component of $\mathrm{BIG}$ can contain vertices of small hard degree (pendant vertices of a hub component); in the audit's tests this happened in $30$ (instance, $\ell$) pairs. (3) Here no pointer is guessed: far merges are carried by $\Gamma'$-connectivity. As for Theorem~\ref{thm:nl}, $D,B,Z,\ell$ and $\omega$ refer to the pair-maximal instance $(G,H',\ell')$ of Lemma~\ref{lem:MAX}. (4) The dynamic program was implemented in the audit (introduce, forget and join over a min-fill decomposition, per connected component). With $m$ computed by brute force, the criterion agreed with $\OPT\le|H|+\ell$ in all $2{,}778$ tested pairs of an instance and an $\ell$ ($n\le10$), and the DP value satisfied $m_{\mathrm{all}}\le m^*\le m_{\mathrm{conn}}$ in $2{,}141$ checks; evidence, not proof. Without a tree decomposition of $\Gamma'$, one is computed in $2^{O(\omega)}n$ time with width $2\omega+1$~\cite{Kor21}.
+\end{remark}
+
+\subsection{Why \texorpdfstring{$\omega$}{omega} is not bounded by \texorpdfstring{$(\ell,w)$}{(l,w)}}
+\begin{proposition}[$\omega$ is unbounded at $\ell=0$, $w=0$]\label{prop:expander}
+For every cubic graph $F$ there is an instance $(G_F,H_F,0)$ with $H_F$ a vertex-disjoint pair-maximal packing ($w=0$, $c=1$, $D=2$), $\OPT(G_F)=|H_F|$ (a YES instance with $\ell=0$), $\mathrm{BIG}=\emptyset$, every hard component of size at most $6$ and every hard degree at most $4$, and $\tw(\Gamma')\ge\tw(F)$. By~\cite{GM09} (cited, not re-proved here) there are cubic graphs $F$ (expanders) with $\tw(F)=\Omega(|V(F)|)$. Hence $\omega$ is not bounded by any function of $(\ell,w)$.
+\end{proposition}
+\begin{proof}
+Orient each edge of $F$ arbitrarily; for each oriented edge $e=(p\to q)$ introduce three vertices $a_e,b_e,c_e$. Let $K_v=\{a_e:e\text{ leaves }v\}\cup\{b_e,c_e:e\text{ enters }v\}$ and make each $K_v$ a clique; add the cross edges $a_eb_e$ and nothing else. Then $|K_v|=\mathrm{out}(v)+2\,\mathrm{in}(v)=3+\mathrm{in}(v)\le6$. $H_F=\{P_e=(a_e,b_e,c_e)\}$: $a_eb_e,b_ec_e\in E$ and $a_ec_e\notin E$ since $a_e\in K_p$, $c_e\in K_q$, $p\ne q$ and cross edges are of the form $a_{e'}b_{e'}$; so $P_e$ is an induced $P_3$. The members are vertex-disjoint, so modification-disjoint, $c=1$, $w=0$ and $D=2$.
+
+\emph{Pair-maximality.} In an induced $P_3$ $x\,y\,z$ not both edges can lie inside cliques, since then $x,z$ would be in the clique of $y$ (each vertex is in exactly one clique) and adjacent. So one of $xy,yz$ is a cross edge $a_eb_e$, which is packed.
+
+\emph{$\OPT=|H_F|$.} The partition $\{K_v\}$ has no inserted pair and deletes exactly the cross edges, $|H_F|$ of them; and $\OPT\ge|H_F|$ by Lemma~\ref{lem:decomp}.
+
+\emph{Hard structure.} The soft pairs inside $K_v$ are $b_ec_e$ ($e$ entering $v$); all other pairs inside $K_v$ are hard edges. So each $K_v$ is one hard component and it is clean. The hard degree of $a_e\in K_p$ is $|K_p|-1\le4$ (as $a_e$ is an out-edge, $\mathrm{in}(p)\le2$, $|K_p|\le5$); that of $b_e$ or $c_e\in K_q$ is $|K_q|-2\le4$. So $d_h\le4=2D+3\ell$ at $\ell=0$, hence no vertex has $d_h>B$ and $\mathrm{BIG}=\emptyset$ (the margin is zero: one more unit would change the family).
+
+\emph{Minor.} $V'=V$, each $K_v$ is connected in $\Gamma'$ (a clique), and an edge or soft pair of $\Gamma'$ between $K_p\ne K_q$ is one of $a_eb_e$, $a_ec_e$, which exist only for the oriented edge $e=(p\to q)$ of $F$. Contracting the $K_v$ gives exactly $F$, so $F$ is a minor of $\Gamma'$ and $\tw(\Gamma')\ge\tw(F)$.
+\end{proof}
+\begin{remark}[Scope of Proposition~\ref{prop:expander}]\label{rem:expscope}
+The proposition refutes only the claim ``$\omega\le f(\ell,w)$''; it does \emph{not} refute fixed-parameter tractability. The family has $w=0$ and $\ell=0$; it is solved in polynomial time by Theorem~\ref{thm:A} and has $s=3$ in Theorem~\ref{thm:K}. The obstruction is to the representation by $\Gamma'$ (and by any single decomposition used both for the packed pairs and for the clusters): hard edges between far vertices are free (not in the budget), arbitrary in number, and make footprints of clusters disconnected in any decomposition of $I(H)$ or of $W$. At $\ell=0$ they are harmless because the CSP of Theorem~\ref{thm:l0} needs no identities; for $\ell>0$ an exceptional cluster can be assembled from vertices that are far apart (the example of a $c=1$ instance with two vertex-disjoint $P_3$'s joined by one hard edge that is deleted). So a dynamic program on one decomposition cannot be used for both purposes without a preprocessing step.
+\end{remark}
+
+\begin{remark}[Heuristic, not a theorem: colour coding does not repair the pointers]\label{rem:colour}
+A greedy proper colouring of the $\rho$-th power of $G[L_B]$ with $(B+D)^{\rho}+1$ colours names every vertex of a ball, so one site can verify a whole exceptional component by look-ups in $G$. What a site cannot do is make the other vertices of the same cluster, up to $Z$ of them in far bags, declare the same cluster and agree on the variables of their $P_3$'s: charging the cost at the minimum-colour vertex undercounts when that vertex takes the default state, and charging $1/|C|$ at each declaring site fails in the same way. Repairing this needs the identity of the other sites across bags, i.e.\ the $n^{\ell}$ guess. A sound variant exists for a decomposition of $I(H)$ plus all pairs of members within distance $\rho$ in $G[L_B]$, which gives FPT in $(\ell,D,\tw)$ of that graph, and by Proposition~\ref{prop:expander} its treewidth is not bounded in $(\ell,w)$. This is a heuristic analysis of a method, not a theorem.
+\end{remark}
+
+\subsection{The missing lemma}
+\begin{conjecture}[ML: reduction lemma; missing]\label{conj:ML}
+There is a polynomial-time algorithm that, given $(G,H,\ell)$ with $H$ pair-maximal, either outputs NO correctly or outputs an equivalent instance $(G^*,H^*,\ell^*)$ with $H^*$ pair-maximal, $\ell^*\le\ell$, $w(H^*)\le f_1(\ell,w)$ and $\tw(\Gamma'(G^*,H^*))\le f_2(\ell,w)$.
+\end{conjecture}
+We do not know whether ML is true. An equivalent form needed for Theorem~\ref{thm:omega} is a rule that removes ``inert'' hard components (those intact in every solution and whose incident $P_3$'s have a forced local solution). For $c=1$ (a vertex-disjoint packing) the rule of~\cite{BFK18} used in Section~\ref{sec:K} plays this role and leaves $O(\ell)$ members; for $w\ge1$ the counting breaks, because an edit outside all members can be an internal pair of another member, and the open case is that of Open Problem~\ref{op:forest}.
+\begin{observation}[Conditional; not a result]\label{obs:cond}
+If Conjecture~\ref{conj:ML} holds, then Theorem~\ref{thm:omega} applied to $(G^*,H^*,\ell^*)$, with $D^*\le2(w(H^*)+1)$, solves CEaMP in time $f(\ell,w)\,n^{O(1)}$, i.e.\ CEaMP is FPT in $\ell+w$.
+\end{observation}
+This is a one-line implication, stated only to record what ML would give; ML is a conjecture.
+
+\subsection{Computer evidence and status}
+The statements of this section were tested by brute force on small instances: in the notes, $5{,}300$ instances with $n=6,\dots,11$ and all partitions of cost at most $|H|+3$ ($>4.5\cdot10^5$ partitions, $1.5\cdot10^6$ edited-pair checks, $>17{,}000$ optimal partitions) and an ILP on $100$ instances with $n=11,\dots,13$; in the audit, with independently written code, $1{,}511$ instances with $n\le10$ ($8{,}988$ optimal partitions). Result: Lemmas~\ref{lem:CP}--\ref{lem:NF} and Corollary~\ref{cor:cand} had no violation, and inserted pairs had distance at most $2$ in every test (consistent with Remark~\ref{rem:rad2}). The family of Proposition~\ref{prop:expander} was checked for $K_4$, $K_{3,3}$, the Petersen graph and random cubic graphs on $20$ and $40$ nodes ($n$ up to $180$): induced, pair-disjoint, pair-maximal, $\mathrm{cost}(\{K_v\})=|H|$, hard degrees and component sizes as stated, and the quotient of $\Gamma'$ by the $K_v$ equal to $F$; for the four graphs $F$ with three edges (not cubic; the construction does not use cubicity) on $n=9$ vertices, in both orientations, $\OPT=|H|$ was verified over all partitions. $n\le13$ is small; Proposition~\ref{prop:expander} is a construction, not an experiment. Evidence supports, and the proofs justify, the statements.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\hline
+Statement & Status\\
+\hline
+Lemmas~\ref{lem:CP}--\ref{lem:NF}, Corollary~\ref{cor:cand} & proved\\
+Theorem~\ref{thm:nl} ($n^{\ell}$, halved exponent) & proved, relies on Theorem~\ref{thm:A}, Lemma~\ref{lem:MAX}\\
+Theorem~\ref{thm:omega} (FPT in $(\ell,D,\omega)$) & proved (DP implemented only in the audit)\\
+Proposition~\ref{prop:expander} ($\omega$ unbounded) & proved, expander treewidth cited~\cite{GM09}\\
+FPT in $\ell+w$ & \textbf{open}\\
+Conjecture~\ref{conj:ML} (ML) & conjecture, not tested at size\\
+Remark~\ref{rem:colour} & heuristic\\
+\hline
+\end{tabular}
+\end{center}

@@ -34,6 +34,12 @@ Garvardt, Morawietz, Nichterlein, and Weller.
 \newblock Notes: opened (Dagstuhl PDF); the DOI is read off the recorded
   Dagstuhl URL. Journal version JCSS 2026 per the notes.
 
+\bibitem{GM09}
+Martin Grohe and D{\'a}niel Marx.
+\newblock On tree width, bramble size, and expansion.
+\newblock {\em Journal of Combinatorial Theory, Series B}, 99(1):218--228,
+  2009.
+
 \bibitem{Guo09}
 Jiong Guo.
 \newblock A more effective linear kernelization for cluster editing.

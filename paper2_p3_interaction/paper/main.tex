@@ -10,6 +10,7 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{observation}[theorem]{Observation}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{problem}{Open Problem}
@@ -36,6 +37,12 @@ We prove: (i) for $\ell=0$ the problem is a CSP with domain size $3$ whose const
 (vi) CEaMP is solvable in time $1.62^{(\binom s2+1)\ell}n^{O(1)}+n3^s$ and has a kernel with at most $(s^2-s+2)\ell$ vertices, where $s$ is the largest number of vertices spanned by a connected component of $I(H)$; in particular $I(H)$ a perfect matching is FPT in $\ell$. This is proved from a rule of van Bevern, Froese and Komusiewicz after verifying its hypotheses at the level of components; the parts that rest on their published proofs are listed explicitly.
 The main question, whether the problem is fixed-parameter tractable in $\ell+w$, is \emph{open}; we do not prove or disprove it.
 (vii) For every packing $H$ and every YES instance we prove counting lemmas on the structure of solutions: maximalising $H$ by pair-disjoint induced $P_3$'s costs at most $+|M|\le\ell$ in treewidth (tight on stars); the hard non-adjacent pairs among the non-packed neighbours of a vertex have matching number at most $\ell$, so the independence number of that neighbourhood is at most $2\ell+c+1$; pieces of a solution that share a cluster are small ($|C|\le\max\{D+u+1,2D,2u\}$ for a cluster with at least two pieces); and the graph of packed pairs has treewidth at most $3w+2$. A clearly labelled heuristic discussion explains why hub and grid-tiling encodings do not give hardness; it is not a theorem. These lemmas give neither an FPT algorithm in $\ell+w$ nor hardness.
+
+(viii) \emph{Locality of inserted pairs.} In an optimal solution every cluster has diameter at most $2$ in $G$; with pair-maximality every inserted pair $ab$ has a middle vertex $z$ and is either of type T1 (both steps soft, in two distinct members through $z$) or of type T2 (one step a kept hard edge inside a piece, one step soft). Pieces that share a cluster and are joined by \emph{no} soft pair have all cross pairs of type T1, hence lie in one bag of a decomposition of $I(H)$ and have at most $4c(c-1)$ partners per vertex; merges of pieces that are joined by a soft pair can be of type T2 (examples with $n=7$ and $n=8$), so this locality is proved only for soft-free merges. Two hard vertices in one cluster agree on their hard neighbourhoods up to $\ell$ vertices.
+
+(ix) \emph{The cluster-identity route.} For a pair-maximal $H$ we prove a normal form of optimal solutions (clusters touching an edited hard pair have at most $2D+\ell+1$ vertices and are connected; all other clusters are unions of whole hard components) and that one endpoint of an edited hard pair determines a set of at most $f(\ell,D)$ candidates for the other. Consequences: an algorithm in time $n^{\ell}f(\ell,w)7^{w+\ell+1}n^{O(1)}$ (the exponent of (ii) halved) and an FPT algorithm in $(\ell,D,\omega)$, where $\omega$ is the treewidth of the graph of edges and packed pairs after removing hard components of large hard degree. However, $\omega$ is not bounded by any function of $(\ell,w)$ (a cubic-expander family with $\ell=w=0$, using a cited treewidth bound), so this does not give FPT in $\ell+w$.
+
+What remains is stated exactly: the pointers of type T2, the pointers realised by deleted hard edges, and a reduction lemma (conjectured, not proved) that would bound $\omega$; non-locality of merge pointers at unbounded distance in $I(H)$ is open.
 \end{abstract}
 \input{sections/intro}
 \input{sections/prelim}
@@ -44,6 +51,8 @@ The main question, whether the problem is fixed-parameter tractable in $\ell+w$,
 \input{sections/structure}
 \input{sections/components}
 \input{sections/packing}
+\input{sections/locality}
+\input{sections/dproute}
 \input{sections/limits}
 \input{sections/open}
 \input{sections/related}
