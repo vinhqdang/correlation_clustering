@@ -1,0 +1,19 @@
+\section{Edits outside the packed \texorpdfstring{$P_3$}{P3}'s}\label{sec:structure}
+By Lemma~\ref{lem:decomp} the whole difficulty of $\ell>0$ is the set $U$ of at most $\ell$ unpacked edits. We record what is proved about it.
+\begin{lemma}[Viability of an unpacked edit]\label{lem:viab}
+Let $S$ be any solution, $U$ its unpacked part and $uv\in U$. Let $D(uv)$ be the set of $z\notin Q(u)\cup Q(v)\cup\{u,v\}$ such that $\{u,v,z\}$ is an induced $P_3$ of $G\sd\{uv\}$. Then for every $z\in D(uv)$ one of $uz,vz$ lies in $U$, and $|D(uv)|\le|U|-1$.
+\end{lemma}
+\begin{proof}
+All three pairs of $\{u,v,z\}$ are unpacked ($z\notin Q(u)\cup Q(v)$). If neither $uz$ nor $vz$ is in $S$, the triple has in $G\sd S$ the same pattern as in $G\sd\{uv\}$, an induced $P_3$. Distinct $z$ give distinct pairs, all different from $uv$.
+\end{proof}
+Lemma~\ref{lem:viab} gives a kernel-style condition (deleting $uv$ needs fewer than $\ell$ common neighbours outside $Q(u)\cup Q(v)$) but no bound on the number of candidate pairs: all pendant edges are viable. Moreover, a triple $\{u,v,z\}$ with $uv$ unpacked that contains a packed pair has $z\in Q(u)\cup Q(v)$ (the packed pair is $uz$ or $vz$), so an unpacked edit interacts with the $P_3$'s only through the environments $Q(u),Q(v)$ of its endpoints.
+\begin{lemma}[Vertices outside $V(H)$ for maximal $H$]\label{lem:R}
+Let $H$ be maximal and $R=V\setminus V(H)$. For $r,s\in R$: if $rs\in E$ then $N[r]=N[s]$; if $rs\notin E$ then $N(r)\cap N(s)=\emptyset$. Hence $R$ is a union of true-twin cliques (components of $G[R]$) with pairwise disjoint neighbourhoods, and every neighbour of such a class outside it lies in $V(H)$.
+\end{lemma}
+\begin{proof}
+Packed pairs lie inside $V(H)$, so every pair at $r$ or $s$ is unpacked. If $rs\in E$ and $z\ne r,s$ is adjacent to exactly one of them, $\{r,s,z\}$ is an induced $P_3$ with all pairs unpacked. If $rs\notin E$ and $z$ is a common neighbour, $r\,z\,s$ is one. Both contradict maximality.
+\end{proof}
+\begin{proposition}[Strong locality fails]\label{prop:c4}
+Let $G=C_4$ with edges $01,02,13,23$ and $H=\{(0,1,3)\}$ (pairs $01,13,03$; vertex $2\notin V(H)$). Then $H$ is maximal, $\OPT=2=|H|+1$, so $(G,H,0)$ is a NO instance, and there are exactly three optima $\{03,12\}$, $\{01,23\}$, $\{02,13\}$, each containing an unpacked pair at vertex $2$.
+\end{proposition}
+This (checked exhaustively over all partitions, and verified by hand: every induced $P_3$ of $C_4$ contains one of the packed pairs $01,13,03$) refutes only the claim that all unpacked edits of some optimum have both endpoints in $V(H)$; it does not refute weaker locality statements. In the notes' random sample ($n\le9$) about $4\%$ of maximal-packing instances with $|R|\ge2$ force an edit touching $R$ (computer evidence, not a theorem).

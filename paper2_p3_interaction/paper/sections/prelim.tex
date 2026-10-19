@@ -1,0 +1,18 @@
+\section{Preliminaries}\label{sec:prelim}
+Graphs are simple and undirected, $n=|V(G)|$. A \emph{pair} is a $2$-subset of $V(G)$; for a set $S$ of pairs, $G\sd S$ flips the adjacency of each pair in $S$. A graph is a \emph{cluster graph} iff it has no induced $P_3$, i.e.\ no vertex triple with exactly two edges. A \emph{solution} is a set $S$ of pairs with $G\sd S$ a cluster graph; $\OPT(G)$ is the minimum size of a solution.
+
+A \emph{packing} $H=\{P_1,\dots,P_p\}$ is a set of induced $P_3$'s $P_i=(a_i,b_i,c_i)$ ($a_ib_i,b_ic_i\in E$, $a_ic_i\notin E$). Write $\pairs(P_i)$ for the three pairs inside $V(P_i)$. $H$ is \emph{modification-disjoint} if the sets $\pairs(P_i)$ are pairwise disjoint; this is equivalent to: any two members share at most one vertex (two shared vertices would be a shared pair, and any two vertices of a $P_3$ form one of its pairs). All packings below are modification-disjoint. A pair is \emph{packed} if it lies in $\bigcup_i\pairs(P_i)$ (its \emph{owner} is then unique) and \emph{unpacked} otherwise. For a vertex $u$, $Q(u)$ is the set of $z$ with $uz$ packed.
+
+\medskip\noindent\textbf{Problem CEaMP.} Given $G$, a modification-disjoint packing $H$ and $\ell\ge 0$, decide whether there is a solution $S$ with $|S|\le |H|+\ell$ (this is the convention of~\cite{LPS23}; $\ell$ is the excess budget).
+
+The \emph{intersection graph} $I(H)$ has node set $H$ and an edge $PP'$ iff $V(P)\cap V(P')\ne\emptyset$. The $P_3$'s through one vertex form a clique of $I(H)$. Hence (Helly property of tree decompositions) they lie in a common bag, and $c:=\max_u|\{P\ni u\}|\le \tw(I(H))+1$ and $|Q(u)|\le 2c$. We write $w=\tw(I(H))$ with the convention $w=0$ if $I(H)$ has no edge. A tree decomposition of width $w$ is assumed \emph{given} in the algorithmic statements; computing one costs $2^{O(w^3)}n$ exactly (Bodlaender) or $2^{O(w)}n$ for a factor-$2$ approximation (Korhonen), which would change the bases below (e.g.\ $7^{w+1}$ to $7^{2w+2}$).
+
+\begin{lemma}[Solutions decompose]\label{lem:decomp}
+Let $S$ be any set of pairs such that $G\sd S$ is a cluster graph, $x_i=S\cap\pairs(P_i)$ and $U=S\setminus\bigcup_i\pairs(P_i)$. Then every $x_i\neq\emptyset$, $|S|=\sum_i|x_i|+|U|$, and $|U|\le|S|-|H|$.
+\end{lemma}
+\begin{proof}
+If $x_i=\emptyset$ the triple $V(P_i)$ keeps its adjacencies in $G\sd S$ and is an induced $P_3$. The pair sets are disjoint, so $|S|=\sum|x_i|+|U|\ge|H|+|U|$.
+\end{proof}
+\begin{remark}[Maximality]\label{rem:max}
+If $H'\supseteq H$ adds $t$ further pair-disjoint induced $P_3$'s, then $|H'|+(\ell-t)=|H|+\ell$, so $(G,H,\ell)$ and $(G,H',\ell-t)$ ask the same question (a NO instance if $\ell<t$, since $\OPT\ge|H'|$). So for structure theory $H$ may be taken \emph{maximal} (no induced $P_3$ has all three pairs unpacked). Caution: $\tw(I(H'))$ may exceed $\tw(I(H))$.
+\end{remark}

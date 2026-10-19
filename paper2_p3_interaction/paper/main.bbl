@@ -1,0 +1,63 @@
+\begin{thebibliography}{1}
+
+\bibitem{Bocci22}
+Bocci et~al.
+\newblock A new temporal interpretation of cluster editing, 2022.
+\newblock Notes: opened. TODO: full author list.
+
+\bibitem{Crespelle20}
+Crespelle, Drange, Fomin, and Golovach.
+\newblock A survey of parameterized algorithms and the complexity of edge
+  modification, 2020.
+\newblock Notes: opened.
+
+\bibitem{Cygan15}
+Cygan et~al.
+\newblock {\em Parameterized Algorithms}.
+\newblock Springer, 2015.
+\newblock Notes (audit.md): recommended reference for dynamic programming on
+  tree decompositions and for ETH lower bounds; the specific theorems were not
+  opened.
+
+\bibitem{Garvardt23}
+Garvardt, Morawietz, Nichterlein, and Weller.
+\newblock Graph clustering problems under the lens of parameterized local
+  search.
+\newblock In {\em Proc.\ IPEC 2023}, volume 285 of {\em LIPIcs}, page Art.~20,
+  2023.
+\newblock Notes: opened (Dagstuhl PDF); the DOI is read off the recorded
+  Dagstuhl URL. Journal version JCSS 2026 per the notes.
+
+\bibitem{KU12}
+Komusiewicz and Uhlmann.
+\newblock Cluster editing with locally bounded modifications.
+\newblock {\em Discrete Applied Mathematics}, 2012.
+\newblock Notes: opened,
+  \url{https://www.uni-marburg.de/de/fb12/arbeitsgruppen/algorith/paper/ce-bounded-degree.pdf}.
+  Volume and pages not recorded in the notes.
+
+\bibitem{LPS23}
+Li, Pilipczuk, and Sorge.
+\newblock Cluster editing parameterized above modification-disjoint
+  {$P_3$}-packings.
+\newblock {\em ACM Transactions on Algorithms}, 20(1):Art.~3, 2023.
+\newblock Conference version: STACS 2021, LIPIcs 187, Art.~49. Notes: opened
+  (arXiv v3). Surnames only, as recorded in the notes.
+
+\bibitem{Club25}
+Montecchiani et~al.
+\newblock $s$-club cluster edge deletion, 2025.
+\newblock Notes: opened. Title and author list to be checked.
+
+\bibitem{Split23}
+Authors not recorded in~the notes.
+\newblock The complexity of cluster vertex splitting and company, 2023.
+\newblock Notes: opened. TODO: fill in authors from the arXiv page.
+
+\bibitem{BFK18}
+van Bevern, Froese, and Komusiewicz.
+\newblock Parameterizing edge modification problems above lower bounds.
+\newblock {\em Theory of Computing Systems}, 62(3), 2018.
+\newblock Conference version: CSR 2016. Notes: opened (arXiv).
+
+\end{thebibliography}

@@ -1,0 +1,28 @@
+\section{Limits of the parameterization}\label{sec:limits}
+\subsection{An ETH lower bound in the exponent}
+\begin{theorem}\label{thm:eth}
+Assume ETH. There is no algorithm that decides CEaMP with $\ell=0$ in time $2^{o(\tw(I(H)))}n^{O(1)}$. This holds even when every vertex lies in at most $23$ packed $P_3$'s (so $I(H)$ has maximum degree at most $66$), and whether or not a tree decomposition is supplied.
+\end{theorem}
+\begin{proof}
+Li, Pilipczuk and Sorge~\cite[Thm.~1]{LPS23} give a polynomial reduction from 3-SAT to CEaMP with $\ell=0$ and at most $23$ packed $P_3$'s per vertex. We use it as a black box together with its size accounting. After a linear preprocessing every clause has exactly three distinct variables and every variable occurs at least twice; let $N$ be the number of variables and $m$ the number of clauses, so $\sum_i m_i=3m$ for the occurrence counts $m_i$. By the gadget descriptions of~\cite{LPS23} (read in the audit, not recomputed constant by constant): a variable gadget has $4m_i$ cliques of $5$ vertices and $25$ packed $P_3$'s per triple of consecutive cliques, hence $20m_i$ vertices and $50m_i$ packed $P_3$'s; a clause gadget has $20+114$ vertices (clique sizes $1,1,4,14$ and $34,46,34$), $6+12$ transferring $P_3$'s, and $O(1)$ padding $P_3$'s from a triangle packing on cliques of constant size. Hence $|V|\approx194m$ and $|H|=O(m)$ with an absolute constant (not computed; a crude count gives about $3000m$).
+By the Sparsification Lemma (Impagliazzo, Paturi and Zane; see also~\cite{Cygan15}) we may assume $m=O(N)$ at the cost of $2^{o(N)}$ extra time. Then $|H|=O(N)$ and $\tw(I(H))\le|H|-1=O(N)$ (one bag). An algorithm with running time $2^{o(\tw(I(H)))}n^{O(1)}$, which may compute its own decomposition, would therefore decide 3-SAT in time $2^{o(N)}$, contradicting ETH.
+\end{proof}
+\begin{remark}[Caveats]
+(1) The bound is on the exponent only: it does not show that the base $3$ (or $7$) is tight, and $2^{o(w)}$ excludes $3^{o(w)}$ and $7^{o(w)}$ alike. A SETH-type bound $(3-\varepsilon)^{w}$ is open. (2) The proof uses only $w\le|H|-1$; it does not exhibit hardness for instances of small $|H|$ relative to $w$. (3) The constants of the size table were read from the reduction and not re-derived one by one; the structural claim (every gadget has $O(1)$ size per clause or occurrence) was re-derived. (4) The statement refers to the version-3 arXiv text of~\cite{LPS23}.
+\end{remark}
+
+\subsection{Other parameters do not suffice}
+\begin{proposition}\label{prop:w0}
+CEaMP is NP-hard when $I(H)$ has no edge ($w=0$, vertex-disjoint packing), with $\ell$ part of the input. Hence $w$ alone is not enough, and (by Theorem 1 of~\cite{LPS23}) neither is $\ell=0$ alone.
+\end{proposition}
+\begin{proof}
+Cluster Editing is NP-hard (e.g.\ already on graphs of maximum degree $6$~\cite{KU12}). Given $(G,k)$ compute greedily a maximal set $H$ of vertex-disjoint induced $P_3$'s (if none, $G$ is a cluster graph). Vertex-disjoint implies modification-disjoint and $I(H)$ is edgeless. Since $\OPT\ge|H|$, $(G,k)$ is a YES instance iff $(G,H,k-|H|)$ is (a NO instance if $k<|H|$).
+\end{proof}
+\begin{proposition}\label{prop:star}
+$\tw(G)$ and $\tw(I(H))$ are incomparable, in the following sense.
+(a) For the star $G=K_{1,2m}$ ($m\ge1$) every packing $H\ne\emptyset$ has $I(H)=K_{|H|}$ and every YES instance $(G,H,\ell)$ satisfies $\ell+\tw(I(H))\ge 2m-2$, while $\tw(G)=1$. (b) For the $k\times k$ grid $G$ and a family $H$ of vertex-disjoint induced $P_3$'s along rows, $\tw(I(H))=0$ and $\tw(G)=k$.
+\end{proposition}
+\begin{proof}
+(a) Leaves have degree one, so the centre of any induced $P_3$ is the hub $v$; all packed $P_3$'s are $(a,v,b)$ with distinct leaves (the pairs $va$ are disjoint), pairwise sharing $v$, so $I(H)=K_p$, $p=|H|\le m$, $\tw=p-1$. If the hub's cluster contains $j$ leaves, the cost is $(2m-j)+\binom j2$ (the other leaves are best left as singletons), which is minimized, with value $2m-1$, at $j\in\{1,2\}$; so $\OPT=2m-1$ and a YES instance has $\ell\ge 2m-1-p$, i.e.\ $\ell+\tw(I(H))\ge 2m-2$. (b) Rows of a grid are induced $P_3$'s (no triangles) and $\tw(k\times k\text{ grid})=k$ is standard.
+\end{proof}
+Thus hubs do not make $\tw(I(H))$ large by themselves; they force a tradeoff: small $\tw(I(H))$ on a star forces large $\ell$.

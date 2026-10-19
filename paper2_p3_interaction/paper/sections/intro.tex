@@ -1,0 +1,18 @@
+\section{Introduction}
+Cluster Editing asks for the fewest edge insertions and deletions that turn a graph $G$ into a disjoint union of cliques.
+Every induced $P_3$ must be hit by an edit, so a packing $H$ of induced $P_3$'s that pairwise share no vertex pair (a \emph{modification-disjoint} packing) gives the lower bound $|H|$ on the solution size.
+Li, Pilipczuk and Sorge~\cite{LPS23} parameterize by the \emph{excess} $\ell$ over this bound (problem CEaMP): is there a solution of size at most $|H|+\ell$?
+They show NP-hardness already for $\ell=0$, with every vertex in at most $23$ packed $P_3$'s, and an $n^{2\ell+O(1)}$ algorithm when every vertex lies in at most two packed $P_3$'s; whether the latter case is fixed-parameter tractable is open~\cite{LPS23}.
+For vertex-disjoint packings the problem is FPT in $\ell$~\cite{BFK18}.
+
+The question of this paper is which measurable \emph{interaction structure} of $H$ makes the local repair choices (one edit per packed $P_3$, in three ways) combine into a global solution in $f(\ell,w)\,n^{O(1)}$ time.
+We take $w=\tw(I(H))$, where the intersection graph $I(H)$ has the packed $P_3$'s as nodes and joins two of them when they share a vertex.
+
+\paragraph{What is proved.}
+For $\ell=0$ the problem is a constraint satisfaction problem (CSP) with one variable of domain size $3$ per packed $P_3$ and constraint scopes that are cliques of $I(H)$ (Section~\ref{sec:l0}); dynamic programming over a tree decomposition gives $3^{w+1}n^{O(1)}$.
+For general $\ell$, guessing the at most $\ell$ edits outside all packed $P_3$'s reduces to the same CSP with domain size $7$, giving $7^{w+1}n^{2\ell+O(1)}$ (Section~\ref{sec:excess}).
+Under ETH the exponent $\Theta(w)$ cannot be improved to $o(w)$ even at $\ell=0$; $w$ alone is insufficient; $\tw(G)$ and $\tw(I(H))$ are incomparable (Section~\ref{sec:limits}).
+Section~\ref{sec:structure} collects structural lemmas on edits outside packed $P_3$'s and a counterexample to a natural locality claim.
+
+\paragraph{What is not proved.}
+\textbf{Whether CEaMP is FPT in $\ell+\tw(I(H))$ (or W[1]-hard) is open.} The algorithm of Section~\ref{sec:excess} is XP in $\ell$, and no hardness is known. Section~\ref{sec:pending} lists further statements that have not yet been audited and must not be cited as results; Section~\ref{sec:open} states the open problems.

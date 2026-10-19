@@ -1,0 +1,17 @@
+\section{Open problems}\label{sec:open}
+Notation as above; $w=\tw(I(H))$.
+\begin{problem}[Main question]\label{op:main}
+Is CEaMP fixed-parameter tractable parameterized by $\ell+w$, i.e.\ solvable in $f(\ell,w)n^{O(1)}$ time, or is it W[1]-hard in $\ell+w$? Known: XP in $\ell$ and FPT in $w$ for each fixed $\ell$ only via $n^{2\ell}$ (Theorem~\ref{thm:A}); FPT for $w=0$ by~\cite{BFK18}; the case $w=0$ and the case $H=\emptyset$ (plain Cluster Editing, $\ell=k$) are both FPT. Note that adding $c$ to the parameter changes nothing, since $c\le w+1$. A positive answer needs a bound $g(\ell,w)$ on the number of candidate positions for each unpacked edit (Lemma~\ref{lem:viab} gives none); a negative answer has to encode $[n]$-valued information through unpacked edits.
+\end{problem}
+\begin{problem}[Forests]\label{op:forest}
+If $I(H)$ is a forest ($w\le1$, hence $c\le2$), is CEaMP FPT in $\ell$? (Perfect-matching $I(H)$ is covered only by the unaudited Claim~\ref{cl:K}.)
+\end{problem}
+\begin{problem}[Half-integral and intermediate packings]\label{op:c2}
+Is CEaMP with $c=2$ FPT in $\ell$? What is the complexity of $\ell=0$ for $3\le c\le22$? Both are open in~\cite{LPS23}, whose authors say a W[1]-hardness result for $c=2$ ``would also not be surprising''.
+\end{problem}
+\begin{problem}[Base of the exponent]\label{op:seth}
+For $\ell=0$, does a $(3-\varepsilon)^{w}n^{O(1)}$ (or even $2^{o(w)}$ with a smaller base) algorithm exist, or is there a SETH-type lower bound? Theorem~\ref{thm:eth} gives only the exponent.
+\end{problem}
+\begin{problem}[Treewidth of $G$]\label{op:twg}
+What is the complexity of CEaMP with $\ell=0$ (or of Cluster Editing) when $\tw(G)$ is bounded? We found no published result on Cluster Editing parameterized by treewidth alone (Section~\ref{sec:related}), so this must be proved rather than cited.
+\end{problem}
