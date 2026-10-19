@@ -20,11 +20,15 @@ def run(trials, seed):
             X = mask(c); A = 0
             for x in c: A |= mask([y for y in range(n) if fs(x, y) in E])
             A &= ~X
-            if bin(A).count('1') > l + q:
+            if bin(A).count('1') >= l + q:
                 st['big'] += 1
                 al = np.array([ (S & X) == 0 or ((S & Vm) & ~A) == 0 for S in range(full)], np.bool_)
                 assert opt_cost(n, E, al) == o, ("claim D fails", n, sorted(map(sorted, E)), H, c)
             st['tested'] += 1
+            if A:
+                al2 = np.array([ (S & X) == 0 or (((S & Vm) & A) == 0 and (S & Vm) != 0) for S in range(full)], np.bool_)
+                assert opt_cost(n, E, al2) > o, ("detached-insertion cluster is optimal?", c)
+                st['detach_tests'] = st.get('detach_tests', 0) + 1
     print(seed, st)
 if __name__ == "__main__":
     run(int(sys.argv[1]), int(sys.argv[2]))

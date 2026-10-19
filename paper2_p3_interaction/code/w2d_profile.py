@@ -63,10 +63,10 @@ def run(args):
 
 if __name__ == "__main__":
     nmin, nmax, per = map(int, sys.argv[1:4])
-    fams = list(FAMILIES) + ["path", "cycle", "caterpillar"]
+    fams = sys.argv[4].split(",") if len(sys.argv) > 4 else list(FAMILIES) + ["path", "cycle", "caterpillar"]
     jobs = [(f, n, s) for n in range(nmin, nmax + 1) for f in fams for s in range(per)]
     with Pool(3) as p: out = [r for rs in p.imap_unordered(run, jobs, chunksize=2) for r in rs]
-    json.dump(out, open(f"instances_w2d/profile_hits_{nmin}_{nmax}_{per}.json", "w"))
+    json.dump(out, open(f"instances_w2d/profile_hits_{nmin}_{nmax}_{per}_{len(fams)}.json", "w"))
     summ = {}
     for o in out:
         for r in o["r_pairs"]:
