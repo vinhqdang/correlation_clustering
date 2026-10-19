@@ -1,0 +1,163 @@
+\section{Conflicts, pruning, and an exact obstruction for far pointers}\label{sec:pointers}
+This section continues Sections~\ref{sec:locality} and~\ref{sec:dproute} and concerns the two kinds of unpacked edit that were left open there: inserted pairs of type (T2) and deleted hard edges. It proves a \emph{conflict lemma} that gives every soft pair a static weight, a defect bound and a polynomial NO-test that follow from it, a pruned version of Theorem~\ref{thm:omega}, and an exact obstruction family (Proposition~\ref{prop:FAR}): instances with $w=1$, $c=2$, $\ell=1$ in which every optimum deletes a hard edge between members at arbitrarily large distance in $I(H)$. \textbf{Nothing here proves or refutes fixed-parameter tractability in $\ell+w$}; Open Problem~\ref{op:main} remains open. Statements are labelled \emph{proved}, \emph{computer-assisted} (a finite check, evidence only) or \emph{conjecture}.
+
+\paragraph{Setting.}
+$H$ is pair-maximal (otherwise apply Lemma~\ref{lem:MAX} and read the primed instance), ``soft'' means packed, ``hard'' unpacked, $Q(v)$ is the set of soft partners, $N_h(v)$ the set of hard neighbours, $D\ge\max_v|Q(v)|$. A solution is identified with a partition $\pi$ of $V$; write $x(p,q)=1$ if $p,q$ lie in one block and $0$ otherwise; $U$ is the set of edited hard pairs (so $|U|\le|S|-|H|$ by Lemma~\ref{lem:decomp}). For a soft pair $\sigma=(z,b)$ put
+\[
+\Delta(z,b)=\{y\notin\{z,b\}:\ zy,by\text{ hard, exactly one of them an edge of }G\},\qquad
+\Gamma_h(z,b)=N_h(z)\cap N_h(b).
+\]
+(In this section $\Delta(z,b)$ always has two arguments; it is unrelated to the number $\Delta=B+D$ of Corollary~\ref{cor:cand}.) Both sets are computed from $(G,H)$ alone. For a solution, the \emph{weight} of the soft pair $\sigma=(z,b)$ is $c(\sigma)=|\Delta(z,b)|$ if $z,b$ lie in one cluster (\emph{merged}) and $c(\sigma)=|\Gamma_h(z,b)|$ otherwise. A \emph{conflict} is a pair $(\sigma,y)$ with $y$ in the relevant set.
+
+\subsection{The conflict lemma and its consequences}
+\begin{lemma}[W1: conflicts]\label{lem:W1}
+Let $\pi$ be \emph{any} solution and $\sigma=(z,b)$ a soft pair.
+\begin{enumerate}
+\item[(a)] If $z,b$ are in one cluster, every $y\in\Delta(z,b)$ has $zy\in U$ or $by\in U$.
+\item[(b)] If $z,b$ are in different clusters, every $y\in\Gamma_h(z,b)$ has $zy\in U$ or $by\in U$.
+\end{enumerate}
+Distinct $y$ give distinct edited pairs, hence $|U|\ge c(\sigma)$ for every soft pair~$\sigma$.
+\end{lemma}
+\begin{proof}
+(a) In a cluster graph, $z,b$ in one cluster implies $x(z,y)=x(b,y)$ for all $y$. For $y\in\Delta(z,b)$ the $G$-values of the two hard pairs $zy,by$ differ, so at least one of them is changed. (b) If neither $zy$ nor $by$ is edited, then $x(z,y)=x(b,y)=1$ (both are edges of $G$), so $z,b,y$ share a cluster, a contradiction. The edited pair chosen for $y$ contains $y$ and one of $z,b$, so different $y$ give different pairs.
+\end{proof}
+Neither maximality nor optimality is used. Lemma~\ref{lem:near} is the merged case of~(a): for $z,b$ in one cluster $M(z,b)\subseteq\Delta(z,b)$, so $|M(z,b)|\le|U|$. (The hypothesis that $z,b$ lie in one cluster is essential: for unmerged $z,b$ the set $M(z,b)$ can be large.)
+
+\begin{lemma}[W2: defect bound]\label{lem:W2}
+For every solution, $\sum_{\sigma\text{ soft}}c(\sigma)\le2D\,|U|$.
+\end{lemma}
+\begin{proof}
+Map each conflict $((z,b),y)$ to an edited pair of $\{zy,by\}$ (Lemma~\ref{lem:W1}). An edited pair $e=\{p,y\}$ is chosen by conflicts $(\sigma,y)$ with $\sigma\ni p$, at most $|Q(p)|\le D$ of them, and by conflicts $(\sigma',p)$ with $\sigma'\ni y$, at most $D$ of them.
+\end{proof}
+The constant $2D$ is attained for $D=2$ ($c=1$) in a computer search ($n=6,7$); for $D=4$ and $D=6$ the same search reached only $1/2$ and $1/3$ of the bound, so attainment for $D\ge4$ is open.
+
+\begin{corollary}[LB: a lower bound from the weights]\label{cor:LB}
+Let $c_i$ be as in Lemma~\ref{lem:CP}(b) and let $W=\sum_{\sigma}c(\sigma)$ be the total weight of a solution $\pi$. Then $\mathrm{cost}(\pi)\ge\sum_ic_i+\lceil W/2D\rceil$.
+\end{corollary}
+\begin{proof}
+$\mathrm{cost}(\pi)=\sum_ic_i+|U|$ and $|U|\ge W/2D$ by Lemma~\ref{lem:W2}.
+\end{proof}
+The right-hand side is not exact: minimised over assignments of the soft pairs that are transitive on all-soft triples, it can equal $|H|$ although $\OPT>|H|$ (computer: $29$ of $300$ random instances with $n=6,7,8$; the triples with two soft pairs and one hard pair are not checked). We only use it as a lower bound.
+
+\begin{lemma}[F1: static pruning]\label{lem:F1}
+Let $|S|\le|H|+\ell$. If $|\Delta(u,v)|>\ell$, the soft pair $(u,v)$ is split in $S$; if $|\Gamma_h(u,v)|>\ell$ it is merged in $S$.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:W1} and $|U|\le|S|-|H|\le\ell$.
+\end{proof}
+
+\begin{lemma}[DEL: rigid hard edges]\label{lem:DEL}
+If $zy$ is a deleted hard edge of a solution, then $|U|\ge1+|N_h(z)\cap N_h(y)|$. Hence, if $|S|\le|H|+\ell$, a hard edge with at least $\ell$ common hard neighbours is never deleted (it is \emph{rigid}), and the hard components of rigid edges lie inside single clusters.
+\end{lemma}
+\begin{proof}
+$z$ and $y$ are in different clusters. A common hard neighbour $w$ cannot be kept with both, so $wz$ or $wy$ is a deleted hard edge; distinct $w$ give distinct pairs (each contains $w$), all different from $zy$.
+\end{proof}
+
+A member $P=(x,y,z)$ with centre $y$ has three states of member-cost one: delete $xy$, delete $yz$, insert $xz$. A state fixes whether each of the three pairs of $P$ is merged, hence a weight for each. Call $P$ \emph{locally bad} if in each of its three states some pair of $P$ has positive weight. This is a static property.
+\begin{lemma}[BAD: few locally bad members]\label{lem:BAD}
+For every solution of size $|H|+\varepsilon$ the number of locally bad members is at most $2c\varepsilon$. Hence more than $2c\ell$ locally bad members is a NO-instance of CEaMP with budget $\ell$ (a polynomial test).
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:CP}(b), $\varepsilon=\sum_i(c_i-1)+|U|$. A bad member with $c_i\ge2$ contributes at least $1$ to the first sum. A bad member with $c_i=1$ is in one of its three cost-one states, which has a conflict $(\sigma,y)$ with $\sigma$ a pair of $P_i$; by Lemma~\ref{lem:W1} an edit of $U$ is incident to $V(P_i)$. An edit has two ends and each vertex lies in at most $c$ members, so there are at most $2c|U|$ such members. In total at most $\sum_i(c_i-1)+2c|U|\le2c\varepsilon$.
+\end{proof}
+
+\begin{proposition}[Candidate lists for (T2) pairs and deleted edges]\label{prop:candlist}
+Let $H$ be pair-maximal, $S$ an \emph{optimal} solution with $|S|\le|H|+\ell$, and $ab\in U$. Define, from $(G,H)$ alone,
+\[
+L_1(a)=\begin{cases}N_h(a)\cup\bigcup_{z\in N_h(a)}Q(z)&\text{if }d_h(a)\le D+\ell,\\ \emptyset&\text{otherwise,}\end{cases}\qquad
+L_2(b)=\bigcup_{z\in Q(b),\ |\Delta(z,b)|\le\ell}\Delta(z,b).
+\]
+Then $|L_1(a)|\le(D+\ell)(D+1)$ and $|L_2(b)|\le D\ell$, and:
+\begin{enumerate}
+\item[(i)] if $ab$ is a deleted hard edge, then $b\in L_1(a)$ and $a\in L_1(b)$;
+\item[(ii)] if $ab$ is an inserted pair of type (T2) with middle vertex $z$, $az$ hard (kept) and $zb$ soft (Theorem~\ref{thm:T1T2}), then $b\in L_1(a)$ and $a\in L_2(b)$.
+\end{enumerate}
+Pairs of type (T1) are not covered; they are bag-local by Proposition~\ref{prop:bag}.
+\end{proposition}
+\begin{proof}
+Every endpoint $x$ of a pair of $U$ has $d_h(x)\le D+|U|\le D+\ell$ (Lemma~\ref{lem:EX}(a)), so the guard in $L_1$ holds for the ends. (i) The deleted pair is a hard edge, so $b\in N_h(a)$, and symmetrically. (ii) $z\in N_h(a)$ and $b\in Q(z)$, so $b\in L_1(a)$, and $|L_1(a)|\le(D+\ell)+(D+\ell)D$. For the soft end: $z\in Q(b)$ ($\le D$ choices); since $az$ is kept and $ab$ is inserted, $a,z,b$ lie in one cluster, so $zb$ is merged, and $az$ is a hard edge while $ab$ is a hard non-edge, so $a\in\Delta(z,b)$, and $|\Delta(z,b)|\le|U|\le\ell$ by Lemma~\ref{lem:W1}(a). Hence $a\in L_2(b)$ and $|L_2(b)|\le D\ell$.
+\end{proof}
+Optimality is used only through Theorem~\ref{thm:T1T2}. The lists say where the partner of a given end can be; they do not say where the first end is (Corollary~\ref{cor:cand} and Remark~\ref{rem:primed}).
+
+\subsection{A pruned form of Theorem~\ref{thm:omega}}
+Let $\mathrm{BIG}$, $V'$, $Z$ be as in Theorem~\ref{thm:omega} and let $\Gamma^\ell$ be the graph on $V'$ whose edges are all hard edges inside $V'$ and all soft pairs $(u,v)$ inside $V'$ with $|\Delta(u,v)|\le\ell$. It is a spanning subgraph of $\Gamma'$, so $\tw(\Gamma^\ell)\le\tw(\Gamma')$, and it is computable from $(G,H)$ alone.
+\begin{theorem}[P: pruned $\omega$-theorem]\label{thm:P}
+Let $H$ be pair-maximal and let $\omega_\ell=\tw(\Gamma^\ell)$, with a tree decomposition of that width given. Then one can compute in time $(Z(\omega_\ell+1))^{O(\omega_\ell)}n+n^{O(1)}$ a number $m^*$ with
+\[
+\OPT(G)\le|H|+\ell\iff|E|+\sum_Kf(K)+m^*\le|H|+\ell ,
+\]
+$K$ ranging over the hard components of $\mathrm{BIG}$. So CEaMP is FPT in $(\ell,D,\tw(\Gamma^\ell))$.
+\end{theorem}
+\begin{proof}
+Let $e^+(C)$ be the number of edges of $G$ inside $C$ that are edges of $\Gamma^\ell$, and $\tilde f(C)=\binom{|C|}2-2e^+(C)$. Run the dynamic program of the proof of Theorem~\ref{thm:omega} on $\Gamma^\ell$, with $e^+$ in place of $e$ everywhere (in the introduce step $k$ counts the $\Gamma^\ell$-neighbours of $v$ in the block, and in the join step there is no $\Gamma^\ell$-edge between the exclusive parts). Exactly as there, it computes $m^*=$ the minimum of $\sum_C\tilde f(C)$ over $\Gamma^\ell$-connected partitions of $V'$ with clusters of at most $Z$ vertices, in the stated time.
+
+($\Leftarrow$) $e^+\le e$, so $f(C)\le\tilde f(C)$ and the partition realising $m^*$, completed by the components of $\mathrm{BIG}$, has true cost at most $|E|+\sum_Kf(K)+m^*$ (Lemma~\ref{lem:CP}(a)); no structure is needed.
+
+($\Rightarrow$) Let $S$ be optimal, $|S|\le|H|+\ell$. By the proof of Theorem~\ref{thm:omega}, the clusters of $S$ inside $V'$ have at most $Z$ vertices and are connected through edges of $G$ inside the cluster and (for a cluster with several hard components) soft pairs inside the cluster. A soft pair inside a cluster is merged, so $|\Delta|\le\ell$ by Lemma~\ref{lem:F1} and it is an edge of $\Gamma^\ell$; every hard edge is an edge of $\Gamma^\ell$. Hence these clusters are $\Gamma^\ell$-connected and $e^+(C)=e(C)$, $\tilde f(C)=f(C)$. So $\mathrm{cost}(S)=|E|+\sum_Kf(K)+\sum_Cf(C)\ge|E|+\sum_Kf(K)+m^*$.
+\end{proof}
+Theorem~\ref{thm:P} does not use optimality of the merges, only their cost, and it therefore cannot decide the open question.
+
+\begin{proposition}[Theorem~\ref{thm:P} is strictly stronger than Theorem~\ref{thm:omega}]\label{prop:Pstrict}
+Let $F$ be a cubic graph with an orientation in which every in-degree is $1$ or $2$ (so every vertex has in-degree $\ge1$; for a $2$-edge-connected $F$ such an orientation exists by Robbins' theorem), and let $(G_F,H_F)$ be the instance of Proposition~\ref{prop:expander}. For every budget $\ell\le4$, every component of $\Gamma^\ell$ has at most $5$ vertices (so $\tw(\Gamma^\ell)\le4$), whereas $\tw(\Gamma')\ge\tw(F)$.
+\end{proposition}
+\begin{proof}
+For the oriented edge $e=(p\to q)$ the soft pairs $a_eb_e$ and $a_ec_e$ join $K_p$ and $K_q$. The soft partners of $a_e$ are $b_e,c_e$ and those of $b_e$ are $a_e,c_e$ (the three pairs of $P_e$). Hence $\Delta(a_e,b_e)$ consists of the vertices $y\in K_p\setminus\{a_e\}$ (the pair $a_ey$ is a hard edge and $b_ey$ a hard non-edge), of which there are $2+\mathrm{in}(p)$, and of the vertices $y\in K_q\setminus\{b_e,c_e\}$ (here $b_ey$ is a hard edge and $a_ey$ a hard non-edge), of which there are $1+\mathrm{in}(q)$. So $|\Delta(a_e,b_e)|=3+\mathrm{in}(p)+\mathrm{in}(q)\ge5$, and the same count holds for $a_ec_e$. For $\ell\le4$ both cross pairs are pruned, the only edges of $\Gamma^\ell$ are those inside the cliques $K_v$, and $|K_v|=3+\mathrm{in}(v)\le5$. The bound on $\tw(\Gamma')$ is Proposition~\ref{prop:expander}.
+\end{proof}
+The in-degree condition matters: with a source $p$ (in-degree $0$) the weight can be $4$. Computer check (audit; $K_4$, the Petersen graph, random cubic graphs on $20$ and $40$ vertices, in-degrees in $\{1,2\}$): $D=2$, $\mathrm{BIG}=\emptyset$, the cross weights are $5,6,7$, and at $\ell=5$ the components of $\Gamma^\ell$ merge (sizes $8,20,32,40$), so the gap closes at $\ell=5$ in these examples. For larger $\ell$ one would use $d$-regular graphs with $d\approx\ell/2$; this is a sketch and is not claimed.
+
+\subsection{An exact obstruction: pointers need not be local in any power of \texorpdfstring{$I(H)$}{I(H)}}
+An edited pair $e=(a,b)$ is \emph{two-sided} if there are vertices $t,t'$ with $(t,a)$ soft, $(t',b)$ soft, and $\{a,b,t\}$, $\{a,b,t'\}$ induced $P_3$'s of $G\sd(S\setminus\{e\})$. It is \emph{far} (at distance $K$) if the members containing $a$ and $b$ are at distance $\ge K$ in $I(H)$.
+\begin{proposition}[FAR]\label{prop:FAR}
+For $m\ge3$ let $G_m$ be the path $0,1,\dots,2m$ with the extra edge $e^*=\{1,2m-1\}$ and $H_m=\{M_i=(2i,2i+1,2i+2):0\le i<m\}$ (centres $2i+1$). Then:
+\begin{enumerate}
+\item[(i)] $H_m$ is a pair-maximal modification-disjoint packing, $I(H_m)$ is a path on $m$ nodes ($c=2$, $w=1$);
+\item[(ii)] $\OPT(G_m)=m+1=|H_m|+1$;
+\item[(iii)] in \emph{every} optimum the hard edge $e^*$ is deleted. Its ends lie in $M_0$ and $M_{m-1}$, at distance $m-1$ in $I(H_m)$.
+\end{enumerate}
+Computer-assisted (all set partitions, $m=3,4,5$): $\OPT=m+1$ with $7/9/11$ optima, every optimum separates the ends of $e^*$, the deleted chord is two-sided, and the only locally bad members are $M_0$ and $M_{m-1}$.
+\end{proposition}
+\begin{proof}
+(i) The chord joins $1$ and $2m-1$, which are $2m-2\ge4$ apart, so no triple $M_i$ contains both of them and each $M_i$ is an induced $P_3$; the pair sets are disjoint. Every path edge lies in some $M_i$ and is soft, so $e^*$ is the only hard edge. An induced $P_3$ has two edges, at most one of which is $e^*$, so it contains a soft pair: $H_m$ is pair-maximal.
+
+(ii) $|E|=2m+1$ and $G_m$ is connected with $2m+1$ vertices, hence unicyclic (the unique cycle is on $1,\dots,2m-1$, of length $\ge5$). An induced subgraph on $s$ vertices has $e\le s-1$ edges unless it contains the cycle, in which case $s\ge5$ and $e\le s$. With $f(C)=\binom{|C|}2-2e(C)$ this gives $f(C)\ge(s-1)(s-4)/2\ge-1$ in the first case, with equality iff $s\in\{2,3\}$ and $G[C]$ is connected, and $f(C)\ge s(s-5)/2\ge0$ in the second. Clusters with $f=-1$ have $\ge2$ vertices, so there are at most $m$ of them, and by Lemma~\ref{lem:CP}(a) $\mathrm{cost}\ge(2m+1)-m=m+1$. The partition $\{0,1\},\{2,3\},\dots,\{2m-2,2m-1\},\{2m\}$ has cost $m+1$.
+
+(iii) In an optimum $\sum f=-m$, so exactly $m$ clusters have $f=-1$ (each connected, of size $2$ or $3$) and all others have $f=0$; at most one vertex lies outside the $f=-1$ clusters. A cluster with $f=-1$ that contains the pendant vertex $0$ contains its only neighbour $1$; likewise for $2m$ and $2m-1$. Suppose $1,2m-1$ lie in one cluster $C^*$. If $f(C^*)=-1$ and $|C^*|=2$, then $C^*=\{1,2m-1\}$ contains no pendant, and both pendants are outside the $f=-1$ clusters: two vertices outside, a contradiction. If $f(C^*)=-1$ and $|C^*|=3$, it contains at most one pendant; any pendant not in $C^*$ has its only neighbour in $C^*$ and lies in no other $f=-1$ cluster, so exactly one pendant is outside and the remaining $2m-3$ vertices must form $m-1$ clusters of size $\ge2$, impossible. If $f(C^*)\ge0$, at most $2m-1$ vertices remain for $m$ clusters of size $\ge2$. So $1$ and $2m-1$ are in different clusters, i.e.\ $e^*$ is deleted.
+\end{proof}
+So the pointer realised by the deleted edge $e^*$ joins members at distance $m-1$ in $I(H_m)$: its two ends are not adjacent in any $I(H)^r$ with $r<m-1$, and a decomposition of $I(H)^r$ has no reason to put them in one bag. Both ends have a conflict with the pair, so the two flags that name the pair must agree although the two members are far apart.
+
+\begin{proposition}[NF-bad fails for distance $2$ and $3$; computer-assisted]\label{prop:NFbad}
+The following statement is false for ``far'' meaning distance $\ge2$ and for ``far'' meaning distance $\ge3$ in $I(H)$: \emph{there is an optimum in which every far two-sided edit touches a locally bad member.}
+\end{proposition}
+\begin{proof}[Witnesses]
+Both instances have $n=10$, a pair-maximal modification-disjoint packing, a unique optimum, $\OPT=|H|+1=6$, no locally bad member, and exactly one edit, a hard deleted edge, which is two-sided (found and rechecked by enumerating all set partitions).
+\emph{Distance $2$:} $E=\{01,06,12,23,29,34,45,56,67,78,79\}$, $H=\{(0,1,2),(2,3,4),(4,5,6),(6,7,8),(2,9,7)\}$; the optimum $\{0,1\},\{2,9\},\{3,4\},\{5,6\},\{7,8\}$ deletes $\{0,6\}$ (witnesses $1$ and $5$).
+\emph{Distance $3$:} $E=\{01,08,12,14,23,34,45,49,56,67,78\}$, $H=\{(0,1,2),(2,3,4),(4,5,6),(6,7,8),(1,4,9)\}$; the optimum $\{0,1\},\{2,3\},\{4,9\},\{5,6\},\{7,8\}$ deletes $\{0,8\}$ (witnesses $1$ and $7$). In both, $I(H)$ has $c=3$.
+\end{proof}
+\begin{remark}[Scope]\label{rem:NFscope}
+Pointers at distance $\le K$ are bag-local in a decomposition of $I(H)^K$, whose width is a function of $(w,c,K)$, so the version of the statement that matters is the one with ``far'' larger than any function of $(\ell,w)$. Proposition~\ref{prop:NFbad} does not refute it, and Proposition~\ref{prop:FAR} does not either: the far ends of its edit are exactly the two locally bad members. So the idea ``put the locally bad members into every bag'' is excluded for distances $2$ and $3$ only; for unbounded distance it is open.
+\end{remark}
+
+\begin{conjecture}[$\Lambda$; not proved]\label{conj:Lambda}
+Call a hard pair $\{a,b\}$ \emph{potentially two-sided} if there are soft partners $t$ of $a$ and $t'$ of $b$ with $b\in\Delta(a,t)\cup\Gamma_h(a,t)$, $a\in\Delta(b,t')\cup\Gamma_h(b,t')$ and both weights $\le\ell$. Let $\Lambda_\ell$ be $I(H)$ plus an edge between the members of $a$ and $b$ for every such pair. Then CEaMP is FPT in $(\ell,D,\tw(\Lambda_\ell))$.
+\end{conjecture}
+We have no proof; a proof would need a sound dynamic program for one-sided edits in the presence of cascades. By Proposition~\ref{prop:NFbad} the graph $\Lambda_\ell$ cannot simply be replaced by $I(H)$ plus the locally bad members.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\hline
+Statement & Status\\
+\hline
+Lemma~\ref{lem:W1} (W1), Lemma~\ref{lem:F1} (F1), Lemma~\ref{lem:DEL} (DEL) & proved\\
+Lemma~\ref{lem:W2} (W2); tightness of the constant $2D$ & proved; attained for $D=2$ only (computer)\\
+Corollary~\ref{cor:LB} (LB) & proved, a lower bound, not exact at $\ell=0$\\
+Lemma~\ref{lem:BAD} (BAD) & proved\\
+Proposition~\ref{prop:candlist} (candidate lists, optimal $S$, (T2)/deleted) & proved\\
+Theorem~\ref{thm:P} (P) and Proposition~\ref{prop:Pstrict} & proved (in-degrees $\ge1$, $\ell\le4$)\\
+Proposition~\ref{prop:FAR} (FAR) & proved; computer-checked for $m=3,4,5$\\
+Proposition~\ref{prop:NFbad} (NF-bad fails at distance $2$ and $3$) & computer-assisted\\
+NF-bad for unbounded distance & open\\
+Conjecture~\ref{conj:Lambda} ($\Lambda$) & conjecture\\
+FPT in $\ell+w$ & \textbf{open}\\
+\hline
+\end{tabular}
+\end{center}

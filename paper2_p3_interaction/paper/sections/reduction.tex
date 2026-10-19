@@ -1,0 +1,119 @@
+\section{Reducing components of \texorpdfstring{$I(H)$}{I(H)}, and an obstruction to the reduction lemma}\label{sec:reduction}
+Conjecture~\ref{conj:ML} asks for a polynomial-time reduction that bounds $\tw(\Gamma')$. This section proves what the rule of~\cite{BFK18} gives when it is applied to components of $I(H)$ of \emph{any} size (Theorem~\ref{thm:three}), reformulates the conjecture (Proposition~\ref{prop:one}) and shows that the natural generalisation of the rule to unions of \emph{members} cannot prove it, already for $w=1$ and $\ell=1$ (Proposition~\ref{prop:five}). \textbf{The reduction lemma ML, the Trigger Lemma below and the question whether CEaMP is FPT in $\ell+w$ remain open.} Soundness of the reduction rule is cited from~\cite{BFK18} (Lemma~6.3); everything else is proved here, except for the computer evidence, which is labelled.
+
+\paragraph{Conventions.}
+$(G,H,\ell)$ with $H$ a packing, pair-maximal unless said otherwise; $D=2c$, $B=2D+3\ell$, $Z=B+D+1$, $\mathrm{BIG}$, $V'$, $\Gamma'$ as in Section~\ref{sec:dproute}. The components of $I(H)$ are $T_1,\dots,T_r$, $W_j$ is the union of the vertex sets of the members of $T_j$, $p_j=|T_j|$, $\tau_j=\OPT(G[W_j])\ge p_j$; $T_j$ is \emph{tight} if $\tau_j=p_j$. For a set $\mathcal F$ of members let $W_{\mathcal F}=\bigcup_{P\in\mathcal F}V(P)$; $\mathcal F$ is \emph{pair-closed} if no member outside $\mathcal F$ has two vertices in $W_{\mathcal F}$ (so no outside member has a pair inside $W_{\mathcal F}$). For an optimal solution $S_{\mathcal F}$ of $G[W_{\mathcal F}]$ say that the \emph{R-condition} holds if for every $y\notin W_{\mathcal F}$ the set $N(y)\cap W_{\mathcal F}$ is empty or exactly one cluster of $G[W_{\mathcal F}]\sd S_{\mathcal F}$ (this is (R1)+(R2) of Section~\ref{sec:K}). $\mathcal F$ is \emph{reducible} if some such $S_{\mathcal F}$ satisfies the R-condition, and \emph{irreducible} otherwise. \emph{Rule~6.2} (\cite{BFK18}, specialised): if $\mathcal F$ is reducible by $S_{\mathcal F}$, then $\OPT(G)=\OPT(G\sd S_{\mathcal F})+|S_{\mathcal F}|$ (Lemma~6.3 of~\cite{BFK18}, \emph{cited}; it holds for every induced subgraph). If $\mathcal F$ is tight, then $|S_{\mathcal F}|=|\mathcal F|$ and $(G\sd S_{\mathcal F},H\setminus\mathcal F,\ell)$ is equivalent to $(G,H,\ell)$ (members outside $\mathcal F$ have no pair inside $W_{\mathcal F}$, so $H\setminus\mathcal F$ is still a packing of the new graph and $\ell$ is unchanged).
+
+\subsection{Reformulation of ML}
+\begin{proposition}[Structure of $\Gamma'$]\label{prop:one}
+Let $(G,H,\ell)$ be a YES instance with $H$ pair-maximal.
+\begin{enumerate}
+\item[(a)] $\Gamma'=W[V']\cup\mathrm{HG}[V']$, where $W$ is the graph of soft pairs and $\mathrm{HG}$ the graph of hard edges.
+\item[(b)] Put $Z^*=\max\{Z,(\ell+1)(2D+2\ell+1)\}$. Every hard component $K$ not in $\mathrm{BIG}$ has $|K|\le Z^*$. So ``reject if a non-$\mathrm{BIG}$ hard component has more than $Z^*$ vertices'' is a safe polynomial rule.
+\item[(c)] Let $Q'$ be $\Gamma'$ with every hard component contracted. Then $\tw(Q')\le\tw(\Gamma')\le Z^*(\tw(Q')+1)-1$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Every edge of $G$ is hard or soft, and soft pairs are edges of $W$. (b) Take an optimal $S$ with $|S|\le|H|+\ell$ and let $U$ be its edited hard pairs. If no edge of $K$ is deleted, $K$ lies in one cluster $C$. If $C$ is exceptional, $|C|\le2D+\ell+1\le Z$ (Lemma~\ref{lem:NF}($\alpha$)). If not, $C$ is a union of whole hard components (Lemma~\ref{lem:NF}($\beta$)); with several components $|C|\le2D$, and a single component $K=C$ is clean, so each $y\in K$ has all other vertices of $K$ as hard neighbours or soft partners and $|K|\le d_h(y)+D+1\le B+D+1=Z$ ($K\not\subseteq\mathrm{BIG}$). If edges of $K$ are deleted, there are at most $\ell+1$ pieces of $K$ (components of the kept hard edges); $K$ is connected, so each piece contains an endpoint of a deleted edge and lies in an exceptional cluster of size $\le2D+\ell+1$; thus $|K|\le(\ell+1)(2D+2\ell+1)$. (c) Hard components are connected in $\Gamma'$ by hard edges, so $Q'$ is a minor of $\Gamma'$. Conversely replace every node of a tree decomposition of $Q'$ by the vertices of its component (of size $\le Z^*$ by (b)).
+\end{proof}
+Computer evidence (audit, $200$ instances with $n=6,\dots,8$, all $640$ optimal partitions, $166$ of which split a hard component): every piece of a split non-$\mathrm{BIG}$ component lies in an exceptional cluster, the number of pieces is at most $\ell+1$, sizes within the bounds, no failure ($n$ is too small for $Z^*$ to bite). By Proposition~\ref{prop:soft} the soft graph $W$ has treewidth $\le3w+2$, so the unbounded treewidth of $\Gamma'$ in Proposition~\ref{prop:expander} comes from hard edges between far vertices, which are free.
+
+\subsection{Violations force an edited boundary pair}
+\begin{lemma}[D]\label{lem:D}
+Let $S$ be any solution, $\mathcal F$ pair-closed, $S_{\mathcal F}=S\cap\binom{W_{\mathcal F}}2$ and $y\notin W_{\mathcal F}$. If $N(y)\cap W_{\mathcal F}$ is neither empty nor a cluster of $G[W_{\mathcal F}]\sd S_{\mathcal F}$, then $S$ contains a pair $\{y,u\}$ with $u\in W_{\mathcal F}$.
+\end{lemma}
+\begin{proof}
+Suppose not. Then $N_{G\sd S}(y)\cap W_{\mathcal F}=N_G(y)\cap W_{\mathcal F}$. In the cluster graph $G\sd S$ this set is $\mathrm{cluster}(y)\cap W_{\mathcal F}$ (as $y\notin W_{\mathcal F}$), which is empty or a cluster of the induced subgraph $(G\sd S)[W_{\mathcal F}]=G[W_{\mathcal F}]\sd S_{\mathcal F}$.
+\end{proof}
+Lemma~\ref{lem:D} is the engine of Lemma~\ref{lem:K3}. (The pair $\{y,u\}$ is either hard or a packed pair of a member through $u$ that is not in $\mathcal F$; for a whole component only the first case occurs, which is why the counting of~\cite{BFK18} works for components.)
+
+\begin{proposition}[Tight and reducible components are decidable]\label{prop:two}
+For a component $T$ of $I(H)$ and a tree decomposition of $I(H)$ of width $w$, one decides in time $3^{w+1}n^{O(1)}$ whether $T$ is tight and whether it is reducible, and finds $S_T$.
+\end{proposition}
+\begin{proof}
+A tight solution consists of one edited pair per member and nothing else (each member needs at least one edited pair and the pair sets are disjoint), and such a solution of $G[W_T]$ is optimal since $\tau_T\ge p_T$. Variables: the three choices of each member. Constraint: $G[W_T]\sd S$ has no induced $P_3$, i.e.\ every triple of $W_T$ is fine. A triple with a soft pair involves at most three members (one per soft pair, pair sets being disjoint); each owns two of the three vertices of the triple, so any two of them share a vertex, they form a clique of $I(H)$ and lie in a common bag. A triple without soft pair is checked statically. The R-condition at $y\notin W_T$, $A_y=N(y)\cap W_T\ne\emptyset$: (i) every pair inside $A_y$ is an edge of $G\sd S$ and (ii) every pair between $A_y$ and $W_T\setminus A_y$ is a non-edge of $G\sd S$ (given that $G[W_T]\sd S$ is a cluster graph this says $A_y$ is a cluster). Each such pair is hard (static) or owned by one member (a unary constraint). So tightness is a CSP, and reducibility a CSP with additional unary constraints, with domain size $3$ and scopes inside bags of the restriction of the decomposition to $T$ (width $\le w$); dynamic programming gives $3^{w+1}n^{O(1)}$.
+\end{proof}
+
+\begin{theorem}[Component reduction]\label{thm:three}
+Let $H$ be \emph{any} packing, $\ell'=\ell-\sum_j(\tau_j-p_j)$, and apply Rule~6.2 to every reducible tight component (found by Proposition~\ref{prop:two}). Then, modulo the cited soundness of Rule~6.2 (Lemma~6.3 of~\cite{BFK18}), the reduced instance is equivalent to $(G,H,\ell)$, and if it is a YES instance then $\ell'\ge0$ and the number $r$ of components of $I$ of the remaining packing satisfies $r\le\ell+\ell'\le2\ell$. In particular \emph{if more than $2\ell$ components remain, the answer is NO}. No $\tau_j$ of a non-tight component is needed by the algorithm.
+\end{theorem}
+\begin{proof}
+\emph{The rule.} The set $S_j$ used for a reducible tight component $T_j$ consists of pairs inside $W_j$. So $G[W_i]$ and the sets $N(y)\cap W_i$ ($i\ne j$) do not change, $\tau_i$, tightness and (ir)reducibility of the other components are unchanged, $\ell$ and $\ell'$ are unchanged (Lemma~\ref{lem:K2}), and one pass reaches an instance with no reducible tight component.
+
+\emph{Counting.} Work in the reduced instance. Let $\mathcal A$ be the set of tight (irreducible) components and $\mathcal B$ the set of non-tight ones. Since $\sum_j\tau_j=|H|+\sum_j(\tau_j-p_j)$, we have $|H|+\ell=\sum_j\tau_j+\ell'$. For a solution $S$ put $S_j=S\cap\binom{W_j}2$ (a solution of $G[W_j]$, so $|S_j|\ge\tau_j$) and $S_{\mathrm{ext}}$ for the pairs of $S$ inside no $W_j$; $|S|=\sum_j|S_j|+|S_{\mathrm{ext}}|\ge\sum_j\tau_j$, so $\ell'<0$ gives NO (Lemma~\ref{lem:K1}). Let $S$ be optimal with $|S|\le\sum_j\tau_j+\ell'$. For $j\in\mathcal A$, either $|S_j|\ge\tau_j+1$, or $S_j$ is an optimal solution of $G[W_j]$; since $T_j$ is irreducible $S_j$ violates the R-condition at some $y\notin W_j$, and Lemma~\ref{lem:D} (a component is pair-closed) gives an edited pair $\{y,u\}$ with $u\in W_j$. It lies in no $\binom{W_i}2$, so it is in $S_{\mathrm{ext}}$, and it is counted for at most two components (those of its two ends). Hence $|S_{\mathrm{ext}}|\ge|\mathcal A_b|/2$ where $\mathcal A_b$ are the components of the second kind, and $|S|\ge\sum_j\tau_j+|\mathcal A_a|+|\mathcal A_b|/2\ge\sum_j\tau_j+|\mathcal A|/2$. Thus $|\mathcal A|\le2\ell'$. Each $j\in\mathcal B$ has $\tau_j-p_j\ge1$, so $|\mathcal B|\le\sum_j(\tau_j-p_j)=\ell-\ell'$. Therefore $r\le2\ell'+\ell-\ell'=\ell+\ell'\le2\ell$ (as $\ell'\le\ell$).
+\end{proof}
+The theorem is phrased through the number of remaining components so that it does not need the $\tau_j$ of non-tight components, which are not computable in polynomial time for a large component.
+\begin{corollary}\label{cor:three}
+(a) For $\ell=0$ a YES instance is reduced to the empty packing; this agrees with Theorem~\ref{thm:l0}.
+(b) \emph{Alternation with Lemma~\ref{lem:MAX}.} Applying Lemma~\ref{lem:MAX} may lower the budget by $|M|\ge1$ and raises the treewidth of $I$ by at most $|M|$; the alternation of reduction and maximalisation stops after at most $\ell$ rounds. It ends with a pair-maximal packing, a budget $\ell^*\le\ell$, treewidth $w^*\le w+\ell$, and at most $2\ell^*$ components of the intersection graph.
+\end{corollary}
+\begin{proof}
+(a) $r\le2\ell=0$. (b) Each round with $M\ne\emptyset$ lowers the budget by $|M|$; in the last round $M=\emptyset$, i.e.\ the packing produced by the last reduction pass is already pair-maximal, and Theorem~\ref{thm:three} applies to it.
+\end{proof}
+What remains, after the reduction, is the case of \emph{few but arbitrarily large} components of $I(H)$ (for $w=1$, a single tree of members), which is Open Problem~\ref{op:forest}.
+
+Computer evidence (audit, independent code, $1{,}350$ instances with $n=7,\dots,11$ and arbitrary packings): Lemma~\ref{lem:D} had no failure in about $4\cdot10^5$ checks of a pair (partition, $y$); the tightness decided by enumerating all $3^p$ states agrees with the dynamic program of Proposition~\ref{prop:two} in all instances; Rule~6.2 gave $\OPT(G\sd S_j)+|S_j|=\OPT(G)$ in $850$ applications to R-satisfying tight $S_j$; one pass lowered $\OPT$ by exactly $\sum p_j$ in all instances, leaving no reducible tight component; and $|\mathcal A|\le2\ell'$, $|\mathcal B|\le\ell-\ell'$, $r\le\ell+\ell'$ in all $4{,}050$ pairs (instance, $\ell$) with $\ell\in\{\OPT-|H|,+1,+2\}$.
+
+\subsection{Why Rule~6.2 on unions of members cannot prove ML}
+\begin{proposition}[The family $N^*(F)$]\label{prop:five}
+Let $F$ be a cubic graph with an orientation of in-degree at most $2$ at every vertex. Let $F'$ be $F$ plus a new vertex $*$ and an edge $e_0=(t\to *)$, $t\in V(F)$. Order the edges of $F'$ as $e_0,e_1,\dots,e_N$ so that $e_0$ comes first, \emph{consecutive edges have different heads and $\mathrm{head}(e_1)\ne\mathrm{tail}(e_0)=t$} (possible, since every head occurs at most twice and $t$ has in-degree at most $2$). Write $h(i)$ and $\mathrm{t}(i)$ for the head and tail of $e_i$. The instance $N^*(F)$ has vertices $a_i,b_i,c_i,u_i$ ($0\le i\le N$), $z$ and $y$; for $v\in V(F')$ the sets $K_v^+=\{a_i:\mathrm t(i)=v\}\cup\{b_i,c_i,u_i:h(i)=v\}$ (so $K_*^+=\{b_0,c_0,u_0\}$). Edges: all pairs inside each $K_v^+$; the cross edges $a_ib_i$; the spine edges $b_iu_{i+1}$ ($i<N$) and $b_Nz$; and $yu_0$, $yc_0$ (and no other edge at $y$). Packing: $P_i=(a_i,b_i,c_i)$ and $X_i=(u_i,b_i,u_{i+1})$, both with centre $b_i$ ($u_{N+1}:=z$); $\ell=1$. Then:
+\begin{enumerate}
+\item[(F1)] the members are induced $P_3$'s with pairwise disjoint pair sets, $H$ is pair-maximal, $I(H)$ is a caterpillar (spine $X_0,\dots,X_N$, leaf $P_i$ at $X_i$), so $w=1$, $c=2$, $D=4$;
+\item[(F2)] $(G,H,1)$ is a YES instance and $\OPT=|H|+1$;
+\item[(F3)] all hard degrees are at most $7\le B=11$, so $\mathrm{BIG}=\emptyset$;
+\item[(F4)] $F$ is a minor of $\Gamma'$, so $\tw(\Gamma')\ge\tw(F)$, which is $\Omega(|V(F)|)$ for cubic expanders~\cite{GM09} (cited);
+\item[(F5)] $I(H)$ is connected and tight: $\tau=|H|$;
+\item[(F6)] every nonempty pair-closed set $\mathcal F$ of members (connected or not) is irreducible.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(F1) Every induced $P_3$ of $G$ uses a cross edge or a spine edge or a $y$-edge, because two edges inside cliques at a common vertex lie in one clique. $P_i$ is induced: $a_ib_i$ is a cross edge, $b_ic_i$ lies in $K^+_{h(i)}$, $a_ic_i\notin E$ because $\mathrm t(i)\ne h(i)$. $X_i$ is induced: $u_ib_i$ lies in $K^+_{h(i)}$, $b_iu_{i+1}$ is a spine edge, and $u_iu_{i+1}\notin E$ since consecutive heads differ ($z$ is adjacent to $b_N$ only). The pair sets $\{a_ib_i,b_ic_i,a_ic_i\}$, $\{u_ib_i,b_iu_{i+1},u_iu_{i+1}\}$ are pairwise disjoint. Pair-maximality: no two hard edges form an induced $P_3$. The soft edges are $a_ib_i$, $b_ic_i$, $u_ib_i$, $b_iu_{i+1}$, so the hard edges are the other clique edges and $yu_0$, $yc_0$. Two hard clique edges at a vertex lie in one clique, so their other ends are adjacent; the hard edges at $y$ go to $u_0,c_0$, which are adjacent; and a hard edge at $u_0$ or $c_0$ inside $K_*^+=\{b_0,c_0,u_0\}$ can only be $u_0c_0$, whose ends are both adjacent to $y$.
+
+(F2) The partition $\{K_v^+\}$ together with $\{z\}$, with $y$ put into $K_*^+$, deletes exactly the $2(N+1)=|H|$ cross and spine edges (all packed) and inserts the single pair $yb_0$; its cost is $|H|+1$. For $\OPT\ge|H|+1$ see (F6) below.
+
+(F3) A vertex of $K_v^+$ has at most $|K_v^+|-1=2+2\,\mathrm{in}(v)\le6$ hard neighbours inside its clique, and $u_0,c_0$ have one more hard neighbour, $y$ (which has hard degree $2$).
+
+(F4) Contract every $K_v^+$ (a clique). The cross edges $a_ib_i$ join $K^+_{\mathrm t(i)}$ and $K^+_{h(i)}$, so the quotient contains $F$.
+
+(F5) In the partition of (F2), the pair $a_ib_i$ is deleted, $b_ic_i$ kept, $a_ic_i$ a non-edge in different clusters; $u_ib_i$ kept, $b_iu_{i+1}$ deleted, $u_iu_{i+1}$ a non-edge in different clusters. So its restriction to $W=V\setminus\{y\}$ edits exactly one pair per member: $\tau\le|H|$, hence $\tau=|H|$.
+
+(F6) For pair-closed $\mathcal F$ the restriction of the solution of (F2) to $W_{\mathcal F}$ has at most $|\mathcal F|$ edits (no member outside $\mathcal F$ has a pair inside $W_{\mathcal F}$, and $yb_0$ leaves $W_{\mathcal F}$), so $\tau(G[W_{\mathcal F}])=|\mathcal F|$ and the optimal $S_{\mathcal F}$ are the \emph{tight} ones: exactly one edited pair per member of $\mathcal F$ and no hard pair is edited. Suppose such an $S_{\mathcal F}$ satisfied the R-condition. We use repeatedly: two vertices $p,q\in W_{\mathcal F}$ joined by a hard non-edge are non-adjacent in $G[W_{\mathcal F}]\sd S_{\mathcal F}$, and a hard edge is kept.
+
+\emph{Case 1: $\mathcal F$ contains a spine member; let $X_i$ be the one of smallest index.}
+
+\emph{$i\ge1$.} Then $X_{i-1}\notin\mathcal F$, and $P_{i-1}\notin\mathcal F$: otherwise $b_{i-1},u_i\in W_{\mathcal F}$ and the pair $b_{i-1}u_i$ of the outside member $X_{i-1}$ would lie inside $W_{\mathcal F}$. So $a_{i-1},b_{i-1},u_{i-1}\notin W_{\mathcal F}$ and $N(b_{i-1})\cap W_{\mathcal F}=\{u_i\}\cup M$ with $M=K^+_{h(i-1)}\cap W_{\mathcal F}$. For $m\in M$ the pair $u_im$ is a non-edge ($h(i)\ne h(i-1)$) and is soft only if $m=u_{i+1}$. If $M$ contains some $m\ne u_{i+1}$, then $u_i,m$ are two non-adjacent vertices of $N(b_{i-1})\cap W_{\mathcal F}$: the R-condition fails. If $M=\{u_{i+1}\}$, the set $\{u_i,u_{i+1}\}$ must be a cluster, so $X_i$ inserts $u_iu_{i+1}$ and keeps $u_ib_i$, $b_iu_{i+1}$; then $b_i$ lies in this cluster, but $b_i\notin N(b_{i-1})$: contradiction. So $M=\emptyset$ and $\{u_i\}$ is a cluster, i.e.\ $X_i$ deletes $u_ib_i$. If $P_i\notin\mathcal F$, the vertex $c_i\notin W_{\mathcal F}$ is adjacent to $u_i$ and $b_i$, which lie in different clusters: the R-condition fails at $c_i$. If $P_i\in\mathcal F$, the hard edge $u_ic_i$ is kept, contradicting that $u_i$ is a singleton.
+
+\emph{$i=0$.} The vertex $y\notin W_{\mathcal F}$ has $N(y)\cap W_{\mathcal F}=\{u_0\}$ if $P_0\notin\mathcal F$ and $\{u_0,c_0\}$ if $P_0\in\mathcal F$. First case: $\{u_0\}$ is a cluster, so $X_0$ deletes $u_0b_0$, and $c_0\notin W_{\mathcal F}$, adjacent to $u_0,b_0\in W_{\mathcal F}$ in different clusters, violates the condition. Second case: $\{u_0,c_0\}$ must be a cluster, so $b_0$ is separated from both: $X_0$ deletes $u_0b_0$ and $P_0$ deletes $b_0c_0$. Then $a_0b_0$ and $b_0u_1$ are kept, so $a_0,u_1$ are adjacent to $b_0$. Now $a_0\in K_t^+$ and $u_1\in K^+_{h(1)}$ with $h(1)\ne t$ \emph{by the ordering condition}, so $a_0u_1$ is a hard non-edge (the soft partners of $a_0$ are $b_0,c_0$), and $a_0b_0u_1$ is an induced $P_3$ of $G[W_{\mathcal F}]\sd S_{\mathcal F}$: contradiction.
+
+\emph{Case 2: $\mathcal F$ contains only leaves.} Take $P_i\in\mathcal F$; $u_i,u_{i+1}\notin W_{\mathcal F}$ (for $i=N$ read $z$ for $u_{i+1}$). If $i=N$ then $N(z)\cap W_{\mathcal F}=\{b_N\}$ must be a cluster, i.e.\ $b_N$ is a singleton; but each of the three single edits of $P_N$ (delete $a_Nb_N$, delete $b_Nc_N$, insert $a_Nc_N$) keeps $b_N$ with $a_N$ or $c_N$. So let $i<N$. Then $N(u_{i+1})\cap W_{\mathcal F}=\{b_i\}\cup M$ with $M=K^+_{h(i+1)}\cap W_{\mathcal F}$. For $m\in M$ the pair $b_im$ is a non-edge ($h(i+1)\ne h(i)$) unless $m=a_i$ (possible when $\mathrm t(i)=h(i+1)$), and it is soft only if $m=a_i$ (the soft partners of $b_i$ are $a_i,c_i,u_i,u_{i+1}$). \emph{(2a)} If $M$ contains some $m\ne a_i$, then $b_i,m$ are non-adjacent in $N(u_{i+1})\cap W_{\mathcal F}$: failure. \emph{(2b)} If $M=\emptyset$, then $\{b_i\}$ is a cluster, impossible as above. \emph{(2c)} If $M=\{a_i\}$, then $P_{i+1}\notin\mathcal F$ and $b_{i+1}\in K^+_{h(i+1)}$ is outside $W_{\mathcal F}$ with $N(b_{i+1})\cap W_{\mathcal F}=\{a_i\}$; this must be a cluster, so $a_i$ is a singleton and $a_ib_i$ is deleted. But then $\{a_i,b_i\}=N(u_{i+1})\cap W_{\mathcal F}$ is not a cluster ($a_ib_i$ is not an edge of $G\sd S_{\mathcal F}$): contradiction.
+
+So $\mathcal F$ is irreducible. For the lower bound of (F2): if $\OPT=|H|$, an optimum $S$ has $|S|=\tau$ for the whole component, so $S=S_T$ with $T=I(H)$ tight and optimal on $W=V\setminus\{y\}$; by (F6) it violates the R-condition at $y$, and Lemma~\ref{lem:D} gives an edited pair $\{y,u\}$, which contradicts $S=S_T$. So $\OPT\ge|H|+1$.
+\end{proof}
+\begin{remark}[What is verified, and what is not]\label{rem:fivecov}
+The repaired proof of (F6) (the ordering condition in the case $i=0$, and sub-case (2c)) follows the repair indicated by the audit and was not audited again. The computer checks of the audit (own construction, all claims (F1)--(F5), $\OPT=|H|+1$ by an exact subset dynamic program for the triangle, $n=18$) found no failure of (F6) in the following cases: for the triangle all $90$ pair-closed subfamilies with $|\mathcal F|\le6$ and the whole component $\mathcal F=T$; for $K_4$ ($n=30$) all $632$ pair-closed subfamilies with $|\mathcal F|\le4$, for $8$ random admissible orderings. The whole component was checked for the triangle only. No claim is made beyond this coverage and the proof above.
+\end{remark}
+
+\paragraph{Consequence (a precise obstruction, not a refutation of ML).}
+No reduction obtained by iterating Rule~6.2 on pair-closed unions of members (the form used for components in Section~\ref{sec:K} and in Theorem~\ref{thm:three}) can prove Conjecture~\ref{conj:ML} by itself: on $N^*(F)$ it removes nothing, although $\ell=1$, $w=1$, $\mathrm{BIG}=\emptyset$ and $\tw(\Gamma')=\Omega(|V(F)|)$. In particular the counting argument of Lemma~\ref{lem:K3} does not extend from components to members: all $2(N+1)$ members are irreducible although $\ell=1$. The mechanism is Lemma~\ref{lem:D}: along the spine each member is made irreducible by an edit at a shared vertex of its neighbour, down to the trigger $y$. Other generalisations of the rule (to sets $W$ that are not unions of members) are not excluded.
+
+\begin{conjecture}[TL: trigger lemma; not proved, not tested at scale]\label{conj:TL}
+If $T$ is a tight irreducible component, there is a set $Y$ of at most $g(\ell,D)$ outside vertices, computable in polynomial time, such that every solution of cost at most $|H|+\ell$ whose restriction to $W_T$ is tight edits an unpacked pair at a vertex of $Y$.
+\end{conjecture}
+In $N^*(F)$ the vertex $y$ plays this role. We do not know whether the conjecture is true and claim no consequence for CEaMP.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\hline
+Statement & Status\\
+\hline
+Proposition~\ref{prop:one} ($\Gamma'$, hard components, $Z^*$) & proved; computer-checked ($n\le8$)\\
+Lemma~\ref{lem:D} & proved\\
+Proposition~\ref{prop:two} ($3^{w+1}$ test) & proved\\
+Theorem~\ref{thm:three} (at most $2\ell$ components) & proved modulo cited~\cite{BFK18} Lemma~6.3\\
+Proposition~\ref{prop:five} ($N^*(F)$) & proved; computer coverage as in Remark~\ref{rem:fivecov}\\
+Conjecture~\ref{conj:TL} (TL) & conjecture\\
+Conjecture~\ref{conj:ML} (ML) & conjecture\\
+FPT in $\ell+w$ & \textbf{open}\\
+\hline
+\end{tabular}
+\end{center}

@@ -42,7 +42,12 @@ The main question, whether the problem is fixed-parameter tractable in $\ell+w$,
 
 (ix) \emph{The cluster-identity route.} For a pair-maximal $H$ we prove a normal form of optimal solutions (clusters touching an edited hard pair have at most $2D+\ell+1$ vertices and are connected; all other clusters are unions of whole hard components) and that one endpoint of an edited hard pair determines a set of at most $f(\ell,D)$ candidates for the other. Consequences: an algorithm in time $n^{\ell}f(\ell,w)7^{w+\ell+1}n^{O(1)}$ (the exponent of (ii) halved) and an FPT algorithm in $(\ell,D,\omega)$, where $\omega$ is the treewidth of the graph of edges and packed pairs after removing hard components of large hard degree. However, $\omega$ is not bounded by any function of $(\ell,w)$ (a cubic-expander family with $\ell=w=0$, using a cited treewidth bound), so this does not give FPT in $\ell+w$.
 
-What remains is stated exactly: the pointers of type T2, the pointers realised by deleted hard edges, and a reduction lemma (conjectured, not proved) that would bound $\omega$; non-locality of merge pointers at unbounded distance in $I(H)$ is open.
+
+(x) \emph{Conflicts and pruning.} For a pair-maximal $H$ we prove a conflict lemma: every soft pair $(z,b)$ has a static weight (the number of hard vertices $y$ adjacent to exactly one of $z,b$, if the pair is merged, or to both, if it is not) that is a lower bound on the number of edited hard pairs; consequences are a defect bound $\sum c(\sigma)\le2D|U|$ (the constant is attained for $D=2$ only, as far as we know), a lower bound on the cost, a static pruning of merges, rigid hard edges, a polynomial NO-test (more than $2c\ell$ locally bad members), bounded candidate lists for the far end of a type-T2 or deleted edit of an optimum, and a pruned form of the FPT theorem of (ix): FPT in $(\ell,D,\mathrm{tw}(\Gamma^{\ell}))$ for a subgraph $\Gamma^\ell$ of the graph of (ix), strictly stronger on a family of cubic-graph instances. We give an exact obstruction family: for every $m\ge3$ an instance with $w=1$, $c=2$, $\ell=1$ in which every optimum deletes a hard edge whose ends lie in members at distance $m-1$ in $I(H)$. Computer-found instances with $n=10$ show that the idea of placing the ``locally bad'' members in every bag fails when ``far'' means distance $2$ or $3$; for unbounded distance this is open.
+
+(xi) \emph{Reducing components.} A violation of the neighbourhood condition at a boundary vertex forces an edited pair there (Lemma~D); tight and reducible components of $I(H)$ are decided in $3^{w+1}n^{O(1)}$; and, modulo the soundness of a rule of van Bevern et al.\ (cited), a polynomial reduction leaves at most $2\ell$ components of $I(H)$ of arbitrary size, so $\ell=0$ is fully reduced. We also show that the treewidth of the graph of (ix) is controlled by the soft graph with hard components identified, and give a family with $w=1$, $\ell=1$ and unbounded such treewidth in which no pair-closed union of members is reducible by that rule, so the rule on unions of members cannot prove the reduction lemma. The reduction lemma and a trigger lemma remain conjectures.
+
+What remains is stated exactly: whether the pointers of type T2 and the pointers realised by deleted hard edges can be handled in a decomposition of width bounded in $(\ell,w)$ (Section~\ref{sec:pointers} gives instances in which such a pointer joins members at arbitrary distance in $I(H)$), the reduction lemma, and the main question itself.
 \end{abstract}
 \input{sections/intro}
 \input{sections/prelim}
@@ -53,6 +58,8 @@ What remains is stated exactly: the pointers of type T2, the pointers realised b
 \input{sections/packing}
 \input{sections/locality}
 \input{sections/dproute}
+\input{sections/pointers}
+\input{sections/reduction}
 \input{sections/limits}
 \input{sections/open}
 \input{sections/related}
