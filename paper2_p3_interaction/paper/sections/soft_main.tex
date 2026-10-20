@@ -58,7 +58,7 @@ W[1]-hardness through hard edges between far vertices needs an operation of cost
 \begin{theorem}[Abstract hardness]\label{thm:B}
 LPPH is W[1]-hard parameterized by $L$, already for a forest of $2k$ paths and a set of links that is a perfect matching (every node in at most one link), with $L=k^2$.
 \end{theorem}
-\emph{Proved} (Appendix~\ref{app:softB}), by a reduction from Grid Tiling with $\le$~\cite{Cygan15}; also confirmed by brute force on small instances. It is the abstract form of the mechanism ``a far two-sided edit shares cost between two places''; an operation can hit an interior node of an obstruction, which is the feature the reduction uses.
+\emph{Proved} (Appendix~\ref{app:softB}), by a reduction from Grid Tiling with $\le$~\cite{Cygan15}; also confirmed by exhaustive search on small instances. It is the abstract form of the mechanism ``a far two-sided edit shares cost between two places''; an operation can hit an interior node of an obstruction, which is the feature the reduction uses.
 
 \begin{theorem}[Tunnel releases cannot realise Theorem~\ref{thm:B} without soft triangles]\label{thm:C}
 Let $(G,H)$ be soft-triangle-free and consider the tunnel-release model (Appendix~\ref{app:tunnels}).

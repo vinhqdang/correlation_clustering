@@ -31,7 +31,7 @@ By Lemma~\ref{lem:mc3}, $T^{\mathrm{cl}}$ is a certificate whose active lists ar
 \end{proof}
 In the soft-triangle-free case $\Sigma_0$ is closed under every majority operation (Theorem~\ref{thm:sfA}), so $\kappa_1\le2$ by Lemma~\ref{lem:sfH2}, and some certificate has at most $4$ pairs for every $c$ and $w$ (Theorem~\ref{thm:CB0} bounds \emph{every} minimal certificate by $12$).
 
-\subsection{The case $c\le2$ with soft triangles}
+\subsection{The case \texorpdfstring{$c\le2$}{c<=2} with soft triangles}
 Let $c\le2$. Members share at most one vertex and every vertex is in at most two members, so $I(H)$ has maximum degree $3$, and its triangle-connected components are $K_3$ (one soft triangle), the diamond ($K_4$ minus an edge) and $K_4$ (the octahedron case, a whole component of $I(H)$). By Lemma~\ref{lem:mc1} every constraint of $\Sigma_0$ is a unary list, a relation on one triangle-connected component (its members' vertices, all pairs between them constants or soft), or a link relation $R_{AB}$ for an edge of $I(H)$ in no triangle (an ``outside'' pair that is soft for a member not in the component would make that member part of the component, except for the pair of the two private vertices of a diamond, which is allowed for in the enumeration). So $\Sigma_0$ is a product over the components of $I(H)$ of intersections of lifted relations of the four types \emph{link, $K_3$, diamond, $K_4$} and lists.
 
 \emph{Classification (by computer, exhaustive over centre choices and all hard bits).} Let $m_M$ be the conservative majority $m_M(x,y,z)=x$ if two arguments are equal and $M$ otherwise. Up to the relabelling $L\leftrightarrow R$ of a member, the numbers of distinct relations over $\{L,R,M\}^k$ and the closure under $m_M$ are:
@@ -51,7 +51,7 @@ $\Sigma_0$ is a product over the connected components of $I(H)$ and lists act in
 \end{proof}
 \emph{Experimental check of the classification} (not used in the proof): on a large sample of random instances with $c\le2$, $\Sigma_0$ was closed under $m_M$ except for some octahedron instances, and exact minimum certificate sizes never exceeded $4$. The family $G_N$ of Theorem~\ref{thm:CE} has minimum certificate $3$ for $N\le4$ (a pendant at a centre), and by Theorem~\ref{thm:MC0} this is forced: no choice of pendants makes every certificate large at $\ell=0$ when $c\le2$.
 
-\subsection{Excess $\ell\ge1$: what is proved}
+\subsection{Excess \texorpdfstring{$\ell\ge1$}{l>=1}: what is proved}
 For budget $|H|+\ell$ the objects that cost are \emph{defect objects}: a member edited at least twice (extra cost at least $1$) and an edited local hard pair (cost $1$); the cost is $|H|$ plus the sum of extras plus the number of flips, at least $|H|+\#\text{defect objects}$. A \emph{pattern} is a set of at most $\ell$ defect objects with values; $\Sigma_0^\pi$ is the zero-excess set of the instance with the pattern applied (flips applied, defect members replaced by their pair statuses, which become hard constants).
 \begin{lemma}[Pattern-wise Helly; by computer]\label{lem:mcP}
 For $c\le2$ and every pattern $\pi$, $\kappa_1(\Sigma_0^\pi)\le2$. So every single pattern is killed by at most two locks (at most four remote pairs).
