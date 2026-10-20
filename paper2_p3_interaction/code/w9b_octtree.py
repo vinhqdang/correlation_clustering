@@ -43,8 +43,9 @@ def build_tree(units, edges, cross):
         if u!=v: E.add(key(u,v))
     return Inst(nxt,E,H),maps
 
-def enum_sigma(I, limit=200000):
+def enum_sigma(I, limit=200000, drop_far=False):
     n=I.n; m=len(I.H)
+    farset=set(I.far_pairs()) if drop_far else set()
     # order members by BFS adjacency for good pruning
     order=[0]; seen={0}
     adjm=[set() for _ in range(m)]
@@ -61,6 +62,7 @@ def enum_sigma(I, limit=200000):
     by_last=[[] for _ in range(m)]
     for x,y,z in itertools.combinations(range(n),3):
         ps=[key(x,y),key(y,z),key(x,z)]
+        if any(p in farset for p in ps): continue
         ow=[I.owner.get(p) for p in ps]
         own={o[0] for o in ow if o}
         if not own:

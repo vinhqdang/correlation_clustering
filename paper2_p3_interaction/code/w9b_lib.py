@@ -182,3 +182,55 @@ def ze_states(inst, respect_hard=True):
 def edit_cost_of_states(inst, states):
     """cost of a ZE state vector = |H| (sanity)"""
     return len(inst.H)
+
+
+def opt_csp_cpsat(inst, T=None, time_limit=60):
+    """csp-variant relaxation F'(T): min over assignments of statuses to soft+local pairs (far pairs in T fixed at their G status,
+    far pairs outside T absent and every triple containing one is dropped) such that all remaining triples are not induced P3.
+    T=None: all far pairs respected.  Independent of w9b_leaf (CP-SAT instead of bucket elimination)."""
+    n = inst.n
+    far = set(inst.far_pairs())
+    respected = far if T is None else set(T)
+    m = cp_model.CpModel()
+    x = {}
+    cost = []
+    for u, v in itertools.combinations(range(n), 2):
+        p = (u, v)
+        if p in far:
+            continue
+        x[p] = m.NewBoolVar(f"x{u}_{v}")
+        e = p in inst.E
+        # togetherness x; edit cost if x != e ; soft pairs: cost counted too (members' edits)
+        cost.append(x[p].Not() if e else x[p])
+    def status(p):
+        """returns ('var',lit) or ('const',0/1) or None (dropped)"""
+        if p in x: return ('var', x[p])
+        if p in respected: return ('const', 1 if p in inst.E else 0)
+        return None
+    for a, b, c in itertools.combinations(range(n), 3):
+        ps = [key(a, b), key(b, c), key(a, c)]
+        st = [status(p) for p in ps]
+        if any(s is None for s in st): continue
+        # not exactly two together
+        lits = []; const = 0
+        for s in st:
+            if s[0] == 'const': const += s[1]
+            else: lits.append(s[1])
+        k = len(lits)
+        # sum(lits)+const != 2
+        if k == 0:
+            if const == 2:
+                return None
+            continue
+        t = 2 - const
+        if t < 0 or t > k: continue
+        # forbid sum(lits) == t : encode via clauses over assignments (k<=3)
+        for assign in itertools.product((0, 1), repeat=k):
+            if sum(assign) == t:
+                m.AddBoolOr([(l.Not() if v else l) for l, v in zip(lits, assign)])
+    m.Minimize(sum(cost))
+    s = cp_model.CpSolver(); s.parameters.max_time_in_seconds = time_limit; s.parameters.num_workers = 4
+    st = s.Solve(m)
+    if st == cp_model.INFEASIBLE: return None
+    if st != cp_model.OPTIMAL: raise RuntimeError("cp-sat %s" % s.StatusName(st))
+    return int(round(s.ObjectiveValue()))
