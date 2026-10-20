@@ -64,6 +64,11 @@ Russell Impagliazzo, Ramamohan Paturi, and Francis Zane.
 \newblock Which problems have strongly exponential complexity?
 \newblock {\em Journal of Computer and System Sciences}, 63(4):512--530, 2001.
 
+\bibitem{JCC98}
+Peter Jeavons, David Cohen, and Martin~C. Cooper.
+\newblock Constraints, consistency and closure.
+\newblock {\em Artificial Intelligence}, 101(1--2):251--265, 1998.
+
 \bibitem{KU12}
 Christian Komusiewicz and Johannes Uhlmann.
 \newblock Cluster editing with locally bounded modifications.

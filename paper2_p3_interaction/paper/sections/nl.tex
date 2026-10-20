@@ -3,26 +3,26 @@ This section uses Corollary~\ref{cor:cand} in two ways: guessing the positions o
 
 \subsection{The \texorpdfstring{$n^{\ell}$}{n\^l} algorithm}
 \begin{remark}[Fixed set of hard edits]\label{rem:fixU}
-The proof of Theorem~\ref{thm:A} shows: for a \emph{fixed} set $U'$ of hard pairs, $m_{U'}=\min\sum_i|x_i|$ over all $x\in\prod\mathcal D_i$ with $G\sd(U'\cup\bigcup x_i)$ a cluster graph is computed in $7^{w+1}n^{O(1)}$ time from a tree decomposition of $I(H)$ of width $w$, and for \emph{every} $U'$ of hard pairs the value $m_{U'}+|U'|$ is the size of an actual solution.
+The proof of Theorem~\ref{thm:A} shows: for a \emph{fixed} set $U'$ of hard pairs, $m_{U'}=\min\sum_i|x_i|$ over all $x\in\prod\mathcal D_i$ with $G\sd(U'\cup\bigcup x_i)$ a cluster graph is computed in $5^{w+1}n^{O(1)}$ time from a tree decomposition of $I(H)$ of width $w$, and for \emph{every} $U'$ of hard pairs the value $m_{U'}+|U'|$ is the size of an actual solution.
 \end{remark}
 
 \begin{theorem}[$n^{\ell}$ algorithm]\label{thm:nl}
 Given $(G,H,\ell)$ for an arbitrary packing $H$ and a tree decomposition of $I(H)$ of width $w$, CEaMP is solvable in time
 \[
-(n+1)^{\ell}\;Z_*^{\,2\ell}\;7^{\,w+\ell+1}\;n^{O(1)},\qquad D_*=D(H)+2\ell,\quad Z_*=3D_*+3\ell+1=3D(H)+9\ell+1 .
+(n+1)^{\ell}\;Z_*^{\,2\ell}\;5^{\,w+\ell+1}\;n^{O(1)},\qquad D_*=D(H)+2\ell,\quad Z_*=3D_*+3\ell+1=3D(H)+9\ell+1 .
 \]
 Since $D(H)\le2(w+1)$, $Z_*\le6w+9\ell+7$, so the factor $Z_*^{2\ell}$ is a function of $(\ell,w)$ only. This improves the exponent $2\ell$ of Theorem~\ref{thm:A} to $\ell$; it is still XP in $\ell$.
 \end{theorem}
 \begin{proof}
 Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then $H'$ is pair-maximal, $\ell'=\ell-|M|\le\ell$, $D(H')\le D(H)+2|M|\le D_*$, a tree decomposition of $I(H')$ of width $w'\le w+|M|\le w+\ell$ is available, and the instance is equivalent to $(G,H',\ell')$. All lemmas of Section~\ref{sec:optimal} apply to $H'$ with $D(H')$ and $\ell'$; put $B,L_B,Z$ accordingly. Then $Z=3D(H')+3\ell'+1\le Z_*$.
 
-\emph{Algorithm.} Compute $L_B$ and, for $x\in L_B$, the set $P(x)$ of vertices $y\in\mathrm{Ball}_{G[L_B]}(x,2)\setminus\{x\}$ with $xy$ hard; $|P(x)|\le Z^2$. Enumerate all sequences of at most $\ell'$ pairs $(x_1,y_1),\dots,(x_j,y_j)$ with $x_i\in L_B$ and $y_i\in P(x_i)$; there are at most $(1+nZ^2)^{\ell'}\le(n+1)^{\ell'}Z^{2\ell'}$ of them. For each, let $U'=\{x_iy_i\}$ (a set of at most $\ell'$ hard pairs), compute $m_{U'}$ by Remark~\ref{rem:fixU} for $H'$ in $7^{w'+1}n^{O(1)}$ time, and accept iff $m_{U'}+|U'|\le|H'|+\ell'$.
+\emph{Algorithm.} Compute $L_B$ and, for $x\in L_B$, the set $P(x)$ of vertices $y\in\mathrm{Ball}_{G[L_B]}(x,2)\setminus\{x\}$ with $xy$ hard; $|P(x)|\le Z^2$. Enumerate all sequences of at most $\ell'$ pairs $(x_1,y_1),\dots,(x_j,y_j)$ with $x_i\in L_B$ and $y_i\in P(x_i)$; there are at most $(1+nZ^2)^{\ell'}\le(n+1)^{\ell'}Z^{2\ell'}$ of them. For each, let $U'=\{x_iy_i\}$ (a set of at most $\ell'$ hard pairs), compute $m_{U'}$ by Remark~\ref{rem:fixU} for $H'$ in $5^{w'+1}n^{O(1)}$ time, and accept iff $m_{U'}+|U'|\le|H'|+\ell'$.
 
 \emph{Soundness.} By Remark~\ref{rem:fixU}, $m_{U'}+|U'|$ is the size of an actual solution of $G$ for every $U'$ of hard pairs of $H'$; acceptance gives a solution of size $\le|H'|+\ell'=|H|+\ell$.
 
 \emph{Completeness.} Suppose the instance is a YES instance and let $S$ be an optimal solution, $|S|\le|H'|+\ell'$, with hard edits $U$, $|U|\le\ell'$ (Lemma~\ref{lem:decomp} for $H'$). For each pair of $U$ take one endpoint $x$; it lies in $L_B$ and the other endpoint lies in $P(x)$ by Corollary~\ref{cor:cand}. So $U$ is among the enumerated sets, and for it $m_U+|U|\le|S|\le|H'|+\ell'$ (the soft part of $S$ is a feasible choice of $x$ for $U$ by Lemma~\ref{lem:decomp}).
 
-\emph{Time.} $(n+1)^{\ell'}Z^{2\ell'}7^{w'+1}n^{O(1)}\le(n+1)^{\ell}Z_*^{2\ell}7^{w+\ell+1}n^{O(1)}$.
+\emph{Time.} $(n+1)^{\ell'}Z^{2\ell'}5^{w'+1}n^{O(1)}\le(n+1)^{\ell}Z_*^{2\ell}5^{w+\ell+1}n^{O(1)}$.
 \end{proof}
 The exponent is halved because the candidate list is attached to \emph{one} endpoint (Corollary~\ref{cor:cand}); Theorem~\ref{thm:A} guesses both. Note that $\ell$ bounds the \emph{number} of hard edits but not the cost of locating them: the $n^{\ell}$ comes from the position of the first endpoint of each pair. A fixed-parameter algorithm along this route needs a bound on these positions as well.
 

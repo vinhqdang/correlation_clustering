@@ -144,3 +144,44 @@ if __name__ == '__main__':
         if (lab is not None) != exp:
             print('MISMATCH', t, lab is not None, exp, flush=True)
     print('agree', agree, 'of', tot, round(time.time() - t0, 1))
+
+
+def layout2(n, extra=0):
+    U, m, slot_group, sep_group = layout(n)
+    if extra:
+        U += extra; m = 2 * U
+    return U, m, slot_group, sep_group
+
+
+def build_general(n, p, tiles, cmps, tunnels, thin_mode=False, extra=0):
+    """tiles: dict tag -> set of slot-group indices carrying a lock guest+anchor; every other group is a permanent pad.
+    cmps: list of (tag1, tag2, alpha); tunnels: list of ((tag,u),(tag',u')) or ((tag,u), None) = private stub.
+    All chains share the layout of Grid Tiling with parameter n (U=1+n(n+1)+extra groups)."""
+    U, m, slot_group, sep_group = layout2(n, extra)
+    W = World(p, thin_mode=thin_mode)
+    chains = {tag: W.add_chain(tag, m) for tag in tiles}
+    zname = lambda tag, u: ('z', tag, u)
+    for tag, ch in chains.items():
+        for u in range(U):
+            host = ('s', 4 * u + 2)
+            F = {2 * u, 2 * u + 1}
+            if u in tiles[tag]:
+                ch.perm_guest(zname(tag, u), host, set())
+                lock_guest(ch, ('y', tag, u), ('x', tag, u), zname(tag, u), host, F)
+            else:
+                eff = ch.perm_guest(zname(tag, u), host, F)
+                assert eff == F
+    for (a, b) in tunnels:
+        xa = ('x',) + a
+        if b is None:
+            W.B.hard(xa, ('stub',) + a)
+        else:
+            W.B.hard(xa, ('x',) + b)
+    for (c1, c2, alpha) in cmps:
+        u = sep_group[alpha]
+        host = ('s', 4 * u + 2)
+        F1 = {a for a in range(m) if a >= 2 * u}
+        F2 = {a for a in range(m) if a <= 2 * u + 1}
+        cmp_guest(chains[c1], host, F1, chains[c2], host, F2, ('c', c1, c2, alpha), zname(c1, u), zname(c2, u))
+    meta = dict(U=U, m=m, slot_group=slot_group, sep_group=sep_group, chains=chains)
+    return W, meta
