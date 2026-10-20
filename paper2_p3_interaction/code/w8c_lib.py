@@ -133,3 +133,91 @@ def labels_to_clusters(lab):
     for v, l in enumerate(lab):
         d.setdefault(l, []).append(v)
     return sorted(d.values())
+
+
+def ze_solve_fast(n, E, members, singletons=(), fixed_apart=(), fixed_together=(), all_solutions=False, limit=None, want_labels=True):
+    """Same semantics as ze_solve but only soft pairs get variables; triples are generated from the 'linked' graph
+    (pairs that are soft or hard edges).  Hard non-edges are constants 0, hard edges constants 1."""
+    soft = set()
+    for m in members:
+        soft |= pairs_of(m)
+    vp = VarPool()
+    var = {}
+    for p in soft:
+        var[p] = vp.new()
+    TRUE = vp.new()
+    cl = [[TRUE]]
+    def lit(u, v):
+        p = key(u, v)
+        if p in var: return var[p]
+        return TRUE if p in E else -TRUE
+    # linked adjacency
+    adj = [set() for _ in range(n)]
+    for p in soft:
+        adj[p[0]].add(p[1]); adj[p[1]].add(p[0])
+    for p in E:
+        if p not in soft:
+            adj[p[0]].add(p[1]); adj[p[1]].add(p[0])
+    seen = set()
+    def add_triple(u, v, w):
+        t = tuple(sorted((u, v, w)))
+        if t in seen: return
+        seen.add(t)
+        a, b, c = lit(t[0], t[1]), lit(t[1], t[2]), lit(t[0], t[2])
+        for (x, y, z) in ((a, b, c), (a, c, b), (b, c, a)):
+            cl.append([-x, -y, z])
+    for v in range(n):
+        nb = sorted(adj[v])
+        for i in range(len(nb)):
+            for j in range(i + 1, len(nb)):
+                add_triple(nb[i], v, nb[j])
+    # also triples with exactly one hard non-edge are covered (two linked pairs at v).  Triples with <=1 linked pair are trivial.
+    for (a, b, c) in members:
+        e1, e2, e3 = -var[key(a, b)], -var[key(b, c)], var[key(a, c)]
+        cl += [[e1, e2, e3], [-e1, -e2], [-e1, -e3], [-e2, -e3]]
+    def fix(u, v, val):
+        p = key(u, v)
+        if p in var: cl.append([var[p]] if val else [-var[p]])
+        else:
+            if (p in E) != val: cl.append([-TRUE])
+    for x in singletons:
+        for v in range(n):
+            if v != x: fix(x, v, False)
+    for (u, v) in fixed_apart: fix(u, v, False)
+    for (u, v) in fixed_together: fix(u, v, True)
+    # hard-edge components must be consistent: pairs hard non-edge inside a hard-edge-connected set via transitivity are
+    # captured by triples (u,v),(v,w) hard edges and (u,w) hard non-edge -> clause [-TRUE]
+    s = Cadical153(bootstrap_with=cl)
+    out = []
+    def decode(model):
+        ms = set(l for l in model if l > 0)
+        # union-find on togetherness
+        parent = list(range(n))
+        def f(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]; x = parent[x]
+            return x
+        for p in E:
+            if p not in soft:
+                parent[f(p[0])] = f(p[1])
+        for p, vv in var.items():
+            if vv in ms: parent[f(p[0])] = f(p[1])
+        labs = {}
+        lab = []
+        for v in range(n):
+            r = f(v)
+            if r not in labs: labs[r] = len(labs)
+            lab.append(labs[r])
+        return lab
+    while s.solve():
+        model = s.get_model()
+        if not all_solutions:
+            lab = decode(model) if want_labels else True
+            s.delete()
+            return lab
+        out.append(decode(model))
+        if limit and len(out) >= limit: break
+        ms = set(l for l in model if l > 0)
+        s.add_clause([(-v if v in ms else v) for v in var.values()])
+    s.delete()
+    return out if all_solutions else None
