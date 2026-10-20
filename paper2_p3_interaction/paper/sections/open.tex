@@ -45,7 +45,7 @@ The following table is the only status summary of the paper. ``Input $H$'' means
 Result & Applies to & Needs & Status\\
 \hline
 \endhead
-Thm~\ref{thm:l0}, \ref{thm:A} (CSP, $3^{w+1}$, $5^{w+1}n^{2\ell}$) & input $H$ & -- & proved\\
+Thm~\ref{thm:l0}, \ref{thm:A} (CSP, $3^{w+1}$, $5^{w+1}n^{2\ell}$) & input $H$ & -- & proved; Lean: Obs.~\ref{obs:one}, \ref{obs:two} (owner cliques) and the five-state lemma, not the algorithms\\
 Thm~\ref{thm:sfA}, Cor.~\ref{cor:sfpoly}, \ref{cor:sfcore}, \ref{cor:sfTR} (no soft triangle: majority closure, $\ell=0$ polynomial, cores $\le2$) & input $H$, soft-triangle-free & -- & proved; 40-relation classification by computer; cites~\cite{JCC98}\\
 Lemmas~\ref{lem:sfU}--\ref{lem:sfH2}, Thm~\ref{thm:U} (far-lift model, $6^{\ell}$), Lemma~\ref{lem:sfE} & input $H$ (soft-triangle-free for Thm~\ref{thm:U}) & -- & proved; restricted model\\
 Prop.~\ref{prop:RM2}, \ref{prop:hub} (RM2 FPT; not faithful) & model; explicit instance & -- & proved (hub: enumeration)\\
@@ -54,14 +54,14 @@ Thm~\ref{thm:CB0} (certificates $\le12$ at $\ell=0$) & soft-triangle-free & $\el
 Thm~\ref{thm:CE} (unbounded minimal certificates, $c=2$) & explicit family & -- & proved; block structure by computer; $=|H|+1$ and connected $\ell=1$ family: evidence\\
 Lemma~\ref{lem:R5} (no conservative NU) & $c\ge3$ language & -- & proved\\
 Thm~\ref{thm:B}, \ref{thm:C} (abstract W[1]-hardness; tunnels cannot realise it without soft triangles) & abstract; soft-triangle-free tunnel model & -- & proved; remarks (iv), (v) heuristic\\
-\textbf{Thm~\ref{thm:hard}} (W[1]-hardness in $\ell+w$, $\ell+\mathrm{pw}$, $\ell+c$; no $f(\ell,w)n^{o(\sqrt\ell)}$ under ETH, Cor.~\ref{cor:hardeth}) & pair-maximal $H$, $c\le4p+2$, $\ell=k^2$ & -- & \textbf{proved, computer-assisted}: Lemma~\ref{lem:hchain} (transfer matrix, $m\le60$ checks), Lemma~\ref{lem:hprof}, counts of Lemma~\ref{lem:hpar}; the rest by hand; exact optimum of full thick instances (contraction of each $K_v$, CP-SAT) for $k=1,2,3$ ($k=3$: $11{,}262$ vertices), YES at $\mathrm{ex}=k^2$, NO at $k^2+1$ in all tests (evidence); thin model tested for $k\le3$\\
+\textbf{Thm~\ref{thm:hard}} (W[1]-hardness in $\ell+w$, $\ell+\mathrm{pw}$, $\ell+c$; no $f(\ell,w)n^{o(\sqrt\ell)}$ under ETH, Cor.~\ref{cor:hardeth}) & pair-maximal $H$, $c\le4p+2$, $\ell=k^2$ & -- & \textbf{proved, computer-assisted}: Lemma~\ref{lem:hchain} (transfer matrix, $m\le60$ checks), Lemma~\ref{lem:hprof}, counts of Lemma~\ref{lem:hpar}; the rest by hand; exact optimum of full thick instances (contraction of each $K_v$, CP-SAT) for $k=1,2,3$ ($k=3$: $11{,}262$ vertices), YES at $\mathrm{ex}=k^2$, NO at $k^2+1$ in all tests (evidence); thin model tested for $k\le3$; Lean~4 checks the counting core of Thm~\ref{thm:hS}, the Grid Tiling encoding, the chain lemma for $m\le9$ and the matrix algebra, not the graph-level statements (Section~\ref{sec:hlean})\\
 Remark~\ref{rem:hchaincore} (chain with unbounded core, bounded $c$ and width) & single chain, $p\ge8$ & -- & follows from the proof of Prop.~\ref{prop:hTR}; not run separately\\
 Thm~\ref{thm:F} (forests, conditional) & forest $I(H)$ & BC, oracle (O) & implication proved; BC, (O) open\\
 Thm~\ref{thm:eth}, Prop.~\ref{prop:w0} (ETH; $w$ alone) & input $H$ & -- & proved from~\cite{LPS23}\\
 Thm~\ref{thm:K} (components, kernel) & input $H$ & -- & proved; cites~\cite{BFK18} Lemma~6.3, \cite{Boe12}, \cite{CM12}\\
 Thm~\ref{thm:three} (components of any size) & input $H$ & -- & proved; cites~\cite{BFK18} Lemma~6.3\\
 Thm~\ref{thm:nl} ($n^{\ell}$ algorithm) & input $H$ (via $H'$) & -- & proved\\
-Lemmas~\ref{lem:half}--\ref{lem:NF}, Cor.~\ref{cor:cand} & pair-maximal $H'$ & optimal, YES & proved\\
+Lemmas~\ref{lem:half}--\ref{lem:NF}, Cor.~\ref{cor:cand} & pair-maximal $H'$ & optimal, YES & proved; Lean: twin, half-degree, diameter, MAX, HUB, SM (abstract form)\\
 Thm~\ref{thm:T1T2}, Cor.~\ref{cor:softfree}, Prop.~\ref{prop:bag} & pair-maximal $H'$ & optimal, YES & proved\\
 Prop.~\ref{prop:cex}, \ref{prop:FAR} & explicit instances & -- & proved (cex: enumeration)\\
 Thm~\ref{thm:omega}, Prop.~\ref{prop:expander} & pair-maximal $H'$ & YES & proved; expander treewidth cited~\cite{GM09}\\
