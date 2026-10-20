@@ -214,3 +214,55 @@ if __name__ == '__main__' and len(sys.argv) > 1 and sys.argv[1] == 'pfg':
         S = [A[a] for a in range(m) if a != i]
         lab = ze_solve(n, E, members, singletons=S)
         print(' all but', i, 'feasible', lab is not None, 'M position', position_of(T, lab, m) if lab else None, flush=True)
+
+
+def add_lock_guest_set(T, yname, xname, zname, host, per, forbidden_set):
+    allowed = set([host])
+    for a, c in per.items():
+        if a not in forbidden_set: allowed |= set(c)
+    for nv in sorted(allowed, key=str):
+        Mn = T.take_matching(nv)
+        for (i, k) in Mn:
+            T.B.member(yname, (nv, i), (nv, k))
+    T.B.member(xname, yname, zname)
+    return allowed
+
+def build_pairpfg(m, p):
+    T = Thick(m, p)
+    cs, cand = candidates(m)
+    groups = []        # (host, set of positions)
+    h = 1
+    covered = set()
+    for h in range(1, m + 2, 2):
+        pos = set(a for a in (h - 1, h) if 0 <= a < m)
+        if pos: groups.append((('s', 2 * h), pos))
+    perm = {}
+    anchors = {}
+    for (host, pos) in groups:
+        assert all(host in cand[a] for a in pos), ('host not valid', host, pos)
+        per = {a: frozenset(c - {host}) for a, cl_ in cs.items() for c in cl_ if host in c}
+        zname = ('zg', host)
+        add_permanent_guest(T, host, zname, per)
+        yname, xname = ('y', host), ('x', host)
+        add_lock_guest_set(T, yname, xname, zname, host, per, pos)
+        anchors[host] = (xname, pos)
+    return T, groups, anchors
+
+if __name__ == '__main__' and len(sys.argv) > 1 and sys.argv[1] == 'pairpfg':
+    m, p = int(sys.argv[2]), int(sys.argv[3])
+    import time
+    t0 = time.time()
+    T, groups, anchors = build_pairpfg(m, p)
+    n, E, members = T.finish()
+    print('groups', [(h, sorted(pos)) for h, pos in groups])
+    print('pad matchings used per thin vertex (max):', max(T.used.values()), 'of', len(T.fact))
+    print('n', n, '|H|', len(members), check_instance(n, E, members), 'c =', max(sum(1 for t in members if v in t) for v in range(n)), round(time.time() - t0, 1), flush=True)
+    idx = T.B.idx
+    A = {h: idx[anchors[h][0]] for h, pos in groups}
+    print('unlocked tight?', ze_solve(n, E, members) is not None, flush=True)
+    res = ze_solve(n, E, members, singletons=list(A.values()))
+    print('ALL locked feasible?', res is not None, flush=True)
+    for h, pos in groups:
+        S = [A[g] for g, _ in groups if g != h]
+        lab = ze_solve(n, E, members, singletons=S)
+        print(' all but', h, sorted(pos), 'feasible', lab is not None, 'M position', position_of(T, lab, m) if lab else None, flush=True)

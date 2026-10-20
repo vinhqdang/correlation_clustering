@@ -45,6 +45,7 @@ class PerSynth:
     def __init__(self, m, ncls, cmax, Mmem, anchors=False, glue=True, lreg=2, rreg=2, span=2, extra_member_limit=None, shared=None, base=None):
         self.m, self.ncls, self.cmax, self.Mmem = m, ncls, cmax, Mmem
         self.base = base
+        self.nospine = os.environ.get('NOSPINE', '0') == '1'
         self.anchors = anchors
         self.XC = ncls - 1 if anchors else None
         self.glue = glue
@@ -71,7 +72,7 @@ class PerSynth:
         if base is None and not self.nospine:
             for j in range(m):
                 self.spine_members.append((self.vid[(j, 0)], self.vid[(j, 1)], self.vid[(j + 1, 0)]))
-        else:
+        elif base is not None:
             for (a_, b_, c_) in base['members']:
                 self.spine_members.append((self.vid[a_], self.vid[b_], self.vid[c_]))
         self.spine_soft = set()
@@ -221,6 +222,8 @@ class PerSynth:
             if c < self.base['nbase']:
                 return not (j == self.m and c in (1, 3))
             return j < self.m
+        if self.nospine:
+            return not (self.anchors and c == self.XC and j == self.m)
         if j == self.m and c in (1, 3):
             return False
         if self.anchors and c == self.XC and j == self.m:
