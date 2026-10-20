@@ -103,6 +103,7 @@ def random_labels(rnd, cell, nlab, start_n, end_n):
     return la
 
 if __name__ == '__main__':
+    LL = int(sys.argv[6]) if len(sys.argv) > 6 else 0
     k = int(sys.argv[1]); cmax = int(sys.argv[2]); samples = int(sys.argv[3]); seed = int(sys.argv[4]); Ns = [int(x) for x in sys.argv[5].split(',')]
     rnd = random.Random(seed)
     t0 = time.time(); found = 0; stat = {}
@@ -116,7 +117,7 @@ if __name__ == '__main__':
             nv, H, npd, cl = build_chain(cell, N, la, None, [0] * sn, [0] * en)
             I = make_inst(nv, H, npd, cl)
             if not (I.valid() and I.cmax() <= cmax and I.pair_maximal()): okc = False; break
-            sz, T = min_certificate(I, 0, max_size=30, workers=2)
+            sz, T = min_certificate(I, LL, max_size=40, workers=2)
             sizes.append(sz)
             if sz is None or sz == 0: break
         if not okc: continue

@@ -82,7 +82,7 @@ Where the proof needs care (Appendix~\ref{app:repack}): the label of a covered v
 \begin{corollary}[Static form]\label{cor:rpstatic}
 Let $\Lambda(H)$ be the set of pairs $\{a,b\}\subseteq V(H)\cap L_B$ with $a,b\in\mathrm{Ball}(r)$ for some $r\in L_B$. Let $w_\Lambda$ be the minimum width of a tree decomposition of $I(H)$ that co-bags every pair of $\Lambda(H)$; equivalently, the minimum over the choices, for every $\{a,b\}\in\Lambda(H)$, of a member through $a$ and a member through $b$, of the treewidth of $I(H)$ plus these links. Then CEaMP is solvable in time $5^{w_\Lambda+1}(Z^2+1)^{3\ell(w_\Lambda+1)}n^{O(1)}$, and the promise holds for every instance.
 \end{corollary}
-Corollary~\ref{cor:rpstatic} is only as strong as $w_\Lambda$, which is large on tunnel-rich instances, so it does not answer Open Problem~\ref{op:main}.
+Corollary~\ref{cor:rpstatic} is only as strong as $w_\Lambda$, which is large on tunnel-rich instances; by Theorem~\ref{thm:hard} it cannot be bounded by a function of $(\ell,w)$ unless $\mathrm{FPT}=\mathrm{W[1]}$.
 
 \subsection{Limits of repacking}
 \begin{theorem}[No repacking with bounds in $\ell$ alone]\label{thm:rpN}
@@ -108,14 +108,20 @@ For every graph $G$ there are a maximum modification-disjoint packing $H^*$ and 
 \end{conjecture}
 \textbf{Status: open.} Evidence (computer, independent implementation): no counterexample among all connected graphs with $n\le8$, among $1{,}500$ random connected graphs with $n=9$, and among $300$ random connected graphs with $n=10$. By Proposition~\ref{prop:rpnf} the clause ``bridged'' is necessary. C1 alone is not enough for Theorem~\ref{thm:rpPL}, which also needs the hub clause of Definition~\ref{def:rpclass} (the evidence above is for the covered-covered clause only), and it is an existence statement; it does not say how to find $H^*$.
 
-\begin{problem}[LOC: locating the repacking; \textbf{OPEN}]\label{op:LOC}
+\begin{problem}[LOC: locating the repacking; \textbf{no, unless $\mathrm{FPT}=\mathrm{W[1]}$}]\label{op:LOC}
 Is there an algorithm that, given $(G,H,\ell)$ and a decomposition of $I(H)$ of width $w$, runs in time $f(\ell,w)n^{O(1)}$ and outputs a pair-maximal packing $H^*$ with $|H^*|\ge|H|$ and $\tw(I(H^*))\le g(\ell,w)$, together with a decomposition of that width, such that on every YES instance some optimal solution lies in $\mathcal S(H^*,\mathcal T^*,\beta^*)$ for $\ell^*=|H|+\ell-|H^*|$?
 \end{problem}
 \begin{proposition}\label{prop:rpLOC}
 A positive answer to Open Problem~\ref{op:LOC} implies that CEaMP is fixed-parameter tractable in $\ell+w$.
 \end{proposition}
+\begin{corollary}\label{cor:rpLOCno}
+Unless $\mathrm{FPT}=\mathrm{W[1]}$, the answer to Open Problem~\ref{op:LOC} is negative: no algorithm locates a repacking of bounded width and excess in time $f(\ell,w)n^{O(1)}$ on every YES instance.
+\end{corollary}
+\begin{proof}
+Proposition~\ref{prop:rpLOC} and Theorem~\ref{thm:hard}.
+\end{proof}
 By Theorem~\ref{thm:rpN} the width bound $g$ cannot depend on $\ell$ alone, so $g$ must involve $w$.
 
 \emph{Why this is a different problem (heuristic).} If $S$ is an optimum with far hard edits $e_1,\dots,e_k$, $k\le\ell$, and $H^*$ absorbs them (Corollary~\ref{cor:rpabs}), then $H^*-H$ consists of witnesses $T_i$ of the $e_i$, and conversely the $e_i$ are read off from $H^*$ as the hard pairs inside the new members. So computing $H^*$ is computing the far edits: repacking moves the information problem (which of about $n^2$ candidate pairs is cut) into the packing, and does not remove it. A dynamic program that must carry for each pending far edit the identity of its partner across a separator would need more than $f(\ell,w)$ states; colour coding repairs completeness but not soundness. This paragraph is not a proof.
 
-\paragraph{Precise status.} (1) The obstructions of Proposition~\ref{prop:FAR} (deleted hard edges between far members) and of Proposition~\ref{prop:five} (spine family, unbounded $\tw(\Gamma')$) are artifacts of the chosen packing: after one exchange, respectively one exchange and one augmentation, they have $\tw(I(H^*))\le2$ and a single hard edit at an uncovered vertex, respectively excess $0$. (2) The intrinsic excess and, for tight instances, the unbounded width are not artifacts (Proposition~\ref{prop:rpFAR}(a), Theorem~\ref{thm:rpN}). (3) What is left is to locate the repacking (Open Problem~\ref{op:LOC}); fixed-parameter tractability in $\ell+w$ is open.
+\paragraph{Precise status.} (1) The obstructions of Proposition~\ref{prop:FAR} (deleted hard edges between far members) and of Proposition~\ref{prop:five} (spine family, unbounded $\tw(\Gamma')$) are artifacts of the chosen packing: after one exchange, respectively one exchange and one augmentation, they have $\tw(I(H^*))\le2$ and a single hard edit at an uncovered vertex, respectively excess $0$. (2) The intrinsic excess and, for tight instances, the unbounded width are not artifacts (Proposition~\ref{prop:rpFAR}(a), Theorem~\ref{thm:rpN}). (3) Locating the repacking in fixed-parameter time is impossible unless $\mathrm{FPT}=\mathrm{W[1]}$ (Corollary~\ref{cor:rpLOCno}); the existence of a good repacking (Conjecture~\ref{conj:rpC1}) is not affected by this.

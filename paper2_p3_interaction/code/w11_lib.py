@@ -324,3 +324,58 @@ def opt(inst):
             sub = (sub - 1) & rest
         f[S] = best
     return len(inst.E) + f[N - 1]
+
+
+def fprime_value(inst, T, tmax=None):
+    """exact F'(T) (min edits) by increasing budget; None if > tmax"""
+    base = len(inst.H)
+    t = base
+    lim = tmax if tmax is not None else base + 12
+    while t <= lim:
+        O = FPrime(inst, t)
+        if O.feasible(T) is not None:
+            return t
+        t += 1
+    return None
+
+
+def min_increment(inst, Phi, time_limit=600, max_size=None, workers=4, tabs=None):
+    """min |C| (C subset of remote, disjoint from Phi) with F'(Phi u C) > F'(Phi). Returns (size, C, F'(Phi)) or (None,None,F'(Phi)) if F'(N)=F'(Phi)."""
+    Phi = set(Phi)
+    t = fprime_value(inst, Phi) if tabs is None else tabs
+    O = FPrime(inst, t)
+    N = list(O.remote)
+    if O.feasible(N) is not None:
+        return None, None, t
+    cons = []
+    T = set(Phi)
+    t0 = time.time()
+    while True:
+        x = O.feasible(T)
+        if x is None:
+            return len(T - Phi), sorted(T - Phi), t
+        cons.append(minimalize(O.violated_sets(x)))
+        m = cp_model.CpModel()
+        tv = {p: m.NewBoolVar('t%d_%d' % p) for p in N}
+        for p in Phi: m.Add(tv[p] == 1)
+        ys = {}
+        for fam_ in cons:
+            ors = []
+            for R in fam_:
+                if len(R) == 1:
+                    ors.append(tv[next(iter(R))])
+                else:
+                    if R not in ys:
+                        y = m.NewBoolVar('y%d' % len(ys))
+                        for e in R: m.AddImplication(y, tv[e])
+                        ys[R] = y
+                    ors.append(ys[R])
+            m.AddBoolOr(ors)
+        m.Minimize(sum(tv[p] for p in N if p not in Phi))
+        s = cp_model.CpSolver(); s.parameters.num_workers = workers
+        s.parameters.max_time_in_seconds = max(10, time_limit - (time.time() - t0))
+        st = s.Solve(m)
+        if st != cp_model.OPTIMAL: raise RuntimeError('master %s' % s.StatusName(st))
+        T = set(p for p in N if s.Value(tv[p]))
+        if max_size is not None and len(T - Phi) > max_size:
+            return len(T - Phi), None, t
