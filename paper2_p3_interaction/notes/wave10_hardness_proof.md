@@ -177,7 +177,7 @@ k = n = 2, 10 tunnels: all 386 cut sets of size <= 4: ZE(I - C) feasible for exa
 Lazy-triple SAT with a cardinality bound on the excess (hard-pair edits + member excess), p = 8. Results (UNSAT is a proof):
 * k = 1 (n = 1 plus one extra end group, m = 8), chains A,B with one tile and its tunnel, |V| = 428, |H| = 3258: `OPT > |H|` (l = 0 UNSAT, 4 s), `OPT <= |H|+1` (l = 1 SAT, certified cost 3259, 116 s). `w10_ex1.py 8 yes`.
 * Same without tile and tunnel (no sharing possible), |V| = 424, |H| = 3200: l = 0 UNSAT and **l = 1 UNSAT** (OPT >= |H|+2): each chain needs its own deviation (`w10_ex1.py 8 no`).
-* ROW_RESULTS_PLACEHOLDER
+* Row gadget (two A-chains n=2 with comparator, anchors tunnelled to private stubs, l=2, |V|=725, |H|=5707; `w10_ex2.py`): NOT completed -- both runs (YES and NO instance) were still in clause-encoding setup (python seqcounter for 266k pair tokens) after 30 min of throttled CPU and were killed. No result is claimed for it; the comparator is covered by 6.1-6.3 and by the proof of Theorem S.
 
 ## 7. How the earlier obstructions were handled (Wave 8 Sec. 7 "host/parity/co-hosting bookkeeping")
 * *Thin comparators do not exist* (pad regress, wave 8 Sec. 6): all comparator guests are thick; pads use perfect matchings of `K_p`, so parity is automatic (p even).
