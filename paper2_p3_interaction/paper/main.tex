@@ -3,9 +3,10 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage[margin=1in]{geometry}
+\usepackage{array}
 \usepackage{hyperref}
-% TODO: switch to the target template later.
-\newtheorem{theorem}{Theorem}
+\emergencystretch=1.5em
+\newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{observation}[theorem]{Observation}
@@ -21,51 +22,41 @@
 \newcommand{\tw}{\mathrm{tw}}
 \newcommand{\OPT}{\mathrm{OPT}}
 \newcommand{\pairs}{\mathrm{pairs}}
-\title{When do local repairs of a \texorpdfstring{$P_3$}{P3} packing combine into a cluster editing?\\[2pt]\large (working title; draft skeleton)}
+\newcommand{\soft}{G_{\mathrm{soft}}}
+\newcommand{\wt}{\mathrm{wt}}
+\title{Cluster Editing above a $P_3$ packing:\\ the treewidth of the intersection graph}
 \author{Quang-Vinh Dang\\ British University Vietnam, Hung Yen, Vietnam\\ \texttt{vinh.dq4@buv.edu.vn}}
 \date{}
 \begin{document}
 \maketitle
 \begin{abstract}
-Li, Pilipczuk and Sorge study Cluster Editing parameterized by the excess $\ell$ of the solution size over a modification-disjoint packing $H$ of induced $P_3$'s.
-We ask which interaction structure of $H$ makes this parameterization tractable, and use the treewidth $w$ of the intersection graph $I(H)$ of the packing as the measure.
-We prove: (i) for $\ell=0$ the problem is a CSP with domain size $3$ whose constraint scopes are cliques of $I(H)$, hence solvable in $3^{w+1}n^{O(1)}$ given a tree decomposition;
-(ii) for every $\ell$ it is solvable in $7^{w+1}n^{2\ell+O(1)}$ given a tree decomposition (XP in $\ell$, FPT in $w$), and domain size $7$ cannot be lowered in the natural encoding;
-(iii) under ETH there is no $2^{o(\mathrm{tw}(I(H)))}n^{O(1)}$ algorithm even for $\ell=0$ (exponent only, no base);
-(iv) $w$ alone does not suffice (NP-hard for $w=0$ with unbounded $\ell$), and $\mathrm{tw}(G)$ and $\mathrm{tw}(I(H))$ are incomparable, with a tradeoff $\ell+\mathrm{tw}(I(H))\ge 2m-2$ on stars;
-(v) adjacent true twins lie in one cluster in every optimum, and if $H$ is maximal among pair-disjoint packings (no induced $P_3$ has all three pairs unpacked), then in \emph{every} optimum no cluster contains more than one whole twin class of vertices outside $V(H)$, so no edit has both endpoints outside $V(H)$; we derive a normal form (frozen classes, a shrink rule with a tight threshold, a size bound $|R|\le(\ell+1)|V(H)|$, a classification of the partners of edits touching $R$) and show by a five-vertex example that pair-maximality cannot be weakened to maximality among vertex-disjoint packings;
-(vi) CEaMP is solvable in time $1.62^{(\binom s2+1)\ell}n^{O(1)}+n3^s$ and has a kernel with at most $(s^2-s+2)\ell$ vertices, where $s$ is the largest number of vertices spanned by a connected component of $I(H)$; in particular $I(H)$ a perfect matching is FPT in $\ell$. This is proved from a rule of van Bevern, Froese and Komusiewicz after verifying its hypotheses at the level of components; the parts that rest on their published proofs are listed explicitly.
-The main question, whether the problem is fixed-parameter tractable in $\ell+w$, is \emph{open}; we do not prove or disprove it.
-(vii) For every packing $H$ and every YES instance we prove counting lemmas on the structure of solutions: maximalising $H$ by pair-disjoint induced $P_3$'s costs at most $+|M|\le\ell$ in treewidth (tight on stars); the hard non-adjacent pairs among the non-packed neighbours of a vertex have matching number at most $\ell$, so the independence number of that neighbourhood is at most $2\ell+c+1$; pieces of a solution that share a cluster are small ($|C|\le\max\{D+u+1,2D,2u\}$ for a cluster with at least two pieces); and the graph of packed pairs has treewidth at most $3w+2$. A clearly labelled heuristic discussion explains why hub and grid-tiling encodings do not give hardness; it is not a theorem. These lemmas give neither an FPT algorithm in $\ell+w$ nor hardness.
-
-(viii) \emph{Locality of inserted pairs.} In an optimal solution every cluster has diameter at most $2$ in $G$; with pair-maximality every inserted pair $ab$ has a middle vertex $z$ and is either of type T1 (both steps soft, in two distinct members through $z$) or of type T2 (one step a kept hard edge inside a piece, one step soft). Pieces that share a cluster and are joined by \emph{no} soft pair have all cross pairs of type T1, hence lie in one bag of a decomposition of $I(H)$ and have at most $4c(c-1)$ partners per vertex; merges of pieces that are joined by a soft pair can be of type T2 (examples with $n=7$ and $n=8$), so this locality is proved only for soft-free merges. Two hard vertices in one cluster agree on their hard neighbourhoods up to $\ell$ vertices.
-
-(ix) \emph{The cluster-identity route.} For a pair-maximal $H$ we prove a normal form of optimal solutions (clusters touching an edited hard pair have at most $2D+\ell+1$ vertices and are connected; all other clusters are unions of whole hard components) and that one endpoint of an edited hard pair determines a set of at most $f(\ell,D)$ candidates for the other. Consequences: an algorithm in time $n^{\ell}f(\ell,w)7^{w+\ell+1}n^{O(1)}$ (the exponent of (ii) halved) and an FPT algorithm in $(\ell,D,\omega)$, where $\omega$ is the treewidth of the graph of edges and packed pairs after removing hard components of large hard degree. However, $\omega$ is not bounded by any function of $(\ell,w)$ (a cubic-expander family with $\ell=w=0$, using a cited treewidth bound), so this does not give FPT in $\ell+w$.
-
-
-(x) \emph{Conflicts and pruning.} For a pair-maximal $H$ we prove a conflict lemma: every soft pair $(z,b)$ has a static weight (the number of hard vertices $y$ adjacent to exactly one of $z,b$, if the pair is merged, or to both, if it is not) that is a lower bound on the number of edited hard pairs; consequences are a defect bound $\sum c(\sigma)\le2D|U|$ (the constant is attained for $D=2$ only, as far as we know), a lower bound on the cost, a static pruning of merges, rigid hard edges, a polynomial NO-test (more than $2c\ell$ locally bad members), bounded candidate lists for the far end of a type-T2 or deleted edit of an optimum, and a pruned form of the FPT theorem of (ix): FPT in $(\ell,D,\mathrm{tw}(\Gamma^{\ell}))$ for a subgraph $\Gamma^\ell$ of the graph of (ix), strictly stronger on a family of cubic-graph instances. We give an exact obstruction family: for every $m\ge3$ an instance with $w=1$, $c=2$, $\ell=1$ in which every optimum deletes a hard edge whose ends lie in members at distance $m-1$ in $I(H)$. Computer-found instances with $n=10$ show that the idea of placing the ``locally bad'' members in every bag fails when ``far'' means distance $2$ or $3$; for unbounded distance this is open.
-
-(xi) \emph{Reducing components.} A violation of the neighbourhood condition at a boundary vertex forces an edited pair there (Lemma~D); tight and reducible components of $I(H)$ are decided in $3^{w+1}n^{O(1)}$; and, modulo the soundness of a rule of van Bevern et al.\ (cited), a polynomial reduction leaves at most $2\ell$ components of $I(H)$ of arbitrary size, so $\ell=0$ is fully reduced. We also show that the treewidth of the graph of (ix) is controlled by the soft graph with hard components identified, and give a family with $w=1$, $\ell=1$ and unbounded such treewidth in which no pair-closed union of members is reducible by that rule, so the rule on unions of members cannot prove the reduction lemma. The reduction lemma and a trigger lemma remain conjectures.
-
-(xii) \emph{Why tunnel reductions stall.} For the natural attempt at W[1]-hardness in $\ell+w$ (hard edges between far vertices, ``tunnels'', carrying the equalities of a Grid Tiling instance) we prove that a clean tunnel is a lock that forces the states of the members through its end, that locks are rigid under transitivity, that a minimal set of locks that cannot be satisfied together (a core) of size $N$ needs memory across the separators of a decomposition of $I(H)$, that cores of size at most two occur when the zero-excess solutions are closed under a majority operation, that released tunnels have hard degree at most $D+\ell$, and that in the tunnel-release model bounded cores give an algorithm in time $d^{\ell}3^{w+1}n^{O(1)}$ (a restricted model, not CEaMP). Computer evidence (not theorems): a $7$-vertex tight gadget whose stored value flips when its tunnel is cut, and failed compositions of such gadgets into a chain. The missing object (a family of bounded width with a core of unbounded size) and a conjecture on cores for $c\le2$ are stated as open problems; a conjecture of the working notes (majority closure for $c\le2$) is refuted by an explicit instance.
-
-What remains is stated exactly: whether the pointers of type T2 and the pointers realised by deleted hard edges can be handled in a decomposition of width bounded in $(\ell,w)$ (Section~\ref{sec:pointers} gives instances in which such a pointer joins members at arbitrary distance in $I(H)$), the reduction lemma, and the main question itself.
+Cluster Editing asks for the fewest edge insertions and deletions that turn a graph into a disjoint union of cliques.
+Li, Pilipczuk and Sorge parameterize it by the excess~$\ell$ of the solution size over a modification-disjoint packing~$H$ of induced $P_3$'s, and leave open for which packings the problem is fixed-parameter tractable.
+We use the treewidth~$w$ of the intersection graph $I(H)$ of the packing as the structural measure.
+For $\ell=0$ the problem is a constraint satisfaction problem with domain size~$3$ whose constraint scopes are cliques of $I(H)$; for general $\ell$, guessing at most $\ell$ edits gives such a problem with domain size~$7$.
+This yields algorithms in time $3^{w+1}n^{O(1)}$ and $7^{w+1}n^{2\ell+O(1)}$, and $n^{\ell}f(\ell,w)\,7^{w+\ell+1}n^{O(1)}$ after a locality argument.
+Under ETH there is no $2^{o(w)}n^{O(1)}$ algorithm even for $\ell=0$, and neither $w$ nor $\ell$ alone suffices.
+If the components of $I(H)$ have bounded size, the problem is fixed-parameter tractable in $\ell$ and has a kernel.
+For pair-maximal packings we give a normal form of optimal solutions, a dichotomy of inserted pairs into local and non-local ones, and an instance family in which an optimum must delete an edge between members at arbitrary distance in $I(H)$.
+Whether the problem is fixed-parameter tractable in $\ell+w$ is open.
 \end{abstract}
 \input{sections/intro}
 \input{sections/prelim}
-\input{sections/l0}
-\input{sections/excess}
-\input{sections/structure}
-\input{sections/components}
-\input{sections/packing}
-\input{sections/locality}
-\input{sections/dproute}
-\input{sections/pointers}
-\input{sections/reduction}
-\input{sections/tunnels}
+\input{sections/csp}
 \input{sections/limits}
+\input{sections/components}
+\input{sections/optimal}
+\input{sections/nl}
+\input{sections/locality}
 \input{sections/open}
-\input{sections/related}
 \bibliographystyle{plain}
 \bibliography{refs}
+\appendix
+\input{sections/app_structure}
+\input{sections/app_counting}
+\input{sections/app_omega}
+\input{sections/app_conflicts}
+\input{sections/app_spine}
+\input{sections/app_tunnels}
+\input{sections/app_checks}
 \end{document}

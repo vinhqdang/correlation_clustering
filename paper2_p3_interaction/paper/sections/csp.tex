@@ -1,0 +1,43 @@
+\section{The interaction CSP and its dynamic programs}\label{sec:csp}\label{sec:l0}\label{sec:excess}
+\begin{observation}\label{obs:one}
+Let $S$ be a solution with $|S|\le|H|$. Then $S$ has exactly one pair in each $\pairs(P_i)$ and no other pair, and $G\sd S$ is a cluster graph iff no vertex triple is an induced $P_3$ of $G\sd S$. Consequently $(G,H,0)$ is a YES instance iff the following CSP is satisfiable: variables $x_i\in\{1,2,3\}$ (which pair of $P_i$ is flipped), and for every vertex triple $t$ the constraint ``$t$ is not an induced $P_3$ after flipping'', whose truth depends on the owners' variables of the soft pairs of $t$ only (hard pairs keep their status in $G$).
+\end{observation}
+\begin{proof}
+By Lemma~\ref{lem:decomp}, $|x_i|\ge1$ for all $i$ and $|S|=\sum|x_i|+|U|\le|H|$ force $|x_i|=1$ and $U=\emptyset$. The rest is the definition of a cluster graph.
+\end{proof}
+The CSP has $\Theta(n^3)$ constraints, not $O(|H|)$.
+\begin{observation}\label{obs:two}
+The set of owners of the soft pairs of any triple is a clique of $I(H)$ (at most three nodes). Hence the primal graph of the CSP is a subgraph of $I(H)$ (not every edge of $I(H)$ is witnessed by a triple), and a tree decomposition of $I(H)$ is one of the primal graph.
+\end{observation}
+\begin{proof}
+Two pairs of one triple share a vertex $v$; their owners both contain $v$, so they coincide or are adjacent in $I(H)$.
+\end{proof}
+The natural parameter of the CSP is therefore the treewidth of its primal graph, which is at most $w$; the ETH bound of Section~\ref{sec:limits} is stated for $I(H)$.
+
+\begin{lemma}[Dynamic programming over $I(H)$]\label{lem:dp}
+Let there be one variable $x_i$ per member, with a domain $\mathcal D_i$ of size at most $d$ and a unary cost $\gamma_i:\mathcal D_i\to\mathbb N$, and let $\mathcal C$ be a set of constraints, each given by a test of its satisfaction on $\prod\mathcal D_i$ in polynomial time, whose scope is a clique of $I(H)$. Given a tree decomposition of $I(H)$ of width $w$, a satisfying assignment of minimum total cost is found in time $d^{w+1}(|H|+|\mathcal C|)^{O(1)}$.
+\end{lemma}
+\begin{proof}
+Let $(\mathcal T,\{\beta_s\})$ be the tree decomposition. By the Helly property each clique lies in a bag; assign each constraint to one such bag. For a node $s$ and an assignment $\alpha$ of the variables of $\beta_s$, let $f_s(\alpha)$ be the minimum cost over the variables in the subtree of $s$, among assignments extending $\alpha$ and satisfying all constraints assigned in the subtree. The standard recurrences (introduce, forget, join; see~\cite{Cygan15}) compute all $f_s$; each table has at most $d^{w+1}$ entries.
+\end{proof}
+
+\begin{theorem}\label{thm:l0}
+Given $(G,H)$ and a tree decomposition of $I(H)$ of width $w$, CEaMP with $\ell=0$ is solvable in $3^{w+1}n^{O(1)}$ time.
+\end{theorem}
+\begin{proof}
+Observations~\ref{obs:one} and~\ref{obs:two} give a CSP with domains of size $3$, all unary costs $1$ and $O(n^3)$ constraints with clique scopes; apply Lemma~\ref{lem:dp}.
+\end{proof}
+
+\begin{theorem}\label{thm:A}
+Given $(G,H,\ell)$ and a tree decomposition of $I(H)$ of width $w$, CEaMP is solvable in $7^{w+1}n^{2\ell+O(1)}$ time.
+\end{theorem}
+\begin{proof}
+Let $\mathcal D_i$ be the $7$ non-empty subsets of $\pairs(P_i)$. By Lemma~\ref{lem:decomp}, a solution of size $\le|H|+\ell$ has the form $S=U\cup\bigcup x_i$ with $x_i\in\mathcal D_i$ and $U$ a set of at most $\ell$ hard pairs; there are at most $\sum_{j\le\ell}\binom{n^2/2}{j}\le n^{2\ell}$ candidates for $U$.
+
+Fix $U$ and put $G_U=G\sd U$. Since $U$ avoids soft pairs, every $P_i$ is still an induced $P_3$ of $G_U$ with the same pairs, so $H$ is still a modification-disjoint packing. For a triple $t$, the status of each hard pair of $t$ in $G_U\sd x$ is fixed, and each soft pair is determined by $G_U$ and the variable of its owner. Hence $t$ gives a constraint $C_t$ (``$t$ is not an induced $P_3$ in $G_U\sd x$'') whose scope is the owner set of $t$, a clique of $I(H)$ (the proof of Observation~\ref{obs:two} does not use $G$ itself). Triples with empty scope are tested directly, in $O(n^3)$ time. Seek $x\in\prod\mathcal D_i$ satisfying all $C_t$ and minimizing $\sum_i|x_i|$; by Lemma~\ref{lem:dp} this takes $7^{w+1}n^{O(1)}$ time. Accept iff for some $U$ the minimum $m_U$ satisfies $m_U+|U|\le|H|+\ell$. Soundness: any feasible $(U,x)$ gives the solution $U\cup\bigcup x_i$. Completeness: Lemma~\ref{lem:decomp}.
+\end{proof}
+Theorem~\ref{thm:l0} is the case $\ell=0$ of Theorem~\ref{thm:A} with the smaller base $3$. Together with Observations~\ref{obs:one} and~\ref{obs:two} and Lemma~\ref{lem:dp} these are parts (a) and (b) of Theorem~\ref{thm:main}. The algorithm of Theorem~\ref{thm:A} is not fixed-parameter tractable: $\ell$ is part of the input and appears in the exponent of $n$, and Proposition~\ref{prop:w0} shows that $w$ alone does not suffice.
+
+\begin{remark}[Domain $\{1,2,3\}$ does not suffice for $\ell>0$]\label{rem:domain}
+In the encoding above, a variable ranges over the non-empty subsets of $\pairs(P_i)$. For $\ell>0$ it cannot be restricted to the three single-pair values: an edited packed $P_3$ can receive two or three edits in every optimum. For two: $n=5$, $E=\{02,04,12,23,24\}$, $H=\{(1,2,3)\}$, $\OPT=2$, unique optimum $\{12,23\}$. For three: $n=6$, $E=\{01,02,03,04,12,14,15,24,25,35,45\}$, $H=\{(0,3,5)\}$, $\OPT=3$, unique optimum $\{03,05,35\}$ (both checked by enumerating all set partitions). We do not claim that $7$ is the smallest possible domain size in other encodings. For $c=2$, $I(H)$ is subcubic but may have unbounded treewidth, so Theorem~\ref{thm:A} is a different tradeoff from the $n^{2\ell}$ algorithm of~\cite{LPS23}, not a recovery of it.
+\end{remark}

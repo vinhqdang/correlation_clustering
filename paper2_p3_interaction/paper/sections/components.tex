@@ -1,69 +1,118 @@
-\section{Bounded components of \texorpdfstring{$I(H)$}{I(H)}: Theorem K}\label{sec:K}
-Let $C_1,\dots,C_r$ be the connected components of $I(H)$, $p_j=|C_j|$ the number of $P_3$'s in $C_j$, and $W_j=\bigcup_{P\in C_j}V(P)$. Put $s=\max_j|W_j|$, the largest number of \emph{vertices} spanned by a component. If $s_P=\max_jp_j$ counts $P_3$'s instead, then $s\le2s_P+1$: order the $P_3$'s of a component so that each shares a vertex with an earlier one; the first spans $3$ vertices and each later one adds at most $2$.
+\section{Components of \texorpdfstring{$I(H)$}{I(H)}}\label{sec:K}
+Let $\mathcal C_1,\dots,\mathcal C_r$ be the connected components of $I(H)$, $p_j=|\mathcal C_j|$ the number of members in $\mathcal C_j$, and $W_j=\bigcup_{P\in\mathcal C_j}V(P)$. Put $s=\max_j|W_j|$, the largest number of \emph{vertices} spanned by a component. If $s_P=\max_jp_j$ counts members instead, then $s\le2s_P+1$: order the members of a component so that each shares a vertex with an earlier one; the first spans $3$ vertices and each later one adds at most $2$.
 
-\begin{theorem}[Theorem K]\label{thm:K}
-CEaMP can be solved in time $1.62^{(\binom s2+1)\ell}\,n^{O(1)}+n\,3^{s}$ and admits a kernel with at most $(s^2-s+2)\,\ell$ vertices, where $s$ is the maximum number of vertices spanned by a connected component of $I(H)$. (No hypothesis of maximality is used. The kernel is an instance of CEaMP with empty packing.)
+\begin{theorem}[Component theorem]\label{thm:K}
+CEaMP can be solved in time $1.62^{(\binom s2+1)\ell}\,n^{O(1)}+n\,3^{s}$ and admits a kernel with at most $(s^2-s+2)\,\ell$ vertices, where $s$ is the maximum number of vertices spanned by a connected component of $I(H)$. No maximality hypothesis is used. The kernel is an instance of CEaMP with empty packing. The proof uses the soundness of Reduction Rule~6.2 of~\cite{BFK18} (their Lemma~6.3), the algorithm of B\"ocker~\cite{Boe12} and the $2k$-vertex kernel of Chen and Meng~\cite{CM12}.
 \end{theorem}
 
 \begin{corollary}\label{cor:pm}
-If $I(H)$ is a perfect matching (so $w=1$, $c=2$), CEaMP is FPT in $\ell$: here $s=5$, the time is $1.62^{11\ell}n^{O(1)}$ and the kernel has at most $22\ell$ vertices. More generally components with at most $s_P$ $P_3$'s give Theorem~\ref{thm:K} with $s=2s_P+1$.
+If $I(H)$ is a perfect matching (so $w=1$, $c=2$), CEaMP is fixed-parameter tractable in $\ell$: here $s=5$, the time is $1.62^{11\ell}n^{O(1)}$ and the kernel has at most $22\ell$ vertices. More generally components with at most $s_P$ members give Theorem~\ref{thm:K} with $s=2s_P+1$.
 \end{corollary}
-\begin{proof}[Proof of Corollary]
+\begin{proof}
 Two adjacent nodes of $I(H)$ share exactly one vertex ($H$ is modification-disjoint), so $|W_j|=3+3-1=5$; $s^2-s+2=22$ and $\binom52+1=11$.
 \end{proof}
 
 \paragraph{What is cited and what is proved.}
-We use the problem of van Bevern, Froese and Komusiewicz~\cite{BFK18}: an instance $(G,\mathcal G,k)$ consists of a graph, a set $\mathcal G$ of \emph{vertex-disjoint induced subgraphs} $G_j$ with $1\le\tau(G_j)\le t$, where $\tau$ is the cluster-editing optimum, and a budget $k$; its parameters are $t$ and $\ell_B=k-\sum_j\tau(G_j)$ (their Def.~1.2, Problem~1.3, read in the arXiv text; connectivity of the $G_j$ is not required, and their size enters only through $t$). We prove below, in full, that the components of $I(H)$ define such an instance and that $\ell_B\le\ell$ (Lemma~\ref{lem:K1}), that the reduction rule can be applied at component level and does not disturb the other components (Lemma~\ref{lem:K2}), and the bound $r\le2\ell_B$ on the number of irreducible components (Lemma~\ref{lem:K3}; this re-derives, for components, the counting argument of BFK Lemma~3.2 and Lemma~6.5 instead of citing it). \emph{The following rest on the published proofs of~\cite{BFK18} and are not reproved here:} (i) soundness of their Reduction Rule~6.2 for an arbitrary induced subgraph $G[W]$ (their Lemma~6.3, whose proof uses only $G$, $W$ and the optimal solution $S$ of $G[W]$); (ii) the time to test and apply the rule (their Lemma~6.4); (iii) the algorithm of B\"ocker running in $O(1.62^k+n+m)$ and the kernel with at most $2k$ vertices for Cluster Editing, both as quoted in~\cite{BFK18} (we have not opened the original sources).
+We use the problem of van Bevern, Froese and Komusiewicz~\cite{BFK18}: an instance $(G,\mathcal G,k)$ consists of a graph, a set $\mathcal G$ of \emph{vertex-disjoint induced subgraphs} $G_j$ with $1\le\tau(G_j)\le t$, where $\tau$ is the cluster-editing optimum, and a budget $k$; its parameters are $t$ and $k-\sum_j\tau(G_j)$ (Definition~1.2 and Problem~1.3 of~\cite{BFK18}; connectivity of the $G_j$ is not required, and their size enters only through $t$). We prove below that the components of $I(H)$ define such an instance with excess at most $\ell$ (Lemma~\ref{lem:K1}), that the reduction rule can be applied at component level without disturbing the other components (Lemma~\ref{lem:K2}), and the bound $r\le2\bar\ell$ on the number of irreducible components (Lemma~\ref{lem:count}); the last re-derives, for components, the counting argument of~\cite[Lemmas~3.2 and~6.5]{BFK18}. The following are \emph{cited, not reproved}: (i) soundness of their Reduction Rule~6.2 for an arbitrary induced subgraph $G[W]$ (their Lemma~6.3, whose proof uses only $G$, $W$ and the optimal solution $S$ of $G[W]$); (ii) the time to test and apply the rule (their Lemma~6.4); (iii) the algorithm of B\"ocker~\cite{Boe12} running in $O(1.62^k+n+m)$ and the kernel with at most $2k$ vertices for Cluster Editing~\cite{CM12}, both as used in~\cite{BFK18}.
 
-\begin{lemma}[The components form a packing in the sense of~\cite{BFK18}]\label{lem:K1}
-Let $G_j=G[W_j]$, $\tau_j=\OPT(G_j)$, $k=|H|+\ell$ and $\ell'=k-\sum_j\tau_j$.
+\subsection{Components as a packing in the sense of van Bevern et al.}
+\begin{lemma}[Components form a packing in the sense of~\cite{BFK18}]\label{lem:K1}
+Let $G_j=G[W_j]$, $\tau_j=\OPT(G_j)$, $k=|H|+\ell$ and $\bar\ell=k-\sum_j\tau_j$.
 \begin{enumerate}
 \item The sets $W_j$ are pairwise disjoint and each $G_j$ is an induced subgraph.
 \item $p_j\le\tau_j\le\lfloor\binom s2/2\rfloor=:t_s$ and $\tau_j\ge1$.
-\item $\ell'=\ell-\sum_j(\tau_j-p_j)\le\ell$.
-\item For every solution $S$ of $G$ and every $j$, $S_j:=S\cap\binom{W_j}2$ is a solution of $G_j$, so $|S_j|\ge\tau_j$; the sets $\binom{W_j}2$ are pairwise disjoint, so $|S|\ge\sum_j\tau_j+|S_{\mathrm{ext}}|$ where $S_{\mathrm{ext}}$ are the pairs of $S$ inside no $W_j$. In particular $\OPT(G)\ge\sum_j\tau_j$, and if $\ell'<0$ then $(G,H,\ell)$ is a NO instance.
+\item $\bar\ell=\ell-\sum_j(\tau_j-p_j)\le\ell$.
+\item For every solution $S$ of $G$ and every $j$, $S_j:=S\cap\binom{W_j}2$ is a solution of $G_j$, so $|S_j|\ge\tau_j$; the sets $\binom{W_j}2$ are pairwise disjoint, so $|S|=\sum_j|S_j|+|S_{\mathrm{ext}}|$ where $S_{\mathrm{ext}}$ are the pairs of $S$ inside no $W_j$. In particular $\OPT(G)\ge\sum_j\tau_j$, and if $\bar\ell<0$ then $(G,H,\ell)$ is a NO instance.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(1) A vertex in $W_i\cap W_j$, $i\ne j$, lies in a $P_3$ of $C_i$ and in a $P_3$ of $C_j$; these are adjacent in $I(H)$, contradicting that $C_i,C_j$ are different components. Induced by definition.
+(1) A vertex in $W_i\cap W_j$, $i\ne j$, lies in a member of $\mathcal C_i$ and in a member of $\mathcal C_j$; these are adjacent in $I(H)$, contradicting that $\mathcal C_i,\mathcal C_j$ are different components. Induced by definition.
 
-(2) The $P_3$'s of $C_j$ are induced $P_3$'s of $G_j$ with pairwise disjoint pair sets inside $\binom{W_j}2$. A solution of $G_j$ must edit a pair of each of them (otherwise the triple survives as an induced $P_3$, as in Lemma~\ref{lem:decomp}); hence $\tau_j\ge p_j\ge1$. For the upper bound, let $m_j$ be the number of edges of $G_j$; deleting all edges, or inserting all non-edges, yields a cluster graph, so $\tau_j\le\min(m_j,\binom{|W_j|}2-m_j)\le\binom{|W_j|}2/2\le\binom s2/2$.
+(2) The members of $\mathcal C_j$ are induced $P_3$'s of $G_j$ with pairwise disjoint pair sets inside $\binom{W_j}2$. A solution of $G_j$ must edit a pair of each of them (Lemma~\ref{lem:decomp}); hence $\tau_j\ge p_j\ge1$. For the upper bound, let $m_j$ be the number of edges of $G_j$; deleting all edges, or inserting all non-edges, yields a cluster graph, so $\tau_j\le\min(m_j,\binom{|W_j|}2-m_j)\le\binom{|W_j|}2/2\le\binom s2/2$.
 
 (3) $|H|=\sum_jp_j$ because the components partition $H$.
 
 (4) $(G\sd S)[W_j]=G_j\sd S_j$ is an induced subgraph of a cluster graph, hence a cluster graph. The rest is counting with disjoint pair sets.
 \end{proof}
-Thus $(G,H,\ell)$ is a YES instance iff $(G,\{G_j\},k)$ is a YES instance of the problem of~\cite{BFK18} with $t\le t_s$ and excess $\ell'\le\ell$ (answer NO if $\ell'<0$). Note why components, not single $P_3$'s: a pair $uv$ with $u\in W_j$ and $v\notin W_j$ lies in no $W_i$ at all when $v$ is in $R$ or in another component, hence is not counted in $\sum_j\tau_j$ and is an excess edit (Lemma~\ref{lem:K1}(4)); for a packing whose members share vertices, the same pair may be a packed pair of another $P_3$ and is then free, which is the obstruction of~\cite{LPS23} and the reason the argument below needs whole components.
+Thus $(G,H,\ell)$ is a YES instance iff $(G,\{G_j\},k)$ is a YES instance of the problem of~\cite{BFK18} with $t\le t_s$ and excess $\bar\ell\le\ell$ (answer NO if $\bar\ell<0$). Components, not single members, are needed: a pair $uv$ with $u\in W_j$ and $v\notin W_j$ lies in no $W_i$ at all when $v$ is outside $V(H)$ or in another component, hence is not counted in $\sum_j\tau_j$ and is an excess edit (Lemma~\ref{lem:K1}(4)); for a packing whose members share vertices, the same pair may be a soft pair of another member and is then free, which is the obstruction of~\cite{LPS23}.
 
-Call component $j$ \emph{reducible} if $G_j$ has an optimal solution $S_j\subseteq\binom{W_j}2$ such that for all $u,v\in W_j$: (R1) if $u,v$ lie in one cluster of $G_j\sd S_j$, then $N_G(u)\setminus W_j=N_G(v)\setminus W_j$; (R2) otherwise $N_G(u)\cap N_G(v)\subseteq W_j$. This is Reduction Rule~6.2 of~\cite{BFK18} for $H=G_j$.
+\subsection{Reducible sets and the counting lemma}
+A set $\mathcal F$ of members is \emph{pair-closed} if no member outside $\mathcal F$ has two vertices in $W_{\mathcal F}:=\bigcup_{P\in\mathcal F}V(P)$; every component of $I(H)$ is pair-closed, and then no outside member meets $W_{\mathcal F}$ at all. An optimal solution $S_{\mathcal F}$ of $G[W_{\mathcal F}]$ satisfies the \emph{boundary condition} if for every $y\notin W_{\mathcal F}$ the set $N(y)\cap W_{\mathcal F}$ is empty or exactly one cluster of $G[W_{\mathcal F}]\sd S_{\mathcal F}$. $\mathcal F$ is \emph{reducible} if some optimal $S_{\mathcal F}$ satisfies it, and \emph{irreducible} otherwise. This is the condition of Reduction Rule~6.2 of~\cite{BFK18} for the induced subgraph $G[W_{\mathcal F}]$ (stated there as two clauses: vertices in one cluster have the same neighbours outside $W_{\mathcal F}$; vertices in different clusters have no common neighbour outside $W_{\mathcal F}$; the two forms are equivalent). A component $\mathcal C_j$ is \emph{tight} if $\tau_j=p_j$.
 
 \begin{lemma}[Rule 6.2 at component level]\label{lem:K2}
-If component $j$ is reducible with $S_j$, then $(G,\{G_i\},k)$ is a YES instance iff $(G\sd S_j,\{G_i\}_{i\ne j},k-\tau_j)$ is. In the new instance the graphs $G_i$ ($i\neq j$) are unchanged, still vertex-disjoint and induced, with the same $\tau_i$; the excess $\ell'$ is unchanged; and for every $i\ne j$ the conditions (R1), (R2), hence reducibility, are unchanged. So one pass over the components, in any order, reaches an instance in which no component is reducible.
+If component $\mathcal C_j$ is reducible with $S_j$, then $(G,\{G_i\},k)$ is a YES instance iff $(G\sd S_j,\{G_i\}_{i\ne j},k-\tau_j)$ is. In the new instance the graphs $G_i$ ($i\neq j$) are unchanged, still vertex-disjoint and induced, with the same $\tau_i$; the excess $\bar\ell$ is unchanged; and for every $i\ne j$ the boundary condition, hence reducibility, is unchanged. So one pass over the components, in any order, reaches an instance in which no component is reducible.
 \end{lemma}
 \begin{proof}
-The equivalence is Lemma~6.3 of~\cite{BFK18} (cited; sound for every induced subgraph). Both $k$ and $\sum\tau$ drop by $\tau_j$. The set $S_j$ consists of pairs with both ends in $W_j$, so no pair incident to a vertex of $W_i$, $i\neq j$, changes: $G[W_i]$ and all neighbourhoods $N(u)$, $u\in W_i$, are the same before and after, and (R1), (R2) for $i$ refer only to these.
+The equivalence is Lemma~6.3 of~\cite{BFK18} (cited; sound for every induced subgraph). Both $k$ and $\sum\tau$ drop by $\tau_j$. The set $S_j$ consists of pairs with both ends in $W_j$, so no pair incident to a vertex of $W_i$, $i\neq j$, changes: $G[W_i]$ and all neighbourhoods $N(u)$, $u\in W_i$, are the same before and after, and the boundary condition for $i$ refers only to these.
 \end{proof}
 
-\begin{lemma}[Number of irreducible components]\label{lem:K3}
-Let $(G,\{G_j\}_{j\le r},k)$ be a YES instance with $\ell'=k-\sum_j\tau_j$ in which no component is reducible. Then $r\le2\ell'$.
+\begin{lemma}[Boundary violations force an edited boundary pair]\label{lem:D}
+Let $S$ be any solution, $\mathcal F$ pair-closed, $S_{\mathcal F}=S\cap\binom{W_{\mathcal F}}2$ and $y\notin W_{\mathcal F}$. If $N(y)\cap W_{\mathcal F}$ is neither empty nor a cluster of $G[W_{\mathcal F}]\sd S_{\mathcal F}$, then $S$ contains a pair $\{y,u\}$ with $u\in W_{\mathcal F}$.
 \end{lemma}
 \begin{proof}
-Let $S$ be an optimum of $G$, so $|S|\le k$. \emph{Claim:} for every $j$, (a) $|S_j|\ge\tau_j+1$, or (b) $S$ contains a pair with exactly one end in $W_j$ (an \emph{external} pair of $j$). Suppose (a) fails; then $|S_j|=\tau_j$ by Lemma~\ref{lem:K1}(4), so $S_j$ is an optimal solution of $G_j$, and since $j$ is not reducible, $S_j$ violates (R1) or (R2). In $G\sd S$ the induced subgraph on $W_j$ is the cluster graph $G_j\sd S_j$. Case (R1) violated: $u,v\in W_j$ are in one cluster of $G_j\sd S_j$, so $uv\in E(G\sd S)$ and, $G\sd S$ being a cluster graph, $N_{G\sd S}[u]=N_{G\sd S}[v]$; but there is $y\notin W_j$ adjacent in $G$ to exactly one of them, so one of $uy,vy$ is in $S$: an external pair. Case (R2) violated: $u,v$ are in different clusters of $G_j\sd S_j$, hence non-adjacent in $G\sd S$, and have a common $G$-neighbour $y\notin W_j$; if neither $uy$ nor $vy$ were in $S$, then $u\,y\,v$ would be an induced $P_3$ of $G\sd S$. So again an external pair is in $S$.
-
-Let $J_a$ be the indices satisfying (a) and $J_b$ the others, which satisfy (b). An external pair of $j$ has exactly one end in $W_j$; it lies in no $\binom{W_i}2$ (for $i=j$ because of the end outside, for $i\ne j$ because $W_i\cap W_j=\emptyset$ and one end is in $W_j$), so it belongs to $S_{\mathrm{ext}}$, and it is external for at most two indices (the components containing its ends). Hence $|S_{\mathrm{ext}}|\ge|J_b|/2$. Since $|S|=\sum_j|S_j|+|S_{\mathrm{ext}}|$ (disjoint pair sets), $|S|\ge\sum_{j\in J_a}(\tau_j+1)+\sum_{j\in J_b}\tau_j+|J_b|/2\ge\sum_j\tau_j+r/2$. With $|S|\le k$ this reads $\ell'\ge r/2$.
+Suppose not. Then $N_{G\sd S}(y)\cap W_{\mathcal F}=N_G(y)\cap W_{\mathcal F}$. In the cluster graph $G\sd S$ this set is $\mathrm{cluster}(y)\cap W_{\mathcal F}$ (as $y\notin W_{\mathcal F}$), which is empty or a cluster of the induced subgraph $(G\sd S)[W_{\mathcal F}]=G[W_{\mathcal F}]\sd S_{\mathcal F}$.
 \end{proof}
-The bound is on irreducible components, not on components with positive excess $\tau_j>p_j$: a reducible component may have large internal excess, and it is removed by Lemma~\ref{lem:K2} at no cost in $\ell'$.
+
+\begin{lemma}[Counting irreducible components]\label{lem:count}
+Let $S$ be a solution of $G$ and $J$ a set of irreducible components of $I(H)$. Then $|S|\ge\sum_j\tau_j+|J|/2$. In particular, if $|S|\le k=\sum_j\tau_j+\bar\ell$, then $|J|\le2\bar\ell$.
+\end{lemma}
+\begin{proof}
+\emph{Claim:} for every $j\in J$, (a) $|S_j|\ge\tau_j+1$, or (b) $S$ contains a pair with exactly one end in $W_j$ (an \emph{external} pair of $j$). Suppose (a) fails; then $|S_j|=\tau_j$ by Lemma~\ref{lem:K1}(4), so $S_j$ is an optimal solution of $G_j$, and since $\mathcal C_j$ is irreducible, $S_j$ violates the boundary condition at some $y\notin W_j$. A component is pair-closed, so Lemma~\ref{lem:D} gives a pair $\{y,u\}\in S$ with $u\in W_j$.
+
+Let $J_a$ be the indices of $J$ satisfying (a) and $J_b$ the others, which satisfy (b). An external pair of $j$ has exactly one end in $W_j$; it lies in no $\binom{W_i}2$, so it belongs to $S_{\mathrm{ext}}$, and it is external for at most two indices (the components containing its ends). Hence $|S_{\mathrm{ext}}|\ge|J_b|/2$. Since $|S|=\sum_j|S_j|+|S_{\mathrm{ext}}|$ and $|S_j|\ge\tau_j$ for all $j$, we get $|S|\ge\sum_j\tau_j+|J_a|+|J_b|/2\ge\sum_j\tau_j+|J|/2$.
+\end{proof}
+The bound concerns irreducible components, not components with positive internal excess $\tau_j>p_j$: a reducible component may have large internal excess, and it is removed by Lemma~\ref{lem:K2} at no cost in $\bar\ell$.
 
 \begin{proof}[Proof of Theorem~\ref{thm:K}]
-\emph{Algorithm.} (1) Compute the components of $I(H)$, the optima $\tau_j$ by the subset dynamic programme over $W_j$ ($O(3^{|W_j|})$), and $\ell'$; if $\ell'<0$ answer NO (Lemma~\ref{lem:K1}(4)). (2) For each component test reducibility and, if reducible, apply the rule (Lemma~\ref{lem:K2}); the test of~\cite[Lemma~6.4]{BFK18} needs a constant number of exact cluster-editing computations on subgraphs of $G_j$ plus polynomial time, which the subset programme provides in $O(3^{|W_j|})$ each. (3) Let $r^*$ be the number of remaining components. If $r^*>2\ell'$, answer NO (Lemma~\ref{lem:K3}, contrapositive). Otherwise the current instance has budget $k^*=\sum_{\text{remaining}}\tau_j+\ell'\le r^*t_s+\ell'\le(2t_s+1)\ell'$. Forget the packing and solve plain Cluster Editing with budget $k^*$ by B\"ocker's algorithm in $O(1.62^{k^*}+n+m)$.
+\emph{Algorithm.} (1) Compute the components of $I(H)$, the optima $\tau_j$ by the subset dynamic programme over $W_j$ ($O(3^{|W_j|})$), and $\bar\ell$; if $\bar\ell<0$ answer NO (Lemma~\ref{lem:K1}(4)). (2) For each component test reducibility and, if reducible, apply the rule (Lemma~\ref{lem:K2}); the test of~\cite[Lemma~6.4]{BFK18} needs a constant number of exact cluster-editing computations on subgraphs of $G_j$ plus polynomial time, which the subset programme provides in $O(3^{|W_j|})$ each. (3) Let $r^*$ be the number of remaining components. If $r^*>2\bar\ell$, answer NO (Lemma~\ref{lem:count} with $J$ the set of all remaining components). Otherwise the current instance has budget $k^*=\sum_{\text{remaining}}\tau_j+\bar\ell\le r^*t_s+\bar\ell\le(2t_s+1)\bar\ell$. Forget the packing and solve plain Cluster Editing with budget $k^*$ by B\"ocker's algorithm~\cite{Boe12} in $O(1.62^{k^*}+n+m)$.
 
-\emph{Correctness} follows from Lemma~\ref{lem:K1} (the instance is of the required form and $\ell'$ is the excess), Lemma~\ref{lem:K2} (steps preserve the answer), and Lemma~\ref{lem:K3}.
+\emph{Correctness} follows from Lemma~\ref{lem:K1} (the instance is of the required form and $\bar\ell$ is the excess), Lemma~\ref{lem:K2} (steps preserve the answer), and Lemma~\ref{lem:count}.
 
-\emph{Time.} The components have at least $3$ vertices and are disjoint, so there are at most $n/3$ of them and steps (1), (2) take $O(n3^s)+n^{O(1)}$. Step (3) takes $1.62^{k^*}n^{O(1)}$ with $k^*\le(2t_s+1)\ell'\le(\binom s2+1)\ell$, since $2t_s\le\binom s2$ and $\ell'\le\ell$.
+\emph{Time.} The components have at least $3$ vertices and are disjoint, so there are at most $n/3$ of them and steps (1), (2) take $O(n3^s)+n^{O(1)}$. Step (3) takes $1.62^{k^*}n^{O(1)}$ with $k^*\le(2t_s+1)\bar\ell\le(\binom s2+1)\ell$, since $2t_s\le\binom s2$ and $\bar\ell\le\ell$.
 
-\emph{Kernel.} After step (2) and the checks of step (3), apply the kernelization of Cluster Editing with at most $2k^*$ vertices (cited via~\cite{BFK18}) to $(G,k^*)$ and add the empty packing: an equivalent CEaMP instance with empty packing, budget $\le k^*$ and at most $2k^*\le(4t_s+2)\ell\le(s^2-s+2)\ell$ vertices.
+\emph{Kernel.} After step (2) and the checks of step (3), apply the kernelization of Cluster Editing with at most $2k^*$ vertices~\cite{CM12} to $(G,k^*)$ and add the empty packing: an equivalent CEaMP instance with empty packing, budget $\le k^*$ and at most $2k^*\le(4t_s+2)\ell\le(s^2-s+2)\ell$ vertices.
 \end{proof}
 
 \begin{remark}[Scope]
-Theorem~\ref{thm:K} is FPT in $(\ell,s)$; it does not answer the main question, since $s$ is not bounded by a function of $w$ (a path or tree $I(H)$ has $w\le1$ and arbitrarily large components), and the exponent $\binom s2\ell$ is of no practical interest. The argument uses neither pair-maximality nor Section~\ref{sec:structure}. For a perfect matching it covers the smallest non-trivial instance of the case $c=2$ left open in~\cite{LPS23} for FPT in $\ell$.
+Theorem~\ref{thm:K} is fixed-parameter tractable in $(\ell,s)$; it does not answer the main question, since $s$ is not bounded by a function of $w$ (a path or tree $I(H)$ has $w\le1$ and arbitrarily large components), and the exponent $\binom s2\ell$ is of no practical interest. The argument uses neither pair-maximality nor Appendix~\ref{app:structure}. For a perfect matching it covers the smallest non-trivial instance of the case $c=2$ left open in~\cite{LPS23} for fixed-parameter tractability in $\ell$.
 \end{remark}
+
+\subsection{Components of arbitrary size}
+For components too large for the subset programme, tightness and reducibility can still be decided when $w$ is small.
+\begin{proposition}\label{prop:two}
+Given a tree decomposition of $I(H)$ of width $w$ and a component $\mathcal C$ of $I(H)$, one decides in time $3^{w+1}n^{O(1)}$ whether $\mathcal C$ is tight; if it is tight, one decides in the same time whether it is reducible and finds a witnessing $S_{\mathcal C}$.
+\end{proposition}
+\begin{proof}
+A tight solution of $G[W_{\mathcal C}]$ consists of one edited pair per member and nothing else (each member needs at least one edited pair and the pair sets are disjoint), and every such solution is optimal since $\tau\ge p$; so for a tight $\mathcal C$ the optimal solutions are exactly the tight ones. Variables: the three choices of each member. Constraint: $G[W_{\mathcal C}]\sd S$ has no induced $P_3$, i.e.\ every triple of $W_{\mathcal C}$ is fine. A triple with a soft pair involves at most three members (one per soft pair, pair sets being disjoint); each owns two of the three vertices of the triple, so any two of them share a vertex, they form a clique of $I(H)$ and lie in a common bag. A triple without soft pair is checked statically. So $\mathcal C$ is tight iff this CSP is satisfiable, and Lemma~\ref{lem:dp} decides this in $3^{w+1}n^{O(1)}$ time. The boundary condition at $y\notin W_{\mathcal C}$ with $A_y=N(y)\cap W_{\mathcal C}\ne\emptyset$ says: (i) every pair inside $A_y$ is an edge of $G\sd S$ and (ii) every pair between $A_y$ and $W_{\mathcal C}\setminus A_y$ is a non-edge of $G\sd S$ (given that $G[W_{\mathcal C}]\sd S$ is a cluster graph this says $A_y$ is a cluster). Each such pair is hard (static) or owned by one member (a unary constraint). Reducibility is therefore the same CSP with additional unary constraints.
+\end{proof}
+(For a non-tight component the optimal $S_{\mathcal C}$ has more than $p$ edits and is not a $3^p$ assignment; the proposition says nothing about it.)
+
+\begin{lemma}[Reduction preserves pair-maximality]\label{lem:premax}
+Let $H$ be pair-maximal, $\mathcal F\subseteq H$ pair-closed and tight with $S_{\mathcal F}$ an optimal solution of $G[W_{\mathcal F}]$ satisfying the boundary condition, $G^\circ=G\sd S_{\mathcal F}$ and $H^\circ=H\setminus\mathcal F$. Then $H^\circ$ is a modification-disjoint packing of $G^\circ$, $(G,H,\ell)$ and $(G^\circ,H^\circ,\ell)$ are equivalent, $H^\circ$ is pair-maximal in $G^\circ$, and $I(H^\circ)$ is an induced subgraph of $I(H)$, so $\tw(I(H^\circ))\le\tw(I(H))$.
+\end{lemma}
+\begin{proof}
+Members outside $\mathcal F$ have at most one vertex in $W_{\mathcal F}$, so none of their pairs lies in $W_{\mathcal F}$; $S_{\mathcal F}$ does not touch them, so they remain induced $P_3$'s with the same pairs, and $H^\circ$ is a modification-disjoint packing of $G^\circ$. Since $\mathcal F$ is tight, $|S_{\mathcal F}|=|\mathcal F|$, and Rule~6.2 (Lemma~6.3 of~\cite{BFK18}) gives $\OPT(G)=\OPT(G^\circ)+|\mathcal F|$, hence the equivalence with unchanged $\ell$.
+
+Pair-maximality. Let $Q$ be an induced $P_3$ of $G^\circ$; we show that it has a soft pair with respect to $H^\circ$. Let $q=|V(Q)\cap W_{\mathcal F}|$.
+If $q=3$, $Q$ is an induced $P_3$ of $G^\circ[W_{\mathcal F}]=G[W_{\mathcal F}]\sd S_{\mathcal F}$, a cluster graph: impossible.
+If $q=2$, $V(Q)=\{p,p',y\}$ with $p,p'\in W_{\mathcal F}$, $y\notin W_{\mathcal F}$. The pairs $yp,yp'$ are unchanged, and by the boundary condition $N_{G^\circ}(y)\cap W_{\mathcal F}$ is empty or one cluster $K$ of the cluster graph $G^\circ[W_{\mathcal F}]$. If it is empty, $Q$ has at most one edge. If both $p,p'\in K$, they are adjacent and $Q$ is a triangle. If exactly one is in $K$, the other is a non-neighbour of $y$ and of the first (different clusters), so $Q$ has one edge. If neither is in $K$, $Q$ has at most one edge. In no case is $Q$ an induced $P_3$.
+If $q\le1$, every pair of $Q$ has at most one end in $W_{\mathcal F}$, so $Q$ is an induced $P_3$ of $G$ with the same pairs and, $H$ being pair-maximal, has a pair in $\pairs(H)$; this pair is not in $\pairs(\mathcal F)$ (those lie inside $W_{\mathcal F}$), so it is soft with respect to $H^\circ$.
+\end{proof}
+
+\begin{theorem}[Component reduction]\label{thm:three}
+Let $H$ be \emph{any} packing, $\bar\ell=\ell-\sum_j(\tau_j-p_j)$, and apply Rule~6.2 to every reducible tight component (found by Proposition~\ref{prop:two}). Then, modulo the cited soundness of Rule~6.2 (Lemma~6.3 of~\cite{BFK18}), the reduced instance is equivalent to $(G,H,\ell)$, and if it is a YES instance then $\bar\ell\ge0$ and the number $r$ of components of $I$ of the remaining packing satisfies $r\le\ell+\bar\ell\le2\ell$. In particular \emph{if more than $2\ell$ components remain, the answer is NO}. No $\tau_j$ of a non-tight component is needed by the algorithm.
+\end{theorem}
+\begin{proof}
+\emph{The rule.} The set $S_j$ used for a reducible tight component $\mathcal C_j$ consists of pairs inside $W_j$. So $G[W_i]$ and the sets $N(y)\cap W_i$ ($i\ne j$) do not change, $\tau_i$, tightness and (ir)reducibility of the other components are unchanged, $\ell$ and $\bar\ell$ are unchanged (Lemma~\ref{lem:K2}), and one pass reaches an instance with no reducible tight component.
+
+\emph{Counting.} Work in the reduced instance. Let $\mathcal A$ be the set of tight (irreducible) components and $\mathcal B$ the set of non-tight ones. Since $\sum_j\tau_j=|H|+\sum_j(\tau_j-p_j)$, we have $|H|+\ell=\sum_j\tau_j+\bar\ell$. If $\bar\ell<0$ the instance is a NO instance (Lemma~\ref{lem:K1}). Otherwise let $S$ be an optimal solution with $|S|\le\sum_j\tau_j+\bar\ell$. By Lemma~\ref{lem:count} with $J=\mathcal A$, $|\mathcal A|\le2\bar\ell$. Each $j\in\mathcal B$ has $\tau_j-p_j\ge1$, so $|\mathcal B|\le\sum_j(\tau_j-p_j)=\ell-\bar\ell$. Therefore $r\le2\bar\ell+\ell-\bar\ell=\ell+\bar\ell\le2\ell$ (as $\bar\ell\le\ell$).
+\end{proof}
+The theorem is phrased through the number of remaining components so that it does not need the $\tau_j$ of non-tight components, which are not computable in polynomial time for a large component.
+\begin{corollary}\label{cor:three}
+(a) For $\ell=0$ a YES instance is reduced to the empty packing; this agrees with Theorem~\ref{thm:l0}.
+(b) For an arbitrary packing $H$, compute $M$ and $H'=H\cup M$ (Lemma~\ref{lem:MAX}) and then reduce tight reducible components repeatedly. This ends, in polynomial time, with a pair-maximal packing $H^*$, a budget $\ell^*=\ell-|M|\le\ell$, $\tw(I(H^*))\le w+|M|\le w+\ell$, and at most $2\ell^*$ components of the intersection graph, or with a correct NO answer.
+\end{corollary}
+\begin{proof}
+(a) $r\le2\ell=0$. (b) After the single maximalisation $H'$ is pair-maximal and $\tw(I(H'))\le w+|M|$ (Lemma~\ref{lem:MAX}). Each reduction step removes the members of a tight reducible component, keeps the budget (Lemma~\ref{lem:premax}), keeps the packing pair-maximal and does not increase the treewidth of the intersection graph (it is an induced subgraph of the previous one). The loop ends after at most $|H'|$ steps, when no tight component is reducible; Theorem~\ref{thm:three} bounds the number of components by $2\ell^*$.
+\end{proof}
+What remains after the reduction is the case of \emph{few but arbitrarily large} components of $I(H)$ (for $w=1$, a single tree of members), which is Open Problem~\ref{op:forest}.
