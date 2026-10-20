@@ -8,7 +8,7 @@ from w11_maj2 import centre_variants
 from w11_maj5 import rel5
 
 COST = [0, 0, 0, 1, 2]
-LISTS = [(0,), (1,), (2,), (0, 3), (1, 3), (3, 4), (4,)]      # lists realisable as full outside-vertex locks in D5 (table)
+LISTS = [(0,), (1,), (2,), (0, 3), (1, 3), (3, 4), (4,)] if False else [(0,), (1,), (2,), (0, 3), (1, 3)]
 
 _link_cache = {}
 def link_matrices():
