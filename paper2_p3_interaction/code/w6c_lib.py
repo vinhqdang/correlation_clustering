@@ -1,7 +1,7 @@
 """Wave 6 hardness attempt: shared library (written fresh).
 Graph = dict/array; vertices 0..n-1.  Cost of a partition = #pairs with [edge] != [same block].
 Members are triples (a,b,c) with centre b (ab, bc edges, ac non-edge)."""
-import itertools, numpy as np
+import itertools, os, numpy as np
 from scipy.optimize import milp, LinearConstraint, Bounds
 
 def prs(n): return list(itertools.combinations(range(n), 2))
@@ -139,3 +139,6 @@ def ih_graph(H):
         for j in range(i + 1, m):
             if set(H[i]) & set(H[j]): adj[i].add(j); adj[j].add(i)
     return adj
+
+def outpath(name):
+    d = os.environ.get('W6C_OUT', '/tmp/w6c_out'); os.makedirs(d, exist_ok=True); return os.path.join(d, name)

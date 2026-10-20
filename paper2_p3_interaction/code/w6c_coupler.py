@@ -60,5 +60,5 @@ for u in (0, 1):
                 if not ((G0 == 4) & ~free).any(): continue
                 res.append((u, up, ash, h, F.tolist(), (G0 == 4).astype(int).tolist()))
 print(len(res))
-import pickle; pickle.dump(res, open('/tmp/claude-0/scratch/coupler_res.pkl', 'wb'))
+import pickle; pickle.dump(res, open(outpath('coupler_res.pkl'), 'wb'))
 for r in res[:20]: print(r)

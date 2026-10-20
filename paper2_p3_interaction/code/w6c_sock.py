@@ -62,5 +62,5 @@ while time.time() - t0 < T:
             if not (L & fl & ~fr).any() or not (L & ~fl & fr).any(): continue
             if not (Rr & fl & fr).any(): continue
             found.append((mems, j, l, r, hard)); print('SOCKET-GADGET', mems, j, 'sockets', l, r, flush=True)
-            pickle.dump(found, open(f'/tmp/claude-0/scratch/sock_{n}_{m}_{seed}.pkl', 'wb'))
+            pickle.dump(found, open(outpath(f'sock_{n}_{m}_{seed}.pkl'), 'wb'))
 print('n', n, 'm', m, stats, 'found', len(found), flush=True)

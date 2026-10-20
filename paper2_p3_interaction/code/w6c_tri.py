@@ -25,4 +25,4 @@ from collections import Counter
 print(Counter((o[5],tuple(sorted(o[6].values()))) for o in out))
 for o in out:
     if o[5]>=2: print(o); break
-pickle.dump(out,open('/tmp/claude-0/scratch/tri.pkl','wb'))
+pickle.dump(out,open(outpath('tri.pkl'),'wb'))

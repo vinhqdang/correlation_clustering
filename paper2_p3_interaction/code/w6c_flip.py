@@ -43,4 +43,4 @@ for p1 in range(3):
                         found.setdefault((p1, q1, q2, p3), []).append((sorted(Ra), b, sorted(Rb), good[:2]))
 print(len(found))
 for k, v in found.items(): print(k, v[:2])
-pickle.dump(found, open('/tmp/claude-0/scratch/flip_found.pkl', 'wb'))
+pickle.dump(found, open(outpath('flip_found.pkl'), 'wb'))

@@ -63,5 +63,5 @@ while time.time() - t0 < T:
                 D1 = {a for a, _ in Rl}; D2 = {b for _, b in Rl}; f = dict(Rl)
                 new = [(d, e) for d, e in Rr if d in D1 and e in D2 and f[d] != e]
                 if new:
-                    found.append((mems, j, i1, i2, [tuple(map(int,t)) for t in sorted(Rl)], [tuple(map(int,t)) for t in sorted(Rr)], [tuple(map(int,t)) for t in new], hard)); import pickle; pickle.dump(found, open(f'/tmp/claude-0/scratch/flip_{n}_{m}_{seed}.pkl','wb'))
+                    found.append((mems, j, i1, i2, [tuple(map(int,t)) for t in sorted(Rl)], [tuple(map(int,t)) for t in sorted(Rr)], [tuple(map(int,t)) for t in new], hard)); import pickle; pickle.dump(found, open(outpath(f'flip_{n}_{m}_{seed}.pkl'),'wb'))
 print('n', n, 'm', m, 'configs', stats['cfg'], 'patterns with solutions', tested, 'bijective locked relations', stats['bij'], 'FLIPs', len(found), flush=True)

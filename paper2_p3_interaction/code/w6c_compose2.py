@@ -57,7 +57,7 @@ def test(rec, N, ef):
     return ('ok', allL, rels)
 if __name__ == '__main__':
     recs = []
-    for f in glob.glob('/tmp/claude-0/scratch/flip_8_5_*.pkl'): recs += pickle.load(open(f, 'rb'))
+    for f in glob.glob(outpath('flip_8_5_*.pkl')): recs += pickle.load(open(f, 'rb'))
     # dedupe by (members, j, i1, i2)
     seen = set(); uniq = []
     for r in recs:

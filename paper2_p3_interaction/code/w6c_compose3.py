@@ -28,7 +28,7 @@ def build(rec, N, s1, s2):
     return A, members, xs, members[i1], members[(N - 1) * len(mems) + i2]
 if __name__ == '__main__':
     recs = []
-    for f in sorted(glob.glob('/tmp/claude-0/scratch/flip_8_5_*.pkl')): recs += pickle.load(open(f, 'rb'))
+    for f in sorted(glob.glob(outpath('flip_8_5_*.pkl'))): recs += pickle.load(open(f, 'rb'))
     part = int(sys.argv[1]); nparts = int(sys.argv[2]); N = int(sys.argv[3])
     cnt = 0
     for ri, rec in enumerate(recs):
