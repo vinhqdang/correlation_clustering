@@ -1,0 +1,30 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+\begin{document}
+\today
+
+Dear Editors of \emph{Algorithmica},
+
+I submit the manuscript \emph{``Cluster Editing above a $P_3$ packing: W[1]-hardness in the excess and the treewidth of the intersection graph''} for consideration as a research article.
+
+\textbf{Summary.} Li, Pilipczuk and Sorge parameterize Cluster Editing by the excess $\ell$ of the solution size over the size of a modification-disjoint packing $H$ of induced $P_3$'s, and ask for which packings the problem is fixed-parameter tractable. The manuscript uses the treewidth $w$ of the intersection graph of the packing as the structural measure. The main result is negative: the problem is W[1]-hard parameterized by $\ell+w$, by $\ell+{}$pathwidth and by $\ell+c$ (where $c$ is the maximum number of packed $P_3$'s through a vertex), even for pair-maximal packings. Under the Exponential Time Hypothesis there is no algorithm with running time $f(\ell,w)\,n^{o(\sqrt{\ell})}$. The reduction is from Grid Tiling with $\le$. On the positive side, a constraint-satisfaction formulation gives algorithms with running time $3^{w+1}n^{O(1)}$ for $\ell=0$ and $5^{w+1}n^{2\ell+O(1)}$ in general, and the manuscript identifies a configuration, the soft triangle, whose absence makes the case $\ell=0$ polynomial for every $c$ and $w$. Further structural results and open questions are stated.
+
+\textbf{Relation to earlier work.} The problem and the parameter $\ell$ are due to Li, Pilipczuk and Sorge, and their question is the starting point of this work. For vertex-disjoint packings, fixed-parameter tractability in $\ell$ is due to van Bevern, Froese and Komusiewicz; I use their reduction rule on the components of the intersection graph and cite its soundness proof. Blaha et al.\ (arXiv:2602.15683) show that Cluster Editing is fixed-parameter tractable in the treewidth of the input graph; this is a different parameter from the treewidth of the intersection graph used here. No part of the manuscript has been published before, and it is not under consideration elsewhere.
+
+\textbf{Verification.} The hardness reduction is computer-assisted at four finite steps, which the paper lists. Its counting core and several structural lemmas are machine-checked in Lean~4; the Lean files do not cover the graph-level statements of the reduction. Code and Lean files are available at \url{https://github.com/vinhqdang/correlation_clustering} (directories \texttt{paper2\_p3\_interaction/code} and \texttt{paper2\_p3\_interaction/lean/P3Proofs}).
+
+\textbf{Length.} The manuscript is long (113 pages in the journal template). The main text states every result, describes the hardness reduction and the algorithms, and gives the key proofs; the long proofs of the reduction lemmas, the analysis of soft triangles, and further structural results are in the appendices. I am glad to shorten or reorganize the appendices, or to move them to an online resource, if the editors prefer.
+
+I have no competing interests to declare.
+
+Sincerely,
+
+Quang-Vinh Dang\\
+British University Vietnam, Hung Yen, Vietnam\\
+\href{mailto:vinh.dq4@buv.edu.vn}{vinh.dq4@buv.edu.vn}\\
+ORCID: \href{https://orcid.org/0000-0002-3877-8024}{0000-0002-3877-8024}
+\end{document}
