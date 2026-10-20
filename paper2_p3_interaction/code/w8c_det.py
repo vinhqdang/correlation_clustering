@@ -28,7 +28,21 @@ FMODE = int(os.environ.get('FMODE', '0'))
 MODE = os.environ.get('MODE', 'anchor')   # 'anchor' or 'pair'
 
 
+def forb(sig, j):
+    if FMODE == 10:   # forbid singleton flip at j  (R at j-1, L at j)
+        return sig[j - 1] == 'R' and sig[j] == 'L'
+    if MODE == 'forbid':
+        return in_F0(sig, j)
+    return False
+
+
 def in_F(sig, j):
+    if FMODE == 10:
+        return sig[j] == 'M'
+    return in_F0(sig, j)
+
+
+def in_F0(sig, j):
     if FMODE == 0:
         return (sig[j - 1] == 'R' and sig[j] == 'L') or sig[j] == 'M'
     if FMODE == 1:   # sanity: lock forbids sigma_j = L
@@ -143,8 +157,10 @@ class Synth:
         # scenarios: existential
         self.sigmas = valid_sigmas(q)
         for sig in self.sigmas:
+            if forb(sig, j):
+                continue
             self.add_scenario(sig, singleton=False)
-            if not in_F(sig, j):
+            if MODE != 'forbid' and not in_F(sig, j):
                 self.add_scenario(sig, singleton=True)
 
     def add_scenario(self, sig, singleton):
@@ -191,7 +207,8 @@ class Synth:
     def verify(self, E, members):
         """return (sig, lab) counterexample: sigma in F with locked extension, or None"""
         for sig in self.sigmas:
-            if not in_F(sig, self.j):
+            fb = forb(sig, self.j)
+            if not fb and (MODE == 'forbid' or not in_F(sig, self.j)):
                 continue
             fa = []
             for i, st in enumerate(sig):
@@ -206,7 +223,9 @@ class Synth:
                 tab, tbc, tac = STATE[st]
                 for (p, val) in ((key(a, b), tab), (key(b, c), tbc), (key(a, c), tac)):
                     (fixed_t if val else fixed_a).append(p)
-            if MODE == 'anchor':
+            if fb or MODE == 'forbid':
+                lab = ze_solve(self.n, E, members, fixed_apart=fixed_a, fixed_together=fixed_t)
+            elif MODE == 'anchor':
                 lab = ze_solve(self.n, E, members, singletons=[self.x], fixed_apart=fixed_a, fixed_together=fixed_t)
             else:
                 lab = ze_solve(self.n, E, members, fixed_apart=fixed_a + [key(2 * self.j, self.x)], fixed_together=fixed_t)

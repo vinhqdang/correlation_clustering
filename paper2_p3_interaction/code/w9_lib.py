@@ -406,3 +406,162 @@ def gen_forest(rng, m, extra=3, p=0.4, share=0.8, roles=None, pstruct=None, tree
             E.add((u, v))
     inst = Inst(n, E, H)
     return inst
+
+def m_subset_relaxed(inst, R, cons, relax=(), bound=10**9):
+    """like m_subset but constraints that are unary-liftable (owners == one member in `relax`, and some pair of the triple hard) are dropped"""
+    relax = set(relax)
+    R = list(R)
+    Rs = set(R)
+    pos = {m: k for k, m in enumerate(R)}
+    by_last = [[] for _ in R]
+    for owners, _, base, soft in cons:
+        if not owners:
+            return None
+        if len(owners) == 1 and owners[0] in relax and len(soft) < 3:
+            continue
+        if set(owners) <= Rs:
+            by_last[max(pos[o] for o in owners)].append((base, soft))
+    best = [bound + 1]
+    masks = {}
+    def rec(k, cost):
+        if cost >= best[0]:
+            return
+        if k == len(R):
+            best[0] = cost
+            return
+        i = R[k]
+        for mk in sorted(VALID, key=lambda x: COST[x]):
+            masks[i] = mk
+            if all(triple_ok(b, s, masks) for b, s in by_last[k]):
+                rec(k + 1, cost + COST[mk] - 1)
+        masks.pop(i, None)
+    rec(0, 0)
+    return None if best[0] > bound else best[0]
+
+def packing_reconstruct(inst, U=()):
+    """max weighted disjoint packing; returns (value, list of (mask, weight)), e table, cons"""
+    m = len(inst.H)
+    cons = inst.compile(U)
+    e = {}
+    for mask in range(1, 1 << m):
+        R = [i for i in range(m) if mask >> i & 1]
+        e[mask] = m_subset(inst, R, cons)
+    INF = 10**6
+    from functools import lru_cache
+    @lru_cache(None)
+    def f(avail):
+        if avail == 0:
+            return (0, ())
+        low = avail & -avail
+        best = f(avail & ~low)
+        sub = avail
+        while sub:
+            if sub & low:
+                v = e[sub]
+                if v is None:
+                    v = INF
+                if v > 0:
+                    r = f(avail & ~sub)
+                    cand = (v + r[0], ((sub, v),) + r[1])
+                    if cand[0] > best[0]:
+                        best = cand
+            sub = (sub - 1) & avail
+        return best
+    val, regs = f((1 << m) - 1)
+    return val, list(regs), e, cons
+
+def minimalize(inst, mask, w, e):
+    """shrink mask to a minimal submask with the same weight w"""
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(inst.H)):
+            if mask >> i & 1:
+                sm = mask & ~(1 << i)
+                if sm and e.get(sm) is not None and e[sm] >= w:
+                    mask = sm
+                    changed = True
+                    break
+    return mask
+
+def split_packing(regs, e):
+    """refine a packing: split a region R (mask,w) into two disjoint nonempty parts whose weights sum >= w, repeat; then minimalize each part"""
+    out = []
+    stack = list(regs)
+    while stack:
+        mask, w = stack.pop()
+        done = True
+        sub = (mask - 1) & mask
+        while sub:
+            other = mask & ~sub
+            if other and sub < other:
+                a = e[sub] or 0
+                b = e[other] or 0
+                if a > 0 and b > 0 and a + b >= w:
+                    stack.append((sub, a)); stack.append((other, b))
+                    done = False
+                    break
+            sub = (sub - 1) & mask
+        if done:
+            out.append((mask, w))
+    return out
+
+def gen_path(rng, m, extra=4, p=0.3, topo='path'):
+    """I(H) is a path (or random tree if topo=='tree') of m members; hard pairs random with prob p.  returns Inst"""
+    H = []
+    verts = 0
+    cnt = {}
+    for i in range(m):
+        if i == 0:
+            new = [0, 1, 2]; verts = 3
+        else:
+            if topo == 'path':
+                j = i - 1
+            else:
+                j = rng.randrange(i)
+            cand = [v for v in H[j] if cnt.get(v, 0) < 2]
+            if not cand:
+                j = i - 1
+                cand = [v for v in H[j] if cnt.get(v, 0) < 2]
+                if not cand:
+                    new = [verts, verts + 1, verts + 2]; verts += 3
+                    H.append(tuple(new))
+                    for u in new: cnt[u] = cnt.get(u, 0) + 1
+                    continue
+            v = rng.choice(cand)
+            new = [v, verts, verts + 1]; verts += 2
+        rng.shuffle(new)
+        H.append(tuple(new))
+        for u in new: cnt[u] = cnt.get(u, 0) + 1
+    n = verts + extra
+    E = set(); soft = set()
+    for (a, b, c) in H:
+        E.add(key(a, b)); E.add(key(b, c))
+        soft |= {key(a, b), key(b, c), key(a, c)}
+    return n, E, soft, H
+
+def build_from_bits(n, E0, soft, H, hardbits):
+    E = set(E0)
+    for pr in hardbits:
+        E.add(pr)
+    return Inst(n, E, H)
+
+def feasible_subset_with(inst, R, allowed, cons):
+    R = list(R); Rs = set(R)
+    pos = {m: k for k, m in enumerate(R)}
+    by_last = [[] for _ in R]
+    for owners, _, base, soft in cons:
+        if not owners: return False
+        if set(owners) <= Rs:
+            by_last[max(pos[o] for o in owners)].append((base, soft))
+    masks = {}
+    def rec(k):
+        if k == len(R): return True
+        i = R[k]
+        for mk in allowed[i]:
+            masks[i] = mk
+            if all(triple_ok(b, s, masks) for b, s in by_last[k]):
+                if rec(k + 1): return True
+        masks.pop(i, None)
+        return False
+    return rec(0)

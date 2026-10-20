@@ -44,6 +44,9 @@ def build(n, M, K, cmax, extra=None):
         H0[p] = vp.new(); H1[p] = vp.new()
         cl += [[-H0[p], -S[p]], [-H0[p], -E[p]], [H0[p], S[p], E[p]]]
         cl += [[-H1[p], -S[p]], [-H1[p], E[p]], [H1[p], S[p], -E[p]]]
+    if os.environ.get('PURE', '0') == '1':
+        for p in P:
+            cl.append([S[p], -E[p]])
     allm = list(Mem.values())
     enc = CardEnc.equals(lits=allm, bound=M, top_id=vp.n, encoding=EncType.seqcounter)
     vp.n = max(vp.n, enc.nv)
