@@ -36,6 +36,7 @@ Let $G$ have vertices $0,\dots,4$ and edges $03,13,14,24,34$, and $H=\{(0,3,1)\}
 \begin{proof}
 The partition $\{\{0\},\{1,3,4\},\{2\}\}$ has the two edits $03,24$. Conversely, $0\,3\,1$ and $3\,4\,2$ are induced $P_3$'s with disjoint pair sets $\{03,13,01\}$ and $\{34,24,23\}$, so $\OPT\ge2$. That this is the only optimum is checked by enumerating all $52$ partitions of the five vertices.
 \end{proof}
+A second example: for the path $0\,1\,2\,3\,4$ and $H=\{(0,1,2)\}$ the remaining vertices $3,4$ cannot form a $P_3$, so $H$ is maximal among vertex-disjoint packings, but $(2,3,4)$ is an induced $P_3$ whose pairs $23,34,24$ are disjoint from $\pairs(H)$, so $H$ is not pair-maximal; the pair-maximal extension is no longer vertex-disjoint.
 \begin{proposition}[Strong locality fails]\label{prop:c4}
 Let $G=C_4$ with edges $01,02,13,23$ and $H=\{(0,1,3)\}$ (pairs $01,13,03$; vertex $2\notin V(H)$). Then $H$ is pair-maximal, $\OPT=2=|H|+1$, so $(G,H,0)$ is a NO instance, and there are exactly three optima $\{03,12\}$, $\{01,23\}$, $\{02,13\}$, each containing a hard pair at vertex $2$.
 \end{proposition}

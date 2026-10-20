@@ -1,11 +1,15 @@
 \begin{thebibliography}{10}
 
-\bibitem{Bocci24}
-Cristiano Bocci, Chiara Capresi, Kitty Meeks, and John Sylvester.
-\newblock A new temporal interpretation of cluster editing.
-\newblock {\em Journal of Computer and System Sciences}, 144:103551, 2024.
-\newblock Extended abstract: IWOCA 2022. Metadata verified (arXiv API,
-  Crossref).
+\bibitem{BP75}
+Kirby~A. Baker and Alden~F. Pixley.
+\newblock Polynomial interpolation and the {C}hinese {R}emainder {T}heorem for
+  algebraic systems.
+\newblock {\em Mathematische Zeitschrift}, 143:165--174, 1975.
+
+\bibitem{Boe12}
+Sebastian B{\"o}cker.
+\newblock A golden ratio parameterized algorithm for cluster editing.
+\newblock {\em Journal of Discrete Algorithms}, 16:79--89, 2012.
 
 \bibitem{Bod96}
 Hans~L. Bodlaender.
@@ -13,21 +17,29 @@ Hans~L. Bodlaender.
   treewidth.
 \newblock {\em SIAM Journal on Computing}, 25(6):1305--1317, 1996.
 
+\bibitem{CM12}
+Jianer Chen and Jie Meng.
+\newblock A {$2k$} kernel for the cluster editing problem.
+\newblock {\em Journal of Computer and System Sciences}, 78(1):211--220, 2012.
+
 \bibitem{Crespelle23}
 Christophe Crespelle, P{\aa}l~Gr{\o}n{\aa}s Drange, Fedor~V. Fomin, and Petr~A.
   Golovach.
 \newblock A survey of parameterized algorithms and the complexity of edge
   modification.
 \newblock {\em Computer Science Review}, 48:100556, 2023.
-\newblock Metadata verified (Crossref, arXiv API).
 
 \bibitem{Cygan15}
 Marek Cygan, Fedor~V. Fomin, {\L}ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel
   Marx, Marcin Pilipczuk, Micha{\l} Pilipczuk, and Saket Saurabh.
 \newblock {\em Parameterized Algorithms}.
 \newblock Springer, 2015.
-\newblock Author list, year and DOI verified (Crossref); the specific theorems
-  were not opened.
+
+\bibitem{FLRS07}
+Michael~R. Fellows, Michael~A. Langston, Frances~A. Rosamond, and Peter Shaw.
+\newblock Efficient parameterized preprocessing for cluster editing.
+\newblock In {\em Fundamentals of Computation Theory (FCT 2007)}, LNCS, pages
+  312--321, 2007.
 
 \bibitem{Split24}
 Alexander Firbas, Alexander Dobler, Fabian Holzer, Jakob Schafellner, Manuel
@@ -35,24 +47,6 @@ Alexander Firbas, Alexander Dobler, Fabian Holzer, Jakob Schafellner, Manuel
 \newblock The complexity of cluster vertex splitting and company.
 \newblock In {\em SOFSEM 2024: Theory and Practice of Computer Science}, LNCS,
   pages 226--239, 2024.
-\newblock Metadata verified (arXiv API, Crossref).
-
-\bibitem{Club25}
-Ajinkya Gaikwad.
-\newblock On the parameterized complexity of $s$-club cluster edge deletion,
-  2025.
-\newblock arXiv preprint (v5 at time of checking); metadata verified (arXiv
-  API). No journal reference listed.
-
-\bibitem{Garvardt23}
-Jaroslav Garvardt, Nils Morawietz, Andr{\'e} Nichterlein, and Mathias Weller.
-\newblock Graph clustering problems under the lens of parameterized local
-  search.
-\newblock In {\em Proc.\ 18th International Symposium on Parameterized and
-  Exact Computation (IPEC 2023)}, volume 285 of {\em LIPIcs}, pages
-  20:1--20:19, 2023.
-\newblock Metadata verified (doi.org). A journal version was mentioned in
-  earlier notes; not verified here.
 
 \bibitem{GM09}
 Martin Grohe and D{\'a}niel Marx.
@@ -74,30 +68,24 @@ Russell Impagliazzo, Ramamohan Paturi, and Francis Zane.
 Christian Komusiewicz and Johannes Uhlmann.
 \newblock Cluster editing with locally bounded modifications.
 \newblock {\em Discrete Applied Mathematics}, 160(15):2259--2270, 2012.
-\newblock Metadata verified (Crossref). Abstract and Thms.~1--2 of the preprint
-  re-read 2026-10-20.
 
 \bibitem{Kor21}
 Tuukka Korhonen.
 \newblock A single-exponential time 2-approximation algorithm for treewidth.
 \newblock In {\em 2021 IEEE 62nd Annual Symposium on Foundations of Computer
   Science (FOCS)}, pages 184--192, 2021.
-\newblock arXiv id verified 2026-10-20. Crossref dates the proceedings 2022-02;
-  the booktitle names the 2021 symposium.
 
 \bibitem{LPS23}
 Shaohua Li, Marcin Pilipczuk, and Manuel Sorge.
 \newblock Cluster editing parameterized above modification-disjoint
   {$P_3$}-packings.
 \newblock {\em ACM Transactions on Algorithms}, 20(1):1--43, 2023.
-\newblock Conference version: STACS 2021, LIPIcs 187, Art.~49. Metadata
-  verified (Crossref, arXiv API).
+\newblock Conference version: STACS 2021, LIPIcs 187, Art.~49.
 
 \bibitem{BFK18}
 Ren{\'e} van Bevern, Vincent Froese, and Christian Komusiewicz.
 \newblock Parameterizing edge modification problems above lower bounds.
 \newblock {\em Theory of Computing Systems}, 62(3):739--770, 2018.
-\newblock Conference version: CSR 2016. Metadata verified (Crossref, arXiv
-  API).
+\newblock Conference version: CSR 2016.
 
 \end{thebibliography}
