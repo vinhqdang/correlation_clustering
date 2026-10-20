@@ -25,6 +25,7 @@ def valid_sigmas(q):
 
 
 FMODE = int(os.environ.get('FMODE', '0'))
+MODE = os.environ.get('MODE', 'anchor')   # 'anchor' or 'pair'
 
 
 def in_F(sig, j):
@@ -75,7 +76,7 @@ class Synth:
         # extra-member candidates
         self.Mem = {}
         for b in range(n):
-            if b == self.x:
+            if b == self.x and MODE == 'anchor':
                 continue
             for a, c in itertools.combinations([v for v in range(n) if v != b], 2):
                 # all three pairs must not be spine-soft pairs; a pair with both ends in spine may only be ac (E fixed 0)
@@ -132,12 +133,13 @@ class Synth:
             cl += enc.clauses
         # anchor: in exactly one member, as end; clean
         x = self.x
-        enc = CardEnc.equals(lits=inmem[x], bound=1, top_id=vp.n, encoding=EncType.seqcounter)
-        vp.n = max(vp.n, enc.nv)
-        cl += enc.clauses
-        for v in range(n):
-            if v != x:
-                cl.append([-self.E[key(x, v)], self.S[key(x, v)]])
+        if MODE == 'anchor':
+            enc = CardEnc.equals(lits=inmem[x], bound=1, top_id=vp.n, encoding=EncType.seqcounter)
+            vp.n = max(vp.n, enc.nv)
+            cl += enc.clauses
+            for v in range(n):
+                if v != x:
+                    cl.append([-self.E[key(x, v)], self.S[key(x, v)]])
         # scenarios: existential
         self.sigmas = valid_sigmas(q)
         for sig in self.sigmas:
@@ -164,9 +166,12 @@ class Synth:
             for (p, val) in ((key(a, b), tab), (key(b, c), tbc), (key(a, c), tac)):
                 cl.append([T[p]] if val else [-T[p]])
         if singleton:
-            for v in range(n):
-                if v != self.x:
-                    cl.append([-T[key(self.x, v)]])
+            if MODE == 'anchor':
+                for v in range(n):
+                    if v != self.x:
+                        cl.append([-T[key(self.x, v)]])
+            else:
+                cl.append([-T[key(2 * self.j, self.x)]])
 
     def decode(self, model):
         ms = set(l for l in model if l > 0)
@@ -201,7 +206,10 @@ class Synth:
                 tab, tbc, tac = STATE[st]
                 for (p, val) in ((key(a, b), tab), (key(b, c), tbc), (key(a, c), tac)):
                     (fixed_t if val else fixed_a).append(p)
-            lab = ze_solve(self.n, E, members, singletons=[self.x], fixed_apart=fixed_a, fixed_together=fixed_t)
+            if MODE == 'anchor':
+                lab = ze_solve(self.n, E, members, singletons=[self.x], fixed_apart=fixed_a, fixed_together=fixed_t)
+            else:
+                lab = ze_solve(self.n, E, members, fixed_apart=fixed_a + [key(2 * self.j, self.x)], fixed_together=fixed_t)
             if lab is not None:
                 return sig, lab
         return None

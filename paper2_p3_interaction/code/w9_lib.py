@@ -239,3 +239,170 @@ def gen_instance(rng, nmin=8, nmax=13, cmax=2, forest=True, noise=None, tries=50
             continue
         return inst
     return None
+
+# ---- regions: ZE-infeasible member subsets ------------------------------------
+def ze_feasible_subset(inst, R, U=(), cons=None):
+    """is there a ZE state vector for the members in R satisfying all triple constraints whose owners lie in R?"""
+    R = list(R)
+    if cons is None:
+        cons = inst.compile(U)
+    Rs = set(R)
+    pos = {m: k for k, m in enumerate(R)}
+    by_last = [[] for _ in R]
+    for owners, _, base, soft in cons:
+        if not owners:
+            if True:
+                return False
+            continue
+        if set(owners) <= Rs:
+            by_last[max(pos[o] for o in owners)].append((base, soft))
+    masks = {}
+    def rec(k):
+        if k == len(R):
+            return True
+        i = R[k]
+        for mk in ZE:
+            masks[i] = mk
+            if all(triple_ok(b, s, masks) for b, s in by_last[k]):
+                if rec(k + 1):
+                    return True
+        masks.pop(i, None)
+        return False
+    return rec(0)
+
+def infeasible_subsets(inst, U=()):
+    m = len(inst.H)
+    cons = inst.compile(U)
+    inf = []
+    for mask in range(1, 1 << m):
+        R = [i for i in range(m) if mask >> i & 1]
+        if not ze_feasible_subset(inst, R, cons=cons):
+            inf.append(mask)
+    return inf
+
+def packing_number(inf, m):
+    """max number of pairwise disjoint sets among inf (bitmasks)"""
+    inf = sorted(set(inf), key=lambda x: bin(x).count('1'))
+    # keep only minimal
+    mins = []
+    for x in inf:
+        if not any((y & x) == y for y in mins):
+            mins.append(x)
+    best = {0: 0}
+    from functools import lru_cache
+    @lru_cache(None)
+    def f(avail):
+        b = 0
+        for x in mins:
+            if x & avail == x:
+                b = max(b, 1 + f(avail & ~x))
+        return b
+    return f((1 << m) - 1), mins
+
+def hitting_number(mins, m):
+    for k in range(0, m + 1):
+        for S in itertools.combinations(range(m), k):
+            sm = sum(1 << i for i in S)
+            if all(x & sm for x in mins):
+                return k, S
+    return None
+
+def m_subset(inst, R, cons, bound=10**9):
+    """min extra cost sum(cost-1) over extended-domain assignments of members R satisfying constraints with owners inside R. None if infeasible"""
+    R = list(R)
+    Rs = set(R)
+    pos = {m: k for k, m in enumerate(R)}
+    by_last = [[] for _ in R]
+    for owners, _, base, soft in cons:
+        if not owners:
+            return None
+        if set(owners) <= Rs:
+            by_last[max(pos[o] for o in owners)].append((base, soft))
+    best = [bound + 1]
+    masks = {}
+    def rec(k, cost):
+        if cost >= best[0]:
+            return
+        if k == len(R):
+            best[0] = cost
+            return
+        i = R[k]
+        for mk in sorted(VALID, key=lambda x: COST[x]):
+            masks[i] = mk
+            if all(triple_ok(b, s, masks) for b, s in by_last[k]):
+                rec(k + 1, cost + COST[mk] - 1)
+        masks.pop(i, None)
+    rec(0, 0)
+    return None if best[0] > bound else best[0]
+
+def weighted_packing(inst, U=()):
+    m = len(inst.H)
+    cons = inst.compile(U)
+    e = {}
+    for mask in range(1, 1 << m):
+        R = [i for i in range(m) if mask >> i & 1]
+        e[mask] = m_subset(inst, R, cons)
+    from functools import lru_cache
+    INF = 10**6
+    @lru_cache(None)
+    def f(avail):
+        if avail == 0:
+            return 0
+        low = avail & -avail
+        best = f(avail & ~low)  # low unused
+        sub = avail
+        while sub:
+            if sub & low:
+                v = e[sub]
+                if v is None:
+                    v = INF
+                if v > 0:
+                    best = max(best, v + f(avail & ~sub))
+            sub = (sub - 1) & avail
+        return best
+    return f((1 << m) - 1), e
+
+def gen_forest(rng, m, extra=3, p=0.4, share=0.8, roles=None, pstruct=None, tree=None, cmax=2):
+    """random soft-triangle-free (forest I(H)) packing instance, NOT necessarily pair-maximal.
+    members added one by one; a new member shares one vertex with a random existing member with prob `share` (c<=cmax).
+    hard pairs are edges with prob p."""
+    verts = 0
+    H = []
+    cnt = {}
+    parent = []
+    for i in range(m):
+        if i > 0 and rng.random() < share:
+            # choose existing member j and vertex
+            for _ in range(20):
+                j = rng.randrange(i)
+                v = rng.choice(H[j])
+                if cnt.get(v, 0) < cmax:
+                    break
+            else:
+                j = None
+            if j is not None:
+                a = verts; b = verts + 1; verts += 2
+                new = [v, a, b]
+                rng.shuffle(new)
+                # random role assignment: tuple (x,y,z) with y centre
+                H.append(tuple(new))
+                for u in new:
+                    cnt[u] = cnt.get(u, 0) + 1
+                continue
+        new = [verts, verts + 1, verts + 2]
+        verts += 3
+        rng.shuffle(new)
+        H.append(tuple(new))
+        for u in new:
+            cnt[u] = cnt.get(u, 0) + 1
+    n = verts + extra
+    E = set()
+    soft = set()
+    for (a, b, c) in H:
+        E.add(key(a, b)); E.add(key(b, c))
+        soft |= {key(a, b), key(b, c), key(a, c)}
+    for u, v in itertools.combinations(range(n), 2):
+        if key(u, v) not in soft and rng.random() < p:
+            E.add((u, v))
+    inst = Inst(n, E, H)
+    return inst
