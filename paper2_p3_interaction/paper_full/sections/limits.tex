@@ -1,0 +1,46 @@
+\section{Limits of the parameterization}\label{sec:limits}
+\subsection{An ETH lower bound in the exponent}
+\begin{theorem}\label{thm:eth}
+Assume ETH. There is no algorithm that decides CEaMP with $\ell=0$ in time $2^{o(\tw(I(H)))}n^{O(1)}$. This holds even when every vertex lies in at most $23$ packed $P_3$'s (so $I(H)$ has maximum degree at most $66$), and whether or not a tree decomposition is supplied.
+\end{theorem}
+The theorem is a corollary of the reduction of Li, Pilipczuk and Sorge.
+\begin{proof}
+By the construction behind~\cite[Thm.~1]{LPS23} there is a polynomial reduction from 3-SAT to CEaMP with $\ell=0$ in which every vertex lies in at most $23$ packed $P_3$'s and the graph has $|V|=O(N+m)$ vertices for a formula with $N$ variables and $m$ clauses (each variable occurrence and each clause is replaced by a gadget of constant size). By the Sparsification Lemma~\cite{IPZ01} (see also~\cite{Cygan15}) we may assume $m=O(N)$ at the cost of $2^{o(N)}$ extra time, so $|V|=O(N)$.
+
+Every member has three vertices and every vertex lies in at most $23$ members, hence $3|H|=\sum_v|\{P\ni v\}|\le23|V|$, i.e.\ $|H|\le 23|V|/3=O(N)$. A single bag containing all members is a tree decomposition of $I(H)$, so $\tw(I(H))\le|H|-1=O(N)$, and such a decomposition can be supplied. An algorithm with running time $2^{o(\tw(I(H)))}n^{O(1)}$, which may compute its own decomposition, would therefore decide 3-SAT in time $2^{o(N)}$, contradicting ETH. The degree bound: a member meets at most $3\cdot22=66$ others.
+\end{proof}
+\begin{remark}
+(1) The bound is on the exponent only: it does not show that the base $3$ (or $5$) is tight, and $2^{o(w)}$ excludes $3^{o(w)}$ and $5^{o(w)}$ alike. A SETH-type bound $(3-\varepsilon)^{w}$ is open. (2) On the instances of the theorem every vertex lies in at most $23$ members, so $\tw(I(H))\le|H|-1\le 23n/3$ (for general packings $|H|$ can exceed $n$); hence on these instances a $2^{o(\tw(I(H)))}n^{O(1)}$ algorithm is in particular a $2^{o(n)}$ algorithm, the constant $23/3$ being absorbed in the $o(\cdot)$, so the theorem is no stronger than the statement that CEaMP at $\ell=0$ has no $2^{o(n)}$ algorithm under ETH; it says that the exponent of Theorem~\ref{thm:l0} cannot be improved to $o(w)$ on instances with $|H|=\Theta(n)$.
+\end{remark}
+
+\subsection{Other parameters do not suffice}
+\begin{proposition}\label{prop:w0}
+CEaMP is NP-hard when $I(H)$ has no edge ($w=0$, vertex-disjoint packing), with $\ell$ part of the input. Hence $w$ alone is not enough, and (by Theorem~1 of~\cite{LPS23}) neither is $\ell=0$ alone.
+\end{proposition}
+\begin{proof}
+Cluster Editing is NP-hard (e.g.\ already on graphs of maximum degree $6$~\cite{KU12}). Given $(G,k)$ compute greedily a maximal set $H$ of vertex-disjoint induced $P_3$'s (if none, $G$ is a cluster graph). Vertex-disjoint implies modification-disjoint and $I(H)$ is edgeless. Since $\OPT\ge|H|$, $(G,k)$ is a YES instance iff $(G,H,k-|H|)$ is (a NO instance if $k<|H|$).
+\end{proof}
+\begin{proposition}\label{prop:star}
+(a) For the star $G=K_{1,2m}$ ($m\ge1$) every packing $H\ne\emptyset$ has $I(H)=K_{|H|}$ and every YES instance $(G,H,\ell)$ satisfies $\ell+\tw(I(H))\ge 2m-2$, while $\tw(G)=1$. (b) For the $k\times k$ grid $G$ and a family $H$ of vertex-disjoint induced $P_3$'s along rows, $\tw(I(H))=0$ and $\tw(G)=k$.
+\end{proposition}
+\begin{proof}
+(a) Leaves have degree one, so the centre of any induced $P_3$ is the hub $v$; all packed $P_3$'s are $(a,v,b)$ with distinct leaves (the pairs $va$ are disjoint), pairwise sharing $v$, so $I(H)=K_p$, $p=|H|\le m$, $\tw=p-1$. If the hub's cluster contains $j$ leaves, the cost is $(2m-j)+\binom j2$ (the other leaves are best left as singletons), which is minimized, with value $2m-1$, at $j\in\{1,2\}$; so $\OPT=2m-1$ and a YES instance has $\ell\ge 2m-1-p$, i.e.\ $\ell+\tw(I(H))\ge 2m-2$. (b) Rows of a grid are induced $P_3$'s (no triangles) and $\tw(k\times k\text{ grid})=k$ is standard.
+\end{proof}
+Proposition~\ref{prop:star} concerns the numbers $\tw(G)$ and $\tw(I(H))$ only, which are incomparable. Part (a) is the only part that bears on the pair $(\ell,w)$: bounded $\tw(G)$ does not make $\ell+w$ small, because on a star small $\tw(I(H))$ forces large $\ell$. Part (b) says nothing about $\ell$.
+
+\subsection{Weaker maximality hypotheses fail}
+The following two instances show that the structure theory of Appendix~\ref{app:structure} and Section~\ref{sec:optimal} needs pair-maximality and that edits touching vertices outside $V(H)$ cannot be excluded.
+\begin{proposition}[Pair-maximality cannot be replaced by vertex-maximality]\label{prop:vertexmax}
+Let $G$ have vertices $0,\dots,4$ and edges $03,13,14,24,34$, and $H=\{(0,3,1)\}$ (pairs $03,13,01$). Then $H$ is maximal among vertex-disjoint packings (only the two vertices $2,4$ remain), $\OPT=2$ and the unique optimum is $\{03,24\}$; it contains the edit $24$ with both endpoints outside $V(H)$. Here $\{3,4,2\}$ is an induced $P_3$ all of whose pairs are hard, so $H$ is not pair-maximal.
+\end{proposition}
+\begin{proof}
+The partition $\{\{0\},\{1,3,4\},\{2\}\}$ has the two edits $03,24$. Conversely, $0\,3\,1$ and $3\,4\,2$ are induced $P_3$'s with disjoint pair sets $\{03,13,01\}$ and $\{34,24,23\}$, so $\OPT\ge2$. That this is the only optimum is checked by enumerating all $52$ partitions of the five vertices.
+\end{proof}
+A second example: for the path $0\,1\,2\,3\,4$ and $H=\{(0,1,2)\}$ the remaining vertices $3,4$ cannot form a $P_3$, so $H$ is maximal among vertex-disjoint packings, but $(2,3,4)$ is an induced $P_3$ whose pairs $23,34,24$ are disjoint from $\pairs(H)$, so $H$ is not pair-maximal; the pair-maximal extension is no longer vertex-disjoint.
+\begin{proposition}[Strong locality fails]\label{prop:c4}
+Let $G=C_4$ with edges $01,02,13,23$ and $H=\{(0,1,3)\}$ (pairs $01,13,03$; vertex $2\notin V(H)$). Then $H$ is pair-maximal, $\OPT=2=|H|+1$, so $(G,H,0)$ is a NO instance, and there are exactly three optima $\{03,12\}$, $\{01,23\}$, $\{02,13\}$, each containing a hard pair at vertex $2$.
+\end{proposition}
+\begin{proof}
+Every induced $P_3$ of $C_4$ contains one of the soft pairs $01,13,03$, so $H$ is pair-maximal. $\OPT\ge|H|=1$, and a single edit leaves an induced $P_3$ (checked on the six pairs), so $\OPT=2$; the three optima are found by enumerating all $15$ partitions.
+\end{proof}
+This refutes the claim that all hard edits of some optimum have both endpoints in $V(H)$; what remains true is that no edit has both endpoints outside $V(H)$ (Theorem~\ref{thm:C1} in Appendix~\ref{app:structure}).

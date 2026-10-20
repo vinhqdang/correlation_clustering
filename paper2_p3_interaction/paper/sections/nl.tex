@@ -14,7 +14,7 @@ Given $(G,H,\ell)$ for an arbitrary packing $H$ and a tree decomposition of $I(H
 Since $D(H)\le2(w+1)$, $Z_*\le6w+9\ell+7$, so the factor $Z_*^{2\ell}$ is a function of $(\ell,w)$ only. This improves the exponent $2\ell$ of Theorem~\ref{thm:A} to $\ell$; it is still XP in $\ell$.
 \end{theorem}
 \begin{proof}
-Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then $H'$ is pair-maximal, $\ell'=\ell-|M|\le\ell$, $D(H')\le D(H)+2|M|\le D_*$, a tree decomposition of $I(H')$ of width $w'\le w+|M|\le w+\ell$ is available, and the instance is equivalent to $(G,H',\ell')$. All lemmas of Section~\ref{sec:optimal} apply to $H'$ with $D(H')$ and $\ell'$; put $B,L_B,Z$ accordingly. Then $Z=3D(H')+3\ell'+1\le Z_*$.
+Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then $H'$ is pair-maximal, $\ell'=\ell-|M|\le\ell$, $D(H')\le D(H)+2|M|\le D_*$, a tree decomposition of $I(H')$ of width $w'\le w+|M|\le w+\ell$ is available, and the instance is equivalent to $(G,H',\ell')$. All lemmas of Appendix~\ref{sec:optimal} apply to $H'$ with $D(H')$ and $\ell'$; put $B,L_B,Z$ accordingly. Then $Z=3D(H')+3\ell'+1\le Z_*$.
 
 \emph{Algorithm.} Compute $L_B$ and, for $x\in L_B$, the set $P(x)$ of vertices $y\in\mathrm{Ball}_{G[L_B]}(x,2)\setminus\{x\}$ with $xy$ hard; $|P(x)|\le Z^2$. Enumerate all sequences of at most $\ell'$ pairs $(x_1,y_1),\dots,(x_j,y_j)$ with $x_i\in L_B$ and $y_i\in P(x_i)$; there are at most $(1+nZ^2)^{\ell'}\le(n+1)^{\ell'}Z^{2\ell'}$ of them. For each, let $U'=\{x_iy_i\}$ (a set of at most $\ell'$ hard pairs), compute $m_{U'}$ by Remark~\ref{rem:fixU} for $H'$ in $5^{w'+1}n^{O(1)}$ time, and accept iff $m_{U'}+|U'|\le|H'|+\ell'$.
 
@@ -27,7 +27,7 @@ Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then 
 The exponent is halved because the candidate list is attached to \emph{one} endpoint (Corollary~\ref{cor:cand}); Theorem~\ref{thm:A} guesses both. Note that $\ell$ bounds the \emph{number} of hard edits but not the cost of locating them: the $n^{\ell}$ comes from the position of the first endpoint of each pair. A fixed-parameter algorithm along this route needs a bound on these positions as well.
 
 \subsection{A fixed-parameter algorithm for a stronger parameter}
-Let $H$ be pair-maximal and $\ell,D,B,Z,L_B,\mathrm{BIG}$ as in Section~\ref{sec:optimal}. Let $V'=V\setminus\mathrm{BIG}$ and let $\Gamma'$ be the graph on $V'$ whose edges are all edges of $G$ and all soft pairs with both ends in $V'$.
+Let $H$ be pair-maximal and $\ell,D,B,Z,L_B,\mathrm{BIG}$ as in Appendix~\ref{sec:optimal}. Let $V'=V\setminus\mathrm{BIG}$ and let $\Gamma'$ be the graph on $V'$ whose edges are all edges of $G$ and all soft pairs with both ends in $V'$.
 \begin{theorem}[Fixed-parameter tractability in $(\ell,D,\omega)$]\label{thm:omega}
 Let $\omega=\tw(\Gamma')$ and assume a tree decomposition of $\Gamma'$ of width $\omega$ is given. Then one can compute in time $(Z(\omega+1))^{O(\omega)}n+n^{O(1)}$ a number $m^*$ such that
 \[

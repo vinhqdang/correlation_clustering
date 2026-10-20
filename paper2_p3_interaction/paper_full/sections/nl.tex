@@ -1,0 +1,57 @@
+\section{An \texorpdfstring{$n^{\ell}$}{n\^l} algorithm and the limits of the cluster-identity route}\label{sec:nl}\label{sec:dproute}
+This section uses Corollary~\ref{cor:cand} in two ways: guessing the positions of the hard edits (Theorem~\ref{thm:nl}), and following the clusters directly (Theorem~\ref{thm:omega}). The first halves the exponent of Theorem~\ref{thm:A}; the second is fixed-parameter tractable for a stronger parameter $\omega$ which, by Proposition~\ref{prop:expander}, is not bounded by any function of $(\ell,w)$. \textbf{Whether CEaMP is fixed-parameter tractable in $\ell+w$ remains open.}
+
+\subsection{The \texorpdfstring{$n^{\ell}$}{n\^l} algorithm}
+\begin{remark}[Fixed set of hard edits]\label{rem:fixU}
+The proof of Theorem~\ref{thm:A} shows: for a \emph{fixed} set $U'$ of hard pairs, $m_{U'}=\min\sum_i|x_i|$ over all $x\in\prod\mathcal D_i$ with $G\sd(U'\cup\bigcup x_i)$ a cluster graph is computed in $5^{w+1}n^{O(1)}$ time from a tree decomposition of $I(H)$ of width $w$, and for \emph{every} $U'$ of hard pairs the value $m_{U'}+|U'|$ is the size of an actual solution.
+\end{remark}
+
+\begin{theorem}[$n^{\ell}$ algorithm]\label{thm:nl}
+Given $(G,H,\ell)$ for an arbitrary packing $H$ and a tree decomposition of $I(H)$ of width $w$, CEaMP is solvable in time
+\[
+(n+1)^{\ell}\;Z_*^{\,2\ell}\;5^{\,w+\ell+1}\;n^{O(1)},\qquad D_*=D(H)+2\ell,\quad Z_*=3D_*+3\ell+1=3D(H)+9\ell+1 .
+\]
+Since $D(H)\le2(w+1)$, $Z_*\le6w+9\ell+7$, so the factor $Z_*^{2\ell}$ is a function of $(\ell,w)$ only. This improves the exponent $2\ell$ of Theorem~\ref{thm:A} to $\ell$; it is still XP in $\ell$.
+\end{theorem}
+\begin{proof}
+Compute $M$ and $H'=H\cup M$ by Lemma~\ref{lem:MAX}; reject if $|M|>\ell$. Then $H'$ is pair-maximal, $\ell'=\ell-|M|\le\ell$, $D(H')\le D(H)+2|M|\le D_*$, a tree decomposition of $I(H')$ of width $w'\le w+|M|\le w+\ell$ is available, and the instance is equivalent to $(G,H',\ell')$. All lemmas of Section~\ref{sec:optimal} apply to $H'$ with $D(H')$ and $\ell'$; put $B,L_B,Z$ accordingly. Then $Z=3D(H')+3\ell'+1\le Z_*$.
+
+\emph{Algorithm.} Compute $L_B$ and, for $x\in L_B$, the set $P(x)$ of vertices $y\in\mathrm{Ball}_{G[L_B]}(x,2)\setminus\{x\}$ with $xy$ hard; $|P(x)|\le Z^2$. Enumerate all sequences of at most $\ell'$ pairs $(x_1,y_1),\dots,(x_j,y_j)$ with $x_i\in L_B$ and $y_i\in P(x_i)$; there are at most $(1+nZ^2)^{\ell'}\le(n+1)^{\ell'}Z^{2\ell'}$ of them. For each, let $U'=\{x_iy_i\}$ (a set of at most $\ell'$ hard pairs), compute $m_{U'}$ by Remark~\ref{rem:fixU} for $H'$ in $5^{w'+1}n^{O(1)}$ time, and accept iff $m_{U'}+|U'|\le|H'|+\ell'$.
+
+\emph{Soundness.} By Remark~\ref{rem:fixU}, $m_{U'}+|U'|$ is the size of an actual solution of $G$ for every $U'$ of hard pairs of $H'$; acceptance gives a solution of size $\le|H'|+\ell'=|H|+\ell$.
+
+\emph{Completeness.} Suppose the instance is a YES instance and let $S$ be an optimal solution, $|S|\le|H'|+\ell'$, with hard edits $U$, $|U|\le\ell'$ (Lemma~\ref{lem:decomp} for $H'$). For each pair of $U$ take one endpoint $x$; it lies in $L_B$ and the other endpoint lies in $P(x)$ by Corollary~\ref{cor:cand}. So $U$ is among the enumerated sets, and for it $m_U+|U|\le|S|\le|H'|+\ell'$ (the soft part of $S$ is a feasible choice of $x$ for $U$ by Lemma~\ref{lem:decomp}).
+
+\emph{Time.} $(n+1)^{\ell'}Z^{2\ell'}5^{w'+1}n^{O(1)}\le(n+1)^{\ell}Z_*^{2\ell}5^{w+\ell+1}n^{O(1)}$.
+\end{proof}
+The exponent is halved because the candidate list is attached to \emph{one} endpoint (Corollary~\ref{cor:cand}); Theorem~\ref{thm:A} guesses both. Note that $\ell$ bounds the \emph{number} of hard edits but not the cost of locating them: the $n^{\ell}$ comes from the position of the first endpoint of each pair. A fixed-parameter algorithm along this route needs a bound on these positions as well.
+
+\subsection{A fixed-parameter algorithm for a stronger parameter}
+Let $H$ be pair-maximal and $\ell,D,B,Z,L_B,\mathrm{BIG}$ as in Section~\ref{sec:optimal}. Let $V'=V\setminus\mathrm{BIG}$ and let $\Gamma'$ be the graph on $V'$ whose edges are all edges of $G$ and all soft pairs with both ends in $V'$.
+\begin{theorem}[Fixed-parameter tractability in $(\ell,D,\omega)$]\label{thm:omega}
+Let $\omega=\tw(\Gamma')$ and assume a tree decomposition of $\Gamma'$ of width $\omega$ is given. Then one can compute in time $(Z(\omega+1))^{O(\omega)}n+n^{O(1)}$ a number $m^*$ such that
+\[
+\OPT(G)\le|H|+\ell\iff|E|+\sum_{K}f(K)+m^*\le|H|+\ell ,
+\]
+where $K$ ranges over the hard components of $\mathrm{BIG}$ and $f$ is as in Lemma~\ref{lem:CP}. The proof, with the dynamic program, is in Appendix~\ref{app:omega}.
+\end{theorem}
+All quantities in Theorem~\ref{thm:omega} refer to the pair-maximal instance $(G,H',\ell')$; they are not functions of the input $(G,H,\ell)$ (Section~\ref{sec:prelim}).
+
+\subsection{Why \texorpdfstring{$\omega$}{omega} is not bounded by \texorpdfstring{$(\ell,w)$}{(l,w)}}
+\begin{proposition}[$\omega$ is unbounded at $\ell=0$, $w=0$]\label{prop:expander}
+For every cubic graph $F$ there is an instance $(G_F,H_F,0)$ with $H_F$ a vertex-disjoint pair-maximal packing ($w=0$, $c=1$, $D=2$), $\OPT(G_F)=|H_F|$ (a YES instance with $\ell=0$), $\mathrm{BIG}=\emptyset$, every hard component of size at most $6$ and every hard degree at most $4$, and $\tw(\Gamma')\ge\tw(F)$. By~\cite{GM09} (cited, not re-proved here) there are cubic graphs $F$ (expanders) with $\tw(F)=\Omega(|V(F)|)$. Hence $\omega$ is not bounded by any function of $(\ell,w)$.
+\end{proposition}
+\begin{proof}
+Orient each edge of $F$ arbitrarily; for each oriented edge $e=(p\to q)$ introduce three vertices $a_e,b_e,c_e$. Let $\mathcal K_v=\{a_e:e\text{ leaves }v\}\cup\{b_e,c_e:e\text{ enters }v\}$ and make each $\mathcal K_v$ a clique; add the cross edges $a_eb_e$ and nothing else. Then $|\mathcal K_v|=\mathrm{out}(v)+2\,\mathrm{in}(v)=3+\mathrm{in}(v)\le6$. $H_F=\{P_e=(a_e,b_e,c_e)\}$: $a_eb_e,b_ec_e\in E$ and $a_ec_e\notin E$ since $a_e\in\mathcal K_p$, $c_e\in\mathcal K_q$, $p\ne q$ and cross edges are of the form $a_{e'}b_{e'}$; so $P_e$ is an induced $P_3$. The members are vertex-disjoint, so modification-disjoint, $c=1$, $w=0$ and $D=2$.
+
+\emph{Pair-maximality.} In an induced $P_3$ $x\,y\,z$ not both edges can lie inside cliques, since then $x,z$ would be in the clique of $y$ (each vertex is in exactly one clique) and adjacent. So one of $xy,yz$ is a cross edge $a_eb_e$, which is soft.
+
+\emph{$\OPT=|H_F|$.} The partition $\{\mathcal K_v\}$ has no inserted pair and deletes exactly the cross edges, $|H_F|$ of them; and $\OPT\ge|H_F|$ by Lemma~\ref{lem:decomp}.
+
+\emph{Hard structure.} The soft pairs inside $\mathcal K_v$ are $b_ec_e$ ($e$ entering $v$); all other pairs inside $\mathcal K_v$ are hard edges. So each $\mathcal K_v$ is one hard component and it is clean. The hard degree of $a_e\in\mathcal K_p$ is $|\mathcal K_p|-1\le4$ (as $a_e$ is an out-edge, $\mathrm{in}(p)\le2$, $|\mathcal K_p|\le5$); that of $b_e$ or $c_e\in\mathcal K_q$ is $|\mathcal K_q|-2\le4$. So $d_h\le4=2D+3\ell$ at $\ell=0$, hence no vertex has $d_h>B$ and $\mathrm{BIG}=\emptyset$.
+
+\emph{Minor.} $V'=V$, each $\mathcal K_v$ is connected in $\Gamma'$ (a clique), and an edge or soft pair of $\Gamma'$ between $\mathcal K_p\ne\mathcal K_q$ is one of $a_eb_e$, $a_ec_e$, which exist only for the oriented edge $e=(p\to q)$ of $F$. Contracting the $\mathcal K_v$ gives exactly $F$, so $F$ is a minor of $\Gamma'$ and $\tw(\Gamma')\ge\tw(F)$.
+\end{proof}
+\begin{remark}[Scope of Proposition~\ref{prop:expander}]\label{rem:expscope}
+The proposition refutes only the claim ``$\omega\le f(\ell,w)$''; it does \emph{not} refute fixed-parameter tractability. The family has $w=0$ and $\ell=0$; it is solved in polynomial time by Theorem~\ref{thm:A} and has $s=3$ in Theorem~\ref{thm:K}. The obstruction is to the representation by $\Gamma'$ (and by any single decomposition used both for the soft pairs and for the clusters): hard edges between far vertices are free (not in the budget), arbitrary in number, and make footprints of clusters disconnected in any decomposition of $I(H)$ or of $\soft$. At $\ell=0$ they are harmless because the CSP of Theorem~\ref{thm:l0} needs no identities; for $\ell>0$ an exceptional cluster can be assembled from vertices that are far apart (a $c=1$ instance with two vertex-disjoint packed $P_3$'s joined by one hard edge that is deleted). So a dynamic program on one decomposition cannot be used for both purposes without a preprocessing step; a reduction lemma that would supply it is Open Problem~\ref{op:ML}.
+\end{remark}

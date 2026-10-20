@@ -1,0 +1,95 @@
+\section{Soft triangles}\label{sec:soft}
+For zero-excess solutions the interaction between packed $P_3$'s is as simple as a constraint system can be unless the packing contains one specific configuration, a \emph{soft triangle}. Without it, zero excess is polynomial for every $c$ and $w$ (Corollary~\ref{cor:sfpoly}) and every lock core has at most two anchors (Corollary~\ref{cor:sfcore}); a far-lift model of excess is fixed-parameter tractable and on forests the full problem is fixed-parameter tractable in $\ell$ conditionally on one bounded-certificate hypothesis (Appendix~\ref{app:softfull}). The instances of Section~\ref{sec:hardness} are full of soft triangles, so soft triangles are what hardness needs along every route that we can analyse, and they suffice. Every statement below is marked \emph{proved} (a proof is given, in an appendix when long), \emph{by computer} (a finite case check that is part of the proof) or \emph{evidence} (computer experiments that are not part of any proof).
+\paragraph{Conventions.} States are as in Appendix~\ref{app:tunnels}: a member $(a,b,c)$ with centre $b$ is in state $1,2,3$ if its single edited pair is $ab,bc,ac$. Put $t_{ab}=(0,1,1)$, $t_{bc}=(1,0,1)$, $t_{ac}=(0,0,1)$ for the states $(1,2,3)$: $t_e(s)=1$ iff the pair $e$ of the member is inside one cluster after the edit. $\Sigma=\Sigma(G,H)\subseteq\{1,2,3\}^H$ is the set of zero-excess (ZE) state vectors; by Lemma~\ref{lem:decomp}, $s\in\Sigma$ iff no vertex triple is an induced $P_3$ of $G$ after the edits $s$. A \emph{majority operation} is $m:\{1,2,3\}^3\to\{1,2,3\}$ with $m(a,a,b)=m(a,b,a)=m(b,a,a)=a$; applied to vectors it acts coordinatewise.
+\subsection{Zero excess without soft triangles is easy}
+\begin{definition}[Soft triangle]\label{def:softtri}
+A vertex triple $\{x,y,z\}$ is a \emph{soft triangle} of $(G,H)$ if its three pairs are soft and are owned by three pairwise distinct members. $(G,H)$ is \emph{soft-triangle-free} if there is none. (This depends on $H$ only, not on the edges of $G$.)
+\end{definition}
+\begin{lemma}[Soft triangles and $I(H)$]\label{lem:tri}
+(a) The owners of a soft triangle form a triangle of $I(H)$. (b) If $c\le2$, every triangle of $I(H)$ consists of the owners of a soft triangle. (c) If $I(H)$ is triangle-free, in particular if $I(H)$ is a forest ($w\le1$), there is no soft triangle. For $c\ge3$ a triangle of $I(H)$ need not come from a soft triangle (three members through one vertex).
+\end{lemma}
+\begin{proof}
+(a) Two pairs of a triple share a vertex, so their owners intersect. (b) Let $A,B,C$ be pairwise adjacent. If $A\cap B$, $B\cap C$ and $A\cap C$ shared a vertex, it would lie in three members, contradicting $c\le2$; so the three intersection vertices $x\in A\cap B$, $y\in B\cap C$, $z\in A\cap C$ are distinct, $\{x,y\}\subseteq V(B)$, $\{y,z\}\subseteq V(C)$, $\{x,z\}\subseteq V(A)$ are soft pairs with three distinct owners. (c) follows from (a).
+\end{proof}
+
+\begin{lemma}[Constraint structure]\label{lem:sfstruct}
+Let $H$ be any packing and classify a vertex triple $\tau$ by the owners of its soft pairs.
+\begin{enumerate}
+\item[(i)] No soft pair: a \emph{static} condition on $G$ (if $\tau$ is an induced $P_3$ of $G$, then $\Sigma=\emptyset$).
+\item[(ii)] One soft pair, owner $A$: a \emph{unary} constraint on $s_A$.
+\item[(iii)] Two soft pairs, from distinct members $A,B$: these share a vertex $q\in V(A)\cap V(B)$, $\tau=\{p,q,r\}$ with $p\in V(A)\setminus\{q\}$, $r\in V(B)\setminus\{q\}$, and $pr$ is hard; a \emph{binary} constraint on $(s_A,s_B)$, namely $t_{pq}(s_A)+t_{qr}(s_B)+[pr\in E]\ne2$.
+\item[(iv)] All soft pairs from one member: $\tau=V(A)$, no restriction on $\Sigma$ beyond the states.
+\item[(v)] Three soft pairs from three distinct members: a soft triangle, a \emph{ternary} constraint.
+\end{enumerate}
+Hence if $(G,H)$ is soft-triangle-free, $\Sigma$ is empty or the set of vectors satisfying unary lists $\Lambda_A\subseteq\{1,2,3\}$ and, for every pair $A,B$ of adjacent members sharing $q$, the binary relation $R_{AB}\subseteq\{1,2,3\}^2$ that is the conjunction of the four triples $\{p,q,r\}$.
+\end{lemma}
+\begin{proof}
+Two soft pairs of one triple share a vertex. If their owners coincide, the triple is $V(A)$, which is case (iv). If they differ, the shared vertex lies in both members, so it is the unique common vertex $q$; the third pair $pr$ is not soft, since an owner $A$ or $B$ would then contain two vertices of the other member (forcing $|V(A)\cap V(B)|\ge2$) and a third owner gives (v). The constraint of (iii) is ``not exactly two edges''. The final sentence is the classification, as $R_{AB}$ depends only on $A,B$ and the bits $[pr\in E]$ (the cross pairs).
+\end{proof}
+
+\begin{theorem}[Majority closure]\label{thm:sfA}
+If $(G,H)$ is soft-triangle-free, then $\Sigma(G,H)$ is closed under \emph{every} majority operation $m$ applied coordinatewise, with the same $m$ at all coordinates: for $u,v,w\in\Sigma$, $m(u,v,w)\in\Sigma$. No pair-maximality is needed, and $c$ and $w$ are arbitrary.
+\end{theorem}
+\emph{Proved; the classification of the binary relations $R_{AB}$ is by computer} (Appendix~\ref{app:softA}). The relation $R_{AB}$ depends on the roles of $q$ in $A$ and in $B$ and on the four cross bits: $144$ configurations, giving exactly $40$ distinct relations, all of the shapes empty, singleton, $2$-element set, a full row or column through $\{1,2\}$, a $3$-element subset of $\{1,2\}^2$, or a ``cross'' (row $\cup$ column through $\{1,2\}$); each shape is closed under every majority by a short argument. The classification was reproduced by an independent construction from $576$ real graphs, and all $729$ majority operations were checked against all relations. The point of the theorem is that single triples are not closed under any uniform majority; only the conjunction of the four triples at a shared vertex is.
+
+\begin{corollary}[Zero excess without soft triangles is polynomial]\label{cor:sfpoly}
+For soft-triangle-free $(G,H)$, whether $(G,H,0)$ is a YES instance is decidable in polynomial time. No bound on $c$ or $w$ and no tree decomposition is needed.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:sfstruct}, $(G,H,0)$ is YES iff there is no static violation and the binary CSP with $|H|$ variables of domain $\{1,2,3\}$, unary lists $\Lambda_A$ and relations $R_{AB}$ is satisfiable. By Theorem~\ref{thm:sfA} every constraint is closed under a majority operation. By the theorem of Jeavons, Cohen and Cooper~\cite{JCC98}, a set of constraints closed under a near-unanimity operation (here a majority, of arity $3$) is decided by enforcing strong consistency of a fixed level, which for binary constraints and a majority is path consistency; this takes time polynomial in $|H|$. Static triples are tested in $O(n^3)$.
+\end{proof}
+\begin{remark}[No conflict with the hardness of $\ell=0$]\label{rem:sfLPS}
+Corollary~\ref{cor:sfpoly} does not contradict the NP-hardness of $\ell=0$ for $c\le23$~\cite{LPS23}: the variable gadget of~\cite[Sect.~4.1.1]{LPS23} (three cliques of five vertices over $\mathbb F_5$, one member for each arithmetic progression, $25$ members, $c=5$) packs every pair between consecutive cliques and a computer count finds $100$ soft triangles in it (evidence; any triple with one vertex in each clique that is not an arithmetic progression is one). The hardness proof therefore lives on ternary constraints. Likewise Example~\ref{ex:maj} ($c=2$) has four soft triangles and is not closed under the operation $m_3$, and the flip gadget of Example~\ref{ex:gstar} has soft triangles. At $c\le2$ a soft triangle is a triangle of $I(H)$ (Lemma~\ref{lem:tri}), hence $w\ge2$, so for $w\le1$ the hardness of $\ell=0$ cannot occur (this is also clear from Theorem~\ref{thm:l0}).
+\end{remark}
+
+\begin{corollary}[Lock cores have at most two anchors]\label{cor:sfcore}
+If $(G,H)$ is soft-triangle-free, every core (minimal non-face of anchors, Appendix~\ref{app:tunnels}) has at most two anchors. In particular this holds for every $H$ with $c\le2$ and $I(H)$ triangle-free, whatever $\tw(I(H))$.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:sfA} gives closure under a majority operation, and Lemma~\ref{lem:tmaj} applies.
+\end{proof}
+This settles, for these instances, the question whether the hypothesis of Lemma~\ref{lem:tmaj} holds: it holds exactly when there is no soft triangle in the sense that matters. The statement that the specific operation $m_3$ closes $\Sigma$ for $c\le2$ is false with triangles (Example~\ref{ex:maj}) and true without soft triangles.
+
+\subsection{What soft triangles allow}\label{sec:softhard}
+W[1]-hardness through hard edges between far vertices needs an operation of cost one that repairs an obstruction at one of many interior positions. We separate the abstract problem from its realisation: the abstract problem is W[1]-hard (Theorem~\ref{thm:B}); tunnel releases cannot realise it without soft triangles (Theorem~\ref{thm:C}); and the reduction of Section~\ref{sec:hardness} realises it with soft triangles.
+\begin{definition}[LPPH]
+\emph{Linked-pair path hitting}: a forest, a family of \emph{obstruction paths} in it, a set of \emph{links} (pairs of nodes) and a number $L$. An operation is a single node or a link; it hits every path containing one of its nodes. Can $L$ operations hit all paths?
+\end{definition}
+\begin{theorem}[Abstract hardness]\label{thm:B}
+LPPH is W[1]-hard parameterized by $L$, already for a forest of $2k$ paths and a set of links that is a perfect matching (every node in at most one link), with $L=k^2$.
+\end{theorem}
+\emph{Proved} (Appendix~\ref{app:softB}), by a reduction from Grid Tiling with $\le$~\cite{Cygan15}; cross-checked by brute force on $1{,}710$ instances (two independent solvers, no mismatch). It is the abstract form of the mechanism ``a far two-sided edit shares cost between two places''; an operation can hit an interior node of an obstruction, which is the feature the reduction uses.
+
+\begin{theorem}[Tunnel releases cannot realise Theorem~\ref{thm:B} without soft triangles]\label{thm:C}
+Let $(G,H)$ be soft-triangle-free and consider the tunnel-release model (Appendix~\ref{app:tunnels}).
+\begin{enumerate}
+\item[(i)] Let the \emph{conflict graph} $\mathcal C$ have as vertices the anchors that carry a tunnel or a stub, an edge $xy$ if $\{x,y\}$ is not a face, and a loop at $x$ if $\{x\}$ is not a face. Releasing a set $R$ of these anchors (cutting their tunnels) gives a feasible instance iff $R$ is a vertex cover of $\mathcal C$ (loops included); a cut at $x$ repairs exactly the conflicts at $x$, and every conflict has at most two ends.
+\item[(ii)] Let $X$ be a set of anchors and $R_0$ a set of released anchors disjoint from $X$ such that the instance with release set $R_0$ is infeasible but $R_0\cup\{x\}$ is feasible for every $x\in X$. Then $|X|\le2$. In particular an obstruction that must be repaired by cutting a tunnel at \emph{any} one of $N\ge3$ anchors (as Theorem~\ref{thm:B} needs, with $N=|S_{ij}|$ positions) cannot occur.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) A set of locked anchors is feasible iff it is a face, iff (Corollary~\ref{cor:sfcore}, using that a non-face contains a non-face of size at most two) it contains no loop and no edge of $\mathcal C$, i.e.\ iff the released set covers $\mathcal C$. (ii) $R_0$ is not a vertex cover, so some edge or loop $e$ of $\mathcal C$ is uncovered; for each $x\in X$ the set $R_0\cup\{x\}$ covers $e$, so $x$ is an end of $e$, and $e$ has at most two ends.
+\end{proof}
+\emph{Remarks (heuristic; not part of Theorem~\ref{thm:C}).} Breaks (double-edited members) and other operations (inserted far pairs, cuts inside hard components of size at least three) act only through unary changes at their ends (Lemma~\ref{lem:sfU}); we have no proof that no combination of operations simulates interior hits without soft triangles.
+
+\subsection{Certificates at excess zero}\label{sec:softcertmain}
+A \emph{certificate} for a budget $|H|+\ell$ is a set $T$ of \emph{remote} hard pairs (pairs not adjacency-local to the packing, Appendix~\ref{sec:softcert}) such that every solution of size at most $|H|+\ell$ contains a pair of $T$; the natural branching algorithm (Theorem~\ref{thm:B1}) branches on the pairs of a minimal certificate, and a leaf test is fixed-parameter tractable (Theorem~\ref{thm:L}). Its running time is governed by the size of certificates.
+\begin{itemize}
+\item Without soft triangles every minimal certificate at $\ell=0$ has at most $12$ pairs, for every $c$ and $w$ (Theorem~\ref{thm:CB0}; proved).
+\item With soft triangles minimal certificates are unbounded already at $c=2$, $w=2$, $\ell=0$ (Theorem~\ref{thm:CE}; proved, the block structure by computer): for every $N$ there is $G_N$ with a pair-maximal packing of $3N$ members, $c=2$, $\tw(I(H_N))=2$, $N$ soft triangles and a minimal certificate of $2N+4$ remote pairs. This is not a hardness result: in $G_N$ a small certificate exists.
+\end{itemize}
+The following statement shows that the second item is a feature of minimal certificates, not of $\ell=0$ at $c\le2$.
+\begin{theorem}[Bounded certificates at $\ell=0$, $c\le2$]\label{thm:MC0}
+\emph{(Proved; the classification of finitely many relation types is by computer.)} Let $c\le2$ (soft triangles allowed; pair-maximality is not needed). If there is no ZE solution without remote edits, then there is a certificate for $\ell=0$ with at most $4$ remote pairs ($3$ if it is a static violation or an empty lock). The constant $4$ is attained by an explicit instance (verified by computer). Such a certificate can be found in time $f(w)n^{O(1)}$.
+\end{theorem}
+Proof outline (Appendix~\ref{app:mc0}). A triple that contains a remote pair has at most one soft pair; the zero-excess lists it can impose on a member are the table of Observation~\ref{obs:lists}, and every singleton entry is produced by one triple, i.e.\ by at most two remote pairs. Hence (Theorem~\ref{thm:R0}, any $c$) a certificate of size at most $\max\{3,2\kappa_1\}$ exists, where $\kappa_1$ is the \emph{unit-lock Helly number} of the set $\Sigma_0$ of ZE vectors for the triples without remote pair. For $c\le2$ the set $\Sigma_0$ is an intersection of lifted relations of four types (link, $K_3$, diamond, $K_4$), enumerated by computer: the first three are closed under one majority operation, so Lemma~\ref{lem:sfH2} gives $\kappa_1\le2$; for $K_4$ (a whole component of $I(H)$ on four members) $\kappa_1\le2$ is computed directly.
+
+\emph{What is not proved.} The version for $\ell\ge1$ is open (Open Problem~\ref{op:BC}): Appendix~\ref{app:mc0} proves a sufficient criterion (Lemma~\ref{lem:mcD}: $\ell+1$ zero-excess cores with pairwise disjoint regions give a certificate of at most $4(\ell+1)$ pairs) and the pattern-wise statement (Lemma~\ref{lem:mcP}), and the natural proof by weighted gluing is impossible already for soft-triangle-free link relations over the five states (SAT-verified). \emph{Evidence only:} exact minimum certificates found by hill-climbing on forests $I(H)$ with $n\le20$ were $4,8,10,11,15$ for $\ell=0,\dots,4$, never above $4(\ell+1)$; for $c\ge3$ with soft triangles even $\ell=0$ is open (by Theorem~\ref{thm:R0} it is equivalent up to a factor $2$ in the upper bound to boundedness of the unit-lock Helly number of $\Sigma_0$, and Lemma~\ref{lem:R5} shows that a uniform near-unanimity polymorphism does not exist for the $c\ge3$ language).
+
+\subsection{Status}\label{sec:softstatus}
+\begin{enumerate}
+\item \emph{Soft-triangle-free instances reduce to one hypothesis.} Zero excess is polynomial, lock cores have at most two anchors, the far-lift and tunnel-release models are fixed-parameter tractable (Theorem~\ref{thm:U}, Corollary~\ref{cor:sfTR}), the leaf test is fixed-parameter tractable and minimal certificates at $\ell=0$ are bounded. For forests the full problem is fixed-parameter tractable in $\ell$ conditionally on the bounded-certificate hypothesis BC (Theorem~\ref{thm:F}); BC for $\ell\ge1$ is open.
+\item \emph{Hardness needs soft triangles along the routes we can analyse, and soft triangles suffice} (Theorems~\ref{thm:C} and~\ref{thm:hard}). Theorem~\ref{thm:CE} alone is not a hardness result, and the exclusion of other operations in the soft-triangle-free case is heuristic.
+\item \emph{With soft triangles at $c\le2$} ($w\ge2$): the bounded-certificate statement holds at $\ell=0$ (Theorem~\ref{thm:MC0}); the evidence that the lock structure is $2$-decomposable (Remark~\ref{rem:tri2}) remains evidence. The reduction of Section~\ref{sec:hardness} has $c\ge26$; hardness for bounded $c$ and for $c=2$ is open (Open Problem~\ref{op:boundc}).
+\end{enumerate}
+

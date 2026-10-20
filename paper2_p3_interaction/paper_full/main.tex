@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\emergencystretch=1.5em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}{Open Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\sd}{\triangle}
+\newcommand{\IH}{I(H)}
+\newcommand{\tw}{\mathrm{tw}}
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\pairs}{\mathrm{pairs}}
+\newcommand{\soft}{G_{\mathrm{soft}}}
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\pw}{\mathrm{pw}}
+\title{Cluster Editing above a $P_3$ packing:\\ W[1]-hardness in the excess and the treewidth of the intersection graph}
+\author{Quang-Vinh Dang\\ British University Vietnam, Hung Yen, Vietnam\\ \texttt{vinh.dq4@buv.edu.vn}}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Cluster Editing asks for the fewest edge insertions and deletions that turn a graph into a disjoint union of cliques.
+Li, Pilipczuk and Sorge parameterize it by the excess~$\ell$ of the solution size over a modification-disjoint packing~$H$ of induced $P_3$'s, and leave open for which packings the problem is fixed-parameter tractable.
+We use the treewidth~$w$ of the intersection graph $I(H)$ of the packing as the structural measure.
+Our main result is a negative answer to the question whether $\ell+w$ suffices: the problem is W[1]-hard parameterized by $\ell+w$, and also by $\ell+\mathrm{pw}(I(H))$ and by $\ell+c$, where $c$ is the maximum number of packed $P_3$'s through a vertex, even for pair-maximal packings. Hence there is no algorithm in time $f(\ell,w)n^{O(1)}$ unless $\mathrm{FPT}=\mathrm{W[1]}$, and under ETH none in time $f(\ell,w)n^{o(\sqrt\ell)}$.
+The reduction is from Grid Tiling with $\le$; it uses a selection chain of bounded width whose position is released by cutting one of many ``tunnels'', and is computer-assisted at four finite steps, which we list; its counting core and several structural lemmas are also machine-checked in Lean~4.
+The matching upper bounds come from a CSP view: for $\ell=0$ the problem is a constraint satisfaction problem with domain size~$3$ whose constraint scopes are cliques of $I(H)$; for general $\ell$, guessing at most $\ell$ edits gives such a problem with domain size~$5$.
+This yields algorithms in time $3^{w+1}n^{O(1)}$ and $5^{w+1}n^{2\ell+O(1)}$, and $n^{\ell}f(\ell,w)\,5^{w+\ell+1}n^{O(1)}$ after a locality argument.
+Under ETH there is no $2^{o(w)}n^{O(1)}$ algorithm even for $\ell=0$, and neither $w$ nor $\ell$ alone suffices.
+If the components of $I(H)$ have bounded size, the problem is fixed-parameter tractable in $\ell$ and has a kernel.
+We isolate a configuration, three pairs of a vertex triple packed by three distinct members (a \emph{soft triangle}), as the source of difficulty: without soft triangles the set of zero-excess solutions is closed under every majority operation, so $\ell=0$ is polynomial for every $c$ and $w$, lock cores have at most two anchors, a far-lift model of the excess is fixed-parameter tractable, and on forests the problem is fixed-parameter tractable in $\ell$ conditionally on a bounded-certificate hypothesis; with soft triangles minimal certificates of the natural branching scheme have unbounded size, and the hardness reduction shows that soft triangles suffice.
+For pair-maximal packings we give a normal form of optimal solutions, a dichotomy of inserted pairs into local and non-local ones, and an instance family in which an optimum must delete an edge between members at arbitrary distance in $I(H)$.
+The parameters belong to the packing, not to the graph. Exchanging one packed $P_3$ for an induced $P_3$ keeps the size and raises $w$ by at most one; we use such exchanges to analyse two obstructions, and we show that locating a good repacking cannot be done in fixed-parameter time unless $\mathrm{FPT}=\mathrm{W[1]}$.
+Still open are hardness for bounded $c$ (our reduction has $c=O(\ell)$), the case $c=2$, and the exact exponent of $n$ under ETH ($n^{o(\sqrt\ell)}$ is excluded, $n^{\ell}$ is achieved).
+\end{abstract}
+\input{sections/intro}
+\input{sections/prelim}
+\input{sections/csp}
+\input{sections/limits}
+\input{sections/hardness}
+\input{sections/components}
+\input{sections/optimal}
+\input{sections/nl}
+\input{sections/locality}
+\input{sections/soft}
+\input{sections/repack}
+\input{sections/open}
+\appendix
+\input{sections/app_structure}
+\input{sections/app_counting}
+\input{sections/app_omega}
+\input{sections/app_conflicts}
+\input{sections/app_spine}
+\input{sections/app_tunnels}
+\input{sections/app_soft}
+\input{sections/app_repack}
+\input{sections/app_hardness}
+\input{sections/app_checks}
+\bibliographystyle{plain}
+\bibliography{refs}
+\end{document}

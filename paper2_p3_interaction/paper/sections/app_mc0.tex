@@ -1,0 +1,72 @@
+\section{Bounded certificates at excess zero}\label{app:mc0}
+This appendix proves Theorem~\ref{thm:MC0} and the related statements of Section~\ref{sec:softcertmain}. Throughout, \emph{local} and \emph{remote} pairs, $\mathcal N$ and $F'(T)$ are as in Appendix~\ref{sec:softcert}, a \emph{certificate for $\ell=0$} is a set $T\subseteq\mathcal N$ with $F'(T)>|H|$, and the states $1,2,3$ of a member $(a,b,c)$ are also written $L,R,M$ (edit $ab$, $bc$, $ac$). At $\ell=0$, $F'(T)\le|H|$ iff there is a state vector $s\in\{L,R,M\}^H$ (one edit per member, no edit of a local hard pair) such that no vertex triple all of whose remote pairs lie in $T$ is an induced $P_3$ after the edits; all pairs other than the soft pairs are then constants. Let $\sigma(\tau)$ be the number of soft pairs of a triple $\tau$.
+
+\begin{lemma}[Triples with a remote pair]\label{lem:mc1}
+If a triple $\tau$ has a remote pair then $\sigma(\tau)\le1$. If $\sigma(\tau)=1$ then $\tau=(z;x,y)$, the pair $xy$ is owned by a member $A$, $z\notin V(A)$, and $zx,zy$ are local hard or remote. If $\sigma(\tau)=0$ all three pairs are hard.
+\end{lemma}
+\begin{proof}
+Two soft pairs of distinct members $A,B$ share a vertex $q\in V(A)\cap V(B)$, and the third pair of the triple joins a vertex of $A$ to a vertex of $B$, so it is local. Two soft pairs of one member force the third pair of the triple to be soft too.
+\end{proof}
+Hence every constraint is a \emph{static} test ($\sigma=0$), a \emph{unary list} on a member ($\sigma=1$), or a binary (adjacent members) or ternary (soft triangle) relation without remote pair. Let $\Sigma_0\subseteq\{L,R,M\}^H$ be the set of vectors satisfying all triples that contain no remote pair; then the vectors feasible for $T$ are those of $\Sigma_0$ that satisfy the lists activated by $T$.
+
+\begin{lemma}[Lock table]\label{lem:mc2}
+Let $z\notin V(A)$ with all three pairs from $z$ to $A=(a,b,c)$ hard (constants), and $S=N(z)\cap V(A)$. The three triples $(z;x,y)$, $xy\in\pairs(A)$, allow exactly the states of $\{L,R,M\}$ shown in the first row of Observation~\ref{obs:lists}. Every singleton entry is produced by one single triple, hence by at most two remote pairs: ``$ab$ apart'' gives $\{L\}$, ``$bc$ apart'' gives $\{R\}$, ``$ac$ together'' gives $\{M\}$. The empty entries ($S=\{b\}$ or $S=\{a,c\}$) need two triples (three remote pairs); a single triple with a non-singleton list is a $2$-element guard.
+\end{lemma}
+\begin{proof}
+Direct check of the table of Observation~\ref{obs:lists}: for $S=\{a\}$ the triple $(z;a,b)$ gives $\{L\}$, for $S=\{c\}$ or $S=\{a,b\}$ the triple $(z;b,c)$ gives $\{R\}$, for $S=\{b,c\}$ the triple $(z;a,b)$ gives $\{L\}$, and for $S=\{a,b,c\}$ the triple $(z;a,c)$ gives $\{M\}$.
+\end{proof}
+
+\begin{lemma}[Strengthening]\label{lem:mc3}
+Let $T$ be a certificate for $\ell=0$ and $T^{\mathrm{cl}}$ its closure under: if a remote pair $zx$ is in $T^{\mathrm{cl}}$ and $x$ lies in a member $A$ with $z\notin V(A)$, add every remote pair between $z$ and $V(A)$. Then $T^{\mathrm{cl}}$ is a certificate, and every list active under $T^{\mathrm{cl}}$ is the full list of Lemma~\ref{lem:mc2} of some pair $(z,A)$: a singleton, empty, or trivial.
+\end{lemma}
+\begin{proof}
+$T^{\mathrm{cl}}\supseteq T$ and $F'$ is monotone. By Lemma~\ref{lem:mc1} each active list comes from a triple $(z;x,y)$ with $xy\in\pairs(A)$; if one of its remote pairs $zx,zy$ is in $T^{\mathrm{cl}}$, the closure puts all remote pairs between $z$ and $V(A)$ in $T^{\mathrm{cl}}$, so all three triples of $(z,A)$ are active and their intersection is the full list.
+\end{proof}
+
+\begin{theorem}[Reduction to the unit-lock Helly number, any $c$]\label{thm:R0}
+Let $\kappa_1$ be the maximum size of an inclusion-minimal family of unit locks $x_A=s$ (two locks on one coordinate allowed) that is inconsistent with $\Sigma_0$. If there is a certificate for $\ell=0$, there is one with at most $3$ pairs (an empty lock or a static violation) or at most $2\kappa_1$ pairs.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:mc3}, $T^{\mathrm{cl}}$ is a certificate whose active lists are full locks. If one is empty, its at most $3$ remote pairs already form a certificate (the triples of that lock need only the pairs of $(z,A)$); if $\Sigma_0=\emptyset$ the empty set is a certificate, and a static violation needs at most $3$ pairs. Otherwise the full locks form a family of unit locks inconsistent with $\Sigma_0$; take a minimal inconsistent subfamily, of size at most $\kappa_1$, and replace each lock by the single triple that produces it (Lemma~\ref{lem:mc2}), at most two remote pairs. The lists active under the resulting set contain these locks, so the set is a certificate.
+\end{proof}
+In the soft-triangle-free case $\Sigma_0$ is closed under every majority operation (Theorem~\ref{thm:sfA}), so $\kappa_1\le2$ by Lemma~\ref{lem:sfH2}, and some certificate has at most $4$ pairs for every $c$ and $w$ (Theorem~\ref{thm:CB0} bounds \emph{every} minimal certificate by $12$).
+
+\subsection{The case $c\le2$ with soft triangles}
+Let $c\le2$. Members share at most one vertex and every vertex is in at most two members, so $I(H)$ has maximum degree $3$, and its triangle-connected components are $K_3$ (one soft triangle), the diamond ($K_4$ minus an edge) and $K_4$ (the octahedron case, a whole component of $I(H)$). By Lemma~\ref{lem:mc1} every constraint of $\Sigma_0$ is a unary list, a relation on one triangle-connected component (its members' vertices, all pairs between them constants or soft), or a link relation $R_{AB}$ for an edge of $I(H)$ in no triangle (an ``outside'' pair that is soft for a member not in the component would make that member part of the component, except for the pair of the two private vertices of a diamond, which is allowed for in the enumeration). So $\Sigma_0$ is a product over the components of $I(H)$ of intersections of lifted relations of the four types \emph{link, $K_3$, diamond, $K_4$} and lists.
+
+\emph{Classification (by computer, exhaustive over centre choices and all hard bits).} Let $m_M$ be the conservative majority $m_M(x,y,z)=x$ if two arguments are equal and $M$ otherwise. Up to the relabelling $L\leftrightarrow R$ of a member, the numbers of distinct relations over $\{L,R,M\}^k$ and the closure under $m_M$ are:
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}\hline
+type & configurations & distinct relations & closed under $m_M$\\\hline
+link (2 members) & $9\cdot16$ & $32$ & all\\
+$K_3$ & $27\cdot64$ & $92$ & all\\
+diamond & $81\cdot2^8\cdot3$ & $332$ & all\\
+$K_4$ & $81\cdot8$ & $254$ & $248$ ($6$ fail)\\\hline
+\end{tabular}
+\end{center}
+For $K_4$ the operation $m_M$ fails on six relations, but a $K_4$ component has only four coordinates and its unit-lock Helly number is $2$ anyway: $\kappa_1\in\{1,2\}$ was computed for all $254$ relations and for all $840$ distinct sub-relations $R\cap(\text{product of arbitrary non-empty lists})$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:MC0}]
+$\Sigma_0$ is a product over the connected components of $I(H)$ and lists act inside components, so an inconsistent family of unit locks lives in one component. For a $K_4$ component $\kappa_1\le2$ by the computation above. For any other component, $\Sigma_0$ restricted to it is an intersection of link, $K_3$ and diamond relations and lists, each closed under $m_M$ (the table; lists are preserved by every conservative operation, and $m_M$ is conservative). By Lemma~\ref{lem:sfH2} (Helly number two for unit lists under a majority) $\kappa_1\le2$. Apply Theorem~\ref{thm:R0}: a certificate of at most $\max\{3,4\}=4$ pairs exists. To find one, enumerate at most two locks (at most $n^{O(1)}$ choices) and test each candidate $T$ with the leaf test of Theorem~\ref{thm:L}, which takes time $f(w)n^{O(1)}$. The constant $4$ is attained: an explicit instance with $n=13$, $c=2$, four members and no soft triangle (found by computer search) has a minimum certificate of exactly four remote pairs, and all $24{,}804$ three-subsets of its $54$ remote pairs are feasible.
+\end{proof}
+\emph{Evidence for the classification} (independent of the proof): about $25{,}000$ random instances with $c\le2$ had $\Sigma_0$ closed under $m_M$ in every case except $4$ of $5{,}333$ octahedron instances, and exact minimum certificate sizes were in $\{0,1,2,3,4\}$, never above $4$. The family $G_N$ of Theorem~\ref{thm:CE} has minimum certificate $3$ for $N\le4$ (a pendant at a centre), and by Theorem~\ref{thm:MC0} this is forced: no choice of pendants makes every certificate large at $\ell=0$ when $c\le2$.
+
+\subsection{Excess $\ell\ge1$: what is proved}
+For budget $|H|+\ell$ the objects that cost are \emph{defect objects}: a member edited at least twice (extra cost at least $1$) and an edited local hard pair (cost $1$); the cost is $|H|$ plus the sum of extras plus the number of flips, at least $|H|+\#\text{defect objects}$. A \emph{pattern} is a set of at most $\ell$ defect objects with values; $\Sigma_0^\pi$ is the zero-excess set of the instance with the pattern applied (flips applied, defect members replaced by their pair statuses, which become hard constants).
+\begin{lemma}[Pattern-wise Helly; by computer]\label{lem:mcP}
+For $c\le2$ and every pattern $\pi$, $\kappa_1(\Sigma_0^\pi)\le2$. So every single pattern is killed by at most two locks (at most four remote pairs).
+\end{lemma}
+\begin{proof}
+Flips change hard bits of enumerated configurations; freezing a member turns its soft pairs into hard constants, i.e.\ replaces a $K_3$, diamond or $K_4$ relation by a slice that is a relation of the same enumerated families (intersections with lists); lists are arbitrary. The classification above covers all of them.
+\end{proof}
+For a zero-excess core $C$ (two locks forming a minimal inconsistent sub-CSP on a member set $M(C)$) put
+\[D(C)=M(C)\cup\{\text{local hard pairs occurring in a triple with }\sigma\ge1\text{ whose soft owners lie in }M(C)\}.\]
+\begin{lemma}[Disjoint regions]\label{lem:mcD}
+If $T$ contains $\ell+1$ zero-excess cores with pairwise disjoint $D(C_i)$, then $F'(T)>|H|+\ell$. Hence if there are $\ell+1$ such cores among all locks, a certificate with at most $4(\ell+1)$ pairs exists.
+\end{lemma}
+\begin{proof}
+An assignment feasible for $T$ with no defect object in $D(C_i)$ restricts to $M(C_i)$ as a state vector satisfying all constraints used by the core and its locks, a contradiction. So the assignment has a defect object in each $D(C_i)$; these are distinct objects, so its cost is at least $|H|+\ell+1$.
+\end{proof}
+So a minimum certificate can exceed $4(\ell+1)$ pairs only if the maximum number of cores with disjoint regions is at most $\ell$.
+
+\emph{What is not proved.} Boundedness of certificates for $\ell\ge1$ (Open Problem~\ref{op:BC}) and for $c\ge3$ with soft triangles. The natural proof would glue three optimal assignments, each violating one lock, whose defect sets form a sunflower, by a coordinatewise majority; this step is impossible already for the simplest soft-triangle-free link relations over the five states (SAT-verified: no operation on the sunflower patterns closes the relations, even if its output may be defective; with non-defective outputs the system is unsatisfiable for a single link relation and for $53$ of the $785$ distinct five-state $K_3$ relations). A proof would need a bound on families of locks with independent single-lock witnesses; that is the exact remaining gap. \emph{Evidence only} (hill-climbing and random search, not a proof): exact minimum certificates on forests $I(H)$ with $n\le20$ were $4,8,10,11,15$ for $\ell=0,\dots,4$, all below $4(\ell+1)$; $12{,}000$ random periodic cells with $c\le3$ at $\ell=0$ showed no growth between $N=3$ and $N=5$ repetitions. For $c\ge3$, Lemma~\ref{lem:R5} shows that the scope language has no conservative near-unanimity polymorphism, so by the Baker--Pixley theorem some primitive-positive definition has unbounded unit-lock cores; whether one can be realised with bounded treewidth as a packing is open.
