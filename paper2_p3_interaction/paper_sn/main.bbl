@@ -1,0 +1,336 @@
+%% BioMed_Central_Bib_Style_v1.01
+
+\begin{thebibliography}{19}
+% BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
+\ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
+\ifx \binits  \undefined \def \binits#1{#1}\fi
+\ifx \bauthor  \undefined \def \bauthor#1{#1}\fi
+\ifx \batitle  \undefined \def \batitle#1{#1}\fi
+\ifx \bjtitle  \undefined \def \bjtitle#1{#1}\fi
+\ifx \bvolume  \undefined \def \bvolume#1{\textbf{#1}}\fi
+\ifx \byear  \undefined \def \byear#1{#1}\fi
+\ifx \bissue  \undefined \def \bissue#1{#1}\fi
+\ifx \bfpage  \undefined \def \bfpage#1{#1}\fi
+\ifx \blpage  \undefined \def \blpage #1{#1}\fi
+\ifx \burl  \undefined \def \burl#1{\textsf{#1}}\fi
+\ifx \doiurl  \undefined \def \doiurl#1{\url{https://doi.org/#1}}\fi
+\ifx \betal  \undefined \def \betal{\textit{et al.}}\fi
+\ifx \binstitute  \undefined \def \binstitute#1{#1}\fi
+\ifx \binstitutionaled  \undefined \def \binstitutionaled#1{#1}\fi
+\ifx \bctitle  \undefined \def \bctitle#1{#1}\fi
+\ifx \beditor  \undefined \def \beditor#1{#1}\fi
+\ifx \bpublisher  \undefined \def \bpublisher#1{#1}\fi
+\ifx \bbtitle  \undefined \def \bbtitle#1{#1}\fi
+\ifx \bedition  \undefined \def \bedition#1{#1}\fi
+\ifx \bseriesno  \undefined \def \bseriesno#1{#1}\fi
+\ifx \blocation  \undefined \def \blocation#1{#1}\fi
+\ifx \bsertitle  \undefined \def \bsertitle#1{#1}\fi
+\ifx \bsnm \undefined \def \bsnm#1{#1}\fi
+\ifx \bsuffix \undefined \def \bsuffix#1{#1}\fi
+\ifx \bparticle \undefined \def \bparticle#1{#1}\fi
+\ifx \barticle \undefined \def \barticle#1{#1}\fi
+\bibcommenthead
+\ifx \bconfdate \undefined \def \bconfdate #1{#1}\fi
+\ifx \botherref \undefined \def \botherref #1{#1}\fi
+\ifx \url \undefined \def \url#1{\textsf{#1}}\fi
+\ifx \bchapter \undefined \def \bchapter#1{#1}\fi
+\ifx \bbook \undefined \def \bbook#1{#1}\fi
+\ifx \bcomment \undefined \def \bcomment#1{#1}\fi
+\ifx \oauthor \undefined \def \oauthor#1{#1}\fi
+\ifx \citeauthoryear \undefined \def \citeauthoryear#1{#1}\fi
+\ifx \endbibitem  \undefined \def \endbibitem {}\fi
+\ifx \bconflocation  \undefined \def \bconflocation#1{#1}\fi
+\ifx \arxivurl  \undefined \def \arxivurl#1{\textsf{#1}}\fi
+\csname PreBibitemsHook\endcsname
+
+%%% 1
+\bibitem[\protect\citeauthoryear{Li et~al.}{2023}]{LPS23}
+\begin{barticle}
+\bauthor{\bsnm{Li}, \binits{S.}},
+\bauthor{\bsnm{Pilipczuk}, \binits{M.}},
+\bauthor{\bsnm{Sorge}, \binits{M.}}:
+\batitle{Cluster editing parameterized above modification-disjoint
+  {$P_3$}-packings}.
+\bjtitle{ACM Transactions on Algorithms}
+\bvolume{20}(\bissue{1}),
+\bfpage{1}--\blpage{43}
+(\byear{2023})
+\doiurl{10.1145/3626526}
+{\href{https://arxiv.org/abs/1910.08517}{{arXiv:1910.08517}}}.
+\bcomment{Conference version: STACS 2021, LIPIcs 187, Art.~49}
+\end{barticle}
+\endbibitem
+
+%%% 2
+\bibitem[\protect\citeauthoryear{van Bevern et~al.}{2018}]{BFK18}
+\begin{barticle}
+\bauthor{\bsnm{Bevern}, \binits{R.}},
+\bauthor{\bsnm{Froese}, \binits{V.}},
+\bauthor{\bsnm{Komusiewicz}, \binits{C.}}:
+\batitle{Parameterizing edge modification problems above lower bounds}.
+\bjtitle{Theory of Computing Systems}
+\bvolume{62}(\bissue{3}),
+\bfpage{739}--\blpage{770}
+(\byear{2018})
+\doiurl{10.1007/s00224-016-9746-5}
+{\href{https://arxiv.org/abs/1512.04047}{{arXiv:1512.04047}}}.
+\bcomment{Conference version: CSR 2016}
+\end{barticle}
+\endbibitem
+
+%%% 3
+\bibitem[\protect\citeauthoryear{Firbas et~al.}{2024}]{Split24}
+\begin{bchapter}
+\bauthor{\bsnm{Firbas}, \binits{A.}},
+\bauthor{\bsnm{Dobler}, \binits{A.}},
+\bauthor{\bsnm{Holzer}, \binits{F.}},
+\bauthor{\bsnm{Schafellner}, \binits{J.}},
+\bauthor{\bsnm{Sorge}, \binits{M.}},
+\bauthor{\bsnm{Villedieu}, \binits{A.}},
+\bauthor{\bsnm{Wi{\ss}mann}, \binits{M.}}:
+\bctitle{The complexity of cluster vertex splitting and company}.
+In: \bbtitle{SOFSEM 2024: Theory and Practice of Computer Science}.
+\bsertitle{LNCS},
+pp. \bfpage{226}--\blpage{239}
+(\byear{2024}).
+\doiurl{10.1007/978-3-031-52113-3_16}
+\end{bchapter}
+\endbibitem
+
+%%% 4
+\bibitem[\protect\citeauthoryear{Crespelle et~al.}{2023}]{Crespelle23}
+\begin{barticle}
+\bauthor{\bsnm{Crespelle}, \binits{C.}},
+\bauthor{\bsnm{Drange}, \binits{P.G.}},
+\bauthor{\bsnm{Fomin}, \binits{F.V.}},
+\bauthor{\bsnm{Golovach}, \binits{P.A.}}:
+\batitle{A survey of parameterized algorithms and the complexity of edge
+  modification}.
+\bjtitle{Computer Science Review}
+\bvolume{48},
+\bfpage{100556}
+(\byear{2023})
+\doiurl{10.1016/j.cosrev.2023.100556}
+{\href{https://arxiv.org/abs/2001.06867}{{arXiv:2001.06867}}}
+\end{barticle}
+\endbibitem
+
+%%% 5
+\bibitem[\protect\citeauthoryear{Blaha et~al.}{2026}]{BGGHW26}
+\begin{botherref}
+\oauthor{\bsnm{Blaha}, \binits{J.}},
+\oauthor{\bsnm{Ganian}, \binits{R.}},
+\oauthor{\bsnm{Gillig}, \binits{K.}},
+\oauthor{\bsnm{H{\o}jlev}, \binits{J.S.}},
+\oauthor{\bsnm{Wietheger}, \binits{S.}}:
+Fair Correlation Clustering Meets Graph Parameters.
+arXiv:2602.15683
+(2026)
+\end{botherref}
+\endbibitem
+
+%%% 6
+\bibitem[\protect\citeauthoryear{Garvardt and Komusiewicz}{2026}]{GK26}
+\begin{bchapter}
+\bauthor{\bsnm{Garvardt}, \binits{J.}},
+\bauthor{\bsnm{Komusiewicz}, \binits{C.}}:
+\bctitle{Clustering with locally bounded ignorance}.
+In: \bbtitle{Proc.\ 52nd International Workshop on Graph-Theoretic Concepts in
+  Computer Science (WG 2026)}.
+\bsertitle{LIPIcs},
+vol. \bseriesno{376},
+p. \bfpage{17}
+(\byear{2026}).
+\doiurl{10.4230/LIPIcs.WG.2026.17}
+\end{bchapter}
+\endbibitem
+
+%%% 7
+\bibitem[\protect\citeauthoryear{Komusiewicz and Uhlmann}{2012}]{KU12}
+\begin{barticle}
+\bauthor{\bsnm{Komusiewicz}, \binits{C.}},
+\bauthor{\bsnm{Uhlmann}, \binits{J.}}:
+\batitle{Cluster editing with locally bounded modifications}.
+\bjtitle{Discrete Applied Mathematics}
+\bvolume{160}(\bissue{15}),
+\bfpage{2259}--\blpage{2270}
+(\byear{2012})
+\doiurl{10.1016/j.dam.2012.05.019}
+\end{barticle}
+\endbibitem
+
+%%% 8
+\bibitem[\protect\citeauthoryear{Guo}{2009}]{Guo09}
+\begin{barticle}
+\bauthor{\bsnm{Guo}, \binits{J.}}:
+\batitle{A more effective linear kernelization for cluster editing}.
+\bjtitle{Theoretical Computer Science}
+\bvolume{410}(\bissue{8--10}),
+\bfpage{718}--\blpage{726}
+(\byear{2009})
+\doiurl{10.1016/j.tcs.2008.10.021}
+\end{barticle}
+\endbibitem
+
+%%% 9
+\bibitem[\protect\citeauthoryear{Fellows et~al.}{2007}]{FLRS07}
+\begin{bchapter}
+\bauthor{\bsnm{Fellows}, \binits{M.R.}},
+\bauthor{\bsnm{Langston}, \binits{M.A.}},
+\bauthor{\bsnm{Rosamond}, \binits{F.A.}},
+\bauthor{\bsnm{Shaw}, \binits{P.}}:
+\bctitle{Efficient parameterized preprocessing for cluster editing}.
+In: \bbtitle{Fundamentals of Computation Theory (FCT 2007)}.
+\bsertitle{LNCS},
+pp. \bfpage{312}--\blpage{321}
+(\byear{2007}).
+\doiurl{10.1007/978-3-540-74240-1_27}
+\end{bchapter}
+\endbibitem
+
+%%% 10
+\bibitem[\protect\citeauthoryear{Grohe and Marx}{2009}]{GM09}
+\begin{barticle}
+\bauthor{\bsnm{Grohe}, \binits{M.}},
+\bauthor{\bsnm{Marx}, \binits{D.}}:
+\batitle{On tree width, bramble size, and expansion}.
+\bjtitle{Journal of Combinatorial Theory, Series B}
+\bvolume{99}(\bissue{1}),
+\bfpage{218}--\blpage{228}
+(\byear{2009})
+\doiurl{10.1016/j.jctb.2008.06.004}
+\end{barticle}
+\endbibitem
+
+%%% 11
+\bibitem[\protect\citeauthoryear{Bodlaender}{1996}]{Bod96}
+\begin{barticle}
+\bauthor{\bsnm{Bodlaender}, \binits{H.L.}}:
+\batitle{A linear-time algorithm for finding tree-decompositions of small
+  treewidth}.
+\bjtitle{SIAM Journal on Computing}
+\bvolume{25}(\bissue{6}),
+\bfpage{1305}--\blpage{1317}
+(\byear{1996})
+\doiurl{10.1137/S0097539793251219}
+\end{barticle}
+\endbibitem
+
+%%% 12
+\bibitem[\protect\citeauthoryear{Cygan et~al.}{2015}]{Cygan15}
+\begin{bbook}
+\bauthor{\bsnm{Cygan}, \binits{M.}},
+\bauthor{\bsnm{Fomin}, \binits{F.V.}},
+\bauthor{\bsnm{Kowalik}, \binits{{\L}.}},
+\bauthor{\bsnm{Lokshtanov}, \binits{D.}},
+\bauthor{\bsnm{Marx}, \binits{D.}},
+\bauthor{\bsnm{Pilipczuk}, \binits{M.}},
+\bauthor{\bsnm{Pilipczuk}, \binits{M.}},
+\bauthor{\bsnm{Saurabh}, \binits{S.}}:
+\bbtitle{Parameterized Algorithms}.
+\bpublisher{Springer}, \blocation{???}
+(\byear{2015}).
+\doiurl{10.1007/978-3-319-21275-3}
+\end{bbook}
+\endbibitem
+
+%%% 13
+\bibitem[\protect\citeauthoryear{Korhonen}{2021}]{Kor21}
+\begin{bchapter}
+\bauthor{\bsnm{Korhonen}, \binits{T.}}:
+\bctitle{A single-exponential time 2-approximation algorithm for treewidth}.
+In: \bbtitle{2021 IEEE 62nd Annual Symposium on Foundations of Computer Science
+  (FOCS)},
+pp. \bfpage{184}--\blpage{192}
+(\byear{2021}).
+\doiurl{10.1109/FOCS52979.2021.00026}
+\end{bchapter}
+\endbibitem
+
+%%% 14
+\bibitem[\protect\citeauthoryear{Impagliazzo et~al.}{2001}]{IPZ01}
+\begin{barticle}
+\bauthor{\bsnm{Impagliazzo}, \binits{R.}},
+\bauthor{\bsnm{Paturi}, \binits{R.}},
+\bauthor{\bsnm{Zane}, \binits{F.}}:
+\batitle{Which problems have strongly exponential complexity?}
+\bjtitle{Journal of Computer and System Sciences}
+\bvolume{63}(\bissue{4}),
+\bfpage{512}--\blpage{530}
+(\byear{2001})
+\doiurl{10.1006/jcss.2001.1774}
+\end{barticle}
+\endbibitem
+
+%%% 15
+\bibitem[\protect\citeauthoryear{Jeavons et~al.}{1998}]{JCC98}
+\begin{barticle}
+\bauthor{\bsnm{Jeavons}, \binits{P.}},
+\bauthor{\bsnm{Cohen}, \binits{D.}},
+\bauthor{\bsnm{Cooper}, \binits{M.C.}}:
+\batitle{Constraints, consistency and closure}.
+\bjtitle{Artificial Intelligence}
+\bvolume{101}(\bissue{1--2}),
+\bfpage{251}--\blpage{265}
+(\byear{1998})
+\doiurl{10.1016/S0004-3702(98)00022-8}
+\end{barticle}
+\endbibitem
+
+%%% 16
+\bibitem[\protect\citeauthoryear{B{\"o}cker}{2012}]{Boe12}
+\begin{barticle}
+\bauthor{\bsnm{B{\"o}cker}, \binits{S.}}:
+\batitle{A golden ratio parameterized algorithm for cluster editing}.
+\bjtitle{Journal of Discrete Algorithms}
+\bvolume{16},
+\bfpage{79}--\blpage{89}
+(\byear{2012})
+\doiurl{10.1016/j.jda.2012.04.005}
+\end{barticle}
+\endbibitem
+
+%%% 17
+\bibitem[\protect\citeauthoryear{Chen and Meng}{2012}]{CM12}
+\begin{barticle}
+\bauthor{\bsnm{Chen}, \binits{J.}},
+\bauthor{\bsnm{Meng}, \binits{J.}}:
+\batitle{A {$2k$} kernel for the cluster editing problem}.
+\bjtitle{Journal of Computer and System Sciences}
+\bvolume{78}(\bissue{1}),
+\bfpage{211}--\blpage{220}
+(\byear{2012})
+\doiurl{10.1016/j.jcss.2011.04.001}
+\end{barticle}
+\endbibitem
+
+%%% 18
+\bibitem[\protect\citeauthoryear{Robbins}{1939}]{Rob39}
+\begin{barticle}
+\bauthor{\bsnm{Robbins}, \binits{H.E.}}:
+\batitle{A theorem on graphs, with an application to a problem of traffic
+  control}.
+\bjtitle{The American Mathematical Monthly}
+\bvolume{46}(\bissue{5}),
+\bfpage{281}
+(\byear{1939})
+\doiurl{10.2307/2303897}
+\end{barticle}
+\endbibitem
+
+%%% 19
+\bibitem[\protect\citeauthoryear{Baker and Pixley}{1975}]{BP75}
+\begin{barticle}
+\bauthor{\bsnm{Baker}, \binits{K.A.}},
+\bauthor{\bsnm{Pixley}, \binits{A.F.}}:
+\batitle{Polynomial interpolation and the {C}hinese {R}emainder {T}heorem for
+  algebraic systems}.
+\bjtitle{Mathematische Zeitschrift}
+\bvolume{143},
+\bfpage{165}--\blpage{174}
+(\byear{1975})
+\doiurl{10.1007/BF01187059}
+\end{barticle}
+\endbibitem
+
+\end{thebibliography}

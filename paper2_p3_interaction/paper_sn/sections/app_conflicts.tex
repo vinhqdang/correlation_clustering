@@ -1,7 +1,7 @@
 \section{Conflict weights, pruning and far pointers}\label{app:conflicts}\label{sec:pointers}
 This appendix concerns the two kinds of hard edit that the locality results of Appendix~\ref{sec:locality} leave open: inserted pairs of type T2 and deleted hard edges. It proves a \emph{conflict lemma} that gives every soft pair a static weight, a defect bound and a polynomial NO-test that follow from it, bounded candidate lists, a pruned version of Theorem~\ref{thm:omega}, and the statement that putting ``locally bad'' members into every bag does not repair the far pointers of Proposition~\ref{prop:FAR} for distances $2$ and $3$. Nothing here proves or refutes fixed-parameter tractability in $\ell+w$.
 
-\paragraph{Setting.}
+\runinhead{Setting.}
 $H$ is pair-maximal (otherwise apply Lemma~\ref{lem:MAX} and read the primed instance), $Q(v)$ is the set of soft partners, $N_h(v)$ the set of hard neighbours, $D\ge\max_v|Q(v)|$. A solution is identified with a partition $\pi$ of $V$; write $x(p,q)=1$ if $p,q$ lie in one block and $0$ otherwise; $U$ is the set of edited hard pairs (so $|U|\le|S|-|H|$ by Lemma~\ref{lem:decomp}). For a soft pair $\sigma=(z,b)$ put
 \[
 \Delta_{\neq}(z,b)=\{y\notin\{z,b\}:\ zy,by\text{ hard, exactly one an edge of }G\},

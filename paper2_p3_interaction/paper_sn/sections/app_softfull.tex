@@ -62,7 +62,7 @@ Split a solution as in Lemma~\ref{lem:decomp} into its soft edits (one non-empty
 \end{proof}
 Hence the \emph{far} edits are the only edits whose position is not controlled by the dynamic program, as in Appendix~\ref{sec:nl}.
 
-\paragraph{Breaks.} Let $\mathrm{RM2}$ be the following abstract model on a forest: a set of \emph{conflicts} (pairs of nodes, with the path joining them) and two kinds of operations, a \emph{break} at a node (cost $1$; it hits every conflict whose path contains the node) and a \emph{tunnel}, a link in a graph of maximum degree $d$ (cost $1$; it hits every conflict that has an end at one of its two nodes). We want at most $L$ operations hitting all conflicts.
+\runinhead{Breaks.} Let $\mathrm{RM2}$ be the following abstract model on a forest: a set of \emph{conflicts} (pairs of nodes, with the path joining them) and two kinds of operations, a \emph{break} at a node (cost $1$; it hits every conflict whose path contains the node) and a \emph{tunnel}, a link in a graph of maximum degree $d$ (cost $1$; it hits every conflict that has an end at one of its two nodes). We want at most $L$ operations hitting all conflicts.
 \begin{proposition}[RM2 is fixed-parameter tractable]\label{prop:RM2}
 RM2 is solvable in time $(2d+1)^{L}n^{O(1)}$ by a search tree.
 \end{proposition}
@@ -77,7 +77,7 @@ and let $H=\{M_0,M_1,M_2,M_3\}$ with $M_0=(2,0,1)$, $M_1=(4,3,1)$, $M_2=(5,0,6)$
 \end{proposition}
 The proposition (verified by exhaustive enumeration) says that a break is not a node-hit: it locks its neighbours. Consequently the abstract model of ``hitting conflict paths by breaks and tunnels'' cannot be used to decide CEaMP on forests, and the difficulty of the interior of a chain, where breaks are placed, stays inside the dynamic program (as the Core-Bound analysis below also shows).
 
-\paragraph{The full problem on forests, conditionally.}
+\runinhead{The full problem on forests, conditionally.}
 Let $I(H)$ be a forest ($w\le1$, so $c\le2$, $D=2c\le4$, no soft triangle). The \emph{sites} of $(G,H)$ are the members and the edges of $I(H)$; a triple that contains a far pair has as sites the owners of its soft pairs and the edges at which its cross pairs lie. For a set $C$ of sites let $\mathrm{Ex}_C(G')$ be $\mathrm{Ex}(G')$ computed after deleting every triple that contains a far pair and has no site in $C$; $\mathrm{Ex}_C$ is monotone in $C$. Let $V(C)$ be the set of vertices of the members in $C$ and of the members incident to an edge in $C$.
 
 \textbf{Hypothesis BC$(t)$ (bounded certificates; open).} There is $K(t,D)$ such that for every $G'$ (with the same forest $H$, and no static violation) with $\mathrm{Ex}(G')>t$, every inclusion-minimal set $C$ of sites with $\mathrm{Ex}_C(G')>t$ has $|C|\le K(t,D)$.
