@@ -1,123 +1,104 @@
-\section{Locality of inserted pairs in optimal solutions}\label{sec:locality}
-Section~\ref{sec:packing} bounds the \emph{number} of unpacked edits and the \emph{size} of merged pieces, but not the number of candidate \emph{positions} of an unpacked edit; a positive answer to Open Problem~\ref{op:main} would need such a bound. This section studies the inserted unpacked pairs of an \emph{optimal} solution. The main tool is an elementary diameter bound for clusters of optimal solutions (Lemma~\ref{lem:half}), which, combined with pair-maximality, classifies every inserted pair into one of two types (Theorem~\ref{thm:T1T2}). Pairs of the first type are local in a decomposition of $I(H)$ (Corollary~\ref{cor:softfree}, Proposition~\ref{prop:bag}); we then show that the second type, which includes the generic merge of two pieces, is \emph{not} local in the same sense (Proposition~\ref{prop:cex}). \textbf{Nothing in this section gives an FPT algorithm in $\ell+w$ or a hardness result}; Section~\ref{sec:left} states exactly what is left.
+\section{Locality of inserted pairs and a non-local obstruction}\label{sec:locality}
+Section~\ref{sec:optimal} bounds the \emph{number} of hard edits and the \emph{candidates for the second endpoint} of a hard edit, but not the number of candidate \emph{positions} of the first. This section studies the inserted hard pairs of an \emph{optimal} solution. The main tool is the diameter bound of Lemma~\ref{lem:half}, which, combined with pair-maximality, classifies every inserted pair into one of two types (Theorem~\ref{thm:T1T2}). Pairs of the first type are local in a decomposition of $I(H)$ (Corollary~\ref{cor:softfree}, Proposition~\ref{prop:bag}); the second type, which includes the generic merge of two pieces, is \emph{not} local in the same sense (Proposition~\ref{prop:cex}). Finally, deleted hard edges can join packed $P_3$'s at arbitrary distance in $I(H)$ (Proposition~\ref{prop:FAR}). \textbf{Nothing in this section gives a fixed-parameter algorithm in $\ell+w$ or a hardness result.}
 
 \paragraph{Setting.}
-Throughout, $H$ is \emph{pair-maximal} (for an arbitrary packing apply Lemma~\ref{lem:MAX} first and read all parameters for $H'$). A pair is \emph{soft} if it is packed and \emph{hard} otherwise; $Q(v)$ is the set of soft partners of $v$, $D\ge\max_v|Q(v)|$ and, for $D=D(H)=2c$, $|Q(v)|\le D$ (Lemma~\ref{lem:deg}). $S$ is an \emph{optimal} solution, $|S|=\OPT(G)$, $C$ is a cluster of $G\sd S$, $U=S\setminus\bigcup_i\pairs(P_i)$, $u=|U|$, $F=U\cap E$, $I=U\setminus E$, and the \emph{pieces} are the components of the graph of kept hard edges, as in Section~\ref{sec:packing}. An \emph{inserted pair} is a pair of $I$: a hard non-edge of $G$ inside one cluster. A hard edge of $G$ inside a cluster is an edge of $G\sd S$ and not in $S$, hence kept; so its ends lie in one piece. Cross pairs between two pieces inside one cluster are soft or inserted (Lemma~\ref{lem:SM}(i)).
-
-\subsection{Clusters of optimal solutions have diameter at most two}
-\begin{lemma}[Half-degree and diameter]\label{lem:half}
-Let $S$ be an optimal solution, $C$ a cluster of $G\sd S$ and $v\in C$. Put $d_C(v)=|N_G(v)\cap C|$.
-\begin{enumerate}
-\item[(a)] $d_C(v)\ge(|C|-1)/2$.
-\item[(b)] If $a,b\in C$ and $ab\notin E$, then some $z\in C\setminus\{a,b\}$ has $az,zb\in E$.
-\end{enumerate}
+$H$ is pair-maximal (for an arbitrary packing read the primed instance), $D(H)=2c$, $S$ is an \emph{optimal} solution with $|S|\le|H|+\ell$, $C$ is a cluster of $G\sd S$, and $U=U^-\cup U^+$, $u=|U|\le\ell$ are as in Section~\ref{sec:optimal}. An \emph{inserted pair} is a pair of $U^+$: a hard non-edge of $G$ inside one cluster. A hard edge of $G$ inside a cluster is an edge of $G\sd S$ and not in $S$, hence \emph{kept}. The \emph{pieces} of $S$ are the connected components of the graph $(V,E_{\mathrm{keep}})$ where $E_{\mathrm{keep}}$ is the set of kept hard edges (isolated vertices are singleton pieces); every piece lies inside one cluster. Pieces depend on $S$, not only on $(G,H)$.
+\begin{lemma}[Cross pairs]\label{lem:cross}
+If $A\ne B$ are pieces contained in a cluster $C$, then every pair $ab$ ($a\in A,b\in B$) is soft or inserted.
 \end{lemma}
 \begin{proof}
-(a) Let $S'=S\sd\{vx:x\in C\setminus\{v\}\}$. Then $G\sd S'$ is $G\sd S$ with $v$ cut off from the rest of $C$, a cluster graph. For $x\in C\setminus\{v\}$ with $vx\in E$ the pair $vx\notin S$ and $vx\in S'$: this adds $d_C(v)$ pairs. For $x\in C\setminus\{v\}$ with $vx\notin E$ the pair is in $S$ and not in $S'$: this removes $|C|-1-d_C(v)$ pairs. All other pairs are unchanged. So $|S'|=|S|+2d_C(v)-(|C|-1)$, and $|S'|\ge|S|$ by optimality.
-
-(b) $N_G(a)\cap C$ and $N_G(b)\cap C$ are subsets of $C\setminus\{a,b\}$ (as $a\notin N(a)$ and $ab\notin E$), a set with $|C|-2$ elements, while $d_C(a)+d_C(b)\ge|C|-1$ by (a). So the two sets intersect.
+Since $a,b\in C$, $ab$ is an edge of $G\sd S$, i.e.\ $ab\in E$ xor $ab\in S$. Suppose $ab$ is hard. If $ab\in E$ then $ab\notin S$, so $ab$ is a kept hard edge and $a,b$ lie in one piece, a contradiction. So $ab\notin E$, hence $ab\in S$, and as $ab$ is hard, $ab\in U^+$.
 \end{proof}
-Lemma~\ref{lem:half} uses neither $H$ nor $\ell$; only local optimality under single-vertex moves is used.
+(Appendix~\ref{app:counting} bounds the sizes of pieces that share a cluster.)
 
 \subsection{The T1/T2 dichotomy}
+For an inserted pair $ab$ with $a,b\in C$, a \emph{witness} is a vertex $z\in C\setminus\{a,b\}$ with $az,zb\in E$.
 \begin{theorem}[T1/T2]\label{thm:T1T2}
-Let $H$ be pair-maximal, $S$ an optimal solution and $ab$ an inserted pair, $a,b\in C$. Then there is $z\in C\setminus\{a,b\}$ with $az,zb\in E$, and exactly one of the following holds.
+Let $H$ be pair-maximal, $S$ optimal and $ab$ an inserted pair, $a,b\in C$. Then $ab$ has a witness, and for every witness $z$ at least one of $az,zb$ is soft. Moreover:
 \begin{enumerate}
-\item[(T1)] $az$ and $zb$ are both soft. Then they are owned by two \emph{distinct} members $P_a\ne P_b$ of $H$, and $z\in V(P_a)\cap V(P_b)$.
-\item[(T2)] Exactly one of $az,zb$ is hard, say $az$ (otherwise swap $a,b$). Then $az$ is a kept hard edge, so $a$ and $z$ lie in one piece, and $zb$ is soft.
+\item[(T1)] If $az$ and $zb$ are both soft, they are owned by two \emph{distinct} members $P_a\ne P_b$ of $H$, and $z\in V(P_a)\cap V(P_b)$.
+\item[(T2)] If $az$ is hard (the case of $zb$ hard is symmetric), then $az$ is a kept hard edge, so $a$ and $z$ lie in one piece, and $zb$ is soft.
 \end{enumerate}
+We say that $ab$ is of \emph{type T1} if some witness has both steps soft, and of \emph{type T2} otherwise; then every witness has exactly one hard step.
 \end{theorem}
+The type is a property of the pair $ab$ (not of a chosen witness): it is T1 iff a witness with two soft steps exists.
 \begin{proof}
-Take $z$ from Lemma~\ref{lem:half}(b). If $az$ and $zb$ were both hard, then $a\,z\,b$ would be an induced $P_3$ with all three pairs hard ($ab$ is hard by assumption), contradicting pair-maximality. If both are soft, let $P_a,P_b$ own $az,zb$. If $P_a=P_b$ then $a,b\in V(P_a)$ and $ab$ is packed, contradicting that $ab$ is hard; so $P_a\ne P_b$, and both contain $z$. If $az$ is hard, it is a hard edge inside $C$, hence kept.
+A witness exists by Lemma~\ref{lem:half}(b). If $az$ and $zb$ were both hard for a witness $z$, then $a\,z\,b$ would be an induced $P_3$ with all three pairs hard ($ab$ is hard by assumption), contradicting pair-maximality. If both are soft, let $P_a,P_b$ own $az,zb$. If $P_a=P_b$ then $a,b\in V(P_a)$ and $ab$ is soft, contradicting that $ab$ is hard; so $P_a\ne P_b$, and both contain $z$. If $az$ is hard, it is a hard edge inside $C$, hence kept.
 \end{proof}
 
 \begin{corollary}[Locality of soft-free merges]\label{cor:softfree}
 Let $H$ be pair-maximal, $S$ optimal, and let $A\ne B$ be pieces inside one cluster $C$ such that \emph{no soft pair joins $A$ and $B$}. Then for every $(a,b)\in A\times B$:
 \begin{enumerate}
-\item[(i)] $ab$ is an inserted pair;
+\item[(i)] $ab$ is an inserted pair, of type T1;
 \item[(ii)] there is $z\in C\setminus(A\cup B)$ with $az,zb$ soft, owned by distinct members $P_a\ne P_b$ with $z\in V(P_a)\cap V(P_b)$;
-\item[(iii)] given $a$, the number of possible partners $b$ in any such pair is at most $D(D-2)=4c(c-1)$, where $D=D(H)=2c$.
+\item[(iii)] given $a$, the number of possible partners $b$ in any such pair is at most $D(H)(D(H)-2)=4c(c-1)$.
 \end{enumerate}
-In particular $a$ and $b$ are at distance exactly $2$ in the soft graph $W$, and $A\cup B$ lies in the ball of radius $4$ of $W$ around any of its vertices.
+In particular $a$ and $b$ are at distance exactly $2$ in the soft graph $\soft$, and $A\cup B$ lies in the ball of radius $4$ of $\soft$ around any of its vertices.
 \end{corollary}
 \begin{proof}
-(i) The cross pair $ab$ is not soft by hypothesis, so it is hard. A hard edge inside $C$ would be kept and would put $a,b$ into one piece. So $ab$ is a hard non-edge in a cluster, i.e.\ inserted.
+(i) The cross pair $ab$ is not soft by hypothesis, so it is hard, hence inserted by Lemma~\ref{lem:cross}. (ii) Apply Theorem~\ref{thm:T1T2} to $ab$ with a witness $z$. Suppose $az$ is hard (the other case is symmetric); then $z$ lies in the piece $A$ of $a$. The pair $zb$ is an edge of $G$ and joins $A$ to $B$: if it were hard it would be kept and $z,b$ would share a piece, contradicting $A\ne B$; if soft it contradicts the hypothesis. So $az$ and $zb$ are both soft, which is (T1). If $z\in A$, then $zb$ (soft) is a soft pair between $A$ and $B$; similarly for $z\in B$ and $az$. So $z\notin A\cup B$. (iii) Fix $a$. By (ii) $z\in Q(a)$: at most $D(H)$ choices. For such $z$, let $P_a$ own $az$. The vertex $b$ satisfies $bz$ soft owned by $P_b\ne P_a$, and $b\notin V(P_a)$ (otherwise $ab\in\pairs(P_a)$ is soft). Now $Q(z)\cap V(P_a)=V(P_a)\setminus\{z\}$ has two elements, so $b\in Q(z)\setminus V(P_a)$, a set of at most $|Q(z)|-2\le D(H)-2$ vertices. Altogether at most $D(H)(D(H)-2)=2c(2c-2)=4c(c-1)$ partners. (For $c=1$ the count is $0$: (T1) needs two members through $z$.)
 
-(ii) Apply Theorem~\ref{thm:T1T2} to $ab$. In case (T2), say $az$ is hard (the other case is symmetric); then $z$ lies in the piece $A$ of $a$. The pair $zb$ is an edge of $G$ and joins $A$ to $B$: if it were hard it would be kept and $z,b$ would share a piece, contradicting $A\ne B$; if soft it contradicts the hypothesis. So (T1) holds. If $z\in A$, then $zb$ (soft) is a soft pair between $A$ and $B$; similarly for $z\in B$ and $az$. So $z\notin A\cup B$.
-
-(iii) Fix $a$. By (ii) $z\in Q(a)$: at most $D$ choices. For such $z$, let $P_a$ own $az$. The vertex $b$ satisfies $bz$ soft owned by $P_b\ne P_a$, and $b\notin V(P_a)$ (otherwise $ab\in\pairs(P_a)$ is packed). Now $Q(z)\cap V(P_a)=V(P_a)\setminus\{z\}$ has two elements, so $b\in Q(z)\setminus V(P_a)$, a set of at most $|Q(z)|-2\le D-2$ vertices. Altogether at most $D(D-2)=2c(2c-2)=4c(c-1)$ partners. (For $c=1$ the count is $0$, as it must be: (T1) needs two members through $z$.)
-
-The distance statement: $ab$ is not soft and $a,z,b$ is a soft path; so $d_W(a,b)=2$. Every $a'\in A$ has $d_W(a',b)=2$ for a fixed $b\in B$, and every $b'\in B$ has $d_W(b',a')=2$; hence all of $A\cup B$ is within distance $4$ of $b$ (and of any other vertex of $A\cup B$, by symmetry).
+The distance statement: $ab$ is not soft and $a,z,b$ is a soft path; so $d_{\soft}(a,b)=2$. Every $a'\in A$ has $d_{\soft}(a',b)=2$ for a fixed $b\in B$, and every $b'\in B$ has $d_{\soft}(b',a')=2$; hence all of $A\cup B$ is within distance $4$ of $b$ (and of any other vertex of $A\cup B$, by symmetry).
 \end{proof}
-\begin{remark}[Scope; what the corollary does not say]\label{rem:scope}
-By Lemma~\ref{lem:SM}, if no soft pair joins $A$ and $B$ then all $|A||B|$ cross pairs are inserted, so $|A||B|\le u\le\ell$. The corollary covers \emph{only} merges without a soft pair between the pieces. Merges in which some cross pairs are soft (the generic case when the pieces are neighbours in the soft graph) are not covered, and Proposition~\ref{prop:cex} shows they can genuinely be of type (T2). Note also that in terms of soft distance the bound in (iii) is the number of vertices at soft distance exactly $2$ with the stated restrictions; the content of (ii) is that in the soft-free case \emph{every} cross pair is at soft distance $2$.
+\begin{remark}[Scope]\label{rem:scope}
+If no soft pair joins $A$ and $B$ then all $|A||B|$ cross pairs are inserted (Lemma~\ref{lem:cross}), so $|A||B|\le u\le\ell$. The corollary covers \emph{only} merges without a soft pair between the pieces. Merges in which some cross pairs are soft (the generic case when the pieces are neighbours in the soft graph) are not covered, and Proposition~\ref{prop:cex} shows they can genuinely be of type T2.
 \end{remark}
 
-\begin{proposition}[Bag locality of type (T1) pairs]\label{prop:bag}
-Let $(T,\{X_t\})$ be a tree decomposition of $I(H)$ of width $w$, let $c=c(H)$, and for a set $Y$ of nodes of $I(H)$ let $N[Y]$ be the set of nodes at distance at most $1$ from $Y$ (a set of \emph{members of $H$}).
+\begin{proposition}[Bag locality of type T1 pairs]\label{prop:bag}
+Let $(\mathcal T,\{\beta_t\})$ be a tree decomposition of $I(H)$ of width $w$, let $c=c(H)$, and for a set $Y$ of nodes of $I(H)$ let $N[Y]$ be the set of nodes at distance at most $1$ from $Y$ (a set of \emph{members of $H$}).
 \begin{enumerate}
-\item[(a)] If $ab$ is an inserted pair of type (T1) with members $P_a,P_b$ as in Theorem~\ref{thm:T1T2}, then $P_a,P_b$ are adjacent in $I(H)$, so some bag $X_t$ contains both and $a,b\in\bigcup_{P\in X_t}V(P)$, a set of at most $3(w+1)$ vertices. Moreover the member through $z$ and every member through $a$ or $b$ lies in $N[X_t]$.
-\item[(b)] $(T,\{N[X_t]\})$ is a tree decomposition of the square $I(H)^2$ of width at most $(w+1)(3c-2)-1\le(w+1)(3w+1)-1$.
+\item[(a)] If $ab$ is an inserted pair of type T1 with a witness $z$ and members $P_a,P_b$ as in Theorem~\ref{thm:T1T2}, then $P_a,P_b$ are adjacent in $I(H)$, so some bag $\beta_t$ contains both and $a,b\in\bigcup_{P\in\beta_t}V(P)$, a set of at most $3(w+1)$ vertices. Moreover the member through $z$ and every member through $a$ or $b$ lies in $N[\beta_t]$.
+\item[(b)] $(\mathcal T,\{N[\beta_t]\})$ is a tree decomposition of the square $I(H)^2$ of width at most $(w+1)(3c-2)-1\le(w+1)(3w+1)-1$.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) $P_a,P_b$ share $z$, so they are adjacent in $I(H)$ and, the edge being covered, lie in a common bag. Every member through $a$ contains $a\in V(P_a)$, hence meets $P_a\in X_t$ and lies in $N[X_t]$; similarly for $b$ and $z$.
+(a) $P_a,P_b$ share $z$, so they are adjacent in $I(H)$ and, the edge being covered, lie in a common bag. Every member through $a$ contains $a\in V(P_a)$, hence meets $P_a\in\beta_t$ and lies in $N[\beta_t]$; similarly for $b$ and $z$.
 
-(b) \emph{Size.} Each member has $3$ vertices, each lying in at most $c$ members, so $I(H)$ has maximum degree at most $3(c-1)$, $|N[X_t]|\le(w+1)(1+3(c-1))=(w+1)(3c-2)$, and $c\le w+1$. \emph{Connectivity.} For a node $v$ let $T_v=\{t:v\in X_t\}$ (a subtree). The nodes $t$ with $v\in N[X_t]$ form $\bigcup_{y\in N[v]}T_y$. Each $T_y$, $y\in N(v)$, meets $T_v$ because the edge $yv$ lies in some bag; a union of subtrees that all meet the connected set $T_v$ is connected. \emph{Edges.} Let $yv$ be an edge of $I(H)^2$. If $y,v$ are adjacent in $I(H)$, any $t\in T_y$ has $y\in X_t$ and $v\in N[y]$. If they have a common neighbour $m$, any $t\in T_m$ has $y,v\in N[m]\subseteq N[X_t]$.
+(b) \emph{Size.} Each member has $3$ vertices, each lying in at most $c$ members, so $I(H)$ has maximum degree at most $3(c-1)$, $|N[\beta_t]|\le(w+1)(1+3(c-1))=(w+1)(3c-2)$, and $c\le w+1$. \emph{Connectivity.} For a node $v$ let $\mathcal T_v=\{t:v\in\beta_t\}$ (a subtree). The nodes $t$ with $v\in N[\beta_t]$ form $\bigcup_{y\in N[v]}\mathcal T_y$. Each $\mathcal T_y$, $y\in N(v)$, meets $\mathcal T_v$ because the edge $yv$ lies in some bag; a union of subtrees that all meet the connected set $\mathcal T_v$ is connected. \emph{Edges.} Let $yv$ be an edge of $I(H)^2$. If $y,v$ are adjacent in $I(H)$, any $t\in\mathcal T_y$ has $y\in\beta_t$ and $v\in N[y]$. If they have a common neighbour $m$, any $t\in\mathcal T_m$ has $y,v\in N[m]\subseteq N[\beta_t]$.
 \end{proof}
-A type (T1) pointer is therefore a pair of vertices inside one bag of a decomposition of bounded width, and, given one end, it has at most $4c(c-1)$ candidate partners in the soft-free case. No identity problem between far bags arises for these pointers.
+A type T1 pair is therefore a pair of vertices inside one bag of a decomposition of bounded width, and, given one end, it has at most $4c(c-1)$ candidate partners in the soft-free case. In particular each \emph{cross pair} $(a,b)$ of a soft-free merge lies in a bag; this does not put the pieces $A,B$ themselves in one bag.
 
-\subsection{Near-twin agreement and anchored candidates}
 \begin{lemma}[Near-twin agreement]\label{lem:near}
 Let $S$ be any solution (optimal or not), $u=|U|$, and let $z\ne b$ lie in one cluster of $G\sd S$. Then
 \[
 A(z,b)=\bigl\{a\notin\{z,b\}:\ az,ab\text{ both hard},\ [az\in E]\ne[ab\in E]\bigr\}
 \]
-has at most $u$ elements. In particular, if $zb$ is soft, the set $M(z,b)=N_h(z)\setminus(N[b]\cup Q(b))$, where $N_h(z)$ is the set of hard neighbours of $z$, satisfies $|M(z,b)|\le u\le|S|-|H|$ and is computable from $G$ and $H$ alone.
+has at most $u$ elements. In particular, if $zb$ is soft, the set $\Theta(z,b)=N_h(z)\setminus(N[b]\cup Q(b))$ satisfies $|\Theta(z,b)|\le u\le|S|-|H|$ and is computable from $G$ and $H$ alone.
 \end{lemma}
 \begin{proof}
-Let $a\in A(z,b)$. Exactly one of $az,ab$ is a hard edge and the other a hard non-edge. If $a$ lies in the cluster of $z,b$, the hard non-edge is a hard non-edge inside a cluster, so it is in $U$. If $a$ lies in another cluster, the hard edge joins two different clusters, so it is deleted and in $U$. Assign to $a$ this pair. Its ends are $a$ and one of $z,b$; since $a\notin\{z,b\}$, the map $a\mapsto$ pair is injective. So $|A(z,b)|\le u$. For the second statement, $a\in M(z,b)$ means $a\ne z$, $az$ a hard edge, $a\notin N[b]$ (so $a\ne b$ and $ab\notin E$) and $ab$ not soft. Thus $a\in A(z,b)$.
+Let $a\in A(z,b)$. Exactly one of $az,ab$ is a hard edge and the other a hard non-edge. If $a$ lies in the cluster of $z,b$, the hard non-edge is a hard non-edge inside a cluster, so it is in $U$. If $a$ lies in another cluster, the hard edge joins two different clusters, so it is deleted and in $U$. Assign to $a$ this pair. Its ends are $a$ and one of $z,b$; since $a\notin\{z,b\}$, the map $a\mapsto$ pair is injective. So $|A(z,b)|\le u$. For the second statement, $a\in\Theta(z,b)$ means $a\ne z$, $az$ a hard edge, $a\notin N[b]$ (so $a\ne b$ and $ab\notin E$) and $ab$ not soft. Thus $a\in A(z,b)$.
 \end{proof}
-Lemma~\ref{lem:near} is the sense in which a far end of a type (T2) pointer is determined by its anchor: in (T2) with $az$ hard and $zb$ soft, $a\in M(z,b)$, a set of at most $\ell$ vertices determined by the \emph{soft} pair $(z,b)$. It does not say where $a$ is relative to $z$ in $I(H)$: $a$ is a hard neighbour of $z$.
+In a type T2 pair with $az$ hard and $zb$ soft, $a\in\Theta(z,b)$: the far end $a$ is one of at most $\ell$ vertices determined by the soft pair $(z,b)$. The lemma does not say where $a$ is relative to $z$ in $I(H)$: $a$ is a hard neighbour of $z$.
 
 \subsection{Merge pointers need not be bag-local}
-\begin{proposition}[Computer-assisted examples]\label{prop:cex}
+\begin{proposition}[Examples of type T2 merges]\label{prop:cex}
 Each of the following instances (graph $G$ on vertices $0,\dots,n-1$ given by its edge list, $H$ given by triples $(x,y,z)$ with centre $y$) has a pair-maximal modification-disjoint packing $H$ and a unique optimal solution, found by enumerating all set partitions of the vertex set.
 \begin{enumerate}
-\item[(a)] $n=7$, $E=\{03,\allowbreak 04,\allowbreak 12,\allowbreak 13,\allowbreak 14,\allowbreak 15,\allowbreak 23,\allowbreak 35,\allowbreak 36\}$, $H=\{(4,1,5),\allowbreak(0,3,2),\allowbreak(1,3,6)\}$. $\OPT=4=|H|+1$; the clusters are $\{0,4\},\{1,2,3,5\},\{6\}$. The pieces of $\{1,2,3,5\}$ are $\{1,2\}$ and $\{3,5\}$ (kept hard edges $12$ and $35$); the cross pairs $13,15,23$ are soft and $25$ is inserted. $Q(2)=\{0,3\}$ and $Q(5)=\{4,1\}$ are disjoint, so the pair $25$, whose ends lie in two different pieces, has no common soft neighbour: it is of type (T2) and not of type (T1).
-\item[(b)] $n=8$, $E=\{02,\allowbreak 06,\allowbreak 14,\allowbreak 16,\allowbreak 17,\allowbreak 23,\allowbreak 25,\allowbreak 37,\allowbreak 45,\allowbreak 46,\allowbreak 47,\allowbreak 57\}$, $H=\{(0,6,4),\allowbreak(3,7,4),\allowbreak(2,5,4),\allowbreak(0,2,3),\allowbreak(6,1,7)\}$. $\OPT=6=|H|+1$; the clusters are $\{0,6\},\{1,4,5,7\},\{2,3\}$; the only unpacked pair of the solution is the inserted pair $15$; the pieces are $\{1,4\}$ and $\{5,7\}$, the cross pairs $17,45,47$ are soft, $Q(1)=\{6,7\}$, $Q(5)=\{2,4\}$.
-\item[(c)] $n=6$, $E=\{02,\allowbreak 03,\allowbreak 04,\allowbreak 05,\allowbreak 12,\allowbreak 13,\allowbreak 15,\allowbreak 25,\allowbreak 35,\allowbreak 45\}$, $H=\{(3,5,4),\allowbreak(0,2,1)\}$. The unique optimum has clusters $\{0,1,2,3,5\},\{4\}$ and $\OPT=4$; it contains the inserted pair $23$ (type (T2): $30$ hard and kept, $02$ soft), but $2$ and $3$ lie in the \emph{same} piece (the kept hard edges $03,05,13,15,25$ connect $\{0,1,2,3,5\}$).
+\item[(a)] $n=7$, $E=\{03,\allowbreak 04,\allowbreak 12,\allowbreak 13,\allowbreak 14,\allowbreak 15,\allowbreak 23,\allowbreak 35,\allowbreak 36\}$, $H=\{(4,1,5),\allowbreak(0,3,2),\allowbreak(1,3,6)\}$. $\OPT=4=|H|+1$; the clusters are $\{0,4\},\{1,2,3,5\},\{6\}$. The pieces of $\{1,2,3,5\}$ are $\{1,2\}$ and $\{3,5\}$ (kept hard edges $12$ and $35$); the cross pairs $13,15,23$ are soft and $25$ is inserted. $Q(2)=\{0,3\}$ and $Q(5)=\{4,1\}$ are disjoint, so the pair $25$ has no witness with two soft steps: it is of type T2.
+\item[(b)] $n=8$, $E=\{02,\allowbreak 06,\allowbreak 14,\allowbreak 16,\allowbreak 17,\allowbreak 23,\allowbreak 25,\allowbreak 37,\allowbreak 45,\allowbreak 46,\allowbreak 47,\allowbreak 57\}$, $H=\{(0,6,4),\allowbreak(3,7,4),\allowbreak(2,5,4),\allowbreak(0,2,3),\allowbreak(6,1,7)\}$. $\OPT=6=|H|+1$; the clusters are $\{0,6\},\{1,4,5,7\},\{2,3\}$; the only hard edit of the solution is the inserted pair $15$; the pieces are $\{1,4\}$ and $\{5,7\}$, the cross pairs $17,45,47$ are soft, $Q(1)=\{6,7\}$, $Q(5)=\{2,4\}$, so $15$ has no witness with two soft steps and is of type T2.
+\item[(c)] $n=6$, $E=\{02,\allowbreak 03,\allowbreak 04,\allowbreak 05,\allowbreak 12,\allowbreak 13,\allowbreak 15,\allowbreak 25,\allowbreak 35,\allowbreak 45\}$, $H=\{(3,5,4),\allowbreak(0,2,1)\}$. The unique optimum has clusters $\{0,1,2,3,5\},\{4\}$ and $\OPT=4$; it contains the inserted pair $23$ (type T2: $30$ hard and kept, $02$ soft), but $2$ and $3$ lie in the \emph{same} piece (the kept hard edges $03,05,13,15,25$ connect $\{0,1,2,3,5\}$).
 \end{enumerate}
-Consequently ``every inserted pair with both ends in $V(H)$ has a common soft neighbour'' is false, and the statement of Corollary~\ref{cor:softfree} cannot be extended to merges of two pieces that are joined by a soft pair: (a) and (b) are such merges, with inserted pairs of type (T2).
+Consequently ``every inserted pair with both ends in $V(H)$ has a common soft neighbour'' is false, and Corollary~\ref{cor:softfree} cannot be extended to merges of two pieces that are joined by a soft pair: (a) and (b) are such merges, with inserted pairs of type T2. Example (c) is T2 but intra-piece.
 \end{proposition}
 \begin{proof}
-Direct enumeration (all $877$, $4140$ and $203$ set partitions of $7$, $8$ and $6$ vertices respectively) of the cost $|\{ab:\ (ab\in E)\neq(a,b\text{ in one block})\}|$, together with a check that each triple of $H$ is an induced $P_3$, that the triples have pairwise disjoint pair sets and that no induced $P_3$ of $G$ has all pairs unpacked. Examples (a) and (c) were found by an independent search in the audit of our notes, (b) in the notes themselves; all three were re-checked for this paper. The structural claims (pieces, soft pairs, $Q$) are read off from the lists above.
+Direct enumeration (all $877$, $4140$ and $203$ set partitions of $7$, $8$ and $6$ vertices respectively) of the cost $|\{ab:\ (ab\in E)\neq(a,b\text{ in one block})\}|$, together with a check that each triple of $H$ is an induced $P_3$, that the triples have pairwise disjoint pair sets and that no induced $P_3$ of $G$ has all pairs hard. The structural claims (pieces, soft pairs, $Q$) are read off from the lists above. In (a) and (b), every witness $z$ of the inserted pair has $az$ or $zb$ hard because $Q(a)\cap Q(b)=\emptyset$, so the pair is not of type T1.
 \end{proof}
-\begin{remark}[Size of the examples]\label{rem:smallest}
-An exhaustive search over all labelled graphs and all pair-maximal packings with $n\le5$ found no instance in which every optimum has an inserted pair with both ends in $V(H)$ and no common soft neighbour (computer evidence of the audit; not a theorem). Example (c) ($n=6$) is intra-piece; the smallest merge-type example found has $n=7$ (none in $7{,}509$ random draws at $n=6$, $9$ in $7{,}815$ at $n=7$).
-\end{remark}
 
-\begin{remark}[Far type (T2) evidence is intra-piece]\label{rem:far}
-In the notes' experiments with $H$ equal to three vertex-disjoint $P_3$'s ($c=1$, $n=9$) there are instances in which every optimum contains an inserted pair between vertices of different members of $H$, hence at infinite distance in $I(H)$ (computer observation, reproduced in the audit). In the instance examined in the audit (inserted pair $58$ in every one of its six optima) the two ends lie in the \emph{same piece}: the cluster is $\{4,5,7,8\}$ with kept hard edges $47,48,57$. The pair is determined by hard connectivity, i.e.\ by $G$, and is not a free pointer between two pieces. In the audit's search ($n=9$, three disjoint $P_3$'s, $324$ valid random instances) no instance had a merge-type inserted pair between different members in every optimum. So this evidence shows non-locality only for intra-piece insertions; \emph{whether merge pointers between pieces can be forced at unbounded $I(H)$-distance is open} (neither proved nor refuted; larger instances than $n=9$, $c=1$ would be needed).
-\end{remark}
-
-\subsection{Computer evidence}
-For every set partition of $n=6,\dots,9$ vertices of about $1{,}900$ pair-maximal instances (random, noisy clusters, hubs, sparse, algebraic gadgets, random and overlapping maximal packings), and for $\approx5{,}700$ optimal partitions found by an ILP solver for $n=11,12,13$, the notes' checker tested Theorem~\ref{thm:T1T2}, Corollary~\ref{cor:softfree} and Lemma~\ref{lem:near}: no violations among $7{,}082+5{,}700$ optimal partitions. As a control, on partitions of cost $\OPT+1$ and $\OPT+2$ the conclusions of Lemma~\ref{lem:half}, Theorem~\ref{thm:T1T2} and Corollary~\ref{cor:softfree} fail thousands of times, while the purely counting Lemma~\ref{lem:near} never fails, as it should. An independently written checker (audit) confirmed Lemma~\ref{lem:half} and Theorem~\ref{thm:T1T2} on all optimal partitions of random pair-maximal instances for $n=6,7,8$ ($744+517+137$ optimal partitions), Lemma~\ref{lem:near} on $511{,}560$ pairs $(z,b)$ over all partitions of $n=7$, and the decomposition of Proposition~\ref{prop:bag}(b) on $4{,}000$ random triple systems. This is evidence; the proofs above are the justification.
-
-\subsection{What remains}\label{sec:left}
-Every inserted pair of an optimal solution is of type (T1) or (T2) (Theorem~\ref{thm:T1T2}). What is established is the following.
-\begin{itemize}
-\item Type (T1) pairs, in particular all cross pairs of soft-free merges, are bag-local with an explicit bound on the number of partners (Corollary~\ref{cor:softfree}, Proposition~\ref{prop:bag}).
-\item Merges of two pieces joined by a soft pair can be of type (T2) (Proposition~\ref{prop:cex}), so the closed statement is \emph{soft-free merges only}; the claim ``tiny pointers are local'' is not established in general.
-\end{itemize}
-What remains open:
+\subsection{An obstruction: deleted hard edges between far members}
+An optimum may be forced to delete a hard edge whose ends lie in members that are far apart in $I(H)$.
+\begin{proposition}[FAR]\label{prop:FAR}
+For $m\ge3$ let $G_m$ be the path $0,1,\dots,2m$ with the extra edge $e^*=\{1,2m-1\}$ and $H_m=\{P_i=(2i,2i+1,2i+2):0\le i<m\}$ (centres $2i+1$). Then:
 \begin{enumerate}
-\item[(R1)] \emph{Type (T2) pointers.} By Lemma~\ref{lem:near} the far end $a$ of a (T2) pair is one of at most $\ell$ vertices fixed by the soft anchor $(z,b)$, but $a$ is at hard distance $1$ from $z$, so it can be far from $z$ in $I(H)$ (the hard edge $az$ may join vertices of far-apart members). Whether the interaction of these far ends with the rest of the solution can be handled inside a bounded-width decomposition is open. (A conjecture that (T2) pointers can be absorbed into the base CSP of Section~\ref{sec:l0}--\ref{sec:excess} by a per-anchor unary constraint plus at most $\ell$ extra pairs is untested; we state it only as a possibility.)
-\item[(R2)] \emph{Deleted hard edges.} A deleted hard edge between far members is the same kind of object (a hard edge used as a tunnel); this section says nothing about it. The example of Section~\ref{sec:dproute} (Proposition~\ref{prop:expander}) shows that free hard edges between far vertices cannot be ignored when one tries to build a single decomposition for all purposes.
-\item[(R3)] \emph{The missing reduction lemma} (Conjecture~\ref{conj:ML} in Section~\ref{sec:dproute}).
+\item[(i)] $H_m$ is a pair-maximal modification-disjoint packing, $I(H_m)$ is a path on $m$ nodes ($c=2$, $w=1$);
+\item[(ii)] $\OPT(G_m)=m+1=|H_m|+1$;
+\item[(iii)] in \emph{every} optimum the hard edge $e^*$ is deleted. Its ends lie in $P_0$ and $P_{m-1}$, at distance $m-1$ in $I(H_m)$.
 \end{enumerate}
-Even a complete solution of (R1) and (R2) would not decide Open Problem~\ref{op:main} unless it also handles the position of $\le\ell$ bounded pieces, which Section~\ref{sec:dproute} reduces to an $n^{\ell}$ guess.
+\end{proposition}
+\begin{proof}
+(i) The chord joins $1$ and $2m-1$, which are $2m-2\ge4$ apart, so no triple $P_i$ contains both of them and each $P_i$ is an induced $P_3$; the pair sets are disjoint. Every path edge lies in some $P_i$ and is soft, so $e^*$ is the only hard edge. An induced $P_3$ has two edges, at most one of which is $e^*$, so it contains a soft pair: $H_m$ is pair-maximal.
 
-\begin{remark}[Heuristic, not a theorem: why a hardness proof must use (T2) or deletions]\label{rem:hardheur}
-Since (T1) pairs are bag-local, any W[1]-hardness reduction for $\ell+w$ would have to transport information through (T2) pairs or deleted hard edges. A kept hard edge $az$ with $a$ far from $z$ can force the final status of the soft pairs at $a$ to agree with those at $z$, i.e.\ it realises \emph{equality} of colours between far positions; Grid Tiling needs exactly equalities between neighbouring cells together with local membership constraints. We could not complete such a construction: an inactive anchor must cost nothing, $|M(z,b)|\le\ell$ forces each anchor's far end to be unique (so the colour would have to be encoded by \emph{which} anchor is active), and the independence-number bound of Lemma~\ref{lem:HUB} must not be violated by many anchors that share hard neighbours. This is an unverified idea and is listed only to say where a hardness proof would have to look.
-\end{remark}
+(ii) $|E|=2m+1$ and $G_m$ is connected with $2m+1$ vertices, hence unicyclic (the unique cycle is on $1,\dots,2m-1$, of length $\ge5$). An induced subgraph on $s$ vertices has $e\le s-1$ edges unless it contains the cycle, in which case $s\ge5$ and $e\le s$. With $f(C)=\binom{|C|}2-2e(C)$ this gives $f(C)\ge(s-1)(s-4)/2\ge-1$ in the first case, with equality iff $s\in\{2,3\}$ and $G[C]$ is connected, and $f(C)\ge s(s-5)/2\ge0$ in the second. Clusters with $f=-1$ have $\ge2$ vertices, so there are at most $m$ of them, and by Lemma~\ref{lem:CP} $\mathrm{cost}\ge(2m+1)-m=m+1$. The partition $\{0,1\},\{2,3\},\dots,\{2m-2,2m-1\},\{2m\}$ has cost $m+1$.
+
+(iii) In an optimum $\sum f=-m$, so exactly $m$ clusters have $f=-1$ (each connected, of size $2$ or $3$) and all others have $f=0$; at most one vertex lies outside the $f=-1$ clusters. A cluster with $f=-1$ that contains the pendant vertex $0$ contains its only neighbour $1$; likewise for $2m$ and $2m-1$. Suppose $1,2m-1$ lie in one cluster $C^*$. If $f(C^*)=-1$ and $|C^*|=2$, then $C^*=\{1,2m-1\}$ contains no pendant, and both pendants are outside the $f=-1$ clusters: two vertices outside, a contradiction. If $f(C^*)=-1$ and $|C^*|=3$, it contains at most one pendant; any pendant not in $C^*$ has its only neighbour in $C^*$ and lies in no other $f=-1$ cluster, so exactly one pendant is outside and the remaining $2m-3$ vertices must form $m-1$ clusters of size $\ge2$, impossible. If $f(C^*)\ge0$, at most $2m-1$ vertices remain for $m$ clusters of size $\ge2$. So $1$ and $2m-1$ are in different clusters, i.e.\ $e^*$ is deleted.
+\end{proof}
+So the pointer realised by the deleted edge $e^*$ joins members at distance $m-1$ in $I(H_m)$: its two ends are not adjacent in any $I(H)^r$ with $r<m-1$, and a decomposition of $I(H)^r$ has no reason to put them in one bag. Corollary~\ref{cor:cand} bounds the candidates for the \emph{other} end of $e^*$ (at most $D+\ell$ hard neighbours), not the position of the first. For $m=3,4,5$ a computer enumeration gives $\OPT=m+1$ with $7,9,11$ optima, each separating the ends of $e^*$. Appendix~\ref{app:conflicts} shows that the idea of putting ``locally bad'' members into every bag does not repair this for distances $2$ and $3$ (Proposition~\ref{prop:NFbad}); for unbounded distance this is open.
