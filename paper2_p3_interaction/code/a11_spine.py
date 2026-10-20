@@ -50,28 +50,29 @@ def build(F, nv):
     for i in range(N + 1): H += [P[i], X[i]]
     return g, H, dict(N=N, idx=idx, z=z, y=y, P=P, X=X, order=order)
 
-for name, F, nv in (('triangle', [(0, 1), (1, 2), (2, 0)], 3), ('K4', [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], 4),
-                    ('K33', [(0, 3), (0, 4), (0, 5), (1, 3), (1, 4), (1, 5), (2, 3), (2, 4), (2, 5)], 6)):
-    g, H, d = build(F, nv)
-    N, idx, y = d['N'], d['idx'], d['y']
-    print(f'== Sp({name}): n={g.n} N={N} |H|={len(H)} valid={is_packing(g, H)} pairmax={pair_maximal(g, H)} tw(I(H))={tw_exact(I_graph(H)) if len(H)<=16 else "n/a"}')
-    # explicit partition of paper: cliques K+_v, z alone, y into K+_*  -> cost
-    # rebuild cliques as components of 'clique edges': use partition from edit count directly
-    # cost via ILP check
-    opt, x = opt_ilp(g) if g.n <= 31 else (None, None)
-    print('   OPT(ILP) =', opt, ' |H|+1 =', len(H) + 1)
-    # H' = H - X_0 + Y + Z
-    u0, b0, u1 = d['X'][0]
-    Y = (y, u0, b0)
-    Z = (b0, u1, idx(2, 1))
-    Hp = [t for t in H if t != d['X'][0]] + [Y, Z]
-    print('   Y,Z induced P3 and H\' modification-disjoint packing:', is_packing(g, Hp), ' |H\'| =', len(Hp), ' tw(I(H\')) =', tw_exact(I_graph(Hp)) if len(Hp) <= 17 else 'n/a')
-    # local hub claim: Ball(y) cap V(H) within X_0 u P_0 which share b_0
-    ball = set(); fr = {y}
-    for _ in range(2):
-        fr = {w for v in fr for w in g.adj[v]} - ball - {y}; ball |= fr
-    print('   Ball(y,2) =', sorted(ball), ' = {u0,c0,b0}:', ball == {u0, idx(2, 0), b0}, ' X0&P0 share b0:', set(d['X'][0]) & set(d['P'][0]) == {b0})
-    # hard degrees <= 7
-    own = soft_owner(H)
-    hd = [sum(1 for w in g.adj[v] if K(v, w) not in own) for v in range(g.n)]
-    print('   max hard degree', max(hd))
+if __name__ == '__main__':
+    for name, F, nv in (('triangle', [(0, 1), (1, 2), (2, 0)], 3), ('K4', [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)], 4),
+                        ('K33', [(0, 3), (0, 4), (0, 5), (1, 3), (1, 4), (1, 5), (2, 3), (2, 4), (2, 5)], 6)):
+        g, H, d = build(F, nv)
+        N, idx, y = d['N'], d['idx'], d['y']
+        print(f'== Sp({name}): n={g.n} N={N} |H|={len(H)} valid={is_packing(g, H)} pairmax={pair_maximal(g, H)} tw(I(H))={tw_exact(I_graph(H)) if len(H)<=16 else "n/a"}')
+        # explicit partition of paper: cliques K+_v, z alone, y into K+_*  -> cost
+        # rebuild cliques as components of 'clique edges': use partition from edit count directly
+        # cost via ILP check
+        opt, x = opt_ilp(g) if g.n <= 31 else (None, None)
+        print('   OPT(ILP) =', opt, ' |H|+1 =', len(H) + 1)
+        # H' = H - X_0 + Y + Z
+        u0, b0, u1 = d['X'][0]
+        Y = (y, u0, b0)
+        Z = (b0, u1, idx(2, 1))
+        Hp = [t for t in H if t != d['X'][0]] + [Y, Z]
+        print('   Y,Z induced P3 and H\' modification-disjoint packing:', is_packing(g, Hp), ' |H\'| =', len(Hp), ' tw(I(H\')) =', tw_exact(I_graph(Hp)) if len(Hp) <= 17 else 'n/a')
+        # local hub claim: Ball(y) cap V(H) within X_0 u P_0 which share b_0
+        ball = set(); fr = {y}
+        for _ in range(2):
+            fr = {w for v in fr for w in g.adj[v]} - ball - {y}; ball |= fr
+        print('   Ball(y,2) =', sorted(ball), ' = {u0,c0,b0}:', ball == {u0, idx(2, 0), b0}, ' X0&P0 share b0:', set(d['X'][0]) & set(d['P'][0]) == {b0})
+        # hard degrees <= 7
+        own = soft_owner(H)
+        hd = [sum(1 for w in g.adj[v] if K(v, w) not in own) for v in range(g.n)]
+        print('   max hard degree', max(hd))
