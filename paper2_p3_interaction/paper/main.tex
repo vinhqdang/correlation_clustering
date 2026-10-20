@@ -4,6 +4,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage[margin=1in]{geometry}
 \usepackage{array}
+\usepackage{longtable}
 \usepackage{hyperref}
 \emergencystretch=1.5em
 \newtheorem{theorem}{Theorem}[section]
@@ -40,6 +41,8 @@ Under ETH there is no $2^{o(w)}n^{O(1)}$ algorithm even for $\ell=0$, and neithe
 If the components of $I(H)$ have bounded size, the problem is fixed-parameter tractable in $\ell$ and has a kernel.
 For pair-maximal packings we give a normal form of optimal solutions, a dichotomy of inserted pairs into local and non-local ones, and an instance family in which an optimum must delete an edge between members at arbitrary distance in $I(H)$.
 We isolate a configuration, three pairs of a vertex triple packed by three distinct members (a \emph{soft triangle}), as the source of difficulty: without soft triangles the set of zero-excess solutions is closed under every majority operation, so $\ell=0$ is polynomial for every $c$ and $w$, lock cores have at most two anchors, a far-lift model of the excess is fixed-parameter tractable, and on forests the problem is fixed-parameter tractable in $\ell$ conditionally on a bounded-certificate hypothesis; with soft triangles, minimal certificates of the natural branching scheme have unbounded size.
+The parameters belong to the packing, not to the graph. Exchanging one packed $P_3$ for an induced $P_3$ keeps the size and raises $w$ by at most one, and we use such exchanges to analyse the two obstructions above: the far-deletion family has intrinsic excess one, but after one exchange its intersection graph is a cycle and its only hard edit is at an uncovered vertex, and the spine family, whose vertex graph has unbounded treewidth, has excess zero after one exchange and one augmentation.
+We give a one-sided algorithm in time $5^{w+1}(w+\ell)^{O(\ell w)}n^{O(1)}$ that is exact whenever some optimum has only hard edits that are co-bagged or at local hubs, show that no polynomial procedure can output a repacking with excess and width bounded in $\ell$ alone unless $\mathrm P=\mathrm{NP}$, and reduce fixed-parameter tractability to the problem of locating the repacking.
 Whether the problem is fixed-parameter tractable in $\ell+w$ is open.
 \end{abstract}
 \input{sections/intro}
@@ -51,6 +54,7 @@ Whether the problem is fixed-parameter tractable in $\ell+w$ is open.
 \input{sections/nl}
 \input{sections/locality}
 \input{sections/soft}
+\input{sections/repack}
 \input{sections/open}
 \appendix
 \input{sections/app_structure}
@@ -60,6 +64,7 @@ Whether the problem is fixed-parameter tractable in $\ell+w$ is open.
 \input{sections/app_spine}
 \input{sections/app_tunnels}
 \input{sections/app_soft}
+\input{sections/app_repack}
 \input{sections/app_checks}
 \bibliographystyle{plain}
 \bibliography{refs}

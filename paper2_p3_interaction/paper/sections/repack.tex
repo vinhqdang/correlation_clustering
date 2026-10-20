@@ -1,0 +1,121 @@
+\section{Repacking: the parameters belong to the packing}\label{sec:repack}
+The pair $(\ell,w)$ is a property of the packing $H$, not of the graph $G$. If $H^*$ is another modification-disjoint packing with $|H^*|\ge|H|$, then $(G,H^*,\ell^*)$ with $\ell^*=|H|+\ell-|H^*|\le\ell$ is an equivalent instance (the case $H^*=H\cup M$ is Lemma~\ref{lem:MAX}), with a new excess and a new width $\tw(I(H^*))$. The \emph{intrinsic excess} $\OPT(G)-\nu_{\mathrm{mod}}(G)$, where $\nu_{\mathrm{mod}}(G)$ is the maximum size of a modification-disjoint packing, is a lower bound for $\ell^*$ whatever $H^*$ is. This section asks which of the obstructions of Sections~\ref{sec:locality} and~\ref{sec:soft} survive when $H$ may be replaced. The answer is a precise map of the remaining difficulty, not an algorithm: both known obstruction families to locality are artifacts of the choice of $H$ (Propositions~\ref{prop:rpFAR} and~\ref{prop:rpSp}), a one-sided fixed-parameter algorithm exists for a class of instances that contains them after repacking (Theorem~\ref{thm:rpPL}), no polynomial repacking procedure can have bounds in $\ell$ alone (Theorem~\ref{thm:rpN}), and what remains is to \emph{locate} the repacking (Open Problem~\ref{op:LOC}). Fixed-parameter tractability in $\ell+w$ stays open. All proofs are in Appendix~\ref{app:repack}.
+
+\paragraph{Conventions.}
+A vertex is \emph{covered} if it lies in $V(H)$ and \emph{uncovered} otherwise (the set $R$ of Appendix~\ref{app:structure}). $H$ is pair-maximal unless said otherwise, $S$ is an optimal solution with $|S|\le|H|+\ell$, and $U$ is its set of hard edits, so $|U|\le\ell$ (Lemma~\ref{lem:decomp}). $\mathrm{Ball}(x)$ is the ball of radius $2$ around $x$ in $G[L_B]$ and $D,B,Z,L_B$ are as in Section~\ref{sec:optimal}. For a tree decomposition $(\mathcal T,\{\beta_t\})$ of $I(H)$ put $X_t=\bigcup_{P\in\beta_t}V(P)$ and $\mathcal T_v=\{t:v\in X_t\}$ for $v\in V(H)$. The members through $v$ pairwise intersect, so their subtrees pairwise meet and $\mathcal T_v$ is a subtree (Helly). Two covered vertices $a,b$ are \emph{co-bagged} if $\mathcal T_a\cap\mathcal T_b\neq\emptyset$. Statements labelled ``computer'' are finite checks that support, and do not prove, the claim; they are listed in Appendix~\ref{app:repack}.
+
+\subsection{An exchange calculus}
+\begin{lemma}[Exchange]\label{lem:rpex}
+Let $H$ be a packing, $Q\in H$, and $T$ an induced $P_3$ of $G$ whose three pairs are not soft pairs of $H-Q$. Then $H'=(H-Q)+T$ is a packing with $|H'|=|H|$, and $I(H')-T=I(H)-Q$; hence $\tw(I(H'))\le\tw(I(H))+1$. If $Q_1,\dots,Q_j\in H$ are distinct and $T_1,\dots,T_j$ are induced $P_3$'s that are pairwise pair-disjoint and whose pairs are not soft pairs of $H-\{Q_1,\dots,Q_j\}$, the exchanged packing has size $|H|$ and $\tw\le\tw(I(H))+j$. The packing $H'$ need not be pair-maximal. If $(G,H,\ell)$ is a YES instance, a maximal family $M$ hard over $H'$ has $|M|\le\ell$, and $H''=H'\cup M$ is a pair-maximal packing with $\tw(I(H''))\le\tw(I(H))+1+|M|\le w+1+\ell$ and $(G,H'',\ell-|M|)$ equivalent to $(G,H,\ell)$.
+\end{lemma}
+Simultaneous exchanges need the $T_i$ to be pairwise pair-disjoint; sequential exchanges, each applied to the current packing, need no such condition. In a computer test (random graphs with $6\le n\le10$, $27{,}177$ single exchanges $H-Q+T$ with $T$ a witness of a hard edit of an optimum) the exchanged packing was a packing of size $|H|$ with $\tw(I(H'))\le\tw(I(H))+1$ in all cases, and it was pair-maximal in $59\%$ of them only: the two other pairs of $Q$ become hard and can complete an all-hard induced $P_3$.
+
+\begin{lemma}[Closed twins]\label{lem:rptwin}
+Let $S$ be an optimal solution and $N[a]=N[b]$ in $G$. Then $a$ and $b$ lie in one cluster of $G\sd S$.
+\end{lemma}
+\begin{corollary}[Hard edits lie in induced $P_3$'s]\label{cor:rpP3}
+Every edit of an optimal solution $S$ lies in an induced $P_3$ of $G$. For an inserted pair $ab$ one is $(a,z,b)$ with $z$ as in Lemma~\ref{lem:half}(b); for a deleted pair $ab$ one is $(x,a,b)$ or $(x,b,a)$ with $x$ adjacent to exactly one of $a,b$.
+\end{corollary}
+This is the standard fact that optimal solutions of Cluster Editing edit only pairs lying in an induced $P_3$; we need the form with a witness.
+
+\begin{definition}[Bridged pairs]\label{def:rpbridge}
+A hard pair $\{a,b\}$ with $a,b\in V(H)$ is \emph{bridged} if $a$ and $b$ have a common neighbour $z$ in the soft graph $\soft$. Equivalently, there are members $P\ni a$, $P'\ni b$ with $P\neq P'$ and $V(P)\cap V(P')\neq\emptyset$. Then $P,P'$ are adjacent in $I(H)$, so $a,b$ are co-bagged in \emph{every} tree decomposition of $I(H)$. Inserted pairs of type T1 (Theorem~\ref{thm:T1T2}) are bridged.
+\end{definition}
+
+\begin{lemma}[Witness case split]\label{lem:rpwit}
+Let $H$ be pair-maximal, $S$ optimal and $e=\{a,b\}\in U$. Then $e$ lies in an induced $P_3$ $T$ of $G$ (a \emph{witness}), and every witness has exactly one or two soft pairs. Let $z$ be the vertex of $T$ opposite to $e$; it is the centre of $T$ if $e$ is inserted and an end of $T$ if $e$ is deleted.
+\begin{enumerate}
+\item[(a)] If some witness has two soft pairs, they are $\{a,z\}$ and $\{b,z\}$, owned by two distinct members $P\ni a$ and $P'\ni b$ with $z\in V(P)\cap V(P')$; so $e$ is bridged.
+\item[(b)] Otherwise every witness has exactly one soft pair $s$, owned by some $Q$, and $(H-Q)+T$ is a packing of the same size in which $e$ is soft (Lemma~\ref{lem:rpex}); we call $e$ \emph{absorbable}.
+\end{enumerate}
+\end{lemma}
+The two cases are a case split, not a dichotomy: an edit can have witnesses of both kinds (in a computer test, $2{,}699$ of $6{,}595$ hard edits). The shared vertex $z$ is the centre of $T$ only for inserted edits; for a deleted edit $e=ab$ with witness $(x,a,b)$ the two soft pairs $xa,xb$ share the end $x$. The conclusion of (a) is the same in both cases.
+
+\begin{corollary}[Non-bridged edits are absorbable]\label{cor:rpabs}
+Let $H$ be pair-maximal, $S$ optimal and $e\in U$ not bridged (this includes every edit with an uncovered end). Then there is $Q\in H$ and an induced $P_3$ $T\supset e$ such that $H'=(H-Q)+T$ is a packing of size $|H|$ in which $e$ is soft, with $\tw(I(H'))\le\tw(I(H))+1$. The price is that the pairs of $Q$ other than $s$ become hard and may carry edits of $S$ (Lemma~\ref{lem:rpdisp}).
+\end{corollary}
+
+\begin{lemma}[Uncovered ends]\label{lem:rpunc}
+Let $H$ be pair-maximal and $S$ optimal. No hard edit of $S$ has both ends uncovered.
+\end{lemma}
+So every hard edit of an optimum has at least one covered end; with Corollary~\ref{cor:cand}, its other end is covered or is an uncovered vertex within $\mathrm{Ball}$-distance $2$ of it.
+
+\begin{lemma}[Displacement, single-edit case]\label{lem:rpdisp}
+Let $H$ be pair-maximal, $S$ optimal, $e=ab\in U$ inserted, $z$ a witness vertex in the cluster of $a,b$ (Lemma~\ref{lem:half}(b)) such that $T=(a,z,b)$ has exactly one soft pair $az$, owned by $Q=(a,z,r)$ (as a vertex set $\{a,z,r\}$). Then $S$ contains exactly one pair $f$ of $\pairs(Q)$, namely one of $ar,zr$. After the exchange of Lemma~\ref{lem:rpex}, the set of hard edits relative to $(H-Q)+T$ is $(U-e)+f$. The pair $f$ has the ends $r$ and one vertex of $T$. If $r$ lies in no member of $H-Q$, then $r$ is uncovered after the exchange; otherwise $f$ may again be non-bridged (``the defect moves'').
+\end{lemma}
+In a computer test of $5{,}027$ inserted edits of this form, $r$ became uncovered in $1{,}650$ cases and stayed covered in $3{,}377$ ($67\%$). So iteration of Lemma~\ref{lem:rpdisp} is the typical case. Iterating gives an alternating chain of exchanges; whether it terminates at an uncovered end or a bridged pair is \textbf{open} (Conjecture~\ref{conj:rpC1}).
+
+\begin{lemma}[Hard components of uncovered vertices]\label{lem:rpout}
+Let $H$ be pair-maximal and $r$ uncovered. The hard component of $r$ is $N[r]$, with $N_h(r)=N(r)$, and every pair inside $N[r]$ is a hard edge or a soft pair. In particular two vertices of $N[r]$ that are not co-bagged are joined by a hard edge.
+\end{lemma}
+A computer test of $6{,}200$ uncovered vertices of random pair-maximal packings found no violation.
+
+\subsection{The two known obstructions are artifacts of the packing}
+\begin{proposition}[FAR after one exchange]\label{prop:rpFAR}
+Let $G_m$, $H_m$ be as in Proposition~\ref{prop:FAR}, $m\ge3$.
+\begin{enumerate}
+\item[(a)] $\nu_{\mathrm{mod}}(G_m)=m$ and $\OPT(G_m)=m+1$. So the excess $1$ is intrinsic: $\ell^*\ge1$ for every packing.
+\item[(b)] $H^*=\{P_0,\dots,P_{m-2},T\}$ with $T=(1,2m-1,2m-2)$ (centre $2m-1$) is a pair-maximal packing of size $m$, equal to $H_m-P_{m-1}+T$, and $I(H^*)$ is a cycle on $m$ nodes, so $\tw(I(H^*))=2$.
+\item[(c)] The optimum $\{0,1\},\{2,3\},\dots,\{2m-2,2m-1\},\{2m\}$ has cost $m+1$, and relative to $H^*$ its only hard edit is the deleted pair $\{2m-1,2m\}$, whose end $2m$ is uncovered. The chord $e^*$ is a soft pair of $T$. The vertex $2m$ is a local hub in every decomposition, since $\mathrm{Ball}(2m)\cap V(H^*)\subseteq V(T)$.
+\end{enumerate}
+\end{proposition}
+So the far pointer of Proposition~\ref{prop:FAR} becomes a hub edit at one uncovered vertex. By Proposition~\ref{prop:FAR}(iii) the original packing $H_m$ has an optimum-forced deletion at distance $m-1$ in $I(H_m)$; the point of (a) is that the repacking does not remove the excess, only the non-locality. Computer: for $m=3,\dots,9$ ($n=7,\dots,19$) validity, pair-maximality, $\nu_{\mathrm{mod}}=m$ and $\OPT=m+1$ (MILP; enumeration for $m\le5$), the cycle and the hard edit were confirmed.
+
+\begin{proposition}[The spine family after one exchange and one augmentation]\label{prop:rpSp}
+Let $\mathrm{Sp}(F)$, $H$, $\ell=1$ be as in Proposition~\ref{prop:five} and put $Y=(y,u_0,b_0)$, $Z=(b_0,u_1,c_1)$, $H'=(H-X_0)+Y+Z$. Then $H'$ is a packing with $|H'|=|H|+1$, hence $\OPT=|H|+1=|H'|$: the excess is $0$ after repacking. Moreover $\tw(I(H'))\le2$. Also, the original packing $H$ lies in the class $\mathcal S$ of Definition~\ref{def:rpclass} (with $w=1$, $\ell=1$): the unique hard edit $\{y,b_0\}$ of the optimum of Proposition~\ref{prop:five}(S2) is a hub edit at the local hub $y$.
+\end{proposition}
+This gives a two-line proof of $\OPT\ge|H|+1$ for $\mathrm{Sp}(F)$: $H'$ is a packing of size $|H|+1$, and Lemma~\ref{lem:decomp} applies; it replaces the case analysis (S6) for this purpose (S6 itself, irreducibility of pair-closed unions, is a different statement and is not affected). Computer: validity, pair-maximality of $H$, $|H'|=|H|+1$ and $\tw(I(H'))=2$ were checked for $F$ the triangle ($n=18$), $K_4$ ($n=30$) and $K_{3,3}$ ($n=42$); $\OPT=|H|+1$ by MILP for the triangle and $K_4$ (for $K_{3,3}$ the upper bound is the explicit partition and the lower bound is $H'$).
+
+\subsection{A one-sided algorithm for local instances}
+\begin{definition}[Local hubs and the class $\mathcal S$]\label{def:rpclass}
+Let $H$ be pair-maximal, $\ell\ge0$, $(\mathcal T,\{\beta_t\})$ a tree decomposition of $I(H)$. An uncovered vertex $r\in L_B$ is a \emph{local hub} if the vertices of $V(H)\cap\mathrm{Ball}(r)$ are pairwise co-bagged. A hard pair is \emph{eligible} if it is (i) $\{a,b\}$ with $a,b\in V(H)\cap L_B$, $b\in\mathrm{Ball}(a)$, co-bagged, or (ii) $\{r,v\}$ with $r$ a local hub and $v\in V(H)\cap\mathrm{Ball}(r)$. Let $\mathcal S(H,\mathcal T,\beta)$ be the set of solutions $S$ all of whose hard edits are eligible and such that every covered vertex lies in at most $\ell$ of them.
+\end{definition}
+By Corollary~\ref{cor:cand} and Lemma~\ref{lem:rpunc}, every hard edit of an optimal solution of size at most $|H|+\ell$ is a pair $\{x,y\}$ with $x,y\in L_B$, $y\in\mathrm{Ball}(x)$, at least one end covered; the class asks that such pairs are co-bagged (covered ends) or hub-local (one uncovered end). Bridged pairs are co-bagged in every decomposition (Definition~\ref{def:rpbridge}).
+
+\begin{theorem}[One-sided local algorithm]\label{thm:rpPL}
+Let $H$ be pair-maximal and $(\mathcal T,\{\beta_t\})$ a tree decomposition of $I(H)$ of width $w$. There is an algorithm of running time $5^{w+1}(Z^2+1)^{3\ell(w+1)}n^{O(1)}$, where $Z=3D+3\ell+1\le6w+3\ell+7$, that outputs a number $m^*=\min\{|S|:S\in\mathcal S(H,\mathcal T,\beta)\}\ge\OPT(G)$. If $\OPT\le|H|+\ell$ and some optimal solution lies in $\mathcal S$, then $m^*=\OPT$. Consequently, accepting iff $m^*\le|H|+\ell$ never accepts a NO instance and accepts every YES instance with an optimum in $\mathcal S$.
+\end{theorem}
+\emph{This is a one-sided algorithm.} Its promise (some optimum lies in $\mathcal S$) cannot be tested: $m^*>|H|+\ell$ does not certify NO. For $\mathrm{FAR}_m$ with the path tiling the YES instance $(G_m,H_m,1)$ is rejected, with $m^*=m+2=\OPT+1$; with $H^*$ of Proposition~\ref{prop:rpFAR} it is accepted. The algorithm is therefore not comparable with the unconditional Theorem~\ref{thm:omega}: for the family $\mathrm{Sp}(F)$ of Proposition~\ref{prop:five} the instance $(G,H,1)$ is in the class with $w=1$ whereas $\omega=\tw(\Gamma')\ge\tw(F)$ is unbounded; for $\mathrm{FAR}_m$ with the path tiling $\Gamma'$ has treewidth at most $3$ (it is $G_m$ plus the soft pairs $\{2i,2i+2\}$), but the instance is outside the class.
+
+Where the proof needs care (Appendix~\ref{app:repack}): the label of a covered vertex must be restricted to \emph{co-bagged covered} partners and to \emph{local hubs}, otherwise the symmetry check between the two ends of a pair cannot be enforced across a separator and the algorithm is unsound (computer: with that restriction lifted, $17$ of $177$ test instances gave a value below $\OPT$); there is no edit between two uncovered vertices (Lemma~\ref{lem:rpunc}); and every triple must be visible in one bag. The running time uses the five states of Lemma~\ref{lem:five}, $|X_t|\le3(w+1)$ and $|\mathrm{Ball}|\le Z^2$.
+
+\begin{corollary}[Static form]\label{cor:rpstatic}
+Let $\Lambda(H)$ be the set of pairs $\{a,b\}\subseteq V(H)\cap L_B$ with $a,b\in\mathrm{Ball}(r)$ for some $r\in L_B$. Let $w_\Lambda$ be the minimum width of a tree decomposition of $I(H)$ that co-bags every pair of $\Lambda(H)$; equivalently, the minimum over the choices, for every $\{a,b\}\in\Lambda(H)$, of a member through $a$ and a member through $b$, of the treewidth of $I(H)$ plus these links. Then CEaMP is solvable in time $5^{w_\Lambda+1}(Z^2+1)^{3\ell(w_\Lambda+1)}n^{O(1)}$, and the promise holds for every instance.
+\end{corollary}
+Corollary~\ref{cor:rpstatic} is only as strong as $w_\Lambda$, which is large on tunnel-rich instances, so it does not answer Open Problem~\ref{op:main}.
+
+\subsection{Limits of repacking}
+\begin{theorem}[No repacking with bounds in $\ell$ alone]\label{thm:rpN}
+\begin{enumerate}
+\item[(a)] If there is a polynomial-time algorithm that maps every YES instance $(G,H,0)$ to a packing $H^*$ with excess $\ell^*\le s(0)$ and $\tw(I(H^*))\le f(0)$, for constants $s(0),f(0)$, then $\mathrm P=\mathrm{NP}$. The statement is stated for functions $s,f$ of $\ell$ but only $\ell=0$ is used.
+\item[(b)] Under ETH there is no polynomial-time algorithm that maps every YES instance $(G,H,0)$ to a packing $H^*$ with $|H^*|=|H|$ and $\tw(I(H^*))\le|H|^{1-\varepsilon}$, $\varepsilon>0$.
+\end{enumerate}
+\end{theorem}
+The guarantees hold only on YES inputs, so the proof validates the output: it tests that $H^*$ is a modification-disjoint packing of induced $P_3$'s of $G$, computes a tree decomposition of the stated width or rejects, and tests the excess before running the algorithm of the CSP theorem (Theorem~\ref{thm:A}). The theorem used is the \emph{CSP algorithm} of Section~\ref{sec:csp}, valid for every packing; it is not the majority-closure theorem (Theorem~\ref{thm:sfA}), which concerns soft-triangle-free packings. The reductions of~\cite{LPS23} contain soft triangles, which is consistent: the NP-hardness at $\ell=0$ is not contradicted by Theorem~\ref{thm:sfA}, and Theorem~\ref{thm:rpN} does not use it. Hence any usable repacking must have $\tw(I(H^*))\le w+g(\ell)$ \emph{and} a locality property; with $H^*=H$ the width bound alone is trivial. The hope ``if $\tw(I(H))$ is large relative to $\ell$ then a better packing exists, hence reject'' is false for the same reason: every tight instance ($\ell=0$, $\nu_{\mathrm{mod}}=\OPT=|H|$) has no better packing, and tight instances have unbounded treewidth under ETH.
+
+\begin{proposition}[The naive normal form is false]\label{prop:rpnf}
+Let $G=K_2\vee3K_1$ (hubs $3,4$ adjacent, leaves $0,1,2$ each adjacent to both hubs; $n=5$). Then $\nu_{\mathrm{mod}}=2$, $\OPT=3$ with four optima, every maximum packing covers all five vertices, and for every maximum packing every optimum has a hard edit with both ends covered. Hence ``every hard edit has an uncovered end for some maximum packing and some optimum'' is false. The number of connected graphs with at least one induced $P_3$ on which it fails is $3$ of $20$ ($n=5$), $2$ of $111$ ($n=6$), $3$ of $852$ ($n=7$) and $305$ of $11{,}116$ ($n=8$) (computer, exhaustive). The surviving hard edit in the example is bridged.
+\end{proposition}
+
+\begin{proposition}[Bounded-radius augmentation is insufficient]\label{prop:rpaug}
+Let $P$ be the path $0,\dots,2m+2$ and $H_0=\{(2i+1,2i+2,2i+3):0\le i<m\}$. Then $H_0$ is a pair-maximal packing, $\nu_{\mathrm{mod}}=\OPT=m+1$, $\ell=1$, $w=1$, and the unique packing of size $m+1$ shares no member with $H_0$. So every improving exchange (remove $r$ members, add $r+1$ pair-disjoint ones) has $r=m$ (computer: $m=2,\dots,6$).
+\end{proposition}
+The scope is exactly bounded-$r$ exchange search; the instance is a path. Moreover, in $\mathrm{FAR}_m$ the original tiling is already a maximum packing, so no improving exchange exists, and the helpful move of Proposition~\ref{prop:rpFAR} is \emph{neutral}: its benefit is invisible to any objective computed from $(G,H)$, because it is chosen for the chord that the optimum cuts.
+
+\subsection{What remains: locating the repacking}
+\begin{conjecture}[C1, normal form NF$^*$]\label{conj:rpC1}
+For every graph $G$ there are a maximum modification-disjoint packing $H^*$ and an optimal solution each of whose hard edits (relative to $H^*$) has an uncovered end or is bridged.
+\end{conjecture}
+\textbf{Status: open.} Evidence (computer, independent implementation): no counterexample among all connected graphs with $n\le8$, among $1{,}500$ random connected graphs with $n=9$, and among $300$ random connected graphs with $n=10$. By Proposition~\ref{prop:rpnf} the clause ``bridged'' is necessary. C1 alone is not enough for Theorem~\ref{thm:rpPL}, which also needs the hub clause of Definition~\ref{def:rpclass} (the evidence above is for the covered-covered clause only), and it is an existence statement; it does not say how to find $H^*$.
+
+\begin{problem}[LOC: locating the repacking; \textbf{OPEN}]\label{op:LOC}
+Is there an algorithm that, given $(G,H,\ell)$ and a decomposition of $I(H)$ of width $w$, runs in time $f(\ell,w)n^{O(1)}$ and outputs a pair-maximal packing $H^*$ with $|H^*|\ge|H|$ and $\tw(I(H^*))\le g(\ell,w)$, together with a decomposition of that width, such that on every YES instance some optimal solution lies in $\mathcal S(H^*,\mathcal T^*,\beta^*)$ for $\ell^*=|H|+\ell-|H^*|$?
+\end{problem}
+\begin{proposition}\label{prop:rpLOC}
+A positive answer to Open Problem~\ref{op:LOC} implies that CEaMP is fixed-parameter tractable in $\ell+w$.
+\end{proposition}
+By Theorem~\ref{thm:rpN} the width bound $g$ cannot depend on $\ell$ alone, so $g$ must involve $w$.
+
+\emph{Why this is a different problem (heuristic).} If $S$ is an optimum with far hard edits $e_1,\dots,e_k$, $k\le\ell$, and $H^*$ absorbs them (Corollary~\ref{cor:rpabs}), then $H^*-H$ consists of witnesses $T_i$ of the $e_i$, and conversely the $e_i$ are read off from $H^*$ as the hard pairs inside the new members. So computing $H^*$ is computing the far edits: repacking moves the information problem (which of about $n^2$ candidate pairs is cut) into the packing, and does not remove it. A dynamic program that must carry for each pending far edit the identity of its partner across a separator would need more than $f(\ell,w)$ states; colour coding repairs completeness but not soundness. This paragraph is not a proof.
+
+\paragraph{Precise status.} (1) The obstructions of Proposition~\ref{prop:FAR} (deleted hard edges between far members) and of Proposition~\ref{prop:five} (spine family, unbounded $\tw(\Gamma')$) are artifacts of the chosen packing: after one exchange, respectively one exchange and one augmentation, they have $\tw(I(H^*))\le2$ and a single hard edit at an uncovered vertex, respectively excess $0$. (2) The intrinsic excess and, for tight instances, the unbounded width are not artifacts (Proposition~\ref{prop:rpFAR}(a), Theorem~\ref{thm:rpN}). (3) What is left is to locate the repacking (Open Problem~\ref{op:LOC}); fixed-parameter tractability in $\ell+w$ is open.
