@@ -94,13 +94,8 @@ theorem cluster_common_neighbour (c : V → α) (hopt : IsOpt G c) (z : α) (hz 
     omega
   rw [cu] at da
   rw [cw] at db
-  have hKb' : Kb = (univ.filter fun x => c x = c a ∧ G.Adj b x) := by
-    rw [hKb, hc]
-  rw [← hKb'] at db
-  have hKa' : (univ.filter fun w => c w = c a ∧ G.Adj a w) = Ka := rfl
-  rw [hKa'] at da
-  have hb' : (univ.filter fun w => c w = c b ∧ G.Adj b w) = Kb := rfl
-  rw [← hc] at hb'
+  have da' : (C.card : ℤ) - 1 ≤ 2 * Ka.card := da
+  have db' : (C.card : ℤ) - 1 ≤ 2 * Kb.card := db
   linarith
 
 /-- Two vertices of one cluster of an optimum are equal, adjacent, or at distance two

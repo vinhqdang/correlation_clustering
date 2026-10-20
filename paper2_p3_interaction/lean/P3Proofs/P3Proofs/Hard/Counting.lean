@@ -96,7 +96,7 @@ theorem tight (hx : D.ex = k ^ 2) :
     intro c; have := D.hreg c; rw [hE c] at this; omega
   have hh : ∀ c, D.h c = 1 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     obtain ⟨c0, hc0⟩ := hcon
     have hgt : 1 < D.h c0 := lt_of_le_of_ne (hge c0) (Ne.symm hc0)
     have : ∑ _c : Fin (2 * k ^ 2), 1 < ∑ c, D.h c :=
@@ -117,7 +117,7 @@ def tightSystem (k : ℕ) : CountSystem k where
   hin := 0
   sl := 0
   ex := k ^ 2
-  hsum := by simp; ring
+  hsum := by simp
   hreg := by intro c; simp
   hex := by simp; ring
 
@@ -144,7 +144,7 @@ theorem ex_ge_Z : D.Z.card + D.hin + D.q ≤ D.ex := by
     Finset.sum_le_sum (fun c _ => D.r_ge_max c)
   rw [Finset.sum_add_distrib, D.hsum] at h1
   have h2 : ∑ c, (if D.h c = 0 then 1 else 0) = D.Z.card := by
-    simp [Z, Finset.card_filter]
+    rw [Z, Finset.card_filter]
   rw [h2] at h1
   have := D.hex
   omega
@@ -155,7 +155,7 @@ theorem Z_ge : 2 * k ^ 2 ≤ D.Z.card + ∑ c, D.h c := by
     Finset.sum_le_sum (fun c _ => by split_ifs with h <;> omega)
   rw [Finset.sum_add_distrib] at h1
   have h2 : ∑ c, (if D.h c = 0 then 1 else 0) = D.Z.card := by
-    simp [Z, Finset.card_filter]
+    rw [Z, Finset.card_filter]
   rw [h2] at h1
   simp at h1
   omega
