@@ -67,7 +67,8 @@ class PerSynth:
         P = self.P = list(itertools.combinations(range(n), 2))
         # spine members
         self.spine_members = []
-        if base is None:
+        self.nospine = os.environ.get('NOSPINE', '0') == '1'
+        if base is None and not self.nospine:
             for j in range(m):
                 self.spine_members.append((self.vid[(j, 0)], self.vid[(j, 1)], self.vid[(j + 1, 0)]))
         else:
@@ -87,6 +88,11 @@ class PerSynth:
                     self.base_pairs.add(p)
                     self.fixedE[p] = frozenset((u_, v_)) in base['E']
         for p in P:
+            if self.nospine and base is None:
+                (j, a), (k, b) = self.vname[p[0]], self.vname[p[1]]
+                if k - j > span:
+                    self.fixedE[p] = False
+                continue
             if base is not None:
                 if p in self.base_pairs:
                     continue
