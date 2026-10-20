@@ -47,7 +47,7 @@ changes both (A,t) and (B,a); this is covered because branching is on the pair i
 polynomial, no dependence on w. Correct.
 Independent test (`a12_t3.py U`, `a12_t3b.py`): my own implementation of the algorithm (lists computed from the triples of the current graph, greedy minimal family, branching on far pairs of the family) versus brute force
 over all U subset of Far with the ZE test `G xor U xor (L/R/M edits)` is a cluster graph: l=2: 900 instances (n 6..11, |H| <= 4/5, I(H) with cycles in 84 of 400), 122 of the last 400 answer YES only with |U| >= 1, 185 NO, 0 mismatches;
-l=3: 150 instances, 0 mismatches (a further l=3 run of 400 instances, `a12_t3b.py 12 400 3`, see the addendum at the end). Largest minimal family seen 2, largest branching 6.
+l=3: 150 instances, 0 mismatches (a further l=3 run of 400 instances, `a12_t3b.py 12 400 3`, had not finished when this file was written; no result is claimed from it). Largest minimal family seen 2, largest branching 6.
 Caveats (not errors): (a) the question answered is FLZ, a restricted model (no breaks, no cross-pair edits); Theorem U is FPT for FLZ only, it does not decide CEaMP; the notes say so. (b) Static all-hard P3 that contain a cross pair are
 branched on (including the cross pair) rather than left to F: harmless (soundness unaffected, completeness unaffected), but contradicts the "U subset of Far" formulation; state it.
 
@@ -84,4 +84,4 @@ Brute force on the 4-vertex graph (`a12_t7.py`): the 8 lists L(S) are {all 5}, {
 Limits: this is about constraints from vertices outside the member and (as checked) from neighbouring members given their state; it does not say that breaks cannot be forced (the intersection {L,O} cap {O,R} = {O} forces O), and the consequences drawn in Prop. 4.4 / Sec. 0 item 3(iii) ("kills the Grid-Tiling blueprint", "no link can reward breaks") are interpretation and should be labelled HEURISTIC; the n=11 example shows that breaks do interact through locks at a hub.
 
 ## Addendum: runs pending when this file was written
-`a12_t3b.py 12 400 3` (Theorem U with l=3): see the last line below if present.
+`a12_t3b.py 12 400 3` (Theorem U with l=3) was still running; unreported. All reported results above are from completed runs.
