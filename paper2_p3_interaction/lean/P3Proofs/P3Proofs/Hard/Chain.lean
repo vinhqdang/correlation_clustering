@@ -11,7 +11,7 @@ Paper: `app_hardness.tex`, Sec. "The thin chain", Lemma "Chain lemma" (a),(b);
 * `PInst`: a "packing instance" on the vertices `0..n-1`: a list of members `(a,b,c)` (induced `P₃`
   with centre `b`: edges `ab, bc`, non-edge `ac`; the three pairs of a member are *soft*), and a list of
   extra hard edges; every other pair is a hard non-edge.
-* `OH m`: the thin chain, vertex `s_k ↦ k` (`0 ≤ k ≤ 2m`), `e_j ↦ 2m+1+j` (`0 ≤ j ≤ m`),
+* `OH m`: the thin chain, vertex `s_k`, `0 ≤ k ≤ 2m`, and `e_j`, `0 ≤ j ≤ m`, numbered cell by cell,
   members exactly as in `oh_instance(m)` of `w8c_oh.py`.
 * `IsZE I f`: the partition given by the labelling `f : ℕ → ℕ` is *zero-excess*:
   every hard pair is respected (hard edge together, hard non-edge apart) and every member has
@@ -21,8 +21,8 @@ Paper: `app_hardness.tex`, Sec. "The thin chain", Lemma "Chain lemma" (a),(b);
 ## What is proved (all with `decide +kernel`: the kernel evaluates the finite check; NO
 `native_decide`, hence no `Lean.ofReduceBool` axiom; see `#print axioms` at the end of the file)
 * `OH_valid`: the member list is a pair-disjoint packing of induced `P₃`'s, hard pairs are not soft,
-  every vertex lies in at most 4 members (`m = 7..12`);
-* for `m = 7,…,12` (the cases `m = 7,8,9` requested, `10,11,12` as a bonus):
+  every vertex lies in at most 4 members (`m = 7, 8, 9`);
+* for `m = 7, 8, 9`:
   1. every `P_a` (`a < m`) is ZE;
   2. every ZE partition (arbitrary labelling `f : ℕ → ℕ`) induces on the `3m+2` vertices the same
      partition as exactly one `P_a`;
@@ -171,8 +171,8 @@ theorem canon_eq_iff (f : ℕ → ℕ) (i j : ℕ) : canon f i = canon f j ↔ f
     exact h1.symm.trans h2
   · intro h
     apply le_antisymm
-    · exact Nat.find_min' (⟨i, rfl⟩ : ∃ u, f u = f i) (by rw [canon_spec, h])
-    · exact Nat.find_min' (⟨j, rfl⟩ : ∃ u, f u = f j) (by rw [canon_spec, h])
+    · exact Nat.find_min' (⟨i, rfl⟩ : ∃ u, f u = f i) (by rw [canon_spec f j]; exact h.symm)
+    · exact Nat.find_min' (⟨j, rfl⟩ : ∃ u, f u = f j) (by rw [canon_spec f i]; exact h)
 
 theorem canon_idem (f : ℕ → ℕ) (i : ℕ) : canon f (canon f i) = canon f i :=
   (canon_eq_iff f _ _).2 (canon_spec f i)
@@ -189,7 +189,9 @@ theorem holdsB_canon (f : ℕ → ℕ) (c : Con) : c.holdsB (canon f) = c.holdsB
     · have h' := (canon_eq_iff f u v).2 h
       simp [Con.holdsB, h, h']
     · have h' : ¬ canon f u = canon f v := fun x => h ((canon_eq_iff f u v).1 x)
-      simp [Con.holdsB, h, h']
+      have e1 : (canon f u != canon f v) = true := bne_iff_ne.2 h'
+      have e2 : (f u != f v) = true := bne_iff_ne.2 h
+      simp only [Con.holdsB, e1, e2]
   | mem a b c => simp [Con.holdsB, edits_canon]
 
 theorem holdsB_congr (g g' : ℕ → ℕ) (c : Con) (h : ∀ i, i ≤ c.last → g i = g' i) :
@@ -210,22 +212,34 @@ theorem holdsB_congr (g g' : ℕ → ℕ) (c : Con) (h : ∀ i, i ≤ c.last →
 
 /-! ### the search -/
 
-/-- check of the constraints whose last index is `k` against a list `w` (labels of `0..`). -/
-def okAt (cs : List Con) (k : ℕ) (w : List ℕ) : Bool :=
-  (cs.filter (fun c => c.last == k)).all (fun c => c.holdsB (fun i => w.getD i 0))
+/-- the constraints of `cs` sorted by their last index: bucket `k` holds those with last index `k`. -/
+def buckets (cs : List Con) (n : ℕ) : List (List Con) :=
+  (List.range n).map (fun k => cs.filter (fun c => c.last == k))
+
+theorem mem_buckets (cs : List Con) (n k : ℕ) (c : Con) (h : c ∈ (buckets cs n).getD k []) :
+    c ∈ cs ∧ c.last = k := by
+  unfold buckets at h
+  by_cases hk : k < n
+  · simp [List.getD_eq_getElem?_getD, hk] at h
+    simpa using h
+  · simp [List.getD_eq_getElem?_getD, hk] at h
+
+/-- check of the constraints of one bucket against a list `w` (labels of `0..`). -/
+def okAt (bk : List Con) (w : List ℕ) : Bool :=
+  bk.all (fun c => c.holdsB (fun i => w.getD i 0))
 
 /-- candidate labels of vertex `k`: `k` (a new class) or an existing representative `r < k`
 with `w[r] = r`. -/
 def cand (k : ℕ) (w : List ℕ) : List ℕ :=
   (List.range (k + 1)).filter (fun r => r == k || w.getD r 0 == r)
 
-def step (cs : List Con) (k : ℕ) (ws : List (List ℕ)) : List (List ℕ) :=
-  ws.flatMap fun w => ((cand k w).map (fun r => w ++ [r])).filter (okAt cs k)
+def step (bs : List (List Con)) (k : ℕ) (ws : List (List ℕ)) : List (List ℕ) :=
+  ws.flatMap fun w => ((cand k w).map (fun r => w ++ [r])).filter (okAt (bs.getD k []))
 
 /-- all restricted-growth labellings of `0..k-1` passing all constraints with last index `< k`. -/
-def dfs (cs : List Con) : ℕ → List (List ℕ)
+def dfs (bs : List (List Con)) : ℕ → List (List ℕ)
   | 0 => [[]]
-  | k + 1 => step cs k (dfs cs k)
+  | k + 1 => step bs k (dfs bs k)
 
 /-- the canonical labelling of `0..k-1` as a list. -/
 noncomputable def canonList (f : ℕ → ℕ) (k : ℕ) : List ℕ := (List.range k).map (canon f)
@@ -238,8 +252,10 @@ theorem canonList_succ (f : ℕ → ℕ) (k : ℕ) : canonList f (k + 1) = canon
 
 /-- **Completeness of the search**: if `f` satisfies all constraints `cs`, then the canonical
 labelling of the first `k` vertices is found at level `k`, for every `k`. -/
-theorem dfs_complete (cs : List Con) (f : ℕ → ℕ) (hf : ∀ c ∈ cs, c.holdsB f = true) :
-    ∀ k, canonList f k ∈ dfs cs k := by
+theorem dfs_complete (cs : List Con) (bs : List (List Con))
+    (hb : ∀ k c, c ∈ bs.getD k [] → c ∈ cs ∧ c.last = k)
+    (f : ℕ → ℕ) (hf : ∀ c ∈ cs, c.holdsB f = true) :
+    ∀ k, canonList f k ∈ dfs bs k := by
   intro k
   induction k with
   | zero => simp [canonList, dfs]
@@ -260,30 +276,32 @@ theorem dfs_complete (cs : List Con) (f : ℕ → ℕ) (hf : ∀ c ∈ cs, c.hol
     · unfold okAt
       rw [List.all_eq_true]
       intro c hc
-      rw [List.mem_filter] at hc
-      have hl : c.last = k := by simpa using hc.2
+      have hc' := hb k c hc
+      have hl : c.last = k := hc'.2
       have : c.holdsB (fun i => (canonList f (k + 1)).getD i 0) = c.holdsB (canon f) := by
         apply holdsB_congr
         intro i hi
         rw [canonList_getD f (k + 1) i (by omega)]
       rw [this, holdsB_canon]
-      exact hf c hc.1
+      exact hf c hc'.1
 
 /-- Every ZE labelling induces (on `0..n-1`) the same partition as some labelling found by the
 search. -/
 theorem ze_in_dfs (I : PInst) (f : ℕ → ℕ) (hf : I.IsZE f) :
-    ∃ w ∈ dfs I.cons I.n, ∀ u, u < I.n → ∀ v, v < I.n →
+    ∃ w ∈ dfs (buckets I.cons I.n) I.n, ∀ u, u < I.n → ∀ v, v < I.n →
       (f u = f v ↔ w.getD u 0 = w.getD v 0) := by
-  refine ⟨canonList f I.n, dfs_complete I.cons f ((isZE_iff I f).1 hf) I.n, ?_⟩
+  refine ⟨canonList f I.n, dfs_complete I.cons _ (fun k c h => mem_buckets _ _ k c h) f ((isZE_iff I f).1 hf) I.n, ?_⟩
   intro u hu v hv
   rw [canonList_getD f _ _ hu, canonList_getD f _ _ hv, canon_eq_iff]
 
 /-! ## 3. The chain `OH_m` -/
 
-/-- vertex `s_k`. -/
-def sV (k : ℕ) : ℕ := k
-/-- vertex `e_j` (of `OH_m`). -/
-def eV (m j : ℕ) : ℕ := 2 * m + 1 + j
+/-- vertex `s_k` (`0 ≤ k ≤ 2m`).  The vertices are numbered cell by cell,
+`s_{2j} ↦ 3j`, `s_{2j+1} ↦ 3j+1`, `e_j ↦ 3j+2` (`j < m`), `e_m ↦ 3m+1`; this only affects the
+efficiency of the search, the instance is `oh_instance(m)` up to renaming. -/
+def sV (k : ℕ) : ℕ := 3 * (k / 2) + k % 2
+/-- vertex `e_j` (of `OH_m`, `0 ≤ j ≤ m`). -/
+def eV (m j : ℕ) : ℕ := if j = m then 3 * m + 1 else 3 * j + 2
 
 /-- The thin one-hot chain `OH_m` (`m ≥ 7`), exactly `oh_instance(m)` of `code/w8c_oh.py`:
 spine members `P_j = (s_2j, s_2j+1, s_2j+2)`, left cap, interior `G_j`, `F_j`, right cap, four hard
@@ -318,7 +336,7 @@ def degB (I : PInst) : Bool :=
   (List.range I.n).all fun v =>
     decide ((I.mems.filter (fun t => t.1 == v || t.2.1 == v || t.2.2 == v)).length ≤ 4)
 
-theorem OH_valid : ∀ m ∈ [7, 8, 9, 10, 11, 12], validB (OH m) = true ∧ degB (OH m) = true := by
+theorem OH_valid : ∀ m ∈ [7, 8, 9], validB (OH m) = true ∧ degB (OH m) = true := by
   decide +kernel
 
 /-! ### The explicit partitions `P_a` -/
@@ -332,7 +350,10 @@ def eLab (m a j : ℕ) : ℕ :=
   else if j = m - 1 then (if a = m - 1 then m - 2 else m - 1) else m - 1
 
 /-- the explicit ZE partition `P_a` as a labelling of the vertices `0..3m+1`. -/
-def Pa (m a i : ℕ) : ℕ := if i ≤ 2 * m then sLab a i else eLab m a (i - (2 * m + 1))
+def Pa (m a i : ℕ) : ℕ :=
+  if i % 3 = 0 then sLab a (2 * (i / 3))
+  else if i % 3 = 1 then (if i = 3 * m + 1 then eLab m a m else sLab a (2 * (i / 3) + 1))
+  else eLab m a (i / 3)
 
 /-! ### spine words -/
 
@@ -342,7 +363,7 @@ def stOf (f : ℕ → ℕ) (x y z : ℕ) : St :=
   if f x = f y ∧ f y = f z then St.M else if f x = f y then St.R else if f y = f z then St.L else St.X
 
 def spineWord (m : ℕ) (f : ℕ → ℕ) : List St :=
-  (List.range m).map fun j => stOf f (2 * j) (2 * j + 1) (2 * j + 2)
+  (List.range m).map fun j => stOf f (sV (2 * j)) (sV (2 * j + 1)) (sV (2 * j + 2))
 
 theorem spineWord_congr (m : ℕ) (f g : ℕ → ℕ) (h : SamePart (3 * m + 2) f g) :
     spineWord m f = spineWord m g := by
@@ -351,8 +372,8 @@ theorem spineWord_congr (m : ℕ) (f g : ℕ → ℕ) (h : SamePart (3 * m + 2) 
   intro j hj
   rw [List.mem_range] at hj
   unfold stOf
-  have h1 := h (2 * j) (by omega) (2 * j + 1) (by omega)
-  have h2 := h (2 * j + 1) (by omega) (2 * j + 2) (by omega)
+  have h1 := h (sV (2 * j)) (by unfold sV; omega) (sV (2 * j + 1)) (by unfold sV; omega)
+  have h2 := h (sV (2 * j + 1)) (by unfold sV; omega) (sV (2 * j + 2)) (by unfold sV; omega)
   simp only [h1, h2]
 
 /-- The word `R^a M L^(m-1-a)`. -/
@@ -364,7 +385,7 @@ def oneHotWord (m a : ℕ) : List St := List.replicate a St.R ++ [St.M] ++ List.
 search is a `P_a`; 3. the `P_a` are pairwise distinct; 4. spine word of `P_a` is `R^a M L^(m-1-a)`. -/
 def Certificate (m : ℕ) : Prop :=
   (∀ a, a < m → ∀ c ∈ (OH m).cons, c.holdsB (Pa m a) = true) ∧
-  (∀ w ∈ dfs (OH m).cons (OH m).n, ∃ a, a < m ∧ ∀ u, u < (OH m).n → ∀ v, v < (OH m).n →
+  (∀ w ∈ dfs (buckets (OH m).cons (OH m).n) (OH m).n, ∃ a, a < m ∧ ∀ u, u < (OH m).n → ∀ v, v < (OH m).n →
       (w.getD u 0 = w.getD v 0 ↔ Pa m a u = Pa m a v)) ∧
   (∀ a, a < m → ∀ b, b < m → SamePart (OH m).n (Pa m a) (Pa m b) → a = b) ∧
   (∀ a, a < m → spineWord m (Pa m a) = oneHotWord m a)

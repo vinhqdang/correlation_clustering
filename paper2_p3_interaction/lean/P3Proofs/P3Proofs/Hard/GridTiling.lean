@@ -116,7 +116,7 @@ def groupPos (u : ℕ) : ℕ := 2 * u
 section arith
 variable {n α s β s' t : ℕ}
 
-theorem slot_lt_sep (hα : α ∈ Icc 1 n) (hs : s ∈ Icc 1 n) (ht : t ∈ Icc 1 n) :
+theorem slot_lt_sep (hα : α ∈ Icc 1 n) (hs : s ∈ Icc 1 n) (_ht : t ∈ Icc 1 n) :
     slotGroup n α s < sepGroup n t ↔ α ≤ t := by
   simp only [Finset.mem_Icc, slotGroup, sepGroup] at *
   constructor
