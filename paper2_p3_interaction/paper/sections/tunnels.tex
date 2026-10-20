@@ -1,0 +1,108 @@
+\section{Why tunnel reductions stall}\label{sec:tunnels}
+\emph{Status of this section.} Statements labelled Lemma, Proposition or Observation are proved here (with the cited earlier lemmas), and their proofs were re-derived and tested by brute force in an independent audit. Statements labelled \emph{computer evidence} are exhaustive or sampled searches over small instances (all set partitions, $n\le10$) and are not theorems. Statements labelled \emph{heuristic} are arguments without a full proof. Neither W[1]-hardness nor fixed-parameter tractability of CEaMP in $\ell+w$ follows from anything below (Open Problem~\ref{op:main}).
+
+The most natural attempt at W[1]-hardness in $\ell+w$ is a reduction from Grid Tiling in which hard edges between far-apart vertices (\emph{tunnels}) carry equalities between distant parts of $I(H)$ of bounded width. The lemmas below say what a tunnel can and cannot do, and isolate one missing gadget.
+
+\subsection{Zero-excess solutions and tunnels}
+Notation of Section~\ref{sec:dproute}: a pair is \emph{soft} if it belongs to a member of $H$ and \emph{hard} otherwise; $Q(v)$ is the set of soft partners of $v$. A solution $S$ is \emph{zero-excess} (ZE) if $|S|=|H|$. A member $(a,b,c)$ (centre $b$) is in state $L$, $R$ or $M$ if its edited pair is $ab$, $bc$ or $ac$. By Lemma~\ref{lem:decomp} a ZE solution has exactly one edit in each member and no other edit, so it is determined by its vector of states; let $\Sigma=\Sigma(G,H)\subseteq\{L,R,M\}^H$ be the set of these vectors. None of the lemmas of this subsection and the next needs pair-maximality.
+
+\begin{lemma}[Zero-excess structure]\label{lem:tZE}
+Let $S$ be a ZE solution. (a) Every hard edge lies inside a cluster and every hard non-edge joins two clusters. (b) Every member is in one of the states $L,R,M$. (c) Every hard component lies in one cluster, and two vertices of one cluster in different hard components form a soft pair.
+\end{lemma}
+\begin{proof}
+(a),(b) are Lemma~\ref{lem:decomp} with $|S|=|H|$: no hard pair is edited and each member has exactly one edit. A member $(a,b,c)$ with togetherness pattern $(t_{ab},t_{bc},t_{ac})$ has the cluster patterns $000,100,010,111$ of costs $2,1,1,1$, so the one-edit patterns are $R,L,M$. (c) A hard edge is unedited, so its ends are together; two vertices of one cluster in different hard components are not joined by a hard edge, and a hard non-edge inside a cluster would be edited, so the pair is soft.
+\end{proof}
+
+A \emph{tunnel} is a hard edge $xx'$ with $N_h(x)=\{x'\}$, $N_h(x')=\{x\}$ and $Q(x)\cap Q(x')=\emptyset$; tunnels are always taken pairwise vertex-disjoint. A \emph{stub} at $x$ is a new vertex $x'$ adjacent to $x$ only (then $Q(x')=\emptyset$). A vertex is an \emph{anchor} if it lies in a member and has no hard edge. \emph{Cutting} a tunnel means editing $xx'$ (one hard edit).
+
+\begin{lemma}[A tunnel is a lock]\label{lem:tlock}
+Let $xx'$ be a tunnel and $S$ a solution in which all hard pairs at $x$ and at $x'$ are unedited. Then the cluster of $x$ is $\{x,x'\}$. If $S$ is ZE, then no member has $x$ as centre, every member through $x$ has $x$ as an end with the pair at $x$ that is an edge deleted, and the other two vertices of that member are together.
+\end{lemma}
+\begin{proof}
+Let $t\ne x,x'$ be in the cluster of $x$. If $t\notin Q(x)$ then $xt$ is hard, hence a non-edge as $N_h(x)=\{x'\}$, hence edited, a contradiction; so $t\in Q(x)$, and likewise $t\in Q(x')$, contradicting $Q(x)\cap Q(x')=\emptyset$. In a ZE solution a member $(y,x,z)$ with centre $x$ would have both pairs at $x$ apart, hence two edits. If $x$ is an end, the pair $x$--centre is apart (an edit), the non-edge at $x$ is apart (no edit), so the remaining pair is together.
+\end{proof}
+
+\begin{lemma}[Anchors: singleton $=$ forced states; inactive anchors cost nothing]\label{lem:tinactive}
+Let $x$ be an anchor and $\sigma$ a ZE solution of $(G,H)$. Then $x$ is a singleton of $\sigma$ iff every member through $x$ has $x$ as an end and is in the state that deletes the edge at $x$. Moreover:
+(a) if $G'$ is $G$ with a stub at $x$, then $G'$ has a ZE solution iff $G$ has a ZE solution in which $x$ is a singleton;
+(b) if $x_1,x_2$ are anchors that lie in no common member, are non-adjacent and have $Q(x_1)\cap Q(x_2)=\emptyset$, and $G'$ is $G$ plus the edge $x_1x_2$, then $G'$ has a ZE solution iff $G$ has a ZE solution in which $x_1$ and $x_2$ are both singletons.
+\end{lemma}
+\begin{proof}
+The first statement: ($\Rightarrow$) as in Lemma~\ref{lem:tlock}; ($\Leftarrow$) the soft partners of $x$ are its mates in members, and these are apart from $x$; $x$ has no hard edge, and its hard non-edges are unedited. (a),(b) ($\Rightarrow$): by Lemma~\ref{lem:tlock} the cluster is $\{x,x'\}$ (resp.\ $\{x_1,x_2\}$); split it into singletons. No other pair changes status or togetherness. ($\Leftarrow$) join the singleton to its stub (resp.\ join the two singletons).
+\end{proof}
+Thus an anchor costs nothing when it is a singleton in some ZE solution, and the point of a tunnel is precisely that this singleton requirement is a constraint on the member states through $x$: a \emph{lock}. (A lock fixes the states of the members through $x$ to unit values; it never forces more.)
+
+\begin{lemma}[Rigidity at a lock]\label{lem:trigid}
+Let $S$ be ZE. (a) If $y,z$ are together then for every $q\notin\{y,z\}$, $q$ is together with $y$ iff with $z$. Hence if $qz$ is hard and $qy$ soft, the soft pair $qy$ is forced to be together iff $qz\in E$; if both are soft, the owners of $yz$, $qy$, $qz$ form a clique of $I(H)$ (a triangle if distinct). (b) If $u,w$ and $w,v$ are together, then $uv$ is an edge or a soft pair.
+\end{lemma}
+\begin{proof}
+Transitivity of ``together''; for (b) a hard pair inside a cluster is an unedited edge (Lemma~\ref{lem:tZE}(a)).
+\end{proof}
+Consequently the two vertices that a lock bridges (the mates $y,z$ of a locked member) are \emph{occupied}: $y\sim z$ is a cluster that cannot also be bridged to a third vertex unless the pair is an edge or soft.
+
+\subsection{Memory across a tree decomposition}
+Let $(T,X)$ be a tree decomposition of $I(H)$, $e=tt'$ an edge of $T$, $B$ the members in both bags of $e$, and $M_1$, $M_2$ the members that occur only on the side of $t$, resp.\ $t'$.
+A set $S$ of anchors is a \emph{face} if some ZE solution of $(G,H)$ makes every $x\in S$ a singleton; equivalently (Lemma~\ref{lem:tinactive}) the partial vector of forced states is the restriction of an element of $\Sigma$. A \emph{minimal non-face} (a \emph{core}) is a non-face all of whose proper subsets are faces.
+
+\begin{lemma}[Splice]\label{lem:tsplice}
+(a) If $\sigma,\sigma'\in\Sigma$ agree on $B$, the vector equal to $\sigma$ on $M_1\cup B$ and to $\sigma'$ on $M_2$ is in $\Sigma$.
+(b) Let $S=S_1\cup S_2$ be a core with all members through anchors of $S_i$ in $M_i$ ($i=1,2$, both parts non-empty). For $b\in S$ let $\sigma^b\in\Sigma$ make all anchors of $S\setminus\{b\}$ singletons. Then $\{\sigma^b|_B:b\in S_1\}$ and $\{\sigma^a|_B:a\in S_2\}$ are disjoint.
+\end{lemma}
+\begin{proof}
+(a) $\sigma\in\Sigma$ iff no vertex triple is an induced $P_3$ after editing; the status of a triple's pairs depends on the owners of its packed pairs, a clique of $I(H)$ (Observation~\ref{obs:two}), so contained in one bag, hence in $M_1\cup B$ or in $M_2\cup B$; all constraints are satisfied by the combined vector. (b) If $\sigma^b|_B=\sigma^a|_B$ with $b\in S_1$, $a\in S_2$, splice $\sigma^a$ on $M_1\cup B$ with $\sigma^b$ on $M_2$: the anchors of $S_1$ are singletons (they are in $S\setminus\{a\}$, and their members are in $M_1$), those of $S_2$ likewise, so $S$ is a face, a contradiction.
+\end{proof}
+\emph{Heuristic reading.} A core of size $N$ spread along a path decomposition makes the $N-1$ boundary bags separate ``the released anchor is on the left'' from ``on the right'': the bag state must remember, at every boundary, one bit of information about where the (single) unlocked anchor is. Lemma~\ref{lem:tsplice} proves only the disjointness above, not that a single bit is carried.
+
+\begin{lemma}[Majority closure bounds cores]\label{lem:tmaj}
+Suppose $\Sigma$ is closed under a majority operation $m:\{L,R,M\}^3\to\{L,R,M\}$ applied coordinatewise ($m(a,a,b)=m(a,b,a)=m(b,a,a)=a$). Then every core has at most two anchors.
+\end{lemma}
+\begin{proof}
+Let $T$ be the set of members through the anchors of a set $S$ and $R'=\mathrm{proj}_T(\Sigma)$, closed under $m$. By Lemma~\ref{lem:tinactive}, $S$ is a face iff the partial vector $t$ of forced states (if consistent) is in $R'$. Claim: if every pair of coordinates of $t$ is in the corresponding binary projection of $R'$, then $t\in R'$. Induction on $|T|$; $|T|\le2$ is trivial. For $|T|\ge3$ choose three coordinates $i_1,i_2,i_3$ and $u_j\in R'$ extending $t$ on $T\setminus\{i_j\}$ (induction). Then $m(u_1,u_2,u_3)=t$: at $i_1$ the vectors $u_2,u_3$ agree with $t$, similarly at $i_2,i_3$, and elsewhere all three agree. A binary subtuple of $t$ involves at most two anchors, so if all pairs of anchors are faces, $S$ is a face.
+\end{proof}
+(This is the Baker--Pixley argument; the proof above is self-contained.)
+
+\subsection{Fan-out of released tunnels, and the tunnel-release model}
+\begin{lemma}[Released ends have small hard degree]\label{lem:tfan}
+Let $H$ be pair-maximal, $D\ge\max_v|Q(v)|$, and $S$ an optimal solution with $|S|\le|H|+\ell$. (a) Every endpoint of an edited hard pair (in particular of a cut hard edge) has hard degree at most $D+\ell$. (b) Every hard component containing a vertex of hard degree larger than $2D+3\ell$ is a whole cluster of $S$ in which no \emph{hard} pair is edited.
+\end{lemma}
+\begin{proof}
+(a) Lemma~\ref{lem:EX}(a) gives $d_h(x)\le D+u$ and $u\le|S|-|H|\le\ell$. (b) Lemma~\ref{lem:NF}($\gamma$) with $B=2D+3\ell$; hard pairs inside the cluster are unedited by Lemma~\ref{lem:NF}($\beta$). Soft pairs inside the component may be edited (take $K_9$ minus one edge $ac$ with $H=\{(a,b,c)\}$).
+\end{proof}
+
+\begin{proposition}[Bounded-degree Grid Tiling is easy]\label{prop:tGT}
+Grid Tiling (find $a_1,\dots,a_k,b_1,\dots,b_k\in[n]$ with $(a_i,b_j)\in S_{ij}$ for all $i,j$) is solvable in time $n\,d^{2k}\,\mathrm{poly}$ on instances where every value has at most $d$ partners in every $S_{ij}$.
+\end{proposition}
+\begin{proof}
+Guess $a_1$ ($n$ ways); each $b_j$ has at most $d$ candidates, being a partner of $a_1$ in $S_{1j}$; then each $a_i$ has at most $d$ candidates, being a partner of $b_1$ in $S_{i1}$.
+\end{proof}
+\emph{Heuristic consequence.} By Lemma~\ref{lem:tfan} a tunnel that is ever released in an optimum has bounded fan-out, and by Proposition~\ref{prop:tGT} a Grid Tiling reduction cannot write the relations $S_{ij}$ into tunnels of unbounded fan-out; a tile would have to be encoded as a \emph{position} on a track, the tunnels forming a matching between two orderings of the same tiles. The packing lemmas HUB$^+$ (Lemma~\ref{lem:HUB}) and SM (Lemma~\ref{lem:SM}) are not violated by tunnels of hard degree one; the obstruction is not there but in the rigidity of Lemmas~\ref{lem:tlock}--\ref{lem:trigid}.
+
+\paragraph{The tunnel-release model.} Fix a packing $H$ and a set $\mathcal T$ of tunnels (stubs allowed). A \emph{TR-solution} is a solution with exactly one edit in every member whose hard edits are cuts of tunnels; its excess is the number of cuts. For $R\subseteq\mathcal T$ let $f(R)=1$ iff $G$ minus the tunnel edges of $R$ has a ZE solution; call $S\subseteq\mathcal T$ \emph{lockable} if $f(\mathcal T\setminus S)=1$, and a minimal non-lockable set a \emph{core}.
+\begin{proposition}[Bounded cores give FPT in the model]\label{prop:tTR}
+(i) $f$ is monotone. (ii) $f(R)=1$ iff $R$ meets every core. (iii) The minimum number of cuts of a TR-solution is the minimum size of a hitting set of the cores. (iv) If every core has at most $d$ tunnels, this minimum is computable in time $d^{\ell}3^{w+1}n^{O(1)}$ (or decides that it exceeds $\ell$), given a tree decomposition of $I(H)$ of width $w$.
+\end{proposition}
+\begin{proof}
+(i) Given a ZE solution of $G$ minus $R'$ and $R'\subseteq R$, each tunnel of $R\setminus R'$ is a cluster $\{x,x'\}$ (Lemma~\ref{lem:tlock}); splitting it into singletons changes no edit. (ii),(iii): $f(R)=1$ iff $\mathcal T\setminus R$ is lockable iff it contains no core, as non-lockability is upward closed; a TR-solution with cut set $R$ exists iff $f(R)=1$. (iv) Test $f$ with the $\ell=0$ dynamic program of Theorem~\ref{thm:l0}; find a core inside $\mathcal T\setminus R$ by deleting tunnels one at a time while the rest stays non-lockable; branch on which of its at most $d$ tunnels is cut, to depth $\ell$.
+\end{proof}
+This is a statement about a restricted model, not about CEaMP: solutions in which a member receives two edits, or a hard pair other than a tunnel edge is edited, are excluded, and they can be strictly cheaper. Computer evidence: in $931$ random tunnelled instances (two or three tunnels, $n\le10$) with a finite hitting-set value, $411$ had $\mathrm{OPT}-|H|$ strictly smaller than that value. Inside the model, a W[1]-hardness proof therefore needs cores of unbounded size, and by Lemma~\ref{lem:tsplice} a core of size $N$ cannot be absorbed by a bounded-width decomposition without the memory described above; this last implication is heuristic.
+
+\subsection{Computer evidence}
+\emph{All items of this subsection are computer evidence: independent brute-force confirmations on small instances, not theorems.}
+{\sloppy
+\begin{itemize}
+\item \emph{Cost sharing of a tunnel.} Let $P=(x,y,z)$ and $P'=(x',y',z')$ be vertex-disjoint members and let $z,z'$ have pendant hard neighbours $t,t'$, so that the only ZE state of each member is $R$ ($x$ joins $y$). Then $\mathrm{OPT}=2$ without a tunnel, $4$ with private stubs at $x$ and $x'$, $3$ with one tunnel $xx'$ (one cut serves both members), and $2$ again with the tunnel if the pendant neighbours are removed (state $L$ is available: an inactive anchor costs nothing).
+\item \emph{A local flip gadget exists.} Let $G^*$ have vertices $0,1,3,4,5,6,7$ and edges $01,04,05,14,15,45,03,13,36,37,06,56$, with members $(6,3,7),(4,1,3),(5,0,3),(4,5,6),(6,0,1)$ and anchor $x=7$ (its only hard edges are $04$ and $15$, the anchor has none; $c=3$). It is valid, pair-maximal and tight ($\mathrm{OPT}=|H|=5$), and has exactly five ZE solutions: with $x$ a singleton, $\{0,1,3,4,5,6\}$ and $\{0,1,4,5\},\{3,6\}$; with $x$ not a singleton, $\{0,1,4,5,6\},\{3,7\}$, $\{0,1,4,5\},\{3,6,7\}$ and $\{0,1,4,5\},\{3,7\},\{6\}$. On the pair of members $m_3=(4,5,6)$, $m_1=(4,1,3)$ the locked relation (anchor a singleton) is the equality on $\{M,R\}$, while releasing the anchor admits $(M,R)$: the stored value flips only when the tunnel at $x$ is cut. Adding a vertex $t$ adjacent to $0,1,4,5,6$ makes the unique optimum have $x$ released ($\mathrm{OPT}=5$); with a stub on $x$ the optimum is $6$. Searches over random configurations reported in the working notes (not re-run for this paper) found no flip gadget with three or four members ($n\le7$, resp.\ $8$) and $128$ with five members at $n=8$. The relation of $G^*$ is not determined by its binary projections ($RRRMM$ is pairwise consistent but not a solution).
+\item \emph{No cores of size $\ge3$ in small tight graphs.} Among all connected graphs on at most $7$ vertices (atlas) with $\mathrm{OPT}$ equal to the packing number, and about $1{,}700$ random connected tight graphs with $n=8,9$, no set of vertices is a minimal non-face of size $3$ (faces of vertex sets via optimal partitions); searches reported in the working notes give the same up to $n=9$, and by ILP up to $n=17$. Cores of size $2$ occur.
+\item \emph{Negative composition results (searches reported in the working notes; not re-run for this paper, small search spaces).} Rings of $N=3,\dots,7$ copies of $G^*$ sharing a vertex are tight but no single anchor can be a singleton for $N\ge4$ (explained by Lemma~\ref{lem:trigid}(b): the shared vertex lies in two bridges); other ways of chaining $G^*$ (wire members, identification of vertices, shared pieces) were not tight, or had all anchors simultaneously lockable, or none; composing the $1{,}860$ flip records found, an alternating chain with a bridge-free gadget (it does not transmit the bit), odd rings of $K_2$ pieces, and gadgets with separate clean sockets for an OR-wire chain ($n\le9$) produced no chain. These results are evidence, not theorems.
+\item \emph{Majority closure fails exactly where hardness could begin; the notes' conjecture is false in its first form.} For $c\le2$ the set $\Sigma$ was closed under the uniform ``all distinct $\mapsto M$'' majority in almost all random tight instances, but not in all: a tight instance with $n=6$, $c=2$, edges $03,05,12,14,23,24,25,34,35,45$ and members $(0,5,4),(1,2,5),(0,3,2),(1,4,3)$ has $\Sigma=\{LLLL,LMLM,MLML,RRRR\}$, and the majority of $LMLM,MLML,RRRR$ is $MMMM\notin\Sigma$ (about $1.4\%$ of the sampled tight instances with $n=6$, $c\le2$ and $|\Sigma|\ge3$, $0.4\%$ over $n=6,\dots,9$). All tested instances with $c\le2$ nevertheless had $\Sigma$ determined by its binary projections, and none had a core of size $3$.
+\end{itemize}}
+
+\subsection{What a reduction would need, and what is open}
+\emph{Heuristic blueprint.} Suppose a family of tight instances $G_N$ of bounded $\mathrm{tw}(I(H_N))$ and bounded $c$ had $N$ clean anchors $x_1,\dots,x_N$ such that stubs on all $x_j$ force $\mathrm{OPT}=|H|+1$ while stubs on any $N-1$ of them do not (a core of size $N$), and such that the bit ``the released anchor is at position $\le t$'' could be read at every position and compared across two such tracks by equality wires. Then Grid Tiling would reduce to CEaMP with $\ell=k^2$ and width $O(k^2)$: a tile $(a,b)\in S_{ij}$ is one anchor on a track ordered by $(a,b)$ and one on a track ordered by $(b,a)$, joined by a tunnel of fan-out one (so HUB$^+$ and Lemma~\ref{lem:tfan} hold trivially); one shared cut per cell encodes the tile; the equalities of positions at block boundaries give $a_{ij}=a_{i,j+1}$ and $b_{ij}=b_{i+1,j}$. This is a sketch; none of its steps has been written out as a proof, since the family does not exist as far as we know.
+\begin{problem}[The chain object]\label{op:chain}
+Is there a family $(G_N,H_N)$ with $c$ and $\mathrm{tw}(I(H_N))$ bounded independently of $N$, with $(G_N,H_N)$ tight, and with $N$ anchors forming a core of size $N$ (equivalently, by Proposition~\ref{prop:tTR}, unbounded cores in the tunnel-release model)? We know a single local gadget that flips a stored value when its anchor is released ($G^*$, computer evidence) but no way of composing such gadgets, and Lemma~\ref{lem:trigid}(b) explains why the obvious compositions fail: the two vertices bridged by a lock are occupied and cannot be shared with the next gadget. By Lemma~\ref{lem:tmaj} such a family needs a $\Sigma$ not closed under any uniform majority operation.
+\end{problem}
+\begin{conjecture}[Cores for $c\le2$]\label{conj:C2}
+If $c\le2$, every core (minimal non-face among clean anchors) of a tight instance has at most two anchors.
+\end{conjecture}
+\noindent Evidence for Conjecture~\ref{conj:C2}: no core of size $3$ occurred in any tested tight instance (any $c$): the $723$ tight connected graphs on $4$ to $7$ vertices, about $1{,}700$ random ones with $n=8,9$, and $10^4$ sampled instances with $n\le10$ (small search space). The stronger statement ``$\Sigma$ is closed under the majority $m(\text{all distinct})=M$ when $c\le2$'' that Lemma~\ref{lem:tmaj} would use is \emph{false} (see above), so Conjecture~\ref{conj:C2} is not implied by it. If Conjecture~\ref{conj:C2} were true, then with Proposition~\ref{prop:tTR} the tunnel-release model would be fixed-parameter tractable for $c\le2$, and any hardness proof by tunnels would need $c\ge3$, where $G^*$ already lives.

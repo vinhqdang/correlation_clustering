@@ -47,6 +47,8 @@ The main question, whether the problem is fixed-parameter tractable in $\ell+w$,
 
 (xi) \emph{Reducing components.} A violation of the neighbourhood condition at a boundary vertex forces an edited pair there (Lemma~D); tight and reducible components of $I(H)$ are decided in $3^{w+1}n^{O(1)}$; and, modulo the soundness of a rule of van Bevern et al.\ (cited), a polynomial reduction leaves at most $2\ell$ components of $I(H)$ of arbitrary size, so $\ell=0$ is fully reduced. We also show that the treewidth of the graph of (ix) is controlled by the soft graph with hard components identified, and give a family with $w=1$, $\ell=1$ and unbounded such treewidth in which no pair-closed union of members is reducible by that rule, so the rule on unions of members cannot prove the reduction lemma. The reduction lemma and a trigger lemma remain conjectures.
 
+(xii) \emph{Why tunnel reductions stall.} For the natural attempt at W[1]-hardness in $\ell+w$ (hard edges between far vertices, ``tunnels'', carrying the equalities of a Grid Tiling instance) we prove that a clean tunnel is a lock that forces the states of the members through its end, that locks are rigid under transitivity, that a minimal set of locks that cannot be satisfied together (a core) of size $N$ needs memory across the separators of a decomposition of $I(H)$, that cores of size at most two occur when the zero-excess solutions are closed under a majority operation, that released tunnels have hard degree at most $D+\ell$, and that in the tunnel-release model bounded cores give an algorithm in time $d^{\ell}3^{w+1}n^{O(1)}$ (a restricted model, not CEaMP). Computer evidence (not theorems): a $7$-vertex tight gadget whose stored value flips when its tunnel is cut, and failed compositions of such gadgets into a chain. The missing object (a family of bounded width with a core of unbounded size) and a conjecture on cores for $c\le2$ are stated as open problems; a conjecture of the working notes (majority closure for $c\le2$) is refuted by an explicit instance.
+
 What remains is stated exactly: whether the pointers of type T2 and the pointers realised by deleted hard edges can be handled in a decomposition of width bounded in $(\ell,w)$ (Section~\ref{sec:pointers} gives instances in which such a pointer joins members at arbitrary distance in $I(H)$), the reduction lemma, and the main question itself.
 \end{abstract}
 \input{sections/intro}
@@ -60,6 +62,7 @@ What remains is stated exactly: whether the pointers of type T2 and the pointers
 \input{sections/dproute}
 \input{sections/pointers}
 \input{sections/reduction}
+\input{sections/tunnels}
 \input{sections/limits}
 \input{sections/open}
 \input{sections/related}
