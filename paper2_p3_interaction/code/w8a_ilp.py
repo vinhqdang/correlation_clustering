@@ -66,6 +66,14 @@ def rand_graph(n, mode, rng):
         E = [(i, (i + 1) % n) for i in range(n)]
         for _ in range(rng.randint(0, 4)):
             a, b = rng.sample(range(n), 2); E.append((a, b))
+    elif mode == 'planted':
+        k = rng.randint(2, 4); lab = [rng.randrange(k) for _ in range(n)]; q = rng.choice([0.05, 0.1, 0.15, 0.2])
+        E = []
+        for a in range(n):
+            for b in range(a + 1, n):
+                t = lab[a] == lab[b]
+                if rng.random() < q: t = not t
+                if t: E.append((a, b))
     else:  # cubic-ish
         E = set()
         deg = [0] * n
@@ -81,7 +89,7 @@ if __name__ == '__main__':
     rng = random.Random(seed); stat = collections.Counter(); bad = []
     t0 = time.time()
     for it in range(N):
-        n = rng.randint(nlo, nhi); mode = rng.choice(['gnp', 'tree+chords', 'cycle+chords', 'cubic'])
+        n = rng.randint(nlo, nhi); mode = rng.choice(['gnp', 'tree+chords', 'cycle+chords', 'cubic', 'planted', 'planted'])
         E = rand_graph(n, mode, rng); g = G8(n, E)
         if len(g.E) < 2: continue
         gg = nx.Graph(list(g.E))
