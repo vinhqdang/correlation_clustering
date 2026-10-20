@@ -82,6 +82,12 @@ Shaohua Li, Marcin Pilipczuk, and Manuel Sorge.
 \newblock {\em ACM Transactions on Algorithms}, 20(1):1--43, 2023.
 \newblock Conference version: STACS 2021, LIPIcs 187, Art.~49.
 
+\bibitem{Rob39}
+Herbert~E. Robbins.
+\newblock A theorem on graphs, with an application to a problem of traffic
+  control.
+\newblock {\em The American Mathematical Monthly}, 46(5):281, 1939.
+
 \bibitem{BFK18}
 Ren{\'e} van Bevern, Vincent Froese, and Christian Komusiewicz.
 \newblock Parameterizing edge modification problems above lower bounds.

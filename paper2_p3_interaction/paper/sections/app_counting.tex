@@ -60,7 +60,7 @@ Let $S$, $u$ and the pieces be as above, $D\ge\max_v|Q(v)|$ (e.g.\ $D=D(H)$), an
 \subsection{The soft graph has bounded treewidth}
 Recall the soft graph $\soft$ (Section~\ref{sec:prelim}).
 \begin{proposition}[Treewidth of the soft graph]\label{prop:soft}
-$\tw(W)\le 3(w+1)-1=3w+2$ if $H\ne\emptyset$; $\soft$ is edgeless if $H=\emptyset$. The bound is attained for $w=0$ ($H$ a single $P_3$, $\soft$ a triangle).
+$\tw(\soft)\le 3(w+1)-1=3w+2$ if $H\ne\emptyset$; $\soft$ is edgeless if $H=\emptyset$. The bound is attained for $w=0$ ($H$ a single $P_3$, $\soft$ a triangle).
 \end{proposition}
 \begin{proof}
 Let $(\mathcal T,\{\beta_t\})$ be a tree decomposition of $I(H)$ of width $w$ and $\mathcal T_P=\{t:P\in \beta_t\}$, a subtree of $\mathcal T$ for each $P\in H$. Put $\beta'_t=\bigcup_{P\in \beta_t}V(P)$, so $|\beta'_t|\le3(w+1)$. For every vertex $x\notin V(H)$ add a new leaf bag $\{x\}$ to an arbitrary node. \emph{Edges:} a soft pair lies in $V(P)$ for some $P\in H$, and $P\in \beta_t$ for some $t$, so the pair lies in $\beta'_t$. \emph{Connectivity:} for $x\in V(H)$ the nodes $t$ with $x\in \beta'_t$ form $\bigcup_{P\ni x}\mathcal T_P$. The members through $x$ pairwise share $x$, so they are pairwise adjacent in $I(H)$ and, the edge being covered by a bag, their subtrees $\mathcal T_P$ pairwise intersect. A union of connected subtrees that pairwise intersect is connected (two points of the union lie in subtrees $\mathcal T_P,T_{P'}$ that meet; join them through a common node). The new leaf bags are single bags of size $1$. So this is a tree decomposition of $\soft$ of width at most $3(w+1)-1$.

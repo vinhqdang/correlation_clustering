@@ -63,7 +63,7 @@ Let $S$ be any solution (optimal or not), $u=|U|$, and let $z\ne b$ lie in one c
 \[
 A(z,b)=\bigl\{a\notin\{z,b\}:\ az,ab\text{ both hard},\ [az\in E]\ne[ab\in E]\bigr\}
 \]
-has at most $u$ elements. In particular, if $zb$ is soft, the set $\Theta(z,b)=N_h(z)\setminus(N[b]\cup Q(b))$ satisfies $|\Theta(z,b)|\le u\le|S|-|H|$ and is computable from $G$ and $H$ alone.
+has at most $u$ elements. In particular, if $z,b$ lie in one cluster of $G\sd S$ and $zb$ is soft, the set $\Theta(z,b)=N_h(z)\setminus(N[b]\cup Q(b))$ satisfies $|\Theta(z,b)|\le u\le|S|-|H|$ and is computable from $G$ and $H$ alone.
 \end{lemma}
 \begin{proof}
 Let $a\in A(z,b)$. Exactly one of $az,ab$ is a hard edge and the other a hard non-edge. If $a$ lies in the cluster of $z,b$, the hard non-edge is a hard non-edge inside a cluster, so it is in $U$. If $a$ lies in another cluster, the hard edge joins two different clusters, so it is deleted and in $U$. Assign to $a$ this pair. Its ends are $a$ and one of $z,b$; since $a\notin\{z,b\}$, the map $a\mapsto$ pair is injective. So $|A(z,b)|\le u$. For the second statement, $a\in\Theta(z,b)$ means $a\ne z$, $az$ a hard edge, $a\notin N[b]$ (so $a\ne b$ and $ab\notin E$) and $ab$ not soft. Thus $a\in A(z,b)$.
