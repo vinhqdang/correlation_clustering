@@ -1,9 +1,11 @@
 \begin{thebibliography}{10}
 
-\bibitem{Bocci22}
-Bocci et~al.
-\newblock A new temporal interpretation of cluster editing, 2022.
-\newblock Notes: opened. TODO: full author list.
+\bibitem{Bocci24}
+Cristiano Bocci, Chiara Capresi, Kitty Meeks, and John Sylvester.
+\newblock A new temporal interpretation of cluster editing.
+\newblock {\em Journal of Computer and System Sciences}, 144:103551, 2024.
+\newblock Extended abstract: IWOCA 2022. Metadata verified (arXiv API,
+  Crossref).
 
 \bibitem{Bod96}
 Hans~L. Bodlaender.
@@ -11,28 +13,46 @@ Hans~L. Bodlaender.
   treewidth.
 \newblock {\em SIAM Journal on Computing}, 25(6):1305--1317, 1996.
 
-\bibitem{Crespelle20}
-Crespelle, Drange, Fomin, and Golovach.
+\bibitem{Crespelle23}
+Christophe Crespelle, P{\aa}l~Gr{\o}n{\aa}s Drange, Fedor~V. Fomin, and Petr~A.
+  Golovach.
 \newblock A survey of parameterized algorithms and the complexity of edge
-  modification, 2020.
-\newblock Notes: opened.
+  modification.
+\newblock {\em Computer Science Review}, 48:100556, 2023.
+\newblock Metadata verified (Crossref, arXiv API).
 
 \bibitem{Cygan15}
-Cygan et~al.
+Marek Cygan, Fedor~V. Fomin, {\L}ukasz Kowalik, Daniel Lokshtanov, D{\'a}niel
+  Marx, Marcin Pilipczuk, Micha{\l} Pilipczuk, and Saket Saurabh.
 \newblock {\em Parameterized Algorithms}.
 \newblock Springer, 2015.
-\newblock Notes (audit.md): recommended reference for dynamic programming on
-  tree decompositions and for ETH lower bounds; the specific theorems were not
-  opened.
+\newblock Author list, year and DOI verified (Crossref); the specific theorems
+  were not opened.
+
+\bibitem{Split24}
+Alexander Firbas, Alexander Dobler, Fabian Holzer, Jakob Schafellner, Manuel
+  Sorge, Ana{\"i}s Villedieu, and Monika Wi{\ss}mann.
+\newblock The complexity of cluster vertex splitting and company.
+\newblock In {\em SOFSEM 2024: Theory and Practice of Computer Science}, LNCS,
+  pages 226--239, 2024.
+\newblock Metadata verified (arXiv API, Crossref).
+
+\bibitem{Club25}
+Ajinkya Gaikwad.
+\newblock On the parameterized complexity of $s$-club cluster edge deletion,
+  2025.
+\newblock arXiv preprint (v5 at time of checking); metadata verified (arXiv
+  API). No journal reference listed.
 
 \bibitem{Garvardt23}
-Garvardt, Morawietz, Nichterlein, and Weller.
+Jaroslav Garvardt, Nils Morawietz, Andr{\'e} Nichterlein, and Mathias Weller.
 \newblock Graph clustering problems under the lens of parameterized local
   search.
-\newblock In {\em Proc.\ IPEC 2023}, volume 285 of {\em LIPIcs}, page Art.~20,
-  2023.
-\newblock Notes: opened (Dagstuhl PDF); the DOI is read off the recorded
-  Dagstuhl URL. Journal version JCSS 2026 per the notes.
+\newblock In {\em Proc.\ 18th International Symposium on Parameterized and
+  Exact Computation (IPEC 2023)}, volume 285 of {\em LIPIcs}, pages
+  20:1--20:19, 2023.
+\newblock Metadata verified (doi.org). A journal version was mentioned in
+  earlier notes; not verified here.
 
 \bibitem{GM09}
 Martin Grohe and D{\'a}niel Marx.
@@ -51,43 +71,33 @@ Russell Impagliazzo, Ramamohan Paturi, and Francis Zane.
 \newblock {\em Journal of Computer and System Sciences}, 63(4):512--530, 2001.
 
 \bibitem{KU12}
-Komusiewicz and Uhlmann.
+Christian Komusiewicz and Johannes Uhlmann.
 \newblock Cluster editing with locally bounded modifications.
-\newblock {\em Discrete Applied Mathematics}, 2012.
-\newblock Notes: opened,
-  \url{https://www.uni-marburg.de/de/fb12/arbeitsgruppen/algorith/paper/ce-bounded-degree.pdf}.
-  Volume and pages not recorded in the notes.
+\newblock {\em Discrete Applied Mathematics}, 160(15):2259--2270, 2012.
+\newblock Metadata verified (Crossref). Abstract and Thms.~1--2 of the preprint
+  re-read 2026-10-20.
 
 \bibitem{Kor21}
 Tuukka Korhonen.
 \newblock A single-exponential time 2-approximation algorithm for treewidth.
 \newblock In {\em 2021 IEEE 62nd Annual Symposium on Foundations of Computer
   Science (FOCS)}, pages 184--192, 2021.
-\newblock Crossref dates the proceedings 2022-02; the booktitle names the 2021
-  symposium.
+\newblock arXiv id verified 2026-10-20. Crossref dates the proceedings 2022-02;
+  the booktitle names the 2021 symposium.
 
 \bibitem{LPS23}
-Li, Pilipczuk, and Sorge.
+Shaohua Li, Marcin Pilipczuk, and Manuel Sorge.
 \newblock Cluster editing parameterized above modification-disjoint
   {$P_3$}-packings.
-\newblock {\em ACM Transactions on Algorithms}, 20(1):Art.~3, 2023.
-\newblock Conference version: STACS 2021, LIPIcs 187, Art.~49. Notes: opened
-  (arXiv v3). Surnames only, as recorded in the notes.
-
-\bibitem{Club25}
-Montecchiani et~al.
-\newblock $s$-club cluster edge deletion, 2025.
-\newblock Notes: opened. Title and author list to be checked.
-
-\bibitem{Split23}
-Authors not recorded in~the notes.
-\newblock The complexity of cluster vertex splitting and company, 2023.
-\newblock Notes: opened. TODO: fill in authors from the arXiv page.
+\newblock {\em ACM Transactions on Algorithms}, 20(1):1--43, 2023.
+\newblock Conference version: STACS 2021, LIPIcs 187, Art.~49. Metadata
+  verified (Crossref, arXiv API).
 
 \bibitem{BFK18}
-van Bevern, Froese, and Komusiewicz.
+Ren{\'e} van Bevern, Vincent Froese, and Christian Komusiewicz.
 \newblock Parameterizing edge modification problems above lower bounds.
-\newblock {\em Theory of Computing Systems}, 62(3), 2018.
-\newblock Conference version: CSR 2016. Notes: opened (arXiv).
+\newblock {\em Theory of Computing Systems}, 62(3):739--770, 2018.
+\newblock Conference version: CSR 2016. Metadata verified (Crossref, arXiv
+  API).
 
 \end{thebibliography}

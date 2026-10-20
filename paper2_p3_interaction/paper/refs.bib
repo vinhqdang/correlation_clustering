@@ -1,65 +1,67 @@
-% Every entry below is traceable to notes/literature.md, notes/literature_2.md or notes/audit.md.
-% Author fields carry surnames only (given names are not recorded in the notes).
-% "opened" = the notes record that the source was fetched and read.
+% Metadata verified 2026-10-20 against: arXiv API (author lists, journal_ref), doi.org content negotiation / Crossref (DOIs, volumes, pages).
+% "opened" in notes = source fetched and read in earlier work.
 @article{LPS23,
-  author = {Li and Pilipczuk and Sorge},
+  author = {Li, Shaohua and Pilipczuk, Marcin and Sorge, Manuel},
   title = {Cluster Editing parameterized above modification-disjoint {$P_3$}-packings},
-  journal = {ACM Transactions on Algorithms}, volume = {20}, number = {1}, pages = {Art.~3}, year = {2023},
+  journal = {ACM Transactions on Algorithms}, volume = {20}, number = {1}, pages = {1--43}, year = {2023},
   doi = {10.1145/3626526}, eprint = {1910.08517}, archivePrefix = {arXiv},
-  note = {Conference version: STACS 2021, LIPIcs 187, Art.~49. Notes: opened (arXiv v3). Surnames only, as recorded in the notes.}
+  note = {Conference version: STACS 2021, LIPIcs 187, Art.~49. Metadata verified (Crossref, arXiv API).}
 }
 @article{BFK18,
-  author = {van Bevern and Froese and Komusiewicz},
+  author = {van Bevern, Ren{\'e} and Froese, Vincent and Komusiewicz, Christian},
   title = {Parameterizing edge modification problems above lower bounds},
-  journal = {Theory of Computing Systems}, volume = {62}, number = {3}, year = {2018},
-  eprint = {1512.04047}, archivePrefix = {arXiv},
-  note = {Conference version: CSR 2016. Notes: opened (arXiv).}
+  journal = {Theory of Computing Systems}, volume = {62}, number = {3}, pages = {739--770}, year = {2018},
+  doi = {10.1007/s00224-016-9746-5}, eprint = {1512.04047}, archivePrefix = {arXiv},
+  note = {Conference version: CSR 2016. Metadata verified (Crossref, arXiv API).}
 }
 @article{KU12,
-  author = {Komusiewicz and Uhlmann},
+  author = {Komusiewicz, Christian and Uhlmann, Johannes},
   title = {Cluster editing with locally bounded modifications},
-  journal = {Discrete Applied Mathematics}, year = {2012},
-  note = {Notes: opened, \url{https://www.uni-marburg.de/de/fb12/arbeitsgruppen/algorith/paper/ce-bounded-degree.pdf}. Volume and pages not recorded in the notes.}
+  journal = {Discrete Applied Mathematics}, volume = {160}, number = {15}, pages = {2259--2270}, year = {2012},
+  doi = {10.1016/j.dam.2012.05.019},
+  note = {Metadata verified (Crossref). Abstract and Thms.~1--2 of the preprint re-read 2026-10-20.}
 }
-@misc{Crespelle20,
-  author = {Crespelle and Drange and Fomin and Golovach},
+@article{Crespelle23,
+  author = {Crespelle, Christophe and Drange, P{\aa}l Gr{\o}n{\aa}s and Fomin, Fedor V. and Golovach, Petr A.},
   title = {A survey of parameterized algorithms and the complexity of edge modification},
-  year = {2020}, eprint = {2001.06867}, archivePrefix = {arXiv},
-  note = {Notes: opened.}
+  journal = {Computer Science Review}, volume = {48}, pages = {100556}, year = {2023},
+  doi = {10.1016/j.cosrev.2023.100556}, eprint = {2001.06867}, archivePrefix = {arXiv},
+  note = {Metadata verified (Crossref, arXiv API).}
 }
-@misc{Split23,
-  author = {Authors not recorded in the notes},
+@inproceedings{Split24,
+  author = {Firbas, Alexander and Dobler, Alexander and Holzer, Fabian and Schafellner, Jakob and Sorge, Manuel and Villedieu, Ana{\"i}s and Wi{\ss}mann, Monika},
   title = {The Complexity of Cluster Vertex Splitting and Company},
-  year = {2023}, eprint = {2309.00504}, archivePrefix = {arXiv},
-  note = {Notes: opened. TODO: fill in authors from the arXiv page.}
+  booktitle = {SOFSEM 2024: Theory and Practice of Computer Science}, series = {LNCS}, pages = {226--239}, year = {2024},
+  doi = {10.1007/978-3-031-52113-3_16}, eprint = {2309.00504}, archivePrefix = {arXiv},
+  note = {Metadata verified (arXiv API, Crossref).}
 }
-@misc{Bocci22,
-  author = {Bocci and others},
-  title = {A New Temporal Interpretation of Cluster Editing},
-  year = {2022}, eprint = {2202.01103}, archivePrefix = {arXiv},
-  note = {Notes: opened. TODO: full author list.}
+@article{Bocci24,
+  author = {Bocci, Cristiano and Capresi, Chiara and Meeks, Kitty and Sylvester, John},
+  title = {A new temporal interpretation of cluster editing},
+  journal = {Journal of Computer and System Sciences}, volume = {144}, pages = {103551}, year = {2024},
+  doi = {10.1016/j.jcss.2024.103551}, eprint = {2202.01103}, archivePrefix = {arXiv},
+  note = {Extended abstract: IWOCA 2022. Metadata verified (arXiv API, Crossref).}
 }
 @inproceedings{Garvardt23,
-  author = {Garvardt and Morawietz and Nichterlein and Weller},
+  author = {Garvardt, Jaroslav and Morawietz, Nils and Nichterlein, Andr{\'e} and Weller, Mathias},
   title = {Graph Clustering Problems Under the Lens of Parameterized Local Search},
-  booktitle = {Proc.\ IPEC 2023}, series = {LIPIcs}, volume = {285}, pages = {Art.~20}, year = {2023},
+  booktitle = {Proc.\ 18th International Symposium on Parameterized and Exact Computation (IPEC 2023)}, series = {LIPIcs}, volume = {285}, pages = {20:1--20:19}, year = {2023},
   doi = {10.4230/LIPIcs.IPEC.2023.20},
-  note = {Notes: opened (Dagstuhl PDF); the DOI is read off the recorded Dagstuhl URL. Journal version JCSS 2026 per the notes.}
+  note = {Metadata verified (doi.org). A journal version was mentioned in earlier notes; not verified here.}
 }
 @misc{Club25,
-  author = {Montecchiani and others},
-  title = {$s$-Club Cluster Edge Deletion},
+  author = {Gaikwad, Ajinkya},
+  title = {On the Parameterized Complexity of $s$-Club Cluster Edge Deletion},
   year = {2025}, eprint = {2510.07065}, archivePrefix = {arXiv},
-  note = {Notes: opened. Title and author list to be checked.}
+  note = {arXiv preprint (v5 at time of checking); metadata verified (arXiv API). No journal reference listed.}
 }
 @book{Cygan15,
-  author = {Cygan and others},
+  author = {Cygan, Marek and Fomin, Fedor V. and Kowalik, {\L}ukasz and Lokshtanov, Daniel and Marx, D{\'a}niel and Pilipczuk, Marcin and Pilipczuk, Micha{\l} and Saurabh, Saket},
   title = {Parameterized Algorithms},
   publisher = {Springer}, year = {2015},
-  note = {Notes (audit.md): recommended reference for dynamic programming on tree decompositions and for ETH lower bounds; the specific theorems were not opened.}
+  doi = {10.1007/978-3-319-21275-3},
+  note = {Author list, year and DOI verified (Crossref); the specific theorems were not opened.}
 }
-
-% The four entries below: metadata read from doi.org content negotiation (Crossref record), 2026-10-19.
 @article{Guo09,
   author = {Guo, Jiong},
   title = {A more effective linear kernelization for cluster editing},
@@ -82,11 +84,9 @@
   author = {Korhonen, Tuukka},
   title = {A single-exponential time 2-approximation algorithm for treewidth},
   booktitle = {2021 IEEE 62nd Annual Symposium on Foundations of Computer Science (FOCS)}, pages = {184--192}, year = {2021},
-  doi = {10.1109/FOCS52979.2021.00026},
-  note = {Crossref dates the proceedings 2022-02; the booktitle names the 2021 symposium.}
+  doi = {10.1109/FOCS52979.2021.00026}, eprint = {2104.07463}, archivePrefix = {arXiv},
+  note = {arXiv id verified 2026-10-20. Crossref dates the proceedings 2022-02; the booktitle names the 2021 symposium.}
 }
-
-% Metadata read from doi.org content negotiation (Crossref record), 2026-10-19. The treewidth bound for cubic expanders is CITED, not re-proved or re-checked here.
 @article{GM09,
   author = {Grohe, Martin and Marx, D{\'a}niel},
   title = {On tree width, bramble size, and expansion},
