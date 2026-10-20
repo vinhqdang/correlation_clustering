@@ -1,0 +1,47 @@
+\section{Scope and status of the results}\label{app:status}
+The following table summarises the scope and status of the results. ``Input $H$'' means that the statement is in terms of $w$, $\ell$ and $n$ of the input packing; ``pair-maximal $H'$'' means that it is stated for a pair-maximal packing, and for an arbitrary input applies to a pair-maximal extension $H'$ with the primed parameters of Section~\ref{sec:prelim}. ``YES'' and ``optimal'' mean that the statement needs a YES instance, respectively an optimal solution.
+{\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\hline
+Result & Applies to & Needs & Status\\
+\hline
+\endhead
+Thm~\ref{thm:l0}, \ref{thm:A} (CSP, $3^{w+1}$, $5^{w+1}n^{2\ell}$) & input $H$ & -- & proved; Lean: Obs.~\ref{obs:one}, \ref{obs:two} (owner cliques) and the five-state lemma, not the algorithms\\
+Thm~\ref{thm:sfA}, Cor.~\ref{cor:sfpoly}, \ref{cor:sfcore}, \ref{cor:sfTR} (no soft triangle: majority closure, $\ell=0$ polynomial, cores $\le2$) & input $H$, soft-triangle-free & -- & proved; 40-relation classification by computer; cites~\cite{JCC98}\\
+Lemmas~\ref{lem:sfU}--\ref{lem:sfH2}, Thm~\ref{thm:U} (far-lift model, $6^{\ell}$), Lemma~\ref{lem:sfE} & input $H$ (soft-triangle-free for Thm~\ref{thm:U}) & -- & proved; restricted model\\
+Prop.~\ref{prop:RM2}, \ref{prop:hub} (RM2 FPT; not faithful) & model; explicit instance & -- & proved (hub: enumeration)\\
+Lemma~\ref{lem:cert}, Thm~\ref{thm:B1}, \ref{thm:L} (certificate branching, leaf test) & input $H$ (adjacency-local) & -- & proved\\
+Thm~\ref{thm:CB0} (certificates $\le12$ at $\ell=0$) & soft-triangle-free & $\ell=0$ & proved\\
+Thm~\ref{thm:CE} (unbounded minimal certificates, $c=2$) & explicit family & -- & proved; block structure by computer; the value $|H|+1$ and the connected $\ell=1$ family are supported by experiments only\\
+Lemma~\ref{lem:R5} (no conservative NU) & $c\ge3$ language & -- & proved\\
+Thm~\ref{thm:B}, \ref{thm:C} (abstract W[1]-hardness; tunnels cannot realise it without soft triangles) & abstract; soft-triangle-free tunnel model & -- & proved; remarks (iv), (v) are heuristic\\
+\textbf{Thm~\ref{thm:hard}} (W[1]-hardness in $\ell+w$, $\ell+\mathrm{pw}$, $\ell+c$; no $f(\ell,w)n^{o(\sqrt\ell)}$ under ETH, Cor.~\ref{cor:hardeth}) & pair-maximal $H$, $c\le4p+2$, $\ell=k^2$ & -- & \textbf{proved, computer-assisted}: Lemma~\ref{lem:hchain} (transfer matrix, finite checks for $m\le60$), Lemma~\ref{lem:hprof}, counts of Lemma~\ref{lem:hpar}; the rest by hand; Lean~4 checks the counting core of Thm~\ref{thm:hS}, the Grid Tiling encoding, the chain lemma for $m\le9$ and the matrix algebra, not the graph-level statements (Section~\ref{sec:lean})\\
+Remark~\ref{rem:hchaincore} (chain with unbounded core, bounded $c$ and width) & single chain, $p\ge8$ & -- & follows from the proof of Prop.~\ref{prop:hTR}\\
+Thm~\ref{thm:F} (forests, conditional) & forest $I(H)$ & BC, oracle (O) & implication proved; BC, (O) open\\
+Thm~\ref{thm:eth}, Prop.~\ref{prop:w0} (ETH; $w$ alone) & input $H$ & -- & proved from~\cite{LPS23}\\
+Thm~\ref{thm:K} (components, kernel) & input $H$ & -- & proved; cites~\cite{BFK18} Lemma~6.3, \cite{Boe12}, \cite{CM12}\\
+Thm~\ref{thm:three} (components of any size) & input $H$ & -- & proved; cites~\cite{BFK18} Lemma~6.3\\
+Thm~\ref{thm:nl} ($n^{\ell}$ algorithm) & input $H$ (via $H'$) & -- & proved\\
+Lemmas~\ref{lem:half}--\ref{lem:NF}, Cor.~\ref{cor:cand} & pair-maximal $H'$ & optimal, YES & proved; Lean: twin, half-degree, diameter, MAX, HUB, SM (abstract form)\\
+Thm~\ref{thm:T1T2}, Cor.~\ref{cor:softfree}, Prop.~\ref{prop:bag} & pair-maximal $H'$ & optimal, YES & proved\\
+Prop.~\ref{prop:cex}, \ref{prop:FAR} & explicit instances & -- & proved (cex: enumeration)\\
+Thm~\ref{thm:omega}, Prop.~\ref{prop:expander} & pair-maximal $H'$ & YES & proved; expander treewidth cited~\cite{GM09}\\
+Appendices~\ref{app:structure}--\ref{app:conflicts} & pair-maximal $H'$ (App.~\ref{app:counting}: any $H$) & mostly YES & proved\\
+Appendix~\ref{app:spine}, \ref{app:tunnels} & explicit families; tunnel model & -- & proved\\
+Lemma~\ref{lem:rpex}, \ref{lem:rptwin}, Cor.~\ref{cor:rpP3}, Lemma~\ref{lem:rpwit}, Cor.~\ref{cor:rpabs}, Lemma~\ref{lem:rpunc}, \ref{lem:rpout} (exchange, twins, witness case split, uncovered ends) & pair-maximal $H$ (exchange: any $H$) & optimal (not Lemma~\ref{lem:rpex}, \ref{lem:rpout}) & proved\\
+Lemma~\ref{lem:rpdisp} (displacement, single edit) & pair-maximal $H$ & optimal & proved; iteration and termination open\\
+Prop.~\ref{prop:rpFAR}, \ref{prop:rpSp} (FAR and $\mathrm{Sp}(F)$ repack) & explicit instances & -- & proved; verified by computer for $m\le9$ and $F\in\{$triangle, $K_4$, $K_{3,3}\}$\\
+Thm~\ref{thm:rpPL}, Cor.~\ref{cor:rpstatic} (one-sided local algorithm) & pair-maximal $H$ & promise: optimum in $\mathcal S$ & proved; one-sided, promise untestable\\
+Thm~\ref{thm:rpN} (no repacking bounded in $\ell$) & any $H$, $\ell=0$ & $\mathrm P\ne\mathrm{NP}$ resp.\ ETH & proved from~\cite{LPS23}\\
+Prop.~\ref{prop:rpnf}, \ref{prop:rpaug} (naive normal form false; augmentation depth $m$) & explicit instances & -- & proved; small cases verified by computer\\
+\textbf{FPT in $\ell+w$} (the main question) & & & \textbf{no unless $\mathrm{FPT}=\mathrm{W[1]}$} (Thm~\ref{thm:hard})\\
+Hardness at bounded $c$, in particular $c=2$ (Open Problem~\ref{op:boundc}) & & & \textbf{open}\\
+Exact exponent under ETH (Open Problem~\ref{op:eth}): $N^{o(\sqrt\ell)}$ excluded, $N^{\ell}$ achieved & & & \textbf{open}\\
+Reduction lemma (Open Problem~\ref{op:ML}) & & & \textbf{no unless $\mathrm{FPT}=\mathrm{W[1]}$}\\
+Positions of T2 / deleted pointers (Open Problem~\ref{op:T2}) & & & \textbf{open on restricted classes}; no in general unless $\mathrm{FPT}=\mathrm{W[1]}$\\
+LOC (Open Problem~\ref{op:LOC}); implies FPT (Prop.~\ref{prop:rpLOC}) & & & \textbf{no unless $\mathrm{FPT}=\mathrm{W[1]}$} (Cor.~\ref{cor:rpLOCno})\\
+Conjecture C1 / NF$^*$ (Conj.~\ref{conj:rpC1}) & & & \textbf{open}; no counterexample among all connected graphs with $n\le8$ and random graphs with $n=9,10$\\
+Thm~\ref{thm:R0}, \ref{thm:MC0} (certificates at $\ell=0$: reduction to the unit-lock Helly number; at most $4$ remote pairs for $c\le2$, soft triangles allowed), Lemmas~\ref{lem:mcP}, \ref{lem:mcD} & input $H$ ($c\le2$ for Thm~\ref{thm:MC0}) & $\ell=0$ (Lemma~\ref{lem:mcD}: any $\ell$) & proved; finite classification by computer (Lemma~\ref{lem:mcP}, Thm~\ref{thm:MC0}); tightness of $4$ verified by computer\\
+BC for $\ell\ge1$, BC for $c\ge3$ with soft triangles (Open Problem~\ref{op:BC}); soft triangles at $c\le2$ (Open Problem~\ref{op:tri2}) & & & \textbf{open} (experimental evidence only)\\
+\hline
+\end{longtable}}

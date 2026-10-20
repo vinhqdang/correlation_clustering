@@ -1,0 +1,53 @@
+\section{The dynamic program for \texorpdfstring{$\omega$}{omega} and the structure of \texorpdfstring{$\Gamma'$}{Gamma'}}\label{app:omega}
+This appendix proves Theorem~\ref{thm:omega}, using the notation $f(C)=\binom{|C|}2-2e(C)$ of Lemma~\ref{lem:CP}, and records two further statements on the graph $\Gamma'$. Throughout, $H$ is pair-maximal.
+
+\subsection{Proof of Theorem~\ref{thm:omega}}
+\begin{theorem}[Theorem~\ref{thm:omega} with bounds on $m^*$]\label{thm:omegafull}
+Let $H$ be pair-maximal and let $\ell$, $D$, $B$, $Z$, $L_B$, $\mathrm{BIG}$, $V'$, $\Gamma'$, $\omega$ be as in Appendix~\ref{sec:nl}, and assume a tree decomposition of $\Gamma'$ of width $\omega$ is given. Then one can compute in time $(Z(\omega+1))^{O(\omega)}n+n^{O(1)}$ a number $m^*$ such that
+\[
+\OPT(G)\le|H|+\ell\iff|E|+\sum_{K}f(K)+m^*\le|H|+\ell ,
+\]
+where $K$ ranges over the hard components of $\mathrm{BIG}$ and $f$ is as in Lemma~\ref{lem:CP}. Moreover $m_{\mathrm{all}}\le m^*\le m_{\mathrm{conn}}$, where $m_{\mathrm{all}}$ ($m_{\mathrm{conn}}$) is the minimum of $\sum_{C\in\pi'}f(C)$ over all partitions $\pi'$ of $V'$ with clusters of at most $Z$ vertices (and, for $m_{\mathrm{conn}}$, connected in $\Gamma'$).
+\end{theorem}
+\begin{proof}
+\emph{($\Leftarrow$)} Let $\pi'$ be the partition of $V'$ realising $m^*$ (the dynamic program below produces a real partition) and $\pi=\pi'\cup\{K:K\text{ a component of BIG}\}$. By Lemma~\ref{lem:CP}, $\mathrm{cost}(\pi)=|E|+\sum_Kf(K)+m^*\ge\OPT$, so the right-hand side gives $\OPT\le|H|+\ell$. No structure of $G$ is needed for this direction.
+
+\emph{($\Rightarrow$)} Let $S$ be optimal with $|S|\le|H|+\ell$. By Lemma~\ref{lem:NF}($\gamma$) every component of $\mathrm{BIG}$ is a whole cluster; let $\pi'$ be the restriction of $S$'s partition to $V'$. Its clusters are $\Gamma'$-connected and have at most $Z$ vertices:
+\begin{itemize}
+\item \emph{Exceptional $C$.} $C\cap\mathrm{BIG}=\emptyset$ by ($\gamma$), so $C\subseteq V'$; $G[C]$ is connected by ($\alpha$) and its edges are edges of $\Gamma'$. $|C|\le2D+\ell+1\le Z$.
+\item \emph{Non-exceptional $C$ not in $\mathrm{BIG}$.} By ($\beta$), $C$ is a union of whole hard components, none of which is in $\mathrm{BIG}$ (a component of $\mathrm{BIG}$ is a cluster by itself), so $C\subseteq V'$. Each component is connected by hard edges, which are edges of $\Gamma'$. If there are at least two components, all pairs between them are soft, hence edges of $\Gamma'$, so $C$ is $\Gamma'$-connected, and $|C|\le2D$. If there is exactly one component $K=C$, it is clean, so every vertex $y$ of $K$ has all other vertices of $K$ as hard neighbours or soft partners, $|K|\le d_h(y)+D+1\le B+D+1=Z$ because $y\notin\mathrm{BIG}$ has $d_h(y)\le B$.
+\end{itemize}
+So $\pi'$ is feasible for $m_{\mathrm{conn}}$ and $\mathrm{cost}(S)=|E|+\sum_Kf(K)+\sum_{C\in\pi'}f(C)\ge|E|+\sum_Kf(K)+m_{\mathrm{conn}}\ge|E|+\sum_Kf(K)+m^*$.
+
+\emph{The dynamic program.} Take a nice tree decomposition of $\Gamma'$ of width $\omega$ with empty root bag. A state at node $t$ is a partition $\mathcal P$ of the bag $X_t$ into blocks together with a size $s(\mathsf b)\in\{|\mathsf b|,\dots,Z\}$ for each block $\mathsf b$ (the number of vertices introduced so far, in the subtree of $t$, of the cluster containing $\mathsf b$). Its value is the minimum, over partitions of the introduced vertices into clusters that realise $(\mathcal P,s)$ (every cluster either contains a block of $\mathcal P$ or has been \emph{closed}, i.e.\ has no vertex left in the bag), of $\sum_C g(C)$, with $g(C)=\binom{|C|}2-2e(C)$ evaluated on the introduced vertices of $C$. \emph{Introduce} $v$ into the block $\mathsf b$ of size $s$ (or into a new block of size $1$): the value increases by $s-2k$, where $k$ is the number of $G$-neighbours of $v$ in $\mathsf b$; here we use that an introduced vertex $y$ that has been forgotten cannot be a $G$-neighbour of $v$, because $yv$ would be an edge of $\Gamma'$ and $y,v$ would share a bag. \emph{Forget} $v$: if its block has other bag vertices the block shrinks; otherwise the cluster is closed and is never extended. \emph{Join} of two children with the same partition $\mathcal P$: for a block with bag part $\mathsf b$ and sizes $s_1,s_2$ in the two children, put $x_1=s_1-|\mathsf b|$, $x_2=s_2-|\mathsf b|$; the new size is $s_1+s_2-|\mathsf b|$ and the value is $g_1+g_2-g(\mathsf b)+x_1x_2$ summed over blocks, where $g(\mathsf b)=\binom{|\mathsf b|}2-2e(\mathsf b)$ is read off the bag. This is correct because pairs inside $\mathsf b$ and edges inside $\mathsf b$ are counted in both children, pairs between the two exclusive parts number $x_1x_2$, and there is no $G$-edge between the exclusive parts (such an edge would be an edge of $\Gamma'$ between vertices forgotten in different subtrees, which share no bag). \emph{The join term $x_1x_2$ and the subtraction of $g(\mathsf b)$ are essential}: omitting them gives a different value on some inputs. At the root the value is $\sum_Cf(C)$ over a partition of $V'$ with clusters of size $\le Z$. Call it $m^*$ (the minimum over states; we treat the closed clusters as final).
+
+Every state sequence yields a real partition of $V'$ with cluster sizes $\le Z$ and correct cost, so $m^*\ge m_{\mathrm{all}}$. A $\Gamma'$-connected partition is represented: if the last bag vertex of a cluster $C$ is forgotten at $t$, the vertex subtrees of $C$ have a connected union (as $C$ is $\Gamma'$-connected), which cannot contain the parent of $t$, so it lies below $t$ and all of $C$ has been introduced; hence no later vertex needs to join a closed cluster. So $m^*\le m_{\mathrm{conn}}$. There are at most $(\omega+1)^{\omega+1}Z^{\omega+1}$ states per node, a join combines at most $Z^{2(\omega+1)}$ pairs of states with equal partition, and the tree has $O(\omega n)$ nodes; the total time is $(Z(\omega+1))^{O(\omega)}n$. Computing $d_h$, $\mathrm{BIG}$ and $\Gamma'$ takes $n^{O(1)}$.
+
+Combining: $\OPT\le|H|+\ell$ implies $|E|+\sum_Kf(K)+m^*\le\mathrm{cost}(S)\le|H|+\ell$ by ($\Rightarrow$), and the converse is ($\Leftarrow$).
+\end{proof}
+\begin{remark}\label{rem:omegastate}
+(1) Cleanliness of the components of $\mathrm{BIG}$ need not be tested: it is implied when the instance is a YES instance (Lemma~\ref{lem:NF}($\gamma$)), and the inequality itself accounts for the true cost $f(K)$; rejecting an unclean component is a harmless optimisation. (2) The proof uses that an exceptional cluster is disjoint from $\mathrm{BIG}$ and hence lies in $V'$. It is \emph{not} true that $L_B\subseteq V'$: a component of $\mathrm{BIG}$ can contain vertices of small hard degree (pendant vertices of a hub component). (3) Here no pointer is guessed: far merges are carried by $\Gamma'$-connectivity. As for Theorem~\ref{thm:nl}, $D,B,Z,\ell$ and $\omega$ refer to the pair-maximal instance $(G,H',\ell')$ of Lemma~\ref{lem:MAX}. Without a tree decomposition of $\Gamma'$, one is computed in $2^{O(\omega)}n$ time with width $2\omega+1$~\cite{Kor21}.
+\end{remark}
+
+
+\subsection{Further statements}
+\begin{lemma}[Cost decomposition along a decomposition of the soft graph]\label{lem:CPc}
+Let $\pi$ be a partition of $V$, let $(\mathcal T,\beta)$ be a tree decomposition of $\soft$ (Proposition~\ref{prop:soft}) and call a hard pair \emph{local} if it lies in a common bag. Then $\mathrm{cost}(\pi)=\sum_{t}\mathrm{loc}_t+\mathrm{far}$, where each edited soft pair and each edited local hard pair is charged to one bag containing it, $\mathrm{loc}_t$ depends only on $\pi|_{\beta(t)}$, and $\mathrm{far}$ is the number of edited non-local hard pairs, so $\mathrm{far}\le|U|$.
+\end{lemma}
+\begin{proof}
+Bookkeeping: all edited pairs are soft, or hard and local, or hard and non-local; soft pairs always lie in a bag.
+\end{proof}
+(The $\ell=0$ CSP of Theorem~\ref{thm:l0} is the local part; all non-locality is in $\mathrm{far}$.)
+
+\begin{proposition}[Structure of $\Gamma'$]\label{prop:one}
+Let $(G,H,\ell)$ be a YES instance with $H$ pair-maximal.
+\begin{enumerate}
+\item[(a)] $\Gamma'=\soft[V']\cup G_{\mathrm{hard}}[V']$, where $G_{\mathrm{hard}}$ is the graph of hard edges.
+\item[(b)] Put $\widehat Z=\max\{Z,(\ell+1)(2D+\ell+1)\}$. Every hard component $K$ not in $\mathrm{BIG}$ has $|K|\le \widehat Z$. So ``reject if a non-$\mathrm{BIG}$ hard component has more than $\widehat Z$ vertices'' is a safe polynomial rule.
+\item[(c)] Let $\Gamma'_{/K}$ be $\Gamma'$ with every hard component contracted. Then $\tw(\Gamma'_{/K})\le\tw(\Gamma')\le \widehat Z(\tw(\Gamma'_{/K})+1)-1$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Every edge of $G$ is hard or soft, and soft pairs are edges of $\soft$. (b) Take an optimal $S$ with $|S|\le|H|+\ell$ and let $U$ be its edited hard pairs. If no edge of $K$ is deleted, $K$ lies in one cluster $C$. If $C$ is exceptional, $|C|\le2D+\ell+1\le Z$ (Lemma~\ref{lem:NF}($\alpha$)). If not, $C$ is a union of whole hard components (Lemma~\ref{lem:NF}($\beta$)); with several components $|C|\le2D$, and a single component $K=C$ is clean, so each $y\in K$ has all other vertices of $K$ as hard neighbours or soft partners and $|K|\le d_h(y)+D+1\le B+D+1=Z$ ($K\not\subseteq\mathrm{BIG}$). If edges of $K$ are deleted, there are at most $\ell+1$ pieces of $K$ (components of the kept hard edges); $K$ is connected, so each piece contains an endpoint of a deleted edge and lies in an exceptional cluster of size $\le2D+\ell+1$; thus $|K|\le(\ell+1)(2D+\ell+1)$. (c) Hard components are connected in $\Gamma'$ by hard edges, so $\Gamma'_{/K}$ is a minor of $\Gamma'$. Conversely replace every node of a tree decomposition of $\Gamma'_{/K}$ by the vertices of its component (of size $\le \widehat Z$ by (b)).
+\end{proof}
+By Proposition~\ref{prop:soft} the soft graph $\soft$ has treewidth $\le3w+2$, so the unbounded treewidth of $\Gamma'$ in Proposition~\ref{prop:expander} comes from hard edges between far vertices, which are free.

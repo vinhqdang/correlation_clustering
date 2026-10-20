@@ -1,0 +1,94 @@
+\documentclass[smallextended,envcountsame,envcountsect]{svjour3}
+\smartqed
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{longtable}
+\usepackage{natbib}
+\bibpunct{[}{]}{,}{n}{,}{,}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+\raggedbottom
+% theorem-like environments not predefined in svjour3
+\spnewtheorem{observation}[theorem]{Observation}{\bfseries}{\itshape}
+\let\problem\relax\let\endproblem\relax
+\spnewtheorem{problem}{Open Problem}{\bfseries}{\itshape}
+\newcommand{\sd}{\triangle}
+\newcommand{\IH}{I(H)}
+\newcommand{\tw}{\mathrm{tw}}
+\newcommand{\OPT}{\mathrm{OPT}}
+\newcommand{\pairs}{\mathrm{pairs}}
+\newcommand{\soft}{G_{\mathrm{soft}}}
+\newcommand{\wt}{\mathrm{wt}}
+\newcommand{\pw}{\mathrm{pw}}
+\begin{document}
+\title{Cluster Editing above a $P_3$ packing: W[1]-hardness in the excess and the treewidth of the intersection graph}
+\titlerunning{Cluster Editing above a $P_3$ packing}
+\author{Quang-Vinh Dang}
+\institute{Quang-Vinh Dang \at British University Vietnam, Hung Yen, Vietnam\\
+\email{vinh.dq4@buv.edu.vn}\\ ORCID: 0000-0002-3877-8024}
+\date{Received: date / Accepted: date}
+\maketitle
+\begin{abstract}
+Cluster Editing asks for the fewest edge insertions and deletions that turn a graph into a disjoint union of cliques.
+Li, Pilipczuk and Sorge parameterize it by the excess~$\ell$ of the solution size over the size of a modification-disjoint packing~$H$ of induced $P_3$'s, and ask for which packings the problem is fixed-parameter tractable.
+We use the treewidth~$w$ of the intersection graph $I(H)$ of the packing as the structural measure.
+Our main result is negative: the problem is W[1]-hard parameterized by $\ell+w$, also by $\ell+\mathrm{pw}(I(H))$ and by $\ell+c$, where $c$ is the maximum number of packed $P_3$'s through a vertex, even for pair-maximal packings. So there is no algorithm in time $f(\ell,w)n^{O(1)}$ unless $\mathrm{FPT}=\mathrm{W[1]}$, and under ETH none in time $f(\ell,w)n^{o(\sqrt\ell)}$.
+The reduction, from Grid Tiling with $\le$, is computer-assisted at four finite steps, which we list; its counting core and several structural lemmas are also machine-checked in Lean~4, which does not cover the graph-level statements of the reduction.
+Matching upper bounds come from a constraint-satisfaction view: time $3^{w+1}n^{O(1)}$ for $\ell=0$ and $5^{w+1}n^{2\ell+O(1)}$ in general; under ETH there is no $2^{o(w)}n^{O(1)}$ algorithm even for $\ell=0$.
+We isolate a configuration, the soft triangle, as the source of difficulty: without soft triangles the case $\ell=0$ is polynomial for every $c$ and $w$.
+Further structural results and the open questions are stated, with proofs in the appendices.
+\keywords{Cluster Editing \and Parameterized complexity \and W[1]-hardness \and Treewidth \and Packing of induced paths \and Constraint satisfaction}
+\subclass{68Q27 \and 68W40 \and 05C85}
+\end{abstract}
+\input{sections/intro}
+\input{sections/prelim}
+\input{sections/csp}
+\input{sections/limits}
+\input{sections/hard_main}
+\input{sections/soft_main}
+\input{sections/further}
+\input{sections/open}
+\input{sections/lean}
+
+\begin{acknowledgements}
+% Funding statement placeholder (do not fill unless a grant applies):
+% \textbf{Funding.} This work was supported by ...
+\end{acknowledgements}
+
+\section*{Declarations}
+\begin{description}
+\item[Competing interests] The author has no competing interests to declare that are relevant to the content of this article.
+\item[Funding] Not applicable.
+% PLACEHOLDER: replace the sentence above if a grant or employer funding must be acknowledged.
+\item[Data and code availability] No datasets were analysed. The code for all computer-assisted verifications and the Lean~4 files are available at \url{https://github.com/vinhqdang/correlation_clustering}, in the directories \path{paper2_p3_interaction/code} and \path{paper2_p3_interaction/lean/P3Proofs}.
+\end{description}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\appendix
+\section*{Appendix map}
+The appendices contain, in this order: the proofs of the long lemmas of the reduction (Appendix~\ref{app:hardness}); the full text of the soft-triangle analysis, its proofs, and the proofs of the bounded-certificate statements (Appendices~\ref{app:softfull}, \ref{app:soft}, \ref{app:mc0}); the proved results summarised in Section~\ref{sec:further}, namely twins, vertices outside the packing and a shrink rule (\ref{app:structure}), counting lemmas (\ref{app:counting}), the structure of optimal solutions (\ref{sec:optimal}), components of $I(H)$ (\ref{sec:K}), the $n^{\ell}$ algorithm (\ref{sec:nl}), the dynamic program for $\omega$ (\ref{app:omega}), conflict weights (\ref{app:conflicts}), locality (\ref{sec:locality}), a family on which reduction on unions of members fails (\ref{app:spine}), tunnel gadgets (\ref{app:tunnels}) and repacking (\ref{sec:repack}, \ref{app:repack}); small examples (\ref{app:examples}); the scope table (\ref{app:status}); and the computer verifications, the Lean development and the reproducibility information (\ref{app:checks}).
+\input{sections/app_reduction}
+\input{sections/app_softfull}
+\input{sections/app_soft}
+\input{sections/app_mc0}
+\input{sections/app_structure}
+\input{sections/app_counting}
+\input{sections/optimal}
+\input{sections/components}
+\input{sections/nl}
+\input{sections/app_omega}
+\input{sections/app_conflicts}
+\input{sections/locality}
+\input{sections/app_spine}
+\input{sections/app_tunnels}
+\input{sections/repack}
+\input{sections/app_repack}
+\input{sections/app_examples}
+\input{sections/app_status}
+\input{sections/app_checks}
+\end{document}
