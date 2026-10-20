@@ -1,0 +1,127 @@
+\section{Soft triangles: the remaining statements}\label{app:softfull}
+This appendix collects the statements of the soft-triangle analysis that are not in Section~\ref{sec:soft}: Corollary~\ref{cor:sfTR}, the experimental Remark~\ref{rem:tri2}, the far-lift model, the five-state exact model and the abstract models, and certificates for far edits. Conventions are those of Section~\ref{sec:soft}; the proofs are in Appendix~\ref{app:soft}.
+\begin{corollary}[Tunnel releases are fixed-parameter tractable without soft triangles]\label{cor:sfTR}
+In the tunnel-release model of Appendix~\ref{app:tunnels}, for a soft-triangle-free packing the minimum number of cuts is computable in time $2^{\ell}n^{O(1)}$, with no dependence on $c$ or $w$.
+\end{corollary}
+\begin{proof}
+A set $S$ of tunnels is lockable iff the anchors at the ends of its tunnels in $V(H)$ form a face of $G$ with all tunnels removed (Lemma~\ref{lem:tinactive}). By Corollary~\ref{cor:sfcore} a non-face contains a non-face of at most two anchors, hence of at most two tunnels, so every core has at most two tunnels. Proposition~\ref{prop:tTR}(iv) with $d=2$ applies, with the $\ell=0$ test of Corollary~\ref{cor:sfpoly}.
+\end{proof}
+
+\begin{remark}[With triangles at $c\le2$: experimental evidence only]\label{rem:tri2}
+For $c\le2$ with triangles in $I(H)$ the set $\Sigma$ can fail to be closed under a given majority (Example~\ref{ex:maj}). Whether it is always \emph{$2$-decomposable} (equal to the set of vectors whose binary projections lie in the binary projections of $\Sigma$), which is what Lemma~\ref{lem:tmaj} actually needs, is open. Experimentally, all tight triangle blocks and tight $K_4$ gadgets, random tight instances on the triangular prism and random instances with $c\le2$ gave $2$-decomposable $\Sigma$ and no core with three anchors, although some of the sets $\Sigma$ of the blocks are not closed under all majorities; among random instances with soft triangles the non-$2$-decomposable ones all had $c=3$. Theorem~\ref{thm:MC0} proves the corresponding Helly property for the unit locks that govern certificates at $\ell=0$.
+\end{remark}
+\subsection{Far hard pairs: what they can and cannot do}\label{sec:softfar}
+Call a hard pair $\{p,r\}$ a \emph{cross pair} if $p\in V(A)\setminus\{q\}$ and $r\in V(B)\setminus\{q\}$ for two members $A\ne B$ with $V(A)\cap V(B)=\{q\}$ (these are the cross bits of Lemma~\ref{lem:sfstruct}); every other hard pair is \emph{far}. A far pair never lies in a binary triple.
+
+\begin{lemma}[U-only identity and locality of hard edits]\label{lem:sfU}
+Call a solution \emph{U-only} if every member receives exactly one edit, so that its other edits form a set $U$ of hard pairs. For every packing, the least size of a U-only solution is $|H|+\min\{|U|:\Sigma(G\sd U,H)\ne\emptyset\}$. For soft-triangle-free $(G,H)$, $\Sigma(G\sd U,H)$ differs from $\Sigma(G,H)$ only through (a) the static triples (these gate non-emptiness: an all-hard induced $P_3$ created or destroyed by $U$ empties or un-empties $\Sigma$ globally), (b) the lists $\Lambda_A$ of the members $A$ that contain an end of a pair of $U$, and (c) the relations $R_{AB}$ of adjacent members $A,B$ for which $U$ contains a cross pair of $(A,B)$. In particular a far pair changes only static triples and the lists at the members through its two ends.
+\end{lemma}
+\begin{proof}
+$U$ avoids soft pairs, so every member is still an induced $P_3$ of $G\sd U$, with the same pairs, and a vector is the single-edit part of a solution of $G$ with hard edits $U$ iff it lies in $\Sigma(G\sd U,H)$. A hard pair $e$ enters only the triples containing it; by Lemma~\ref{lem:sfstruct} these are static, unary on a member through an end of $e$, or (if $e$ is a cross pair of $(A,B)$) in a binary triple of $R_{AB}$ or in a list of $A$ or $B$.
+\end{proof}
+The model is a sub-model: one edit per member is not always optimal, as in Remark~\ref{rem:domain}; for instance $n=5$, $E=\{02,03,12,23,24\}$, $H=\{(1,2,4)\}$ has $\OPT=|H|+1$ but least U-only value $|H|+2$ (by enumeration of all partitions).
+
+\begin{lemma}[Strictness]\label{lem:sfS}
+\emph{(by computer; finite check)} Let $A,B$ be adjacent members of a packing, $R$ the relation $R_{AB}$, and $\Lambda_A,\Lambda_B$ the lists that the cross bits of $(A,B)$ impose on $A$ and on $B$. For $X\subseteq\{1,2,3\}$ put $\mathrm{img}(X)=\{s_A:\exists s_B\in X\cap\Lambda_B,\ (s_A,s_B)\in R\}\cap\Lambda_A$. If $X\subseteq Y\subseteq\{1,2,3\}$ and $\mathrm{img}(X)\ne\mathrm{img}(Y)$, then $|\mathrm{img}(X)|\le1$.
+\end{lemma}
+Across an edge of $I(H)$, a restriction of the neighbour's list that really changes the image leaves at most one state; locks propagate as unit propagation along edges of $I(H)$. This is a one-edge statement, verified by computer for all $144$ configurations and all pairs $X\subseteq Y$. It is used only through Lemma~\ref{lem:sfH2}.
+
+\begin{lemma}[Helly number two for unit lists]\label{lem:sfH2}
+Let $\Sigma\subseteq D^V$ be closed under some majority operation (for any finite domain $D$) and let $J$ be a family of unit constraints $x_{v_j}=s_j$. If $\Sigma$ and $J$ are jointly infeasible, then $\Sigma$ together with some at most two members of $J$ is infeasible.
+\end{lemma}
+\begin{proof}
+Take a minimal infeasible $J$ with $|J|=k\ge3$ and, for each $j$, $t_j\in\Sigma$ satisfying $J\setminus\{j\}$. For three indices $a,b,c$ put $u=m(t_a,t_b,t_c)\in\Sigma$. For $j\notin\{a,b,c\}$ all three tuples have value $s_j$ at $v_j$; at $v_a$ the tuples $t_b,t_c$ both have value $s_a$, so $u$ has $s_a$ there (and symmetrically for $b,c$). Hence $u$ satisfies all of $J$, a contradiction. (If two constraints concern one coordinate with different values, the same argument applies.)
+\end{proof}
+
+\begin{observation}[Lists of an outside vertex]\label{obs:lists}
+Let $A=(a,b,c)$ and let $t\notin V(A)$ be such that the three pairs $\{x,t\}$, $x\in V(A)$, are hard; put $S=N(t)\cap V(A)$. The three triples $\{a,b,t\},\{b,c,t\},\{a,c,t\}$ allow exactly the following states of $A$:
+\begin{center}
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{c|cccccccc}
+$S$ & $\emptyset$ & $\{a\}$ & $\{b\}$ & $\{c\}$ & $\{a,b\}$ & $\{a,c\}$ & $\{b,c\}$ & $\{a,b,c\}$\\\hline
+allowed in $\{1,2,3\}$ & $\{1,2,3\}$ & $\{1\}$ & $\emptyset$ & $\{2\}$ & $\{2\}$ & $\emptyset$ & $\{1\}$ & $\{3\}$\\
+allowed in $\{1,\dots,5\}$ & $\{1,\dots,5\}$ & $\{1,4\}$ & $\{4,5\}$ & $\{2,4\}$ & $\{2\}$ & $\{5\}$ & $\{1\}$ & $\{3\}$
+\end{tabular}\end{adjustbox}
+\end{center}
+(Direct check; the second row is for the five states of Lemma~\ref{lem:five}: $S$ must be empty or a single part of the cluster partition of $\{a,b,c\}$ after the edit.) So a zero-excess list of an outside vertex is trivial, empty, or a \emph{unit} list; there are no two-element lists. This is why forked locks never occur for zero excess.
+\end{observation}
+
+\begin{theorem}[Far-lift zero-excess model]\label{thm:U}
+Let $(G,H)$ be soft-triangle-free, with $c$ and $w$ arbitrary. It is decidable in time $6^{\ell}n^{O(1)}$ whether there is a set $W$ of at most $\ell$ far pairs with $\Sigma(G\sd W,H)\ne\emptyset$ (the \emph{far-lift model}). A YES answer gives a solution of CEaMP of size $|H|+|W|$.
+\end{theorem}
+\emph{Proved} (Appendix~\ref{app:softU}). Algorithm: (1) if $G'=G\sd W$ has an all-hard induced $P_3$, branch on its far pairs (none: NO); (2) otherwise accept if $\Sigma(G')\ne\emptyset$ (Corollary~\ref{cor:sfpoly}); (3) delete all \emph{liftable} unit lists (those of Observation~\ref{obs:lists} for which at least one of the three pairs is far); if the rest is already infeasible, answer NO; (4) otherwise find a minimal infeasible family of liftable lists, which has at most two members by Lemma~\ref{lem:sfH2} (the rest of $\Sigma$ is closed under all majorities by Theorem~\ref{thm:sfA}), and branch on the at most $3$ far pairs of each: at most $6$ branches, depth at most $\ell$. A far pair changes only liftable lists (Lemma~\ref{lem:sfU}), so some far pair of the family must be edited. \emph{Experimental check}: the algorithm agreed with exhaustive search on random small instances; the largest minimal family had two lists.
+
+The model is restricted (no double edits, no edits of cross pairs): it is an upper bound on the excess, exact when some optimum uses neither. It contains the tunnel-release model of Corollary~\ref{cor:sfTR} and removes the need for tunnels: \emph{arbitrary} far hard edits, including those that close static violations, are handled. It also shows what the cores of far edits look like: a pair of unit lists, a vertex-cover-like structure whose branching factor depends neither on $n$, nor $c$, nor $w$.
+
+\subsection{Five states, an exact model, and the abstract models}\label{sec:softmodel}
+By Lemma~\ref{lem:five} the variables of the dynamic programs of Section~\ref{sec:csp} range over five states: besides $1,2,3$, the state $4$ (edits $ab,bc$; extra cost $1$) and $5$ (edits $ab,bc,ac$; extra cost $2$). For a graph $G'$ with the same packing let $\mathrm{Ex}(G')$ be the least value of $|F|+\sum_i\mathrm{extra}(x_i)$ over sets $F$ of cross pairs and state vectors $x\in\{1,\dots,5\}^H$ such that $G'\sd F\sd(\text{soft edits of }x)$ is a cluster graph ($\infty$ if none); extra $=0,0,0,1,2$ for the states $1,\dots,5$.
+\begin{lemma}[Exactness]\label{lem:sfE}
+For every packing, $\OPT(G)=|H|+\min_{W}\bigl(|W|+\mathrm{Ex}(G\sd W)\bigr)$, where $W$ ranges over sets of far pairs.
+\end{lemma}
+\begin{proof}
+Split a solution as in Lemma~\ref{lem:decomp} into its soft edits (one non-empty edit set per member, which by Lemma~\ref{lem:five} is a state; its cost is $1+\mathrm{extra}$), its edits of cross pairs $F$, and its edits of far pairs $W$. Conversely every $(W,F,x)$ is a solution of that size.
+\end{proof}
+Hence the \emph{far} edits are the only edits whose position is not controlled by the dynamic program, as in Appendix~\ref{sec:nl}.
+
+\paragraph{Breaks.} Let $\mathrm{RM2}$ be the following abstract model on a forest: a set of \emph{conflicts} (pairs of nodes, with the path joining them) and two kinds of operations, a \emph{break} at a node (cost $1$; it hits every conflict whose path contains the node) and a \emph{tunnel}, a link in a graph of maximum degree $d$ (cost $1$; it hits every conflict that has an end at one of its two nodes). We want at most $L$ operations hitting all conflicts.
+\begin{proposition}[RM2 is fixed-parameter tractable]\label{prop:RM2}
+RM2 is solvable in time $(2d+1)^{L}n^{O(1)}$ by a search tree.
+\end{proposition}
+\begin{proof}
+Root every tree and let $Q$ be an unhit conflict whose top node $v$ is deepest. If an optimal solution hits $Q$ by a break at a node $w\in Q$, replace it by a break at $v$: every other unhit conflict $R$ through $w$ has its top at depth at most $\mathrm{depth}(v)$ and contains $w$, hence contains the whole path from $w$ to its top, which passes through $v$. If $Q$ is hit by a tunnel, the tunnel has an end at an end of $Q$ ($2d$ choices). So the search tree branches $2d+1$ ways to depth $L$.
+\end{proof}
+(The search tree agreed with exhaustive search on random small instances.) RM2 is a natural abstraction of CEaMP on forests; it is not a faithful one.
+\begin{proposition}[RM2 is not faithful]\label{prop:hub}
+Let $n=11$ (vertices $0,\dots,10$), let $G$ have the twelve edges
+\[01,\ 02,\ 04,\ 05,\ 06,\ 13,\ 28,\ \{2,10\},\ 34,\ 37,\ 38,\ 78\]
+and let $H=\{M_0,M_1,M_2,M_3\}$ with $M_0=(2,0,1)$, $M_1=(4,3,1)$, $M_2=(5,0,6)$, $M_3=(2,8,7)$. This instance is valid, pair-maximal, $I(H)$ is a star with centre $M_0$, $c=2$ and there is no soft triangle. Then $\OPT=|H|+3$ (enumeration of all set partitions). The members $M_1$ and $M_2$ cannot be in any of the states $1,2,3$ in a solution without hard edits (an outside vertex gives them the list $\{4,5\}$ of the second row of Observation~\ref{obs:lists}), while $M_0,M_3$ can; each of $M_1,M_2$ is repaired alone by one break (state $4$), so the break model predicts excess $2$, but the true excess is $3$: two breaks next to a common member put the cluster-views $(0,0)$ at two vertices of $M_0$, which then cannot be in a state of $\{1,2,3\}$ either. The cheapest vectors without hard edits are $(1,5,4,1)$ and $(4,4,4,1)$, both of cost $7$.
+\end{proposition}
+The proposition (verified by exhaustive enumeration) says that a break is not a node-hit: it locks its neighbours. Consequently the abstract model of ``hitting conflict paths by breaks and tunnels'' cannot be used to decide CEaMP on forests, and the difficulty of the interior of a chain, where breaks are placed, stays inside the dynamic program (as the Core-Bound analysis below also shows).
+
+\paragraph{The full problem on forests, conditionally.}
+Let $I(H)$ be a forest ($w\le1$, so $c\le2$, $D=2c\le4$, no soft triangle). The \emph{sites} of $(G,H)$ are the members and the edges of $I(H)$; a triple that contains a far pair has as sites the owners of its soft pairs and the edges at which its cross pairs lie. For a set $C$ of sites let $\mathrm{Ex}_C(G')$ be $\mathrm{Ex}(G')$ computed after deleting every triple that contains a far pair and has no site in $C$; $\mathrm{Ex}_C$ is monotone in $C$. Let $V(C)$ be the set of vertices of the members in $C$ and of the members incident to an edge in $C$.
+
+\textbf{Hypothesis BC$(t)$ (bounded certificates; open).} There is $K(t,D)$ such that for every $G'$ (with the same forest $H$, and no static violation) with $\mathrm{Ex}(G')>t$, every inclusion-minimal set $C$ of sites with $\mathrm{Ex}_C(G')>t$ has $|C|\le K(t,D)$.
+
+\textbf{Assumption (O).} $\mathrm{Ex}_C(G')$ can be computed in time $f(w)n^{O(1)}$, by a dynamic program over a tree decomposition whose bags are enlarged by the members at distance one. (Every triple with a soft pair or a cross pair has its vertices in one such bag; this is assumed and not proved here.)
+\begin{theorem}[Forests, conditional]\label{thm:F}
+Let $I(H)$ be a forest. Algorithm $\mathcal A$ of Appendix~\ref{app:softF} decides CEaMP; it is correct unconditionally (given the oracle). Its running time is $(6KZ^{2})^{\ell}\cdot T_{\mathrm{O}}\cdot n^{O(1)}$, where $Z=3D+3\ell+1$, $T_{\mathrm{O}}$ is the time of the oracle (O) and $K$ is the largest minimal set $C$ met. Hence, if BC$(t)$ holds for $t<\ell$ and (O) holds, CEaMP on forests is fixed-parameter tractable in $\ell$.
+\end{theorem}
+\emph{Proved implication}; BC and (O) are not proved. The hypothesis BC affects the \emph{running time only}, not correctness. BC$(0)$ holds with $K=2$ (Lemma~\ref{lem:sfH2}). The case $\ell\le1$ is already polynomial by Theorem~\ref{thm:A} and is not progress. Experimental evidence for BC: in computer searches minimal certificates had at most $t+2$ sites. A proof would need a weighted Helly statement for the five-state problem; breaks interact through locks (Proposition~\ref{prop:hub}), so an exchange argument in the style of Proposition~\ref{prop:RM2} fails.
+
+\subsection{Certificates for far edits: a branching scheme and its unbounded branching}\label{sec:softcert}
+We now use a different split of the hard pairs, tuned to a branching algorithm. For a vertex $v$ let $\mathcal M(v)$ be the set of members through $v$. A pair $\{u,v\}$ is \emph{local} if $u,v\in V(H)$ and some member through $u$ equals or shares a vertex with some member through $v$, and \emph{remote} otherwise; soft pairs are local, every pair with an end outside $V(H)$ is remote. Let $\mathcal N$ be the set of remote hard pairs. For $T\subseteq\mathcal N$ let $F'(T)$ be the least number of edits in an assignment of a status to every soft pair (each member gets a non-empty subset of its pairs) and to every local hard pair, such that every vertex triple \emph{all of whose remote pairs lie in $T$} is not an induced $P_3$ (remote pairs of $T$ keep their status in $G$; triples with a remote pair outside $T$ are dropped).
+\begin{lemma}[Certificates]\label{lem:cert}
+(a) $F'$ is monotone: $T\subseteq T'$ implies $F'(T)\le F'(T')$. (b) If $S$ is a solution with $S\cap T=\emptyset$, then $F'(T)\le|S|$. (c) $F'(\mathcal N)$ is the least size of a solution with no remote edit. Hence if $F'(T)>|H|+\ell$ every solution of size at most $|H|+\ell$ contains a pair of $T$ (such a $T$ is a \emph{certificate}).
+\end{lemma}
+\begin{theorem}[Certificate branching]\label{thm:B1}
+Algorithm: if $F'(\mathcal N)\le|H|+\ell$, accept; if $\ell=0$, reject; otherwise delete pairs from $\mathcal N$ one by one while $F'>|H|+\ell$ stays true, and for every pair $e$ of the resulting minimal certificate $T$ recurse on $(G\sd e,\ell-1)$. The algorithm is correct for every packing; depth at most $\ell$ and branching factor $d=\max|T|$ over the certificates met, so $d^{\ell}(|\mathcal N|+2)$ oracle calls.
+\end{theorem}
+\begin{proof}
+(a) fewer constraints; (b) $S$ restricted to soft and local pairs is an assignment, and every triple with its remote pairs in $T$ has them unedited; (c) with $T=\mathcal N$ nothing is dropped. Soundness: a solution of $G\sd e$ of size $\le|H|+\ell-1$ gives $S\sd\{e\}$, and $H$ is still a packing since $e$ is hard. Completeness: if no solution of size $\le|H|+\ell$ avoids all remote pairs then $F'(\mathcal N)>|H|+\ell$, a minimal certificate $T$ exists, and every solution contains some $e\in T$.
+\end{proof}
+So the question is how large minimal certificates are, and how $F'$ is computed. For the second, note that with this definition of \emph{local} the difficulty that a triple with two local pairs and one remote pair need not lie in a bag of a decomposition of $I(H)$ does not arise.
+\begin{theorem}[The leaf test is fixed-parameter tractable]\label{thm:L}
+Given a tree decomposition of $I(H)$ of width $w$, $F'(T)$ for any $T\subseteq\mathcal N$, in particular $F'(\mathcal N)$, is computable in time $f(w)n^{O(1)}$.
+\end{theorem}
+\emph{Proved} (Appendix~\ref{app:softL}; radius $3$ in $I(H)$ is attained and suffices). Remark: this is true for the \emph{adjacency-defined} notion of local used here; for locality defined through the bags of a decomposition of $I(H)$ the corresponding statement is not proved. Together, Theorems~\ref{thm:B1} and~\ref{thm:L} give an algorithm in time $d^{\ell}f(w)n^{O(1)}$; the question is the size of $d$.
+
+\begin{theorem}[Core bound at $\ell=0$ without soft triangles]\label{thm:CB0}
+Let $H$ have no soft triangle and $\ell=0$. Every minimal $T\subseteq\mathcal N$ with $F'(T)>|H|$ has $|T|\le12$ ($\le3$ if it is a static violation), for every $c$ and $w$.
+\end{theorem}
+\emph{Proved} (Appendix~\ref{app:softCB}; the proof uses the far pairs as \emph{guards}, unit or two-element lists on one member, together with Theorem~\ref{thm:sfA} and a Helly lemma for $2$-element lists on a $3$-element domain). The bound $12$ is not claimed tight. At $\ell=0$ the algorithm of Theorem~\ref{thm:B1} never branches, so Theorem~\ref{thm:CB0} is a statement about the structure of $\ell=0$ certificates; its algorithmic use needs an $\ell\ge1$ version, which is open (an Erd\H{o}s--P\'osa-type argument has not been completed). \emph{Experimentally}, in random soft-triangle-free instances the largest minimal inconsistent family of guards had two members, and minimal certificates found by deletion had at most $4$ pairs.
+
+With soft triangles the corresponding statement is false, already at $c=2$ and $w=2$.
+\begin{theorem}[Unbounded minimal certificates]\label{thm:CE}
+For every $N\ge1$ there is a graph $G_N$ with a pair-maximal packing $H_N$ of $3N$ members ($c=2$, $\tw(I(H_N))=2$, $N$ soft triangles, $6N+3$ vertices) and a set $T_N$ of $2N+4$ remote pairs with $F'(T_N)\ge|H_N|+1$ and $F'(T_N\setminus\{e\})=|H_N|$ for every $e\in T_N$. So $T_N$ is a minimal certificate for $\ell=0$ of unbounded size, and the minimal-certificate branching of Theorem~\ref{thm:B1} has unbounded branching factor.
+\end{theorem}
+\emph{Proved} (Appendix~\ref{app:softCE}; the block structure of the set of ZE vectors of $G_N$ is by computer, for the first blocks and by isomorphism of interior blocks). Two comments. (1) The proof gives $F'(T_N)\ge|H_N|+1$; the equality $F'(T_N)=|H_N|+1$ was verified by computer ($N\le10$) and is not needed. (2) At $\ell=0$ the set $T_N$ is never branched on. For $\ell=1$: the union of two disjoint copies, $T=T_N\cup T_N'$, is a minimal certificate of size $2(2N+4)$ because $F'$ is additive over disjoint unions (every triple meeting two copies has a remote pair outside $T$ and is dropped); and for \emph{connected} instances, a chain $G_{2N}$ with one further pendant $w_*$ adjacent to the glue vertex $b_N$ and the remote pairs $w_*b_N,w_*r_N,w_*p_{N+1}$ added to $T_{2N}$ gives $|T|=4N+7$ with $F'(T)-|H|=2>1$ and $F'(T\setminus\{e\})-|H|=1$ for every $e$ (verified with exact solvers for $N=1,\dots,4$). So the branching factor of Theorem~\ref{thm:B1} with an arbitrary minimal certificate is unbounded already at $\ell=1$.
+
+The mechanism is a chain of soft triangles that carries one bit through the glue vertices; a $2$-element guard $\{1,2\}$ (``the pair $ac$ is apart'', obtained from a pendant vertex adjacent to one end of the pair) switches off the escape state $3$ of its block. This is exactly the \emph{multi-valued unary guard} that cannot occur without a soft triangle (Theorem~\ref{thm:CB0}).
+\begin{remark}[Not a hardness result; minimum certificates]\label{rem:mincert}
+In $G_N$ the real optimum is $|H|+N$: every pendant edge forces its anchor to be a singleton, impossible for a centre, so all $N$ stubs are cut; the persistent bit exists only in the relaxation. Moreover there is always a small certificate there: if a far hard edge $wx$ ends at the centre $x$ of a member $(y,x,y')$ and $wy,wy'$ are far hard non-edges, then $\{wx,wy,wy'\}$ is a certificate at $\ell=0$ (both pairs at $x$ would have to be apart, two edits in one member). Every $G_N$ has such a pendant at each centre of $A_j$. So Theorem~\ref{thm:CE} refutes ``every minimal certificate is bounded'', not ``some certificate is bounded''; this is a property of the instance design, and computing a minimum certificate is itself not known to be fixed-parameter tractable. Whether a certificate of bounded size can always be chosen is open.
+\end{remark}
+
+\begin{lemma}[No conservative near-unanimity polymorphism with soft triangles, $c\ge3$]\label{lem:R5}
+Let $R_k=\{111,113,122,131,212,221,222,232,311,331\}$ (states written as three-digit words in $\{1,2,3\}$). Any constraint language that contains $R_k$ and all unary relations has no conservative near-unanimity polymorphism of any arity $r\ge3$.
+\end{lemma}
+\emph{Proved} (Appendix~\ref{app:softR5}). The relation $R_k$ is the conjunction of all triple constraints whose scope lies in $\{A,B,C\}$ for three pairwise adjacent members $A,B,C$ on six vertices, in a packing with $c=3$ that has four further members, each owning one of the four pairs of these six vertices that are neither in $A,B,C$ nor hard non-edges (an explicit instance, found and checked by computer). It requires $c\ge3$; for $c=2$, where Theorem~\ref{thm:CE} lives, the lemma says nothing. What explains Theorem~\ref{thm:CE} at $c=2$ is that a near-unanimity operation of arity $r$ bounds the cores of unit lists but not of $2$-element lists, since it only controls coordinates where the other $r-1$ values coincide. The lemma shows that the route through a uniform near-unanimity polymorphism is closed for the full language with soft triangles; it is not a hardness proof.

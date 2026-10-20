@@ -1,0 +1,95 @@
+\section{Optimal solutions of pair-maximal packings}\label{sec:optimal}
+\paragraph{Setting.}
+Throughout this section $H$ is pair-maximal (Section~\ref{sec:prelim}; for an arbitrary packing read the primed instance), $D\ge\max_v|Q(v)|$ is a number, and $S$ is a solution with $|S|\le|H|+\ell$, so that its set $U$ of hard edits has $u=|U|\le\ell$ (Lemma~\ref{lem:decomp}); $U^-$ and $U^+$ are the deleted hard edges (hard edges across clusters) and the inserted hard non-edges (hard non-edges inside clusters), and $\mathrm{del}_x,\mathrm{ins}_x$ count the elements of $U^-$ and $U^+$ at the vertex $x$. Solutions and partitions correspond (Section~\ref{sec:prelim}). A \emph{hard component} is a connected component of the graph $(V,\text{hard edges of }G)$; it is \emph{clean} if all its non-adjacent pairs are soft.
+
+\begin{lemma}[Cost formula]\label{lem:CP}
+Let $\pi$ be a partition of $V$ and $f(C)=\binom{|C|}2-2e(C)$, where $e(C)$ is the number of edges of $G$ inside $C$. Then $\mathrm{cost}(\pi)=|E|+\sum_{C\in\pi}f(C)$.
+\end{lemma}
+\begin{proof}
+The cost counts non-edges inside blocks, $\sum_C[\binom{|C|}2-e(C)]$, plus edges across blocks, $|E|-\sum_Ce(C)$.
+\end{proof}
+
+\subsection{Clusters of optimal solutions: half-degree and diameter}
+\begin{lemma}[Half-degree and diameter]\label{lem:half}
+Let $S$ be an optimal solution, $C$ a cluster of $G\sd S$ and $v\in C$. Put $d_C(v)=|N_G(v)\cap C|$.
+\begin{enumerate}
+\item[(a)] $d_C(v)\ge(|C|-1)/2$.
+\item[(b)] If $a,b\in C$ and $ab\notin E$, then some $z\in C\setminus\{a,b\}$ has $az,zb\in E$.
+\end{enumerate}
+\end{lemma}
+This is the single-vertex-move argument behind the critical-clique property of Cluster Editing~\cite{Guo09,FLRS07}; we include the short proof.
+\begin{proof}
+(a) Let $S'=S\sd\{vx:x\in C\setminus\{v\}\}$. Then $G\sd S'$ is $G\sd S$ with $v$ cut off from the rest of $C$, a cluster graph. For $x\in C\setminus\{v\}$ with $vx\in E$ the pair $vx\notin S$ and $vx\in S'$: this adds $d_C(v)$ pairs. For $x\in C\setminus\{v\}$ with $vx\notin E$ the pair is in $S$ and not in $S'$: this removes $|C|-1-d_C(v)$ pairs. All other pairs are unchanged. So $|S'|=|S|+2d_C(v)-(|C|-1)$, and $|S'|\ge|S|$ by optimality.
+
+(b) $N_G(a)\cap C$ and $N_G(b)\cap C$ are subsets of $C\setminus\{a,b\}$ (as $a\notin N(a)$ and $ab\notin E$), a set with $|C|-2$ elements, while $d_C(a)+d_C(b)\ge|C|-1$ by (a). So the two sets intersect.
+\end{proof}
+Lemma~\ref{lem:half} uses neither $H$ nor $\ell$; only local optimality under single-vertex moves.
+
+\subsection{Hard pairs}
+\begin{lemma}[HE and H2]\label{lem:HE}\label{lem:H2}
+Let $H$ be pair-maximal. (a) If $ab,bc$ are hard edges ($a,b,c$ distinct), then $ac\in E$ or $ac$ is soft. (b) If $uv$ is a hard non-edge, then $N_h(u)\cap N_h(v)=\emptyset$.
+\end{lemma}
+\begin{proof}
+(a) If $ac\notin E$ and $ac$ were hard, then $a\,b\,c$ would be an induced $P_3$ with all three pairs hard, contradicting pair-maximality. (b) If $z\in N_h(u)\cap N_h(v)$, then $u\,z\,v$ is an induced $P_3$ ($uz,zv\in E$, $uv\notin E$) all of whose pairs are hard.
+\end{proof}
+No YES hypothesis is needed. Without pair-maximality the lemma fails ($H=\emptyset$ and any induced $P_3$).
+
+\begin{lemma}[EX: bounds at a hard edit]\label{lem:EX}
+Let $H$ be pair-maximal, $S$ a solution with hard edits $U$, $u=|U|$, let $xy\in U$ and let $C$ be the cluster of $x$. Then:
+\begin{enumerate}
+\item[(a)] if $xy$ is deleted, $d_h(x)\le D+\mathrm{del}_x+\mathrm{del}_y-1$; if $xy$ is inserted, $d_h(x)\le D+\mathrm{ins}_y-1+\mathrm{del}_x$. In both cases $d_h(x)\le D+u$;
+\item[(b)] $|C|\le1+D+d_h(x)+\mathrm{ins}_x$, hence $|C|\le1+2D+u$;
+\item[(c)] every $z\in C$ has $d_h(z)\le|C|-1+\mathrm{del}_z\le2D+2u$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) \emph{Deleted:} $x\in C$, $y\notin C$. A hard neighbour $z$ of $x$ with $xz$ not deleted (``kept'') lies in $C$, and $z\ne y$. Apply Lemma~\ref{lem:HE}(a) with centre $x$ to the hard edges $xz,xy$: $zy\in E$ or $zy$ is soft. If $zy$ is a hard edge, it joins $z\in C$ to $y\notin C$, so it is a deleted hard edge at $y$ other than $xy$ (there are $\mathrm{del}_y-1$ of these); otherwise $z\in Q(y)$, at most $D$ vertices. So at most $D+\mathrm{del}_y-1$ hard neighbours are kept, and $d_h(x)\le D+\mathrm{del}_y-1+\mathrm{del}_x$. \emph{Inserted:} $x,y\in C$. A kept hard neighbour $z$ of $x$ lies in $C$ and $z\ne y$ (as $xy\notin E$); $zy$ is a pair inside $C$, hence an edge of $G\sd S$. If $zy$ were a hard edge, $z\in N_h(x)\cap N_h(y)$, contradicting Lemma~\ref{lem:H2}. So $zy$ is soft ($z\in Q(y)$, at most $D$ choices) or a hard non-edge, inserted at $y$ and different from $xy$ ($\mathrm{ins}_y-1$ choices). So $d_h(x)\le D+\mathrm{ins}_y-1+\mathrm{del}_x$. In the deleted case the pairs counted by $\mathrm{del}_x+\mathrm{del}_y-1$ are distinct pairs of $U$, so the sum is $\le u$; in the inserted case $\mathrm{ins}_y-1+\mathrm{del}_x\le u-1$ (an inserted pair at $y$ other than $xy$ and a deleted pair at $x$ are distinct elements of $U\setminus\{xy\}$).
+
+(b) For $z\in C\setminus\{x\}$ the pair $xz$ is an edge of $G\sd S$. Either $xz$ is soft (at most $D$ such $z$), or a kept hard edge (at most $d_h(x)$), or a hard non-edge, inserted at $x$ (at most $\mathrm{ins}_x$). With (a): in the deleted case $|C|\le1+D+(D+\mathrm{del}_x+\mathrm{del}_y-1)+\mathrm{ins}_x\le1+2D+u$ because the deleted pairs at $x$ or $y$ and the inserted pairs at $x$ are distinct elements of $U$; in the inserted case $\mathrm{ins}_x+\mathrm{ins}_y-1$ counts the inserted pairs at $x$ or $y$ and $\mathrm{del}_x$ is disjoint from them, so the total is again $\le u$.
+
+(c) Hard neighbours of $z$ inside $C$ are at most $|C|-1$; hard neighbours outside $C$ are joined by deleted edges, at most $\mathrm{del}_z\le u$. Use (b).
+\end{proof}
+
+\begin{lemma}[Connected clusters]\label{lem:conn}
+In an optimal solution every cluster $C$ induces a connected subgraph $G[C]$.
+\end{lemma}
+\begin{proof}
+If $C=C_1\cup C_2$ with $C_1,C_2\neq\emptyset$ and no edge of $G$ between them, splitting $C$ into $C_1,C_2$ turns the $|C_1||C_2|>0$ inserted pairs between them into non-edges outside $S$ and creates no deletion.
+\end{proof}
+
+\subsection{Normal form and candidates}
+Fix $\ell$ and put
+\[
+\begin{gathered}B=2D+3\ell,\quad L_B=\{v:\ d_h(v)\le B\},\\ Z=B+D+1=3D+3\ell+1.\end{gathered}
+\]
+In an optimal solution of size at most $|H|+\ell$ call a cluster \emph{exceptional} if it contains an endpoint of a pair of $U$. Let $\mathrm{BIG}$ be the union of the hard components that contain a vertex $v$ with $d_h(v)>B$.
+
+\begin{lemma}[NF: normal form]\label{lem:NF}
+Let $H$ be pair-maximal and $S$ an optimal solution with $|S|\le|H|+\ell$, so $u\le\ell$.
+\begin{enumerate}
+\item[($\alpha$)] There are at most $2u\le2\ell$ exceptional clusters. Each exceptional cluster $C$ has $|C|\le1+2D+u\le2D+\ell+1$, lies in $L_B$, and $G[C]$ is connected.
+\item[($\beta$)] Let $C$ be a non-exceptional cluster. Then no hard edge leaves $C$ and no hard non-edge lies in $C$; so $C$ is a union of whole hard components, each clean, and all pairs between different components inside $C$ are soft. If $C$ contains at least two components, $|C|\le2D$.
+\item[($\gamma$)] Every hard component $K$ of $\mathrm{BIG}$ is a whole cluster of $S$, and this cluster is non-exceptional. Consequently every exceptional cluster is disjoint from $\mathrm{BIG}$, and every component of $\mathrm{BIG}$ is clean.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+($\alpha$) Each pair of $U$ has at most two clusters at its ends, which gives the count. The bound on $|C|$ is Lemma~\ref{lem:EX}(b) (for an endpoint $x\in C$ of a pair in $U$), the inclusion $C\subseteq L_B$ is Lemma~\ref{lem:EX}(c) together with $2D+2u\le B$, and connectivity is Lemma~\ref{lem:conn}.
+
+($\beta$) A hard edge leaving $C$ would be deleted, with an endpoint in $C$; a hard non-edge inside $C$ would be inserted. Both would make $C$ exceptional. If $K$ is a hard component meeting $C$, hard edges at a vertex of $K\cap C$ do not leave $C$, so $K\subseteq C$ by connectivity of $K$; $K$ is clean since $C$ contains no hard non-edge. Two vertices of different components inside $C$ are not joined by a hard edge, and are not a hard non-edge, so their pair is soft. If $C$ contains components $K_1\ne K_2$, a vertex $x\in K_1$ has all vertices of $C\setminus K_1$ as soft partners, so $|C\setminus K_1|\le D$; likewise $|C\setminus K_2|\le D$; since $K_1\subseteq C\setminus K_2$, $|C|=|K_1|+|C\setminus K_1|\le2D$.
+
+($\gamma$) Let $d_h(v)>B$ and let $K=K(v)$ be its hard component. By Lemma~\ref{lem:EX}(a) no endpoint of a pair of $U$ has hard degree above $D+u\le B$, and by ($\alpha$) no vertex of an exceptional cluster has hard degree above $B$. So the cluster $C$ of $v$ is non-exceptional, and by ($\beta$) $K\subseteq C$ and $C$ is a union of components. Now $|K|\ge d_h(v)+1>B+1>2D$, so by ($\beta$) $C$ cannot contain two components; hence $C=K$. Every other vertex of $K$ lies in the same cluster. Cleanness is ($\beta$). The disjointness statement follows since a component of $\mathrm{BIG}$ is a non-exceptional cluster.
+\end{proof}
+
+\begin{corollary}[CAND: bounded candidate partners]\label{cor:cand}
+Let $H$ be pair-maximal, $S$ optimal with $|S|\le|H|+\ell$, and $xy\in U$. Then $x,y\in L_B$ and:
+\begin{enumerate}
+\item[(i)] if $xy$ is deleted, $y\in N_h(x)$, and $|N_h(x)|\le D+\ell$;
+\item[(ii)] if $xy$ is inserted, $x$ and $y$ have a common neighbour in their cluster, so their distance in $G[L_B]$ is exactly $2$;
+\item[(iii)] in both cases $y$ lies in the ball $\mathrm{Ball}(x,2)$ of $G[L_B]$, which has at most $Z^{2}$ vertices.
+\end{enumerate}
+The same holds with the roles of $x$ and $y$ exchanged.
+\end{corollary}
+\begin{proof}
+$x,y\in L_B$ by Lemma~\ref{lem:EX}(a) ($d_h\le D+u\le B$). (i) is the definition together with Lemma~\ref{lem:EX}(a). (ii) $x,y$ lie in the exceptional cluster $C$ and are non-adjacent, so Lemma~\ref{lem:half}(b) gives $z\in C$ adjacent to both; $C\subseteq L_B$ by Lemma~\ref{lem:NF}($\alpha$), so the path $x\,z\,y$ lies in $G[L_B]$ and the distance is $2$ (not $1$ since $xy\notin E$). (iii) A vertex of $G[L_B]$ has at most $B$ hard neighbours and at most $D$ soft ones, so degree at most $B+D=Z-1$, and a ball of radius $2$ has at most $1+(Z-1)+(Z-1)^2\le Z^2$ vertices; deleted pairs have distance $1$.
+\end{proof}
+Lemma~\ref{lem:half}(b) is what makes the radius $2$ independent of $D$ and $\ell$: the candidates for the other end of a hard edit lie within distance $2$ of one end in $G[L_B]$. Corollary~\ref{cor:cand} says that \emph{one} endpoint of a hard edit determines a set of at most $Z^2$ candidates for the other, for every hard edit, including those of type T2 and deleted edges (Appendix~\ref{sec:locality}). What it does not bound is the number of candidates for the first endpoint, which is $n$.

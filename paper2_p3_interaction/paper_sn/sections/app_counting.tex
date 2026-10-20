@@ -1,0 +1,76 @@
+\section{Counting lemmas for arbitrary packings}\label{app:counting}
+These lemmas hold for every packing $H$ (no maximality unless stated) and describe what a solution of size at most $|H|+\ell$ can look like. All proofs use only pair-disjointness, a budget, and counting. They give neither a fixed-parameter algorithm in $\ell+w$ nor hardness; they are not used in the main text.
+
+\subsection{Hubs}
+In this subsection $H$ is an arbitrary packing, $c=c(H)$, and $(G,H,\ell)$ is a YES instance where stated.
+\begin{lemma}[HUB$^+$]\label{lem:HUB}
+Let $H$ be any packing, $(G,H,\ell)$ a YES instance, $u$ a vertex and $N_h(u)=\{x:ux\in E,\ ux\text{ not soft}\}$. Let $\Lambda_u$ be the graph on $N_h(u)$ whose edges are the pairs $\{x,y\}$ with $xy\notin E$ and $xy$ not soft (hard non-edges). Then:
+\begin{enumerate}
+\item[(a)] $\nu(\Lambda_u)\le\ell$ (matching number);
+\item[(b)] $\Lambda_u$ has a vertex cover $T$ with $|T|\le2\ell$, and every pair of $N_h(u)\setminus T$ is an edge of $G$ or is soft;
+\item[(c)] $\alpha(G[N_h(u)])\le 2\ell+c+1$ where $c=c(H)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Let $x_1y_1,\dots,x_ty_t$ be a matching of $\Lambda_u$ and $P_i=(x_i,u,y_i)$. Since $ux_i,uy_i\in E$ and $x_iy_i\notin E$, $P_i$ is an induced $P_3$. Its three pairs $ux_i,uy_i,x_iy_i$ are hard. The $2t$ vertices $x_i,y_i$ are distinct and different from $u$, so the pairs $ux_i,uy_i$ ($i\le t$) are pairwise distinct, and the pairs $x_iy_i$ are pairwise distinct and do not contain $u$. So $\{P_1,\dots,P_t\}$ is hard over $H$ and $t\le\ell$ by Lemma~\ref{lem:fam}.
+
+(b) The vertex set of a maximum matching of $\Lambda_u$ is a vertex cover (by maximality) of size $2\nu\le2\ell$. A pair of $N_h(u)\setminus T$ is not an edge of $\Lambda_u$, i.e.\ it is an edge of $G$ or soft.
+
+(c) Let $J$ be independent in $G[N_h(u)]$. By (b), every pair of $J\setminus T$ is a non-edge of $G$ and not an edge of $\Lambda_u$, hence soft. Put $J'=J\setminus T$. A soft pair of $J'$ lies in a member $P$ of $H$ and is a non-edge, so it is the pair of the two ends of $P$ (the other two pairs of $P$ are edges); in particular $|V(P)\cap J'|\le2$. If $J'\ne\emptyset$ fix $x\in J'$; every $y\in J'\setminus\{x\}$ gives a member $P_y\ni x,y$, and $P_y\ne P_{y'}$ for $y\ne y'$ because $|V(P_y)\cap J'|\le2$. So $|J'|-1\le c$. Hence $|J|\le|T|+|J'|\le2\ell+c+1$.
+\end{proof}
+
+\begin{corollary}[HUB, hard-independent sets]\label{cor:HUB}
+In the setting of Lemma~\ref{lem:HUB}, if $Y\subseteq N_h(u)$ and every pair of $Y$ is a hard non-edge, then $|Y|\le2\ell+1$.
+\end{corollary}
+\begin{proof}
+$Y$ is a clique of $\Lambda_u$, so it contains a matching of size $\lfloor|Y|/2\rfloor$, and $\lfloor|Y|/2\rfloor\le\ell$ by Lemma~\ref{lem:HUB}(a).
+\end{proof}
+\begin{remark}[HUB$^+$ versus an independence-number bound]\label{rem:hubalpha}
+(1) Bounding $\alpha(G[N_h(u)])$ through the corollary (greedy choice of a subset of an independent set that is also free of soft pairs) gives only $(c+1)(2\ell+1)=(D/2+1)(2\ell+1)$, which is weaker than (c). (2) The matching form (a) is the relevant statement for Vertex Cover on the non-adjacency graph of $N(u)$: let $N_h(u)$ be two disjoint cliques of $G$ of size $m$ with no soft pair between them. Then $\alpha=2$, but $(a_i,u,b_i)$, $a_i,b_i$ from different cliques, are $m$ pair-disjoint induced $P_3$'s, and $m\le\ell$ in a YES instance. Large independent sets are not the obstruction; large matchings of $\Lambda_u$ are. (3) For a general $H$ the lemma is applied to $H'$ of Lemma~\ref{lem:MAX} with $c',\ell'$.
+\end{remark}
+
+
+\subsection{Pieces and small merges}
+Fix an arbitrary packing $H$ and a solution $S$ with $|S|\le|H|+\ell$ (neither optimality nor pair-maximality is used). Let $U=U^-\cup U^+$ be its hard part and $u=|U|\le|S|-|H|\le\ell$ (Lemma~\ref{lem:decomp}). The \emph{pieces of $S$} are the connected components of the graph of kept hard edges, as in Appendix~\ref{sec:locality}; every piece lies inside one cluster of $G\sd S$.
+
+\begin{lemma}[SM: small merge]\label{lem:SM}
+Let $S$, $u$ and the pieces be as above, $D\ge\max_v|Q(v)|$ (e.g.\ $D=D(H)$), and let $C$ be a cluster of $G\sd S$.
+\begin{enumerate}
+\item[(i)] If $A\ne B$ are pieces contained in $C$, then every pair $ab$ ($a\in A,b\in B$) is soft or inserted.
+\item[(ii)] For such $A,B$ with $|A|\ge|B|$: $|B|\,(|A|-D)\le|U^+\cap(A\times B)|\le u$, hence $|A|\le D+u\le D+\ell$.
+\item[(iii)] If $C$ is the union of at least two pieces, then $|C|\le\max\{D+u+1,\;2D,\;2u\}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) is Lemma~\ref{lem:cross}.
+
+(ii) Each vertex of $B$ has at most $D$ soft partners, so at most $D|B|$ pairs of $A\times B$ are soft. By (i) all other pairs of $A\times B$, at least $|A||B|-D|B|$, are inserted, and $|U^+|\le|U|=u$. If $|A|\ge D+u+1$ then $|B|(|A|-D)\ge u+1$ because $|B|\ge1$, a contradiction; so $|A|\le D+u$.
+
+(iii) Let $A$ be a largest piece in $C$, $a=|A|$ and $r=|C|-a\ge1$. By (i), every pair $\{x,y\}$ with $x,y\in C$ in different pieces is soft or inserted.
+
+\emph{Case $a>D$.} Each $x\in C\setminus A$ has at most $D$ soft partners, so at least $a-D\ge1$ vertices $y\in A$ give an inserted pair $xy$. These pairs are distinct for distinct $(x,y)$, so $r(a-D)\le|U^+|\le u$. Then $r\le u$ and $a\le D+u/r$, so $|C|=a+r\le D+u/r+r$. The function $r\mapsto r+u/r$ is convex on $[1,u]$ and takes the value $u+1$ at both ends, so $|C|\le D+u+1$. (The case does not occur if $u=0$.)
+
+\emph{Case $a\le D$.} All pieces of $C$ have at most $D$ vertices. Each $x\in C$ has at least $|C|-D$ vertices of $C$ outside its piece, at most $D$ of which are soft partners; so $x$ lies in at least $|C|-2D$ inserted pairs $\{x,y\}$ with $y\in C$. Summing over $x$ counts each pair twice: $2|U^+|\ge|C|(|C|-2D)$. If $|C|>2D$, then $|C|-2D\ge1$ and $|C|\le2|U^+|\le2u$. So $|C|\le\max\{2D,2u\}$.
+\end{proof}
+\begin{remark}[Qualifiers and relation to the original bound]\label{rem:SMqual}
+(1) The qualifier ``pieces sharing a cluster'' is essential: a single piece may be an entire cluster of unbounded size, and a statement ``pieces have size at most $D+\ell$'' is false. (2) The bound (iii) implies the weaker bound $|C|\le\max\{2D+\ell,2\ell\}$: $2u\le2\ell$ and $2D\le2D+\ell$ are clear; $D+u+1\le2D+\ell$ if $D\ge1$; if $D=0$ and $u\ge1$ then $u+1\le2u\le2\ell$; and if $D=u=0$ no cluster with two pieces exists (the two cases of the proof are both impossible). (3) The bound (iii) is attained for instance by two singleton pieces and one inserted pair ($D=0$, $u=1$, $|C|=2$); we do not claim it is tight in general. (4) Lemma~\ref{lem:SM} says nothing about the \emph{degrees} in a graph of pieces; it bounds the sizes of pieces that share a cluster and the number of cross pairs that are not soft.
+\end{remark}
+
+
+\subsection{The soft graph has bounded treewidth}
+Recall the soft graph $\soft$ (Section~\ref{sec:prelim}).
+\begin{proposition}[Treewidth of the soft graph]\label{prop:soft}
+$\tw(\soft)\le 3(w+1)-1=3w+2$ if $H\ne\emptyset$; $\soft$ is edgeless if $H=\emptyset$. The bound is attained for $w=0$ ($H$ a single $P_3$, $\soft$ a triangle).
+\end{proposition}
+\begin{proof}
+Let $(\mathcal T,\{\beta_t\})$ be a tree decomposition of $I(H)$ of width $w$ and $\mathcal T_P=\{t:P\in \beta_t\}$, a subtree of $\mathcal T$ for each $P\in H$. Put $\beta'_t=\bigcup_{P\in \beta_t}V(P)$, so $|\beta'_t|\le3(w+1)$. For every vertex $x\notin V(H)$ add a new leaf bag $\{x\}$ to an arbitrary node. \emph{Edges:} a soft pair lies in $V(P)$ for some $P\in H$, and $P\in \beta_t$ for some $t$, so the pair lies in $\beta'_t$. \emph{Connectivity:} for $x\in V(H)$ the nodes $t$ with $x\in \beta'_t$ form $\bigcup_{P\ni x}\mathcal T_P$. The members through $x$ pairwise share $x$, so they are pairwise adjacent in $I(H)$ and, the edge being covered by a bag, their subtrees $\mathcal T_P$ pairwise intersect. A union of connected subtrees that pairwise intersect is connected (two points of the union lie in subtrees $\mathcal T_P,T_{P'}$ that meet; join them through a common node). The new leaf bags are single bags of size $1$. So this is a tree decomposition of $\soft$ of width at most $3(w+1)-1$.
+\end{proof}
+
+\subsection{Completing a fixed soft assignment}
+\begin{proposition}\label{prop:B}
+Let $x$ assign a subset $x_i\subseteq\pairs(P_i)$ to each $P_i$ and let $b=|H|+\ell-\sum|x_i|$ be the excess budget left. Whether there is a set $U$ of at most $b$ hard pairs with $G\sd(x\cup U)$ a cluster graph is decidable in $3^{b}n^{O(1)}$ time.
+\end{proposition}
+\begin{proof}
+Search tree on $G_x=G\sd x$: if the current graph has an induced $P_3$, some pair of it must be flipped; soft pairs are frozen by $x$, so branch on its at most three hard pairs, reducing $b$ by one (if all its pairs are soft, reject). Depth is at most $b$; flipping a pair twice is useless, so the search is exhaustive.
+\end{proof}
+The proposition is a reformulation, not progress towards fixed-parameter tractability in $(\ell,w)$: finding $x$ is the whole problem, and the property ``$x$ is completable'' is not local in $x$.

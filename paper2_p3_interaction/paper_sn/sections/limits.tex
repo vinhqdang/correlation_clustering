@@ -1,0 +1,23 @@
+\section{Limits of the parameterization}\label{sec:limits}
+\subsection{An ETH lower bound in the exponent}
+\begin{theorem}\label{thm:eth}
+Assume ETH. There is no algorithm that decides CEaMP with $\ell=0$ in time $2^{o(\tw(I(H)))}n^{O(1)}$. This holds even when every vertex lies in at most $23$ packed $P_3$'s (so $I(H)$ has maximum degree at most $66$), and whether or not a tree decomposition is supplied.
+\end{theorem}
+The theorem is a corollary of the reduction of Li, Pilipczuk and Sorge.
+\begin{proof}
+By the construction behind~\cite[Thm.~1]{LPS23} there is a polynomial reduction from 3-SAT to CEaMP with $\ell=0$ in which every vertex lies in at most $23$ packed $P_3$'s and the graph has $|V|=O(N+m)$ vertices for a formula with $N$ variables and $m$ clauses (each variable occurrence and each clause is replaced by a gadget of constant size). By the Sparsification Lemma~\cite{IPZ01} (see also~\cite{Cygan15}) we may assume $m=O(N)$ at the cost of $2^{o(N)}$ extra time, so $|V|=O(N)$.
+
+Every member has three vertices and every vertex lies in at most $23$ members, hence $3|H|=\sum_v|\{P\ni v\}|\le23|V|$, i.e.\ $|H|\le 23|V|/3=O(N)$. A single bag containing all members is a tree decomposition of $I(H)$, so $\tw(I(H))\le|H|-1=O(N)$, and such a decomposition can be supplied. An algorithm with running time $2^{o(\tw(I(H)))}n^{O(1)}$, which may compute its own decomposition, would therefore decide 3-SAT in time $2^{o(N)}$, contradicting ETH. The degree bound: a member meets at most $3\cdot22=66$ others.
+\end{proof}
+\begin{remark}
+(1) The bound is on the exponent only: it does not show that the base $3$ (or $5$) is tight, and $2^{o(w)}$ excludes $3^{o(w)}$ and $5^{o(w)}$ alike. A SETH-type bound $(3-\varepsilon)^{w}$ is open. (2) On the instances of the theorem every vertex lies in at most $23$ members, so $\tw(I(H))\le|H|-1\le 23n/3$ (for general packings $|H|$ can exceed $n$); hence on these instances a $2^{o(\tw(I(H)))}n^{O(1)}$ algorithm is in particular a $2^{o(n)}$ algorithm, the constant $23/3$ being absorbed in the $o(\cdot)$, so the theorem is no stronger than the statement that CEaMP at $\ell=0$ has no $2^{o(n)}$ algorithm under ETH; it says that the exponent of Theorem~\ref{thm:l0} cannot be improved to $o(w)$ on instances with $|H|=\Theta(n)$.
+\end{remark}
+
+\subsection{Other parameters do not suffice}
+\begin{proposition}\label{prop:w0}
+CEaMP is NP-hard when $I(H)$ has no edge ($w=0$, vertex-disjoint packing), with $\ell$ part of the input. Hence $w$ alone is not enough, and (by Theorem~1 of~\cite{LPS23}) neither is $\ell=0$ alone.
+\end{proposition}
+\begin{proof}
+Cluster Editing is NP-hard (e.g.\ already on graphs of maximum degree $6$~\cite{KU12}). Given $(G,k)$ compute greedily a maximal set $H$ of vertex-disjoint induced $P_3$'s (if none, $G$ is a cluster graph). Vertex-disjoint implies modification-disjoint and $I(H)$ is edgeless. Since $\OPT\ge|H|$, $(G,k)$ is a YES instance iff $(G,H,k-|H|)$ is (a NO instance if $k<|H|$).
+\end{proof}
+Two further facts are in Appendix~\ref{app:examples}: bounded $\tw(G)$ does not make $\ell+w$ small (Proposition~\ref{prop:star}, a star), and pair-maximality cannot be replaced by vertex-maximality (Propositions~\ref{prop:vertexmax} and~\ref{prop:c4}), so edits touching vertices outside $V(H)$ cannot be excluded.

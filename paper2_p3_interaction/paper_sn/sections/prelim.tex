@@ -1,0 +1,68 @@
+\section{Preliminaries}\label{sec:prelim}
+\paragraph{Graphs and solutions.}
+Graphs are simple and undirected, $n=|V(G)|$. A \emph{pair} is a $2$-subset of $V(G)$; for a set $S$ of pairs, $G\sd S$ flips the adjacency of each pair in $S$. A graph is a \emph{cluster graph} iff it has no induced $P_3$, i.e.\ no vertex triple with exactly two edges. A \emph{solution} is a set $S$ of pairs with $G\sd S$ a cluster graph; $\OPT(G)$ is the minimum size of a solution. Solutions correspond to partitions of $V$ into \emph{clusters} (the cliques of $G\sd S$); the \emph{cost} of a partition is the number of pairs $ab$ with $[ab\in E]\ne[a,b\text{ in one cluster}]$, and an \emph{optimum} is a partition of minimum cost. We write $\alpha(\cdot)$ for the independence number and $\nu(\cdot)$ for the matching number.
+
+\paragraph{Packings, soft and hard pairs.}
+A \emph{packing} $H=\{P_1,\dots,P_p\}$ is a set of induced $P_3$'s $P_i=(a_i,b_i,c_i)$ with centre $b_i$ ($a_ib_i,b_ic_i\in E$, $a_ic_i\notin E$); its elements are the \emph{members} or \emph{packed $P_3$'s}. Write $\pairs(P_i)$ for the three pairs inside $V(P_i)$. $H$ is \emph{modification-disjoint} if the sets $\pairs(P_i)$ are pairwise disjoint; this is equivalent to: any two members share at most one vertex. All packings below are modification-disjoint. A pair is \emph{soft} if it lies in $\bigcup_i\pairs(P_i)$ (its \emph{owner} is then unique) and \emph{hard} otherwise; a \emph{hard edge} is a hard pair in $E$ and a \emph{hard non-edge} a hard pair outside $E$. For a vertex $v$, $Q(v)$ is the set of soft partners of $v$, $N_h(v)$ the set of hard neighbours and $d_h(v)=|N_h(v)|$. $\soft$ is the \emph{soft graph} on $V$ whose edges are the soft pairs.
+
+\paragraph{Problem CEaMP.}
+Given $G$, a modification-disjoint packing $H$ and $\ell\ge 0$, decide whether there is a solution $S$ with $|S|\le |H|+\ell$ (the convention of~\cite{LPS23}; $\ell$ is the \emph{excess}). We call $(G,H,\ell)$ a \emph{YES instance} if $\OPT(G)\le|H|+\ell$.
+
+\paragraph{The intersection graph.}
+The \emph{intersection graph} $I(H)$ has node set $H$ and an edge $PP'$ iff $V(P)\cap V(P')\ne\emptyset$. The members through one vertex form a clique of $I(H)$; hence (Helly property of tree decompositions) they lie in a common bag. Put $c=c(H)=\max_v|\{P\ni v\}|$ and $w=\tw(I(H))$ (with $w=0$ if $I(H)$ has no edge), so $c\le w+1$. Tree decompositions of width $w$ are assumed \emph{given} in the algorithmic statements; one of width $w$ is computed in time $2^{O(w^3)}n$~\cite{Bod96,Cygan15}, and one of width at most $2w+1$ in time $2^{O(w)}n$~\cite{Kor21}, which would change the bases below (e.g.\ $7^{w+1}$ to $7^{2w+2}$).
+
+\begin{lemma}[Degrees]\label{lem:deg}
+For every vertex $v$, $|Q(v)|=2\,|\{P\in H:v\in V(P)\}|$. Hence $D(H):=\max_v|Q(v)|=2c\le 2(w+1)$.
+\end{lemma}
+\begin{proof}
+Each member $P\ni v$ contributes the two soft pairs of $P$ at $v$, i.e.\ two partners. Two members through $v$ cannot have a common partner $x\ne v$, since they would then share the two vertices $v,x$, hence a pair. So the partner sets are disjoint and $|Q(v)|=2|\{P\ni v\}|$.
+\end{proof}
+Below, $D$ denotes a \emph{number} with $D\ge\max_v|Q(v)|$ (for instance $D=D(H)=2c$), and $D(H)$ the function value.
+
+\begin{lemma}[Solutions decompose]\label{lem:decomp}
+Let $S$ be any set of pairs such that $G\sd S$ is a cluster graph, $x_i=S\cap\pairs(P_i)$ and $U=S\setminus\bigcup_i\pairs(P_i)$ (the \emph{hard edits}). Then every $x_i\neq\emptyset$, $|S|=\sum_i|x_i|+|U|$, and $|U|\le|S|-|H|$.
+\end{lemma}
+\begin{proof}
+If $x_i=\emptyset$ the triple $V(P_i)$ keeps its adjacencies in $G\sd S$ and is an induced $P_3$. The pair sets are disjoint, so $|S|=\sum|x_i|+|U|\ge|H|+|U|$.
+\end{proof}
+Consequently the \emph{excess} of a solution is $\sum_i(|x_i|-1)+|U|$, and every solution of size at most $|H|+\ell$ has $|U|\le\ell$.
+
+\subsection{Maximalisation and pair-maximal packings}
+A family $\Phi$ of induced $P_3$'s is \emph{hard over $H$} if the sets $\pairs(P)$, $P\in\Phi$, are pairwise disjoint and disjoint from the soft pairs of $H$; then $H\cup\Phi$ is a packing with $|H|+|\Phi|$ members. $H$ is \emph{pair-maximal} if no induced $P_3$ of $G$ has all three pairs hard, i.e.\ if $H$ is maximal among modification-disjoint packings. This is strictly stronger than maximality among vertex-disjoint packings (Proposition~\ref{prop:vertexmax}).
+
+\begin{lemma}[Hard families]\label{lem:fam}
+Let $(G,H,\ell)$ be a YES instance and $\Phi$ a family hard over $H$. Then $|\Phi|\le\ell$. In general $\OPT\ge|H|+|\Phi|$.
+\end{lemma}
+\begin{proof}
+$H\cup\Phi$ is a modification-disjoint packing of $|H|+|\Phi|$ induced $P_3$'s. Lemma~\ref{lem:decomp}, applied to $H\cup\Phi$ and an optimum solution, gives $\OPT\ge|H|+|\Phi|$. In a YES instance $\OPT\le|H|+\ell$.
+\end{proof}
+
+\begin{lemma}[Maximalisation]\label{lem:MAX}
+Let $H$ be any packing and $M$ a maximal family hard over $H$ (inclusion-maximal; found greedily in polynomial time). Put $H'=H\cup M$, $\ell'=\ell-|M|$. Then:
+\begin{enumerate}
+\item[(a)] $\OPT\ge|H'|$. In particular $|M|>\ell$ implies that $(G,H,\ell)$ is a NO instance.
+\item[(b)] $\OPT\le|H|+\ell$ iff ($|M|\le\ell$ and $\OPT\le|H'|+\ell'$). So $(G,H,\ell)$ and $(G,H',\ell')$ are equivalent whenever $\ell'\ge0$.
+\item[(c)] $H'$ is a pair-maximal packing (``hard'' now means hard with respect to $H'$; the pairs of $M$ have become soft).
+\item[(d)] $\tw(I(H'))\le\tw(I(H))+|M|$, hence $w'\le w+|M|\le w+\ell$.
+\item[(e)] $c'\le\min\{c+|M|,\,w'+1\}$ and $D(H')=2c'\le D(H)+2|M|$.
+\end{enumerate}
+A tree decomposition of $I(H')$ of width at most $w+|M|$ is obtained in polynomial time from one of $I(H)$.
+\end{lemma}
+\begin{proof}
+(a) is Lemma~\ref{lem:fam} (second sentence: $\OPT\ge|H|+|M|$). (b) If $\OPT\le|H|+\ell$ then $|M|\le\ell$ by (a), and $|H'|+\ell'=|H|+\ell$; the converse is the same identity.
+
+(c) The members of $M$ have pairwise disjoint pair sets, disjoint from those of $H$, so $H'$ is a packing. Suppose an induced $P_3$ $Q$ has all its pairs hard with respect to $H'$. Then $M\cup\{Q\}$ is a family hard over $H$ ($Q\notin M$ because the pairs of $Q$ are not in $\pairs(M)$), contradicting maximality of $M$.
+
+(d) Let $(\mathcal T,\{\beta_t\})$ be a tree decomposition of $I(H)$ of width $w$ (if $H=\emptyset$ take a single empty bag). $I(H')[H]=I(H)$. Put $\beta'_t=\beta_t\cup M$. Every node of $H$ still occupies a connected subtree. Every node of $M$ occupies all of $\mathcal T$. An edge of $I(H')$ with both ends in $H$ is covered as before; an edge with an end in $M$ is covered by any bag containing its other end (if both ends are in $M$ every bag covers it). Bags have at most $w+1+|M|$ nodes.
+
+(e) At most $|M|$ members of $M$ pass through a vertex, so $c'\le c+|M|$; $c'\le w'+1$ is the inequality $c\le w+1$ for $H'$. By Lemma~\ref{lem:deg}, $D(H')=2c'\le D(H)+2|M|$.
+\end{proof}
+\begin{example}[Tightness of Lemma~\ref{lem:MAX}(d)]\label{ex:maxtight}
+Let $G$ be the star with centre $v$ and leaves $p,q,a_1,b_1,\dots,a_m,b_m$, $H=\{(p,v,q)\}$ and $M=\{(a_i,v,b_i):1\le i\le m\}$. $M$ is a maximal family hard over $H$: every induced $P_3$ of a star is $(x,v,y)$ with leaves $x,y$, and every pair $xv$ is already soft. $I(H)$ is one node, $\tw=0$; $I(H\cup M)=K_{m+1}$, $\tw=m=0+|M|$.
+\end{example}
+
+\paragraph{Convention: pair-maximal packings and primed parameters.}
+Appendix~\ref{sec:optimal}--\ref{sec:locality} and the appendices state their results for a \emph{pair-maximal} $H$; where a result needs a YES instance or an optimal solution, it says so. For an arbitrary input packing $H$ let $M$ be as in Lemma~\ref{lem:MAX} and read the statements for the \emph{primed instance} $(G,H',\ell')$ with parameters $w'\le w+|M|$, $c'\le c+|M|$, $D'\le D+2|M|$, $\ell'=\ell-|M|$. The family $M$ is not unique (it depends on the greedy order), so quantities defined from $H'$ (such as $\omega$ in Appendix~\ref{sec:nl}) are parameters of the primed instance, not functions of the input $(G,H,\ell)$. Only Theorems~\ref{thm:l0}, \ref{thm:A}, \ref{thm:K}, \ref{thm:three} and~\ref{thm:nl} are statements about the input $H$ in terms of $w$, $\ell$ and $n$; the table in Appendix~\ref{app:status} lists the scope of every result.
+
+\paragraph{Notation.}
+$P_i=(a_i,b_i,c_i)$ with centre $b_i$; $c$ is the maximum number of members through a vertex (unsubscripted), and $\kappa_i\ge1$ the number of edited pairs among $\pairs(P_i)$. $U=U^-\cup U^+$ is the set of hard edits, $U^-$ the deleted hard edges and $U^+$ the inserted hard non-edges, $u=|U|$. $\ell'=\ell-|M|$ is the primed excess and $\bar\ell$ the excess left after component accounting (Appendix~\ref{sec:K}). $\mathcal C_j$ are the components of $I(H)$ and $W_j$ the vertex sets they span. $R=V\setminus V(H)$ (Appendix~\ref{app:structure}). $B=2D+3\ell$, $Z=B+D+1$ and $\mathrm{BIG}$ are defined in Appendix~\ref{sec:optimal}. Hard components $K$ and the cliques $\mathcal K_v$ of the constructions in Appendix~\ref{sec:nl} are distinct objects.
