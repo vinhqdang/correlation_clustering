@@ -51,8 +51,8 @@ def IsCluster (G : SimpleGraph V) : Prop := ∀ a b c, ¬ IndP3 G a b c
 /-- The cluster graph of a labelling: distinct vertices with equal labels are adjacent. -/
 def clusterGraph {α : Type*} (c : V → α) : SimpleGraph V where
   Adj u v := u ≠ v ∧ c u = c v
-  symm := ⟨fun u v h => ⟨h.1.symm, h.2.symm⟩⟩
-  loopless := ⟨fun u h => h.1 rfl⟩
+  symm := ⟨fun _ _ h => ⟨h.1.symm, h.2.symm⟩⟩
+  loopless := ⟨fun _ h => h.1 rfl⟩
 
 /-- Cost of a clustering: number of pairs `ab` with `[ab ∈ E] ≠ [a, b in one cluster]`. -/
 noncomputable def cost {α : Type*} (G : SimpleGraph V) (c : V → α) : ℕ :=
@@ -157,10 +157,11 @@ theorem exists_opt (G : SimpleGraph V) : ∃ E, IsSolution G E ∧ size E = OPT 
 /-- Optimum over edit sets equals optimum over clusterings. -/
 theorem OPT_eq_OPTc (G : SimpleGraph V) : OPT G = OPTc G := by
   apply le_antisymm
-  · have hne : {k | ∃ c : V → V, cost G c = k}.Nonempty := ⟨_, fun _ => 0, rfl⟩
+  · have hne : {k | ∃ c : V → V, cost G c = k}.Nonempty := ⟨_, fun u => u, rfl⟩
     obtain ⟨c, hc⟩ := Nat.sInf_mem hne
-    rw [← hc]
-    exact OPT_le (isSolution_edit_clustering G c)
+    calc OPT G ≤ size (edit G (clusterGraph c)) := OPT_le (isSolution_edit_clustering G c)
+      _ = cost G c := rfl
+      _ = OPTc G := hc
   · obtain ⟨E, hE, hk⟩ := exists_opt G
     obtain ⟨c, hc, -⟩ := exists_clustering_of_solution hE
     rw [← hk, ← hc]

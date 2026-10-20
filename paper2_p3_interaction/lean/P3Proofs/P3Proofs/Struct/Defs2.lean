@@ -149,13 +149,16 @@ def IsOpt (c : V → α) : Prop := ∀ c' : V → α, cost G c ≤ cost G c'
 
 /-- `OPT ≤ k` in the paper's units (number of edits): some labelling has at most `k`
 disagreeing pairs, i.e. `cost ≤ 2 k`. -/
-def Sol (α : Type*) (k : ℤ) : Prop := ∃ c : V → α, cost G c ≤ 2 * k
+def Sol (α : Type*) [DecidableEq α] (k : ℤ) : Prop := ∃ c : V → α, cost G c ≤ 2 * k
 
 /-- A label of `α` not used by `c` (automatic when `α` is infinite). -/
 lemma exists_fresh [Infinite α] (c : V → α) : ∃ z, ∀ x, c x ≠ z := by
   by_contra h
-  push_neg at h
-  have : Function.Surjective c := fun z => h z
-  exact not_finite_iff_infinite.mpr ‹Infinite α› (Finite.of_surjective _ this) |>.elim
+  have hs : Function.Surjective c := by
+    intro z
+    by_contra hz
+    exact h ⟨z, fun x hx => hz ⟨x, hx⟩⟩
+  have := Finite.of_surjective c hs
+  exact not_finite α
 
 end P3S

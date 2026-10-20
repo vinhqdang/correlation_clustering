@@ -145,9 +145,15 @@ Argument that (a)+(b) are incompatible for c <= 2 (HEURISTIC): a lock consistent
 among the two families the smallest prefix and the largest suffix core are either disjoint (nu >= 2: Lemma D) or leave a gap of consecutive positions without locks, where nothing kills a defect (then F'(N) <= |H|+l and no certificate is needed).
 I could not turn this into a proof because defects change the interface in more ways than "cut" (they induce lists on neighbours, which are information-preserving along rigid chains).
 
+**A correct recursion (HEURISTIC-to-PROVED step, shows where a proof would sit).**  Let C_1..C_s be zero-excess cores with D(C_1) cap ... cap D(C_s) = I* (the common region of all zero-excess cores; for connected regions on a path-like decomposition s <= 2).
+Every pattern avoiding I* is killed by one of the C_i (an object outside I* lies outside some D(C_i): Lemma D reasoning with one core).  A pattern containing o in I* is a pattern of the frozen instance I^(o) (o fixed, budget l - c(o)),
+so a certificate U_o of I^(o) kills it.  Hence T = C_1 cup .. cup C_s cup U_{o_1} cup .. is a certificate for I, and **g(l) <= 4s + |I*| g(l-1)**, g(0) = 4.
+So BC(l) for c <= 2 follows if |I*| (the common segment of all conflict regions) is bounded in terms of l; the data of Sec. 4.5 show |I*| small in every optimum found, but I have no proof (the case |I*| unbounded is the rigid-chain / relative-kill case of Sec. 4.4).
+(The frozen instance stays in the class: freezing a defect member replaces it by hard constants, a flip changes a hard bit; Lemma P gives kappa_1 <= 2 there.)
+
 ### 4.5 Evidence for l >= 1, c <= 2 (VERIFIED-BY-COMPUTER, not a proof)
-* Exact minimum certificates (CEGAR) found by hill-climbing over (tree-like member structure, hard clusters, pendants), n <= 20:  l = 0: **4**;  l = 1: **8** (several seeds; members 5, 6, 7, 8; stays 7-8 for m = 5..10);  l = 2: **10**; l = 3: **10** (still climbing at the time of writing); l = 4: **14**
-  (see the final numbers in Sec. 8).  Compatible with K(l) = 4(l+1) = bound of Lemma D; none exceeds it.  Certificates found at l = 1 are unions of two to four 2-pair guards.
+* Exact minimum certificates (CEGAR) found by hill-climbing over (tree-like member structure, hard clusters, pendants), n <= 20:  l = 0: **4**;  l = 1: **8** (several seeds; members 5, 6, 7, 8; stays 7-8 for m = 5..10);  l = 2: **10**; l = 3: **11**; l = 4: **15**
+  (snapshot at time of writing; runs were still going).  Compatible with K(l) = 4(l+1) = bound of Lemma D; none exceeds it.  Certificates found at l = 1 are unions of two to four 2-pair guards.
 * Instance with intrinsic baseline excess F'(empty) = |H|+3 (`w11_inc3.py`): minimum certificates 1, 2, 11 pairs for l = 3, 4, 5, i.e. effective l' = 0, 1, 2 give 1, 2, 11 (11 <= 4(l'+1)+... compatible with 12).
 * Increment sizes along greedy chains (`w11_inc2.py`): hill-climbed maximum increment 9 (chain [1,1,9]) and 7 (chain [2,2,3,7,3]); the increment lemma for arbitrary Phi is therefore *not* a-priori <= 4, but the minimum certificate of the same instance is 11 pairs.  The increment lemma is not needed for BC itself.
 * Periodic chains (`w11_cell.py`: random cell with k = 3,4 members, in-cell sharing of multiplicity <= c, ports, cluster labels with offset to the next cell, pendants), N = 3 vs 5: l = 0, c = 2 and c = 3: 24,000 cells, **no growth** (sizes (1,1),(2,2),(3,3),(4,4) only);
@@ -178,14 +184,15 @@ I could not turn this into a proof because defects change the interface in more 
 | Lemma P (every pattern killed by <= 2 locks, c <= 2) | PROVED (by computer) |
 | Lemma D (l+1 disjoint-region cores => certificate <= 4(l+1)) | PROVED |
 | No budget-preserving majority gluing over five states (links; K3) | VERIFIED-BY-COMPUTER (SAT, exhaustive over the 42 patterns) |
-| BC for l >= 1, c <= 2 (K(l) = O(l)) | OPEN; evidence: max found 4, 8, 10, 10, 14 for l = 0..4 |
+| BC for l >= 1, c <= 2 (K(l) = O(l)) | OPEN; evidence: max found 4, 8, 10, 11, 15 for l = 0..4 (all below 4(l+1) = 4, 8, 12, 16, 20) |
 | Independent-witness bound (empty-kernel sunflower) | OPEN (heuristic argument for c <= 2, Sec. 4.4) |
 | BC / kappa_1 for c >= 3 | OPEN; no growth in 12,000 cells; Lemma R5 predicts unbounded cores in some pp-definition |
 | Existence of a family killing B1 (every certificate large, l bounded) | none found; impossible for l = 0, c <= 2 (MC0) |
 | LOC | OPEN (BC => list-LOC; certificate pairs are P3 witnesses in all tests) |
 
 ## 8. Final numbers of the long runs
-(see the end of this file; filled in after the runs completed)
+Snapshot: hill-climb best minimum certificates (forest I(H), n<=20): l=0:4, l=1:8, l=2:10, l=3:11, l=4:15. Hill-climb with general c<=2 member graphs (triangles, `w11_hc2.py`): l=0: 2, l=1: 5 so far (short runs). Increment chains (`w11_inc2.py`): max increment 8-9. All runs were killed/unfinished at hand-in; none exceeded 4(l+1).
+Conjecture BC-lin (c<=2): a certificate with at most 4(l+1) remote pairs always exists; l=0 proved, l=1 value 8 attained.
 
 ## 9. Reproduction (from `code/`; python3 + pysat + ortools + numpy + networkx)
 * Library: `w11_lib.py` (instance, F' oracle with incremental SAT, `min_certificate` = CEGAR with CP-SAT master, `min_increment`, `fprime_value`, exact OPT by subset DP, n <= 16), `w11_gen.py` (pair-maximal generators: members + hard clusters; c <= 2 slot matchings; c <= 3).
