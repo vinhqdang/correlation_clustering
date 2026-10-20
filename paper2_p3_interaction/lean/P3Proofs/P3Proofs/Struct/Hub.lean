@@ -35,7 +35,7 @@ lemma hasMatch_mono {H : Finset (V × V × V)} :
   | 0, _, _, _, _ => trivial
   | t + 1, J, J', hJ, ⟨x, hx, y, hy, hxy, hn, hs, h⟩ =>
       ⟨x, hJ hx, y, hJ hy, hxy, hn, hs,
-        hasMatch_mono G t (fun z hz => by
+        hasMatch_mono t (fun z hz => by
           simp only [Finset.mem_erase] at hz ⊢
           exact ⟨hz.1, hz.2.1, hJ hz.2.2⟩) h⟩
 
@@ -78,7 +78,6 @@ lemma hasMatch_hardFam {H : Finset (V × V × V)} (u : V) :
       obtain ⟨h4, h5, h6⟩ := hJ'sub _ hj3
       have hjx := (hJ _ h1).1
       have hjy := (hJ _ h4).1
-      rw [hj2] at hjx hjy
       rw [Finset.disjoint_left]
       rintro ⟨p, q⟩ hp hq
       simp only [mem_pr, Prod.mk.injEq] at hp hq
@@ -150,9 +149,9 @@ theorem hub_cover {H : Finset (V × V × V)} :
           simp only [Finset.mem_sdiff, Finset.mem_insert, not_or] at ha hb
           apply hT' a _ b _ hab
           · simp only [Finset.mem_sdiff, Finset.mem_erase]
-            exact ⟨⟨ha.2.1, ha.2.2.1, ha.1⟩, ha.2.2.2⟩
+            exact ⟨⟨ha.2.2.1, ha.2.1, ha.1⟩, ha.2.2.2⟩
           · simp only [Finset.mem_sdiff, Finset.mem_erase]
-            exact ⟨⟨hb.2.1, hb.2.2.1, hb.1⟩, hb.2.2.2⟩
+            exact ⟨⟨hb.2.2.1, hb.2.1, hb.1⟩, hb.2.2.2⟩
     · refine ⟨∅, by simp, by simp, ?_⟩
       intro x hx y hy hxy
       simp only [Finset.sdiff_empty] at hx hy
@@ -210,16 +209,16 @@ theorem hub_alpha {H : Finset (V × V × V)} (hH : IsPacking G H) (ℓ : ℕ)
         rw [hyy] at a
         obtain ⟨h1, h2, h3, h4⟩ := hH.p3 (f y') (Finset.mem_filter.mp (hf1 y' hy')).1
         rcases a with ⟨a1, a2⟩ | ⟨a1, a2⟩ <;> rcases b with ⟨b1, b2⟩ | ⟨b1, b2⟩
-        · rw [a2, b2]
+        · exact a2.trans b2.symm
         · exact absurd (a1.symm.trans b1) h4
         · exact absurd (a1.symm.trans b1) h4.symm
-        · rw [a2, b2]
+        · exact a2.trans b2.symm
       have := Finset.card_le_card_of_injOn f (s := J'.erase x)
         (t := H.filter fun P => x = P.1 ∨ x = P.2.1 ∨ x = P.2.2) (fun y hy => hf1 y hy) hinj
       have h2 := hc x
       have h3 := Finset.card_erase_add_one hx
       omega
-  have := Finset.card_le_card_sdiff_add_card (s := J) (t := T)
+  have h5 : J.card ≤ J'.card + T.card := Finset.card_le_card_sdiff_add_card
   omega
 
 /-- **Corollary HUB.** If every pair of `Y ⊆ N_h(u)` is a hard non-edge then `|Y| ≤ 2ℓ + 1`. -/

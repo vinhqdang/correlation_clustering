@@ -173,8 +173,13 @@ lemma sum_pr_ge_two (c : V → α) (P : V × V × V) (hP : IsP3 G P) :
   · by_cases h2 : c b = c e
     · have h3 : c a = c e := h1.trans h2
       simp [hab, hbc, hae, s1, s2, s3, h1, h2, h3]
-    · simp [hab, hbc, hae, s1, s2, s3, h1, h2]
-  · simp [hab, hbc, hae, s1, s2, s3, h1, Ne.symm h1]
+    · simp [hab, hbc, hae, s1, s2, s3, h1, h2, Ne.symm h2]
+  · by_cases h2 : c b = c e
+    · have h3 : ¬ c a = c e := fun h => h1 (h.trans h2.symm)
+      simp [hab, hbc, hae, s1, s2, s3, h1, h2, h3, Ne.symm h3]
+    · by_cases h3 : c a = c e
+      · simp [hab, hbc, hae, s1, s2, s3, h1, h2, h3, Ne.symm h1, Ne.symm h2]
+      · simp [hab, hbc, hae, s1, s2, s3, h1, h2, h3, Ne.symm h1, Ne.symm h2, Ne.symm h3]
 
 lemma d_sum_nonneg (c : V → α) (s : Finset (V × V)) : 0 ≤ ∑ x ∈ s, d G c x.1 x.2 :=
   Finset.sum_nonneg (fun x _ => d_nonneg G c x.1 x.2)
